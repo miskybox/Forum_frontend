@@ -1,9 +1,9 @@
 // Archivo: src/components/comments/CommentList.jsx
 import { useState, useEffect } from 'react'
-import CommentItem from './CommentItem'
-import CommentForm from './CommentForm'
-import commentService from '../../services/commentService'
-import useAuth from '../../hooks/useAuth'
+import CommentItem from './CommentItems';
+import CommentForm from './CommetForm';
+import commentService from '../../services/commentService';
+import useAuth from '../../hooks/useAuth.js';
 
 const CommentList = ({ postId }) => {
   const [comments, setComments] = useState([])

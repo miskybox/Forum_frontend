@@ -1,24 +1,27 @@
 // Archivo: src/App.jsx
-import { Routes, Route } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import Navbar from './components/common/Navbar'
-import Footer from './components/common/Footer'
-import ProtectedRoute from './components/auth/ProtectedRoute'
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/common/Navbar';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import Footer from './components/common/Footer';
+import NotFoundPage from './pages/NotFoundPage';
+import { Toaster } from 'react-hot-toast';
+import "./index.css";
+
 
 // Páginas
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import ProfilePage from './pages/ProfilePage'
-import CategoryListPage from './pages/CategoryListPage'
-import ForumListPage from './pages/ForumListPage'
-import ForumDetailPage from './pages/ForumDetailPage'
-import ForumCreatePage from './pages/ForumCreatePage'
-import ForumEditPage from './pages/ForumEditPage'
-import PostDetailPage from './pages/PostDetailPage'
-import PostCreatePage from './pages/PostCreatePage'
-import PostEditPage from './pages/PostEditPage'
-import NotFoundPage from './pages/NotFoundPage'
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
+import CategoryListPage from './pages/CategoryListPage';
+import ForumListPage from './pages/ForumListPage';
+import ForumDetailPage from './pages/ForumDetailsPage';
+import ForumCreatePage from './pages/ForumCreatePage';
+import ForumEditPage from './pages/ForumEditPage';
+import PostCreatePage from './pages/PostCreatePage';
+import PostEditPage from './pages/PostEditPage';
+import PostDetailPage from './pages/PostDeatilsPage';
+
 
 function App() {
   return (

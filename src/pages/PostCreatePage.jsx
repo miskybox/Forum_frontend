@@ -1,8 +1,10 @@
 // Archivo: src/pages/PostCreatePage.jsx
-import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import PostForm from '../components/posts/PostForm'
-import forumService from '../services/forumService'
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import PostForm from '../components/post/PostForm';
+import forumService from '../services/forumService';
+
+
 
 const PostCreatePage = () => {
   const { forumId } = useParams()

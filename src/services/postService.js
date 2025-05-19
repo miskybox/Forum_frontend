@@ -1,4 +1,4 @@
-// Archivo: src/services/postService.js
+// Archivo: src/services/postService.js (actualizado)
 import api from '../utils/api'
 
 const postService = {
@@ -6,6 +6,12 @@ const postService = {
     const response = await api.get('/posts', {
       params: { page, size }
     })
+    return response.data
+  },
+  
+  // Añadir el método fetchPostById como alias de getPostById para compatibilidad
+  fetchPostById: async (id) => {
+    const response = await api.get(`/posts/${id}`)
     return response.data
   },
   
@@ -63,3 +69,6 @@ const postService = {
 }
 
 export default postService
+
+// Exportar función específica para compatibilidad con importaciones directas
+export const fetchPostById = postService.fetchPostById

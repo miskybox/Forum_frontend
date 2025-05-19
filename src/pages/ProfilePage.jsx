@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast'
 import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
 import ForumList from '../components/forums/ForumList'
-import PostList from '../components/posts/PostList'
+import PostList from '../components/post/PostList';
 
 const ProfilePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
@@ -372,7 +372,7 @@ const ProfilePage = () => {
                   
                   {/* Imagen de perfil */}
                   <div>
-                    <label className="block text-sm font-medium text-neutral-700 mb-1">
+                    <label htmlFor="profileImage" className="block text-sm font-medium text-neutral-700 mb-1">
                       Imagen de perfil
                     </label>
                     

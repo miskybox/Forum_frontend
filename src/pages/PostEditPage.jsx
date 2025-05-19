@@ -1,8 +1,7 @@
 // Archivo: src/pages/PostEditPage.jsx
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
-import PostForm from '../components/posts/PostForm'
+import PostForm from '../components/post/PostForm';
 import postService from '../services/postService'
 import useAuth from '../hooks/useAuth'
 
