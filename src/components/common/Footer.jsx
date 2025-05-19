@@ -11,7 +11,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center">
               <img
                 className="h-8 w-auto"
-                src="/src/assets/images/logo.svg"
+                src="/src/assets/logo2.png"
                 alt="ForumViajeros"
               />
               <span className="ml-2 text-xl font-display font-semibold text-primary-700">ForumViajeros</span>

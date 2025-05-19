@@ -1,5 +1,6 @@
 // Archivo: src/components/categories/CategoryCard.jsx
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 const CategoryCard = ({ category }) => {
   return (
@@ -37,5 +38,14 @@ const CategoryCard = ({ category }) => {
     </Link>
   )
 }
+CategoryCard.propTypes = {
+  category: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    forumCount: PropTypes.number,
+    description: PropTypes.string,
+  }).isRequired,
+};
 
 export default CategoryCard

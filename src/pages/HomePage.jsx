@@ -30,7 +30,7 @@ const HomePage = () => {
       <section className="relative bg-primary-700 text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="/src/assets/images/background.jpg" 
+            src="/src/assets/logo.svg" 
             alt="Viajeros por el mundo" 
             className="w-full h-full object-cover opacity-30"
           />

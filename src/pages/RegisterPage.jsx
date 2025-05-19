@@ -23,7 +23,7 @@ const RegisterPage = () => {
             <Link to="/" className="inline-block">
               <img
                 className="h-12 w-auto"
-                src="/src/assets/images/logo.svg"
+                src="/src/assets/logoFV.png"
                 alt="ForumViajeros"
               />
             </Link>
