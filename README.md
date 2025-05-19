@@ -1,12 +1,119 @@
-# React + Vite
+# ForumViajeros Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es el frontend para la aplicación ForumViajeros, un foro de viajes donde los usuarios pueden explorar categorías organizadas por continentes, crear foros, participar en discusiones y compartir experiencias de viaje con fotos.
 
-Currently, two official plugins are available:
+## Características principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Visualización de categorías por continente (accesible sin registro)
+- Sistema completo de registro y autenticación de usuarios
+- Perfiles de usuario editables
+- Gestión completa de foros (CRUD)
+- Creación, edición y eliminación de publicaciones
+- Sistema de comentarios
+- Carga de imágenes para foros y publicaciones
+- Búsqueda de foros por palabras clave
+- Interfaz responsive con diseño mobile-first
 
-## Expanding the ESLint configuration
+## Tecnologías utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React con Vite
+- React Router para la navegación
+- Tailwind CSS para los estilos
+- Axios para las peticiones HTTP
+- React Hot Toast para notificaciones
+- Date-fns para el formateo de fechas
+
+## Estructura del proyecto
+
+```
+forumviajeros-frontend/
+├── src/
+│   ├── assets/           # Imágenes, iconos y otros recursos estáticos
+│   ├── components/       # Componentes reutilizables
+│   │   ├── auth/         # Componentes de autenticación
+│   │   ├── categories/   # Componentes para las categorías
+│   │   ├── comments/     # Componentes para los comentarios
+│   │   ├── common/       # Componentes comunes (botones, navbar, etc.)
+│   │   ├── forums/       # Componentes para los foros
+│   │   ├── posts/        # Componentes para las publicaciones
+│   │   └── user/         # Componentes relacionados con el usuario
+│   ├── contexts/         # Contextos de React (autenticación, etc.)
+│   ├── hooks/            # Hooks personalizados
+│   ├── pages/            # Páginas principales de la aplicación
+│   ├── services/         # Servicios para interactuar con la API
+│   ├── utils/            # Utilidades y funciones auxiliares
+│   ├── App.jsx           # Componente principal de la aplicación
+│   ├── main.jsx          # Punto de entrada de React
+│   └── index.css         # Estilos globales
+├── .gitignore
+├── package.json
+├── tailwind.config.js    # Configuración de Tailwind CSS
+├── vite.config.js        # Configuración de Vite
+└── index.html
+```
+
+## Requisitos previos
+
+- Node.js (v14 o superior)
+- npm (v6 o superior)
+
+## Instalación
+
+1. Clona el repositorio:
+```bash
+git clone https://github.com/tu-usuario/forumviajeros-frontend.git
+cd forumviajeros-frontend
+```
+
+2. Instala las dependencias:
+```bash
+npm install
+```
+
+3. Configura las variables de entorno:
+
+Crea un archivo `.env.local` en la raíz del proyecto con el siguiente contenido:
+```
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+Ajusta la URL de la API según la configuración de tu backend.
+
+## Ejecución en desarrollo
+
+Para iniciar el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`.
+
+## Construcción para producción
+
+Para generar una versión de producción:
+```bash
+npm run build
+```
+
+Los archivos generados estarán en la carpeta `dist/`.
+
+## Notas para el desarrollador
+
+- Asegúrate de que el backend esté en ejecución antes de iniciar el frontend.
+- La estructura del proyecto sigue un patrón modular para facilitar el mantenimiento.
+- Se ha implementado un diseño mobile-first para garantizar la accesibilidad en dispositivos móviles.
+- El sistema de autenticación utiliza tokens JWT con refresh token para mantener la sesión del usuario.
+
+## Endpoints de la API
+
+El frontend se comunica con el backend a través de los siguientes endpoints:
+
+- Autenticación: `/api/auth/*`
+- Usuarios: `/api/users/*`
+- Categorías: `/api/categories/*`
+- Foros: `/api/forums/*`
+- Publicaciones: `/api/posts/*`
+- Comentarios: `/api/comments/*`
+- Imágenes: `/api/images/*`
+
+Para más detalles sobre los endpoints, consulta la documentación del backend.
