@@ -1,5 +1,5 @@
-// Archivo: src/contexts/AuthContext.jsx
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState, useEffect, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import authService from '../services/authService'
 
 export const AuthContext = createContext()
@@ -15,24 +15,24 @@ export const AuthProvider = ({ children }) => {
     const initAuth = async () => {
       if (token) {
         try {
-          // Verificar si el token es válido o intentar renovarlo
           const userInfo = await authService.getCurrentUser()
           setCurrentUser(userInfo)
         } catch (err) {
-          // Si el token ha expirado, intentar renovarlo con el refreshToken
+          setError(err.response?.data?.message || 'Error al obtener usuario actual')
+
           if (refreshToken) {
             try {
               const response = await authService.refreshToken(refreshToken)
-              setToken(response.token)
+              setToken(response.accessToken)
               setRefreshToken(response.refreshToken)
-              localStorage.setItem('token', response.token)
+              localStorage.setItem('token', response.accessToken)
               localStorage.setItem('refreshToken', response.refreshToken)
-              
+
               const userInfo = await authService.getCurrentUser()
               setCurrentUser(userInfo)
             } catch (refreshErr) {
+              setError(refreshErr.response?.data?.message || 'Error al refrescar el token')
               logout()
-              setError('Sesión expirada. Por favor, inicia sesión nuevamente.')
             }
           } else {
             logout()
@@ -53,17 +53,16 @@ export const AuthProvider = ({ children }) => {
       setError(null)
       setLoading(true)
       const response = await authService.login(credentials)
-      
-      setToken(response.token)
+      setToken(response.accessToken)
       setRefreshToken(response.refreshToken)
-      localStorage.setItem('token', response.token)
+      localStorage.setItem('token', response.accessToken)
       localStorage.setItem('refreshToken', response.refreshToken)
-      
+
       const userInfo = await authService.getCurrentUser()
       setCurrentUser(userInfo)
       return userInfo
     } catch (err) {
-      setError(err.message || 'Error al iniciar sesión')
+      setError(err.response?.data?.message || 'Error al iniciar sesión')
       throw err
     } finally {
       setLoading(false)
@@ -77,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authService.register(userData)
       return response
     } catch (err) {
-      setError(err.message || 'Error al registrar')
+      setError(err.response?.data?.message || 'Error al registrar')
       throw err
     } finally {
       setLoading(false)
@@ -85,13 +84,14 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = async () => {
+    setLoading(true)
     try {
-      setLoading(true)
       if (token) {
         await authService.logout()
       }
     } catch (err) {
-      console.error('Error during logout:', err)
+      console.error('Error durante el cierre de sesión:', err)
+      setError(err.response?.data?.message || 'No se pudo cerrar la sesión correctamente')
     } finally {
       setToken(null)
       setRefreshToken(null)
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const value = {
+  const value = useMemo(() => ({
     currentUser,
     token,
     loading,
@@ -112,11 +112,15 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAuthenticated: !!currentUser,
     hasRole: (role) => currentUser?.roles?.includes(role) || false,
-  }
+  }), [currentUser, token, loading, error])
 
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   )
+}
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 }

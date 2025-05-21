@@ -1,4 +1,3 @@
-// Archivo: src/components/forums/ForumForm.jsx
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
@@ -22,14 +21,12 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
   
   const navigate = useNavigate()
   
-  // Cargar categorías al montar el componente
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data = await categoryService.getAllCategories()
         setCategories(data)
-        
-        // Si no hay categoría seleccionada y hay categorías disponibles, seleccionar la primera
+  
         if (!formData.categoryId && data.length > 0) {
           setFormData(prevData => ({
             ...prevData,
@@ -54,7 +51,6 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       [name]: value
     })
     
-    // Limpiar error del campo que se está editando
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -67,8 +63,8 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
     const file = e.target.files[0]
     if (!file) return
     
-    // Verificar tamaño y tipo de archivo
-    if (file.size > 5 * 1024 * 1024) { // 5 MB
+  
+    if (file.size > 5 * 1024 * 1024) { 
       setErrors({
         ...errors,
         image: 'La imagen debe ser menor a 5 MB'
@@ -87,14 +83,12 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
     
     setImage(file)
     
-    // Crear preview de la imagen
     const reader = new FileReader()
     reader.onload = () => {
       setImagePreview(reader.result)
     }
     reader.readAsDataURL(file)
-    
-    // Limpiar error de imagen
+
     if (errors.image) {
       setErrors({
         ...errors,
@@ -139,20 +133,18 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       let response
       
       if (isEdit) {
-        // Actualizar foro existente
+
         response = await forumService.updateForum(initialData.id, formData)
         
-        // Si hay una nueva imagen, actualizarla
         if (image) {
           response = await forumService.uploadForumImage(initialData.id, image)
         }
         
         toast.success('¡Foro actualizado con éxito!')
       } else {
-        // Crear nuevo foro
+
         response = await forumService.createForum(formData)
         
-        // Si hay una imagen, subirla
         if (image) {
           response = await forumService.uploadForumImage(response.id, image)
         }
@@ -160,13 +152,11 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
         toast.success('¡Foro creado con éxito!')
       }
       
-      // Redirigir al detalle del foro
       navigate(`/forums/${response.id}`)
     } catch (error) {
       console.error('Error al guardar el foro:', error)
       toast.error(error.response?.data?.message || 'Error al guardar el foro. Por favor, inténtalo de nuevo.')
       
-      // Manejar errores específicos del backend
       if (error.response?.status === 400 && error.response?.data?.errors) {
         const backendErrors = error.response.data.errors
         const formattedErrors = {}
@@ -193,10 +183,40 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
     )
   }
   
+  const getImageLabel = () => {
+    if (image) {
+      return image.name;
+    } else if (imagePreview) {
+      return 'Imagen cargada';
+    } else {
+      return 'No se ha seleccionado ninguna imagen';
+    }
+  };
+
+  const getButtonContent = () => {
+    const buttonText = isEdit ? 'Actualizar Foro' : 'Crear Foro';
+    const loadingText = isEdit ? 'Actualizando...' : 'Creando...';
+
+    if (isSubmitting) {
+      return (
+        <span className="flex items-center justify-center">
+          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {loadingText}
+        </span>
+      );
+    }
+
+    return (
+      <span>{buttonText}</span>
+    );
+  };
+  
   return (
     <div className="max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Título */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-neutral-700 mb-1">
             Título <span className="text-red-500">*</span>
@@ -216,8 +236,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             <p className="mt-1 text-sm text-red-600">{errors.title}</p>
           )}
         </div>
-        
-        {/* Descripción */}
+
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-neutral-700 mb-1">
             Descripción <span className="text-red-500">*</span>
@@ -238,7 +257,6 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
           )}
         </div>
         
-        {/* Categoría */}
         <div>
           <label htmlFor="categoryId" className="block text-sm font-medium text-neutral-700 mb-1">
             Continente <span className="text-red-500">*</span>
@@ -263,8 +281,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             <p className="mt-1 text-sm text-red-600">{errors.categoryId}</p>
           )}
         </div>
-        
-        {/* Imagen */}
+
         <div>
           <label htmlFor="image" className="block text-sm font-medium text-neutral-700 mb-1">
             Imagen (opcional)
@@ -287,28 +304,15 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
               Seleccionar imagen
             </label>
             
-            {(() => {
-              let imageLabel;
-              if (image) {
-                imageLabel = image.name;
-              } else if (imagePreview) {
-                imageLabel = 'Imagen cargada';
-              } else {
-                imageLabel = 'No se ha seleccionado ninguna imagen';
-              }
-              return (
-                <span className="ml-3 text-sm text-neutral-500">
-                  {imageLabel}
-                </span>
-              );
-            })()}
+            <span className="ml-3 text-sm text-neutral-500">
+              {getImageLabel()}
+            </span>
           </div>
           
           {errors.image && (
             <p className="mt-1 text-sm text-red-600">{errors.image}</p>
           )}
           
-          {/* Vista previa de la imagen */}
           {imagePreview && (
             <div className="mt-3">
               <div className="relative w-full h-48 bg-neutral-200 rounded overflow-hidden">
@@ -335,7 +339,6 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
           )}
         </div>
         
-        {/* Botones de acción */}
         <div className="flex gap-4 pt-2">
           <button
             type="button"
@@ -351,21 +354,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             className="btn btn-primary flex-1"
             disabled={isSubmitting}
           >
-            {(() => {
-              const buttonText = isEdit ? 'Actualizar Foro' : 'Crear Foro';
-              const loadingText = isEdit ? 'Actualizando...' : 'Creando...';
-              return isSubmitting ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  {loadingText}
-                </span>
-              ) : (
-                buttonText
-              );
-            })()}
+            {getButtonContent()}
           </button>
         </div>
       </form>

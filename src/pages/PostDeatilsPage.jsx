@@ -1,106 +1,149 @@
-import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { fetchPostById } from '../services/postService.js'; 
-import PostContent from '../components/post/PostContent.jsx';
-import CommentList from '../components/comments/CommentList';
-import CommentForm from '../components/comments/CommetForm.jsx'; 
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useState, useEffect } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+import useAuth from '../hooks/useAuth'
+import postService from '../services/postService'
+import commentService from '../services/commentService'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import PostContent from '../components/post/PostContent'
+import CommentList from '../components/comments/CommentList'
+import CommentForm from '../components/comments/CommetForm'
 
-const PostDetailPage = () => {
+const PostDetailsPage = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { currentUser, hasRole, isAuthenticated } = useAuth()
   const [post, setPost] = useState(null)
+  const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [commentLoading, setCommentLoading] = useState(true)
 
   useEffect(() => {
-    const getPost = async () => {
+    const fetchPostData = async () => {
       try {
         setLoading(true)
-        const postData = await fetchPostById(id)
+        const postData = await postService.getPostById(id)
         setPost(postData)
-        setError(null)
-      } catch (err) {
-        setError('Error al cargar el post. Por favor, intenta de nuevo más tarde.')
-        console.error('Error fetching post:', err)
+      } catch (error) {
+        console.error('Error al cargar la publicación:', error)
+        toast.error('No se pudo cargar la publicación')
+        navigate('/forums')
       } finally {
         setLoading(false)
       }
     }
 
-    getPost()
-  }, [id])
+    const fetchComments = async () => {
+      try {
+        setCommentLoading(true)
+        const commentsData = await commentService.getCommentsByPost(id)
+        setComments(commentsData)
+      } catch (error) {
+        console.error('Error al cargar comentarios:', error)
+        toast.error('No se pudieron cargar los comentarios')
+      } finally {
+        setCommentLoading(false)
+      }
+    }
+
+    fetchPostData()
+    fetchComments()
+  }, [id, navigate])
+
+  const handleDeletePost = async () => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer.')) {
+      try {
+        await postService.deletePost(id)
+        toast.success('Publicación eliminada con éxito')
+        navigate(`/forums/${post.forumId}`)
+      } catch (error) {
+        console.error('Error al eliminar la publicación:', error)
+        toast.error('No se pudo eliminar la publicación')
+      }
+    }
+  }
+
+  const handleCommentAdded = (newComment) => {
+    setComments([...comments, newComment])
+  }
+
+  const handleCommentDeleted = (commentId) => {
+    setComments(comments.filter(comment => comment.id !== commentId))
+  }
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <LoadingSpinner />
-      </div>
-    )
+    return <LoadingSpinner />
   }
 
-  if (error) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-          {error}
-        </div>
-        <div className="mt-4">
-          <Link to="/forums" className="text-primary-600 hover:text-primary-700">
-            ← Volver a los foros
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  if (!post) return null
+  const isPostAuthor = currentUser && post.createdBy === currentUser.id
+  const canEditPost = isPostAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
 
   return (
-    <div className="bg-neutral-50 py-8">
-      <div className="container mx-auto px-4">
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <Link 
-                to={`/forums/${post.forumId}`} 
-                className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-4">
+        <Link 
+          to={`/forums/${post.forumId}`}
+          className="text-primary-600 hover:text-primary-800 flex items-center"
+        >
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver al foro
+        </Link>
+      </div>
+      
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        {/* Contenido del post */}
+        <PostContent post={post} />
+        
+        {/* Acciones */}
+        {canEditPost && (
+          <div className="px-6 py-4 flex space-x-2 border-t border-gray-200">
+            <Link
+              to={`/posts/${id}/edit`}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Editar publicación
+            </Link>
+            
+            {(isPostAuthor || hasRole('ADMIN')) && (
+              <button
+                onClick={handleDeletePost}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
               >
-                ← Volver al foro
-              </Link>
-            </div>
-            {post.isAuthor && (
-              <Link 
-                to={`/posts/${post.id}/edit`}
-                className="text-sm bg-white border border-neutral-300 rounded-md px-4 py-2 text-neutral-700 hover:bg-neutral-50"
-              >
-                Editar post
-              </Link>
+                Eliminar publicación
+              </button>
             )}
           </div>
-        </div>
+        )}
+      </div>
+      
+      {/* Sección de comentarios */}
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Comentarios</h2>
+        {commentLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <CommentList
+            comments={comments}
+            currentUser={currentUser}
+            onCommentDeleted={handleCommentDeleted}
+          />
+        )}
 
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          {/* Post Content */}
-          <PostContent post={post} />
-          
-          {/* Comments Section */}
-          <div className="px-6 py-5 border-t border-neutral-100">
-            <h3 className="text-lg font-medium text-neutral-900 mb-4">
-              Comentarios ({post.comments?.length || 0})
-            </h3>
-            
-            {/* Comment Form */}
-            <div className="mb-6">
-              <CommentForm postId={post.id} />
-            </div>
-            
-            {/* Comment List */}
-            <CommentList comments={post.comments || []} />
+        {isAuthenticated ? (
+          <CommentForm postId={id} onCommentAdded={handleCommentAdded} />
+        ) : (
+          <div className="mt-4 text-gray-600">
+            <Link to="/login" className="text-primary-600 hover:underline">
+              Inicia sesión
+            </Link>{' '}
+            para comentar.
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
 }
 
-export default PostDetailPage
+export default PostDetailsPage

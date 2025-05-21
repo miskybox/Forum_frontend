@@ -1,10 +1,8 @@
-// Archivo: src/components/forums/ForumCard.jsx
 import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 
 const ForumCard = ({ forum }) => {
-  // Función para formatear la fecha relativa (ej: "hace 2 días")
   const formatRelativeDate = (dateString) => {
     const date = new Date(dateString)
     return formatDistanceToNow(date, { addSuffix: true, locale: es })
@@ -13,7 +11,6 @@ const ForumCard = ({ forum }) => {
   return (
     <div className="card overflow-hidden hover:shadow-md transition-all">
       <div className="md:flex">
-        {/* Imagen del foro (si existe) */}
         <div className="md:w-1/3 bg-neutral-100">
           {forum.imageUrl ? (
             <Link to={`/forums/${forum.id}`} className="block h-full">
@@ -32,7 +29,6 @@ const ForumCard = ({ forum }) => {
           )}
         </div>
         
-        {/* Contenido del foro */}
         <div className="md:w-2/3 p-4 flex flex-col">
           <div className="flex-grow">
             <h3 className="text-lg font-semibold mb-2">
@@ -43,7 +39,6 @@ const ForumCard = ({ forum }) => {
             
             <p className="text-neutral-600 mb-4 line-clamp-2">{forum.description}</p>
             
-            {/* Tags o etiquetas */}
             {forum.tags && forum.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
                 {forum.tags.map(tag => (
@@ -54,8 +49,7 @@ const ForumCard = ({ forum }) => {
               </div>
             )}
           </div>
-          
-          {/* Footer con metadatos */}
+ 
           <div className="mt-2 pt-2 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-500">
             <div className="flex items-center">
               <div className="flex items-center mr-4">

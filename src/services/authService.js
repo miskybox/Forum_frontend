@@ -1,32 +1,88 @@
-// Archivo: src/services/authService.js
 import api from '../utils/api'
 
 const authService = {
-  register: async (userData) => {
-    const response = await api.post('/auth/register', userData)
-    return response.data
+
+  async register(userData) {
+    try {
+      console.log('Enviando datos de registro:', userData)
+      const response = await api.post('/auth/register', userData)
+      return response.data
+    } catch (error) {
+      console.error('Error en registro:', error.response?.data || error.message)
+      throw error
+    }
   },
-  
-  login: async (credentials) => {
-    const response = await api.post('/auth/login', credentials)
-    return response.data
+
+
+  async login(credentials) {
+    try {
+      console.log('Enviando solicitud de login:', credentials)
+      const response = await api.post('/auth/login', credentials)
+      
+      const { accessToken, refreshToken } = response.data
+      
+      console.log('Login exitoso, recibidos tokens')
+      
+      localStorage.setItem('token', accessToken)
+      localStorage.setItem('refreshToken', refreshToken)
+      
+      return response.data
+    } catch (error) {
+      console.error('Error en login:', error.response?.data || error.message)
+      throw error
+    }
   },
-  
-  logout: async () => {
-    const response = await api.post('/auth/logout')
-    return response.data
+
+  async getCurrentUser() {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No hay token disponible');
+      }
+      
+      console.log('Obteniendo usuario actual con token disponible');
+      const response = await api.get('/users/me')
+      return response.data
+    } catch (error) {
+      console.error('Error al obtener usuario actual:', error.response?.data || error.message)
+      throw error
+    }
   },
-  
-  refreshToken: async (refreshToken) => {
-    const response = await api.post('/auth/refresh', { refreshToken })
-    return response.data
+
+  async logout() {
+    try {
+      await api.post('/auth/logout')
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+    } catch (error) {
+      console.error('Error en logout:', error.response?.data || error.message)
+
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      throw error
+    }
   },
+
+  async refreshToken(refreshToken) {
+    try {
+      const response = await api.post('/auth/refresh', { refreshToken })
+      
+      const { accessToken, refreshToken: newRefreshToken } = response.data
+      
   
-  getCurrentUser: async () => {
-    // Este endpoint no está en tu API pero es recomendable tenerlo
-    // Debería devolver la información del usuario actual basado en el token
-    const response = await api.get('/users/me')
-    return response.data
+      localStorage.setItem('token', accessToken)
+      localStorage.setItem('refreshToken', newRefreshToken)
+      
+      return response.data
+    } catch (error) {
+      console.error('Error al renovar token:', error.response?.data || error.message)
+      throw error
+    }
+  },
+
+
+  isAuthenticated() {
+    return !!localStorage.getItem('token')
   }
 }
 
