@@ -7,7 +7,7 @@ import commentService from '../services/commentService'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import PostContent from '../components/post/PostContent'
 import CommentList from '../components/comments/CommentList'
-import CommentForm from '../components/comments/CommetForm'
+import CommentForm from '../components/comments/CommentForm'
 
 const PostDetailsPage = () => {
   const { id } = useParams()

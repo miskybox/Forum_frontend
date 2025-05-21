@@ -11,27 +11,27 @@ const CommentForm = ({ postId, onCommentAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!content.trim()) {
       toast.error('El comentario no puede estar vacío')
       return
     }
-    
+
     if (!isAuthenticated) {
       toast.error('Debes iniciar sesión para comentar')
       return
     }
-    
+
     try {
       setIsSubmitting(true)
- 
+
       const commentData = {
         content: content.trim(),
-        postId
+        postId,
       }
-      
+
       const newComment = await commentService.createComment(postId, commentData)
-      
+
       setContent('')
       toast.success('Comentario publicado con éxito')
 
@@ -50,7 +50,11 @@ const CommentForm = ({ postId, onCommentAdded }) => {
     return (
       <div className="bg-white rounded-lg p-4 shadow mb-4">
         <p className="text-center text-gray-600">
-          Debes <a href="/login" className="text-primary-600 hover:underline">iniciar sesión</a> para comentar
+          Debes{' '}
+          <a href="/login" className="text-primary-600 hover:underline">
+            iniciar sesión
+          </a>{' '}
+          para comentar.
         </p>
       </div>
     )
@@ -71,7 +75,9 @@ const CommentForm = ({ postId, onCommentAdded }) => {
         <div className="flex justify-end mt-3">
           <button
             type="submit"
-            className="btn btn-primary"
+            className={`px-4 py-2 rounded-lg font-medium text-white bg-green-600 hover:bg-green-700 transition-colors ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Enviando...' : 'Publicar comentario'}
@@ -81,9 +87,10 @@ const CommentForm = ({ postId, onCommentAdded }) => {
     </div>
   )
 }
+
 CommentForm.propTypes = {
   postId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  onCommentAdded: PropTypes.func
+  onCommentAdded: PropTypes.func,
 }
 
 export default CommentForm

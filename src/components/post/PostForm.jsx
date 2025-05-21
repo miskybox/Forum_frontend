@@ -20,14 +20,13 @@ const PostForm = ({ postId = null, forumId = null }) => {
   })
   const [errors, setErrors] = useState({})
 
-  // Cargar los foros disponibles si no se proporciona forumId
   useEffect(() => {
     const fetchForums = async () => {
       if (!forumId) {
         try {
           setForumLoading(true)
           const data = await forumService.getAllForums()
-          setForums(data.content || data) // Manejar respuesta paginada
+          setForums(data.content || data)
         } catch (error) {
           console.error('Error al cargar los foros:', error)
           toast.error('No se pudieron cargar los foros')
@@ -40,7 +39,6 @@ const PostForm = ({ postId = null, forumId = null }) => {
     fetchForums()
   }, [forumId])
 
-  // Si estamos editando, cargar los datos del post
   useEffect(() => {
     const fetchPostData = async () => {
       if (postId) {
@@ -73,8 +71,6 @@ const PostForm = ({ postId = null, forumId = null }) => {
       ...prev,
       [name]: value
     }))
-
-    // Limpiar el error del campo que se está editando
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -102,34 +98,19 @@ const PostForm = ({ postId = null, forumId = null }) => {
 
   const validateForm = () => {
     const newErrors = {}
-    
-    if (!formData.title.trim()) {
-      newErrors.title = 'El título es obligatorio'
-    }
-    
-    if (!formData.content.trim()) {
-      newErrors.content = 'El contenido es obligatorio'
-    }
-    
-    if (!formData.forumId) {
-      newErrors.forumId = 'Debes seleccionar un foro'
-    }
-    
+    if (!formData.title.trim()) newErrors.title = 'El título es obligatorio'
+    if (!formData.content.trim()) newErrors.content = 'El contenido es obligatorio'
+    if (!formData.forumId) newErrors.forumId = 'Debes seleccionar un foro'
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    if (!validateForm()) {
-      return
-    }
-    
+    if (!validateForm()) return
+
     try {
       setLoading(true)
-      
-      // Crear o actualizar post
       if (postId) {
         await postService.updatePost(postId, formData)
         toast.success('Post actualizado con éxito')
@@ -156,101 +137,82 @@ const PostForm = ({ postId = null, forumId = null }) => {
       <h2 className="text-2xl font-bold mb-6">
         {postId ? 'Editar publicación' : 'Crear nueva publicación'}
       </h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-            Título
-          </label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Título</label>
           <input
             type="text"
             id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary-500`}
+            className={`w-full px-3 py-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
             placeholder="Título de tu publicación"
           />
-          {errors.title && (
-            <p className="mt-1 text-sm text-red-600">{errors.title}</p>
-          )}
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
         </div>
-        
+
         {!forumId && (
           <div className="mb-4">
-            <label htmlFor="forumId" className="block text-sm font-medium text-gray-700 mb-1">
-              Foro
-            </label>
+            <label htmlFor="forumId" className="block text-sm font-medium text-gray-700 mb-1">Foro</label>
             <select
               id="forumId"
               name="forumId"
               value={formData.forumId}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md ${errors.forumId ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary-500`}
+              className={`w-full px-3 py-2 border rounded-md ${errors.forumId ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
             >
               <option value="">Selecciona un foro</option>
               {forums.map(forum => (
-                <option key={forum.id} value={forum.id}>
-                  {forum.title}
-                </option>
+                <option key={forum.id} value={forum.id}>{forum.title}</option>
               ))}
             </select>
-            {errors.forumId && (
-              <p className="mt-1 text-sm text-red-600">{errors.forumId}</p>
-            )}
+            {errors.forumId && <p className="mt-1 text-sm text-red-600">{errors.forumId}</p>}
           </div>
         )}
-        
+
         <div className="mb-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
-            Contenido
-          </label>
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">Contenido</label>
           <textarea
             id="content"
             name="content"
             value={formData.content}
             onChange={handleChange}
             rows="8"
-            className={`w-full px-3 py-2 border rounded-md ${errors.content ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-primary-500`}
+            className={`w-full px-3 py-2 border rounded-md ${errors.content ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
             placeholder="Escribe el contenido de tu publicación aquí..."
-          ></textarea>
-          {errors.content && (
-            <p className="mt-1 text-sm text-red-600">{errors.content}</p>
-          )}
+          />
+          {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
         </div>
-        
+
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Etiquetas
-          </label>
+          <label htmlFor="tagInput" className="block text-sm font-medium text-gray-700 mb-1">Etiquetas</label>
           <div className="flex">
             <input
+              id="tagInput"
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Añadir etiqueta"
             />
             <button
               type="button"
               onClick={handleAddTag}
-              className="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700"
+              className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700"
             >
               Añadir
             </button>
           </div>
-          
           <div className="mt-2 flex flex-wrap gap-2">
             {formData.tags.map(tag => (
-              <span 
-                key={tag} 
-                className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm flex items-center"
-              >
+              <span key={tag} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center">
                 {tag}
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="ml-2 text-primary-600 hover:text-primary-800"
+                  className="ml-2 text-green-600 hover:text-green-800"
                 >
                   &times;
                 </button>
@@ -258,23 +220,21 @@ const PostForm = ({ postId = null, forumId = null }) => {
             ))}
           </div>
         </div>
-        
+
         <div className="mb-4">
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
-            Estado
-          </label>
+          <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
           <select
             id="status"
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             <option value="ACTIVE">Activo</option>
             <option value="DRAFT">Borrador</option>
           </select>
         </div>
-        
+
         <div className="flex justify-end mt-6">
           <button
             type="button"
@@ -285,7 +245,8 @@ const PostForm = ({ postId = null, forumId = null }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+            disabled={loading}
           >
             {postId ? 'Actualizar' : 'Publicar'}
           </button>
@@ -298,14 +259,8 @@ const PostForm = ({ postId = null, forumId = null }) => {
 import PropTypes from 'prop-types'
 
 PostForm.propTypes = {
-  postId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ]),
-  forumId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
+  postId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  forumId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 export default PostForm
