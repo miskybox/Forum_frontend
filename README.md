@@ -2,6 +2,8 @@
 
 Este proyecto es el frontend para la aplicación ForumViajeros, un foro de viajes donde los usuarios pueden explorar categorías organizadas por continentes, crear foros, participar en discusiones y compartir experiencias de viaje con fotos.
 
+![logo2](https://github.com/user-attachments/assets/dfb32fea-09c1-4007-ad23-c2b783a1c3ee)
+
 ## Características principales
 
 - Visualización de categorías por continente (accesible sin registro)
@@ -117,3 +119,4 @@ El frontend se comunica con el backend a través de los siguientes endpoints:
 - Imágenes: `/api/images/*`
 
 Para más detalles sobre los endpoints, consulta la documentación del backend.
+![FV-home-mobile](https://github.com/user-attachments/assets/09ed988d-65d3-4e24-8015-25f12005ceb1)
