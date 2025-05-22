@@ -8,7 +8,7 @@ const RegisterPage = () => {
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   
-  // Redirigir al usuario a la página principal si ya está autenticado
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/')
