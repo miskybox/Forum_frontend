@@ -106,6 +106,16 @@ Los archivos generados estarán en la carpeta `dist/`.
 - Se ha implementado un diseño mobile-first para garantizar la accesibilidad en dispositivos móviles.
 - El sistema de autenticación utiliza tokens JWT con refresh token para mantener la sesión del usuario.
 
+### Flujo de autenticación
+
+- Tras iniciar sesión, los tokens `accessToken` y `refreshToken` se almacenan en `localStorage`.
+- Cada petición autenticada añade el encabezado `Authorization: Bearer <accessToken>`.
+- Si el backend devuelve `401`, el interceptor intenta renovar el token enviando:
+  - `POST /api/auth/refresh` con el cuerpo `{ refreshToken }`.
+  - Encabezado adicional `Refresh-Token: <refreshToken>`.
+- Al cerrar sesión se invoca `POST /api/auth/logout` incluyendo el encabezado `Refresh-Token`. El frontend elimina siempre los tokens locales, aunque la petición falle.
+- Si la renovación falla, el usuario es redirigido automáticamente a `/login` y los tokens locales se limpian.
+
 ## Endpoints de la API
 
 El frontend se comunica con el backend a través de los siguientes endpoints:
