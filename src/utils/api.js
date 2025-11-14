@@ -45,7 +45,19 @@ api.interceptors.response.use(
       } catch (err) {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
+        
+        // Mostrar mensaje de error antes de redirigir
+        if (err.response?.status === 401) {
+          console.warn("Sesión expirada. Por favor, inicia sesión nuevamente.");
+        } else {
+          console.error("Error al renovar token:", err.message);
+        }
+        
+        // Pequeño delay para que el usuario vea el mensaje si hay
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 100);
+        
         return Promise.reject(err);
       }
     }

@@ -56,10 +56,15 @@ const PostContent = ({ post }) => {
       
       <div className="px-6 py-4 border-t border-gray-100">
         <div className="prose max-w-none">
-   
-          {post.content.split('\n\n').map((paragraph) => {
-            const key = paragraph.slice(0, 20) + paragraph.length;
-            return <p key={key}>{paragraph}</p>;
+          {post.content.split('\n\n').map((paragraph, index) => {
+            // Sanitizar: escapar HTML para prevenir XSS
+            const sanitized = paragraph
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#x27;');
+            return <p key={`para-${index}-${paragraph.length}`}>{sanitized}</p>;
           })}
         </div>
       </div>

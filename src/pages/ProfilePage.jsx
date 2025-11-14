@@ -1,5 +1,6 @@
 // Archivo: src/pages/ProfilePage.jsx
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
@@ -271,9 +272,9 @@ const ProfilePage = () => {
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
           <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
             <div className="text-red-600 mb-4">Debes iniciar sesión para acceder a tu perfil</div>
-            <a href="/login" className="btn btn-primary">
+            <Link to="/login" className="btn btn-primary">
               Iniciar sesión
-            </a>
+            </Link>
           </div>
         </div>
       </div>

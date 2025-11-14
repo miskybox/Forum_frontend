@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
 import "./index.css";
@@ -21,11 +22,14 @@ import ForumEditPage from './pages/ForumEditPage';
 import PostCreatePage from './pages/PostCreatePage';
 import PostEditPage from './pages/PostEditPage';
 import PostDetailPage from './pages/PostDeatilsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+import CookiesPage from './pages/CookiesPage';
 
 
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Navbar />
       <main className="min-h-[calc(100vh-12rem)]">
         <Routes>
@@ -38,6 +42,9 @@ function App() {
           <Route path="/forums/category/:categoryId" element={<ForumListPage />} />
           <Route path="/forums/:id" element={<ForumDetailPage />} />
           <Route path="/posts/:id" element={<PostDetailPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/cookies" element={<CookiesPage />} />
           
           {/* Rutas protegidas (requieren autenticación) */}
           <Route path="/profile" element={
@@ -72,7 +79,7 @@ function App() {
       </main>
       <Footer />
       <Toaster position="bottom-right" />
-    </>
+    </ErrorBoundary>
   )
 }
 

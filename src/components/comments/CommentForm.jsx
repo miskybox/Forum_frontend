@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import useAuth from '../../hooks/useAuth'
 import commentService from '../../services/commentService'
@@ -51,9 +52,9 @@ const CommentForm = ({ postId, onCommentAdded }) => {
       <div className="bg-white rounded-lg p-4 shadow mb-4">
         <p className="text-center text-gray-600">
           Debes{' '}
-          <a href="/login" className="text-primary-600 hover:underline">
+          <Link to="/login" className="text-primary-600 hover:underline">
             iniciar sesión
-          </a>{' '}
+          </Link>{' '}
           para comentar.
         </p>
       </div>
