@@ -1,7 +1,6 @@
 // Archivo: src/pages/ForumEditPage.jsx
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
 import ForumForm from '../components/forums/ForumForm'
 import forumService from '../services/forumService'
 import useAuth from '../hooks/useAuth'

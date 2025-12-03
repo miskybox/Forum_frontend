@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, useMemo } from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import authService from '../services/authService'
 
@@ -10,6 +11,25 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken') || null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const logout = useCallback(async () => {
+    setLoading(true)
+    try {
+      if (token) {
+        await authService.logout()
+      }
+    } catch (err) {
+      console.error('Error durante el cierre de sesión:', err)
+      setError(err.response?.data?.message || 'No se pudo cerrar la sesión correctamente')
+    } finally {
+      setToken(null)
+      setRefreshToken(null)
+      setCurrentUser(null)
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      setLoading(false)
+    }
+  }, [token])
 
   useEffect(() => {
     const initAuth = async () => {
@@ -46,9 +66,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     initAuth()
-  }, [token, refreshToken])
+  }, [token, refreshToken, logout])
 
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     try {
       setError(null)
       setLoading(true)
@@ -67,9 +87,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const register = async (userData) => {
+  const register = useCallback(async (userData) => {
     try {
       setError(null)
       setLoading(true)
@@ -81,26 +101,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false)
     }
-  }
-
-  const logout = async () => {
-    setLoading(true)
-    try {
-      if (token) {
-        await authService.logout()
-      }
-    } catch (err) {
-      console.error('Error durante el cierre de sesión:', err)
-      setError(err.response?.data?.message || 'No se pudo cerrar la sesión correctamente')
-    } finally {
-      setToken(null)
-      setRefreshToken(null)
-      setCurrentUser(null)
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
-      setLoading(false)
-    }
-  }
+  }, [])
 
   const value = useMemo(() => ({
     currentUser,
@@ -112,7 +113,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAuthenticated: !!currentUser,
     hasRole: (role) => currentUser?.roles?.includes(role) || false,
-  }), [currentUser, token, loading, error])
+  }), [currentUser, token, loading, error, login, register, logout])
 
   return (
     <AuthContext.Provider value={value}>
