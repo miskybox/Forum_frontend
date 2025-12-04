@@ -53,6 +53,18 @@ const Navbar = () => {
               >
                 Foros
               </Link>
+              <Link
+                to="/travel"
+                className="border-transparent text-gray-700 hover:border-emerald-500 hover:text-emerald-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                🗺️ Mi Mapa
+              </Link>
+              <Link
+                to="/trivia"
+                className="border-transparent text-gray-700 hover:border-purple-500 hover:text-purple-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                🎮 Trivia
+              </Link>
             </div>
           </div>
           
@@ -205,6 +217,20 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Foros
+            </Link>
+            <Link
+              to="/travel"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-emerald-500 hover:text-emerald-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              🗺️ Mi Mapa
+            </Link>
+            <Link
+              to="/trivia"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-purple-500 hover:text-purple-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              🎮 Trivia
             </Link>
           </div>
           

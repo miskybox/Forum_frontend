@@ -7,8 +7,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
 import "./index.css";
 
-
-// Páginas
+// Páginas principales
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -21,6 +20,15 @@ import ForumEditPage from './pages/ForumEditPage';
 import PostCreatePage from './pages/PostCreatePage';
 import PostEditPage from './pages/PostEditPage';
 import PostDetailPage from './pages/PostDeatilsPage';
+
+// Páginas de Mapa de Viajes
+import TravelMapPage from './pages/travel/TravelMapPage';
+
+// Páginas de Trivia
+import TriviaHomePage from './pages/trivia/TriviaHomePage';
+import TriviaPlayPage from './pages/trivia/TriviaPlayPage';
+import TriviaLeaderboardPage from './pages/trivia/TriviaLeaderboardPage';
+import TriviaInfinitePage from './pages/trivia/TriviaInfinitePage';
 
 
 function App() {
@@ -38,6 +46,23 @@ function App() {
           <Route path="/forums/category/:categoryId" element={<ForumListPage />} />
           <Route path="/forums/:id" element={<ForumDetailPage />} />
           <Route path="/posts/:id" element={<PostDetailPage />} />
+          
+          {/* Rutas de Mapa de Viajes */}
+          <Route path="/travel" element={<TravelMapPage />} />
+          
+          {/* Rutas de Trivia */}
+          <Route path="/trivia" element={<TriviaHomePage />} />
+          <Route path="/trivia/play/:gameId" element={
+            <ProtectedRoute>
+              <TriviaPlayPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/trivia/leaderboard" element={<TriviaLeaderboardPage />} />
+          <Route path="/trivia/infinite" element={
+            <ProtectedRoute>
+              <TriviaInfinitePage />
+            </ProtectedRoute>
+          } />
           
           {/* Rutas protegidas (requieren autenticación) */}
           <Route path="/profile" element={
