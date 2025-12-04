@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/vite": "^4.1.7",
     "axios": "^1.9.0",
+    "d3-geo": "^3.1.1",
     "daisyui": "^5.0.35",
     "date-fns": "^4.1.0",
     "forum": "file:",
@@ -24,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.7",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
