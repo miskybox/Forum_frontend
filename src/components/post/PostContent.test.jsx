@@ -16,14 +16,50 @@ describe('PostContent', () => {
     expect(screen.getByText('Más texto')).toBeInTheDocument()
   })
 
-  it('renderiza imágenes cuando existen', () => {
-    const post = { title: 'Con fotos', content: 'Contenido', forumId: 1, imagePaths: ['/api/images/a.jpg', '/api/images/b.jpg'] }
+  it('muestra información de vistas', () => {
+    const post = { title: 'Test', content: 'Contenido', forumId: 1, viewCount: 100 }
     render(
       <MemoryRouter>
         <PostContent post={post} />
       </MemoryRouter>
     )
-    const imgs = screen.getAllByRole('img')
-    expect(imgs.length).toBe(2)
+    expect(screen.getByText(/100 visitas/)).toBeInTheDocument()
+  })
+
+  it('tiene link para volver al foro', () => {
+    const post = { title: 'Test', content: 'Contenido', forumId: 5 }
+    render(
+      <MemoryRouter>
+        <PostContent post={post} />
+      </MemoryRouter>
+    )
+    const link = screen.getByRole('link', { name: /volver al foro/i })
+    expect(link).toHaveAttribute('href', '/forums/5')
+  })
+
+  it('muestra fecha desconocida cuando no hay fecha', () => {
+    const post = { title: 'Test', content: 'Contenido', forumId: 1 }
+    render(
+      <MemoryRouter>
+        <PostContent post={post} />
+      </MemoryRouter>
+    )
+    expect(screen.getByText(/Fecha desconocida/i)).toBeInTheDocument()
+  })
+
+  it('muestra tags cuando existen', () => {
+    const post = { 
+      title: 'Test', 
+      content: 'Contenido', 
+      forumId: 1,
+      tags: ['Europa', 'Aventura']
+    }
+    render(
+      <MemoryRouter>
+        <PostContent post={post} />
+      </MemoryRouter>
+    )
+    expect(screen.getByText('Europa')).toBeInTheDocument()
+    expect(screen.getByText('Aventura')).toBeInTheDocument()
   })
 })

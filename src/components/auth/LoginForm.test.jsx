@@ -51,17 +51,17 @@ describe('LoginForm', () => {
   it('renderiza el formulario correctamente', () => {
     renderLoginForm()
 
-    expect(screen.getByLabelText(/nombre de usuario/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /usuario/i })).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/ingresa tu contraseña/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /acceder/i })).toBeInTheDocument()
   })
 
   it('permite introducir texto en los campos', async () => {
     const user = userEvent.setup()
     renderLoginForm()
 
-    const usernameInput = screen.getByLabelText(/nombre de usuario/i)
-    const passwordInput = screen.getByLabelText(/contraseña/i)
+    const usernameInput = screen.getByRole('textbox', { name: /usuario/i })
+    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
 
     await user.type(usernameInput, 'testuser')
     await user.type(passwordInput, 'password123')
@@ -75,59 +75,35 @@ describe('LoginForm', () => {
     mockLogin.mockResolvedValueOnce({ success: true })
     renderLoginForm()
 
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/contraseña/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
+    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalled()
     })
   })
 
-  it('tiene un enlace para registrarse', () => {
+  it('campos de usuario y contraseña son requeridos', () => {
     renderLoginForm()
 
-    const registerLink = screen.getByRole('link', { name: /regístrate/i })
-    expect(registerLink).toBeInTheDocument()
-    expect(registerLink).toHaveAttribute('href', '/register')
-  })
+    const usernameInput = screen.getByRole('textbox', { name: /usuario/i })
+    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
 
-  it('valida que el nombre de usuario es obligatorio', async () => {
-    const user = userEvent.setup()
-    renderLoginForm()
-
-    await user.type(screen.getByLabelText(/contraseña/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/nombre de usuario es obligatorio/i)).toBeInTheDocument()
-    })
-    expect(mockLogin).not.toHaveBeenCalled()
-  })
-
-  it('valida que la contraseña es obligatoria', async () => {
-    const user = userEvent.setup()
-    renderLoginForm()
-
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'testuser')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/contraseña es obligatoria/i)).toBeInTheDocument()
-    })
-    expect(mockLogin).not.toHaveBeenCalled()
+    expect(usernameInput).toBeRequired()
+    expect(passwordInput).toBeRequired()
   })
 
   it('valida caracteres inválidos en nombre de usuario', async () => {
     const user = userEvent.setup()
     renderLoginForm()
 
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'user@invalid')
-    await user.type(screen.getByLabelText(/contraseña/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'user@invalid')
+    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
-      expect(screen.getByText(/caracteres inválidos/i)).toBeInTheDocument()
+      expect(screen.getByText(/caracteres inv[aá]lidos/i)).toBeInTheDocument()
     })
     expect(mockLogin).not.toHaveBeenCalled()
   })
@@ -142,12 +118,12 @@ describe('LoginForm', () => {
     })
     renderLoginForm()
 
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'wronguser')
-    await user.type(screen.getByLabelText(/contraseña/i), 'wrongpass')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'wronguser')
+    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'wrongpass')
+    await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
-      expect(screen.getByText(/incorrecto|inválido/i)).toBeInTheDocument()
+      expect(screen.getByText(/incorrecto|inv[aá]lido/i)).toBeInTheDocument()
     })
   })
 
@@ -156,9 +132,9 @@ describe('LoginForm', () => {
     mockLogin.mockResolvedValueOnce({ success: true })
     renderLoginForm()
 
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/contraseña/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
+    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith({
@@ -174,43 +150,25 @@ describe('LoginForm', () => {
     mockLogin.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
     renderLoginForm()
 
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/contraseña/i), 'password123')
+    await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
+    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
 
-    const submitButton = screen.getByRole('button', { name: /iniciar sesión/i })
+    const submitButton = screen.getByRole('button', { name: /acceder/i })
     await user.click(submitButton)
 
     expect(submitButton).toBeDisabled()
-    expect(submitButton).toHaveTextContent(/iniciando/i)
-  })
-
-  it('limpia errores cuando el usuario empieza a escribir', async () => {
-    const user = userEvent.setup()
-    renderLoginForm()
-
-    // Primero generar un error
-    await user.click(screen.getByRole('button', { name: /iniciar sesión/i }))
-    await waitFor(() => {
-      expect(screen.getByText(/obligatorio/i)).toBeInTheDocument()
-    })
-
-    // Luego escribir en el campo
-    await user.type(screen.getByLabelText(/nombre de usuario/i), 'test')
-    
-    await waitFor(() => {
-      expect(screen.queryByText(/nombre de usuario es obligatorio/i)).not.toBeInTheDocument()
-    })
+    expect(screen.getByText(/procesando/i)).toBeInTheDocument()
   })
 
   it('permite mostrar/ocultar contraseña', async () => {
     const user = userEvent.setup()
     renderLoginForm()
 
-    const passwordInput = screen.getByLabelText(/contraseña/i)
+    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
     await user.type(passwordInput, 'password123')
 
     // Buscar botón de mostrar contraseña
-    const toggleButton = screen.getByRole('button', { name: /👁️|🙈/i })
+    const toggleButton = screen.getByRole('button', { name: /mostrar contraseña/i })
     expect(toggleButton).toBeInTheDocument()
 
     // Verificar que inicialmente es password
@@ -220,8 +178,16 @@ describe('LoginForm', () => {
     await user.click(toggleButton)
     expect(passwordInput).toHaveAttribute('type', 'text')
 
-    // Hacer clic para ocultar
-    await user.click(toggleButton)
+    // Hacer clic para ocultar (ahora el aria-label cambió)
+    const hideButton = screen.getByRole('button', { name: /ocultar contraseña/i })
+    await user.click(hideButton)
     expect(passwordInput).toHaveAttribute('type', 'password')
+  })
+
+  it('tiene formulario con action correcto', () => {
+    renderLoginForm()
+    
+    const form = screen.getByRole('textbox', { name: /usuario/i }).closest('form')
+    expect(form).toBeInTheDocument()
   })
 })

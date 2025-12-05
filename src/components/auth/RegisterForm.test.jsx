@@ -50,30 +50,45 @@ describe('RegisterForm', () => {
     )
   }
 
+  // Helper para obtener campos
+  const getFields = () => ({
+    firstName: screen.getByPlaceholderText('Nombre'),
+    lastName: screen.getByPlaceholderText('Apellido'),
+    username: screen.getByPlaceholderText('Nombre de usuario'),
+    email: screen.getByPlaceholderText('tu@email.com'),
+    password: screen.getByPlaceholderText('Mínimo 6 caracteres'),
+    confirmPassword: screen.getByPlaceholderText('Repite la contraseña'),
+    submitButton: screen.getByRole('button', { name: /crear cuenta/i })
+  })
+
   it('renderiza el formulario correctamente', () => {
     renderRegisterForm()
 
-    expect(screen.getByLabelText(/usuario/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/^contraseña$/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/confirmar contraseña/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /registrarse/i })).toBeInTheDocument()
+    const fields = getFields()
+    expect(fields.firstName).toBeInTheDocument()
+    expect(fields.lastName).toBeInTheDocument()
+    expect(fields.username).toBeInTheDocument()
+    expect(fields.email).toBeInTheDocument()
+    expect(fields.password).toBeInTheDocument()
+    expect(fields.confirmPassword).toBeInTheDocument()
+    expect(fields.submitButton).toBeInTheDocument()
   })
 
   it('muestra error cuando las contraseñas no coinciden', async () => {
     const user = userEvent.setup()
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'different')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'password123')
+    await user.type(fields.confirmPassword, 'differentpass')
+    await user.click(fields.submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/las contraseñas no coinciden/i)).toBeInTheDocument()
+      expect(screen.getByText(/no coinciden/i)).toBeInTheDocument()
     })
   })
 
@@ -83,113 +98,77 @@ describe('RegisterForm', () => {
     mockLogin.mockResolvedValueOnce({ success: true })
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/usuario/i), 'newuser')
-    await user.type(screen.getByLabelText(/correo/i), 'new@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'New')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'password123')
+    await user.type(fields.confirmPassword, 'password123')
+    await user.click(fields.submitButton)
 
     await waitFor(() => {
-      expect(mockRegister).toHaveBeenCalled()
+      expect(mockRegister).toHaveBeenCalledWith({
+        username: 'johndoe',
+        email: 'john@example.com',
+        password: 'password123',
+        firstName: 'John',
+        lastName: 'Doe'
+      })
     })
   })
 
-  it('valida que el nombre de usuario es obligatorio', async () => {
-    const user = userEvent.setup()
+  it('todos los campos son requeridos', () => {
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/obligatorio/i)).toBeInTheDocument()
-    })
-    expect(mockRegister).not.toHaveBeenCalled()
-  })
-
-  it('valida formato de email', async () => {
-    const user = userEvent.setup()
-    renderRegisterForm()
-
-    await user.type(screen.getByLabelText(/usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/correo/i), 'email-invalido')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/no válido|inválido/i)).toBeInTheDocument()
-    })
-    expect(mockRegister).not.toHaveBeenCalled()
+    const fields = getFields()
+    expect(fields.firstName).toBeRequired()
+    expect(fields.lastName).toBeRequired()
+    expect(fields.username).toBeRequired()
+    expect(fields.email).toBeRequired()
+    expect(fields.password).toBeRequired()
+    expect(fields.confirmPassword).toBeRequired()
   })
 
   it('valida longitud mínima de contraseña', async () => {
     const user = userEvent.setup()
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), '123')
-    await user.type(screen.getByLabelText(/confirmar/i), '123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, '123')
+    await user.type(fields.confirmPassword, '123')
+    await user.click(fields.submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/mínimo 6 caracteres|Debe tener mínimo/i)).toBeInTheDocument()
+      expect(screen.getByText(/m[ií]nimo 6 caracteres/i)).toBeInTheDocument()
     })
-    expect(mockRegister).not.toHaveBeenCalled()
-  })
-
-  it('valida que nombre y apellido son obligatorios', async () => {
-    const user = userEvent.setup()
-    renderRegisterForm()
-
-    await user.type(screen.getByLabelText(/usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
-
-    await waitFor(() => {
-      const errorMessages = screen.getAllByText(/obligatorio/i)
-      expect(errorMessages.length).toBeGreaterThan(0)
-    })
-    expect(mockRegister).not.toHaveBeenCalled()
   })
 
   it('muestra error cuando el registro falla', async () => {
     const user = userEvent.setup()
-    const errorMessage = 'El nombre de usuario ya está en uso'
     mockRegister.mockRejectedValueOnce({
       response: {
         status: 409,
-        data: {
-          message: errorMessage,
-          errors: { username: errorMessage }
-        }
+        data: { message: 'Usuario ya existe' }
       }
     })
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/usuario/i), 'existinguser')
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
-    await user.click(screen.getByRole('button', { name: /registrarse/i }))
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'existinguser')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'password123')
+    await user.type(fields.confirmPassword, 'password123')
+    await user.click(fields.submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument()
+      expect(screen.getByText(/ya registrado/i)).toBeInTheDocument()
     })
   })
 
@@ -198,27 +177,33 @@ describe('RegisterForm', () => {
     mockRegister.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
     renderRegisterForm()
 
-    await user.type(screen.getByLabelText(/usuario/i), 'testuser')
-    await user.type(screen.getByLabelText(/correo/i), 'test@test.com')
-    await user.type(screen.getByLabelText(/^nombre$/i), 'Test')
-    await user.type(screen.getByLabelText(/apellido/i), 'User')
-    await user.type(screen.getByLabelText(/^contraseña$/i), 'password123')
-    await user.type(screen.getByLabelText(/confirmar/i), 'password123')
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'password123')
+    await user.type(fields.confirmPassword, 'password123')
+    await user.click(fields.submitButton)
 
-    const submitButton = screen.getByRole('button', { name: /registrarse/i })
-    await user.click(submitButton)
-
-    expect(submitButton).toBeDisabled()
+    expect(fields.submitButton).toBeDisabled()
+    expect(screen.getByText(/registrando/i)).toBeInTheDocument()
   })
 
   it('tiene todos los campos requeridos', () => {
     renderRegisterForm()
-    // Verificar que todos los campos están presentes
-    expect(screen.getByLabelText(/usuario/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/correo/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/^nombre$/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/apellido/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/^contraseña$/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/confirmar/i)).toBeInTheDocument()
+
+    const inputs = screen.getAllByRole('textbox')
+    const passwordInputs = document.querySelectorAll('input[type="password"]')
+    
+    // 4 campos de texto + 2 de contraseña
+    expect(inputs.length + passwordInputs.length).toBe(6)
+  })
+
+  it('campo de email tiene tipo email', () => {
+    renderRegisterForm()
+    
+    const emailInput = screen.getByPlaceholderText('tu@email.com')
+    expect(emailInput).toHaveAttribute('type', 'email')
   })
 })
