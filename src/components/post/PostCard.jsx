@@ -1,33 +1,33 @@
-// Archivo: src/components/posts/PostCard.jsx
 import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 
+/**
+ * PostCard con estilo retro Adventure
+ */
 const PostCard = ({ post }) => {
-  // Función para formatear la fecha relativa (ej: "hace 2 días")
   const formatRelativeDate = (dateString) => {
     const date = new Date(dateString)
     return formatDistanceToNow(date, { addSuffix: true, locale: es })
   }
 
-  // Función para truncar el texto a un número específico de caracteres
   const truncateText = (text, maxLength = 150) => {
     if (!text || text.length <= maxLength) return text
     return text.substr(0, maxLength) + '...'
   }
 
   return (
-    <div className="card overflow-hidden hover:shadow-md transition-all">
+    <div className="card border-adventure-gold overflow-hidden hover:border-adventure-gold/80 transition-all group">
       <Link to={`/posts/${post.id}`} className="block">
-        <div className="p-5">
+        <div className="p-5 bg-adventure-dark/50">
           {/* Título y metadata */}
           <div className="mb-3">
-            <h3 className="text-xl font-bold text-neutral-800 mb-1 hover:text-primary-700">
+            <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 hover:text-adventure-gold/80 transition-colors uppercase">
               {post.title}
             </h3>
-            <div className="flex items-center text-sm text-neutral-500">
+            <div className="flex items-center text-xs text-adventure-light font-retro">
               <div className="flex items-center">
-                <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs overflow-hidden mr-2">
+                <div className="w-6 h-6 bg-adventure-gold rounded-full flex items-center justify-center text-adventure-dark text-xs overflow-hidden mr-2 border border-adventure-gold">
                   {post.author?.profileImage ? (
                     <img 
                       src={post.author.profileImage} 
@@ -38,10 +38,10 @@ const PostCard = ({ post }) => {
                     post.author?.username?.charAt(0)?.toUpperCase() || 'U'
                   )}
                 </div>
-                <span>{post.author?.username || 'Usuario'}</span>
+                <span className="uppercase">{post.author?.username || 'USUARIO'}</span>
               </div>
-              <span className="mx-2">•</span>
-              <time dateTime={post.createdAt}>
+              <span className="mx-2 text-adventure-gold">•</span>
+              <time dateTime={post.createdAt} className="uppercase">
                 {formatRelativeDate(post.createdAt)}
               </time>
             </div>
@@ -49,7 +49,7 @@ const PostCard = ({ post }) => {
           
           {/* Contenido */}
           <div className="mb-4">
-            <p className="text-neutral-700">
+            <p className="text-adventure-light font-retro text-xs opacity-80 leading-relaxed">
               {truncateText(post.content)}
             </p>
           </div>
@@ -61,15 +61,15 @@ const PostCard = ({ post }) => {
                 {post.images.slice(0, 4).map((image, index) => (
                   <div 
                     key={image.id || index} 
-                    className={`relative ${post.images.length > 2 && index === 0 ? 'col-span-2' : ''} bg-neutral-100 rounded-md overflow-hidden aspect-video`}
+                    className={`relative ${post.images.length > 2 && index === 0 ? 'col-span-2' : ''} bg-adventure-dark rounded-md overflow-hidden aspect-video border border-adventure-gold/30`}
                   >
                     <img 
                       src={image.url} 
                       alt={`Imagen ${index + 1} de la publicación`} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {post.images.length > 4 && index === 3 && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-lg">
+                      <div className="absolute inset-0 bg-adventure-dark/80 flex items-center justify-center text-adventure-gold font-display text-lg border-2 border-adventure-gold">
                         +{post.images.length - 4}
                       </div>
                     )}
@@ -80,27 +80,22 @@ const PostCard = ({ post }) => {
           )}
           
           {/* Footer con estadísticas */}
-          <div className="flex justify-between items-center pt-3 border-t border-neutral-100 text-sm text-neutral-500">
-            <div className="flex items-center space-x-4">
+          <div className="flex justify-between items-center pt-3 border-t-2 border-adventure-gold/30 text-xs">
+            <div className="flex items-center space-x-4 text-adventure-light font-retro">
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-                {post.commentCount || 0} {post.commentCount === 1 ? 'comentario' : 'comentarios'}
+                <span className="mr-1">💬</span>
+                {post.commentCount || 0} {post.commentCount === 1 ? 'COMENTARIO' : 'COMENTARIOS'}
               </div>
               
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                {post.viewCount || 0} {post.viewCount === 1 ? 'vista' : 'vistas'}
+                <span className="mr-1">👁️</span>
+                {post.viewCount || 0} {post.viewCount === 1 ? 'VISTA' : 'VISTAS'}
               </div>
             </div>
             
             <div>
-              <span className="text-primary-600 hover:text-primary-700 font-medium">
-                Leer más
+              <span className="text-adventure-gold font-display text-xs uppercase tracking-wider hover:text-adventure-gold/80 transition-colors">
+                LEER MÁS →
               </span>
             </div>
           </div>

@@ -5,7 +5,7 @@ import travelService from '../../services/travelService'
 import toast from 'react-hot-toast'
 
 /**
- * Modal para agregar/editar un lugar visitado
+ * Modal para agregar/editar un lugar visitado - Tema Jungle (Jumanji)
  */
 const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
   const [selectedCountry, setSelectedCountry] = useState(editPlace?.country || null)
@@ -20,10 +20,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
   const [loading, setLoading] = useState(false)
 
   const statusOptions = [
-    { value: 'VISITED', label: '✅ Visitado', color: 'bg-emerald-500' },
-    { value: 'WISHLIST', label: '⭐ Quiero ir', color: 'bg-amber-500' },
-    { value: 'LIVED', label: '🏠 He vivido', color: 'bg-blue-500' },
-    { value: 'LIVING', label: '📍 Vivo aquí', color: 'bg-violet-500' }
+    { value: 'VISITED', label: '✅ VISITADO', icon: '✅' },
+    { value: 'WISHLIST', label: '⭐ QUIERO IR', icon: '⭐' },
+    { value: 'LIVED', label: '🏠 HE VIVIDO', icon: '🏠' },
+    { value: 'LIVING', label: '📍 VIVO AQUÍ', icon: '📍' }
   ]
 
   const handleSubmit = async (e) => {
@@ -71,28 +71,39 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-jungle-dark/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="relative card border-jungle-gold w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4 rounded-t-2xl">
-          <h2 className="text-xl font-bold text-white">
-            {editPlace ? '✏️ Editar lugar' : '🌍 Agregar lugar'}
-          </h2>
-          <p className="text-emerald-100 text-sm">
-            {editPlace ? 'Modifica los detalles de tu visita' : 'Añade un nuevo destino a tu mapa'}
-          </p>
+        <div className="sticky top-0 bg-gradient-to-r from-jungle-green to-jungle-dark border-b-4 border-jungle-gold px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl md:text-2xl font-display text-jungle-gold neon-text uppercase">
+                {editPlace ? '✏️ EDITAR LUGAR' : '🌍 AGREGAR LUGAR'}
+              </h2>
+              <p className="text-jungle-leaf font-retro text-xs uppercase tracking-wider opacity-80 mt-1">
+                {editPlace ? 'Modifica los detalles' : 'Añade un nuevo destino'}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-jungle-gold hover:text-jungle-leaf text-2xl transition-colors"
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5 bg-jungle-dark/50">
           {/* Selector de país */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              País *
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              PAÍS <span className="text-tech-red">*</span>
             </label>
             <CountrySelector 
               onSelect={setSelectedCountry}
@@ -102,22 +113,22 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Ciudad (opcional) */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Ciudad (opcional)
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              CIUDAD (OPCIONAL)
             </label>
             <input
               type="text"
               value={formData.cityName}
               onChange={(e) => setFormData({ ...formData, cityName: e.target.value })}
               placeholder="Ej: Barcelona, Tokio..."
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-400 focus:ring-0 transition-colors"
+              className="input w-full border-jungle-gold"
             />
           </div>
 
           {/* Estado */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Estado
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              ESTADO
             </label>
             <div className="grid grid-cols-2 gap-2">
               {statusOptions.map(option => (
@@ -125,13 +136,16 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   key={option.value}
                   type="button"
                   onClick={() => setFormData({ ...formData, status: option.value })}
-                  className={`px-4 py-3 rounded-xl border-2 transition-all ${
+                  className={`px-4 py-3 border-2 transition-all font-retro text-xs uppercase tracking-wider ${
                     formData.status === option.value
-                      ? `${option.color} border-transparent text-white`
-                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      ? 'border-jungle-gold bg-jungle-gold/20 text-jungle-gold'
+                      : 'border-jungle-gold/30 text-jungle-leaf hover:border-jungle-gold/50'
                   }`}
                 >
-                  {option.label}
+                  <span className="flex items-center justify-center space-x-1">
+                    <span>{option.icon}</span>
+                    <span>{option.label}</span>
+                  </span>
                 </button>
               ))}
             </div>
@@ -139,23 +153,23 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Fecha de visita */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Fecha de visita
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              FECHA DE VISITA
             </label>
             <input
               type="date"
               value={formData.visitDate}
               onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-400 focus:ring-0 transition-colors"
+              className="input w-full border-jungle-gold"
             />
           </div>
 
           {/* Rating */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Puntuación
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              PUNTUACIÓN
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               {[1, 2, 3, 4, 5].map(star => (
                 <button
                   key={star}
@@ -172,9 +186,9 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: 0 })}
-                  className="text-sm text-slate-400 hover:text-slate-600 ml-2"
+                  className="text-sm font-retro text-jungle-leaf hover:text-jungle-gold ml-2 uppercase text-xs"
                 >
-                  Quitar
+                  QUITAR
                 </button>
               )}
             </div>
@@ -182,15 +196,15 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Notas */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
-              Notas
+            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
+              NOTAS
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="¿Qué te pareció? ¿Algún lugar especial?"
               rows={3}
-              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-400 focus:ring-0 transition-colors resize-none"
+              className="input w-full border-jungle-gold resize-none"
             />
           </div>
 
@@ -200,9 +214,11 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               type="checkbox"
               checked={formData.favorite}
               onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
-              className="w-5 h-5 rounded border-slate-300 text-rose-500 focus:ring-rose-400"
+              className="w-5 h-5 rounded border-jungle-gold text-jungle-gold focus:ring-jungle-gold"
             />
-            <span className="text-slate-700">❤️ Marcar como lugar favorito</span>
+            <span className="text-jungle-leaf font-retro text-xs uppercase tracking-wider">
+              ❤️ MARCAR COMO FAVORITO
+            </span>
           </label>
 
           {/* Botones */}
@@ -210,22 +226,28 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border-2 border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors"
+              className="flex-1 btn btn-outline text-jungle-gold border-jungle-gold"
             >
-              Cancelar
+              <span className="flex items-center justify-center space-x-2">
+                <span>✕</span>
+                <span>CANCELAR</span>
+              </span>
             </button>
             <button
               type="submit"
               disabled={loading || !selectedCountry}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 btn btn-primary text-jungle-dark border-jungle-gold disabled:opacity-50"
             >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
-                  Guardando...
+                <span className="flex items-center justify-center space-x-2">
+                  <span className="animate-spin">🌴</span>
+                  <span>GUARDANDO...</span>
                 </span>
               ) : (
-                editPlace ? 'Actualizar' : 'Agregar al mapa'
+                <span className="flex items-center justify-center space-x-2">
+                  <span>{editPlace ? '✏️' : '➕'}</span>
+                  <span>{editPlace ? 'ACTUALIZAR' : 'AGREGAR'}</span>
+                </span>
               )}
             </button>
           </div>
@@ -243,4 +265,3 @@ AddPlaceModal.propTypes = {
 }
 
 export default AddPlaceModal
-

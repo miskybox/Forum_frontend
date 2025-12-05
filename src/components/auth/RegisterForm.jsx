@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 
+/**
+ * RegisterForm con estilo retro Space/Alien
+ */
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -83,7 +86,6 @@ const RegisterForm = () => {
     }
 
     try {
-
       const registerResponse = await register(userData)
       console.log('Registro exitoso:', registerResponse)
 
@@ -92,7 +94,6 @@ const RegisterForm = () => {
         toast.success('¡Registro exitoso! Bienvenido/a ' + formData.username)
         navigate('/')
       } catch (loginError) {
-   
         console.error('Error en inicio de sesión automático:', loginError)
         toast.success('¡Registro exitoso! Por favor, inicia sesión')
         navigate('/login')
@@ -117,123 +118,151 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full mx-auto">
-      <h2 className="text-2xl font-bold text-center text-primary-700 mb-6">Crear una cuenta</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="firstName">Nombre</label>
+            <label htmlFor="firstName" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+              Nombre
+            </label>
             <input
               id="firstName"
               name="firstName"
               type="text"
               required
-              className={`input w-full ${errors.firstName && 'border-red-500'}`}
+              className={`input w-full ${errors.firstName ? 'border-tech-red' : 'border-space-neon'}`}
               value={formData.firstName}
               onChange={handleChange}
               disabled={isSubmitting}
+              placeholder="Nombre"
             />
-            {errors.firstName && <p className="text-red-600 text-sm">{errors.firstName}</p>}
+            {errors.firstName && <p className="mt-2 text-sm font-retro text-tech-red">{errors.firstName}</p>}
           </div>
 
           <div>
-            <label htmlFor="lastName">Apellido</label>
+            <label htmlFor="lastName" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+              Apellido
+            </label>
             <input
               id="lastName"
               name="lastName"
               type="text"
               required
-              className={`input w-full ${errors.lastName && 'border-red-500'}`}
+              className={`input w-full ${errors.lastName ? 'border-tech-red' : 'border-space-neon'}`}
               value={formData.lastName}
               onChange={handleChange}
               disabled={isSubmitting}
+              placeholder="Apellido"
             />
-            {errors.lastName && <p className="text-red-600 text-sm">{errors.lastName}</p>}
+            {errors.lastName && <p className="mt-2 text-sm font-retro text-tech-red">{errors.lastName}</p>}
           </div>
         </div>
 
         <div>
-          <label htmlFor="username">Usuario</label>
+          <label htmlFor="username" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            👤 Usuario
+          </label>
           <input
             id="username"
             name="username"
             type="text"
             autoComplete="username"
             required
-            className={`input w-full ${errors.username && 'border-red-500'}`}
+            className={`input w-full ${errors.username ? 'border-tech-red' : 'border-space-neon'}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
+            placeholder="Nombre de usuario"
           />
-          {errors.username && <p className="text-red-600 text-sm">{errors.username}</p>}
+          {errors.username && <p className="mt-2 text-sm font-retro text-tech-red">{errors.username}</p>}
         </div>
 
         <div>
-          <label htmlFor="email">Correo electrónico</label>
+          <label htmlFor="email" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            📧 Email
+          </label>
           <input
             id="email"
             name="email"
             type="email"
             required
-            className={`input w-full ${errors.email && 'border-red-500'}`}
+            className={`input w-full ${errors.email ? 'border-tech-red' : 'border-space-neon'}`}
             value={formData.email}
             onChange={handleChange}
             disabled={isSubmitting}
+            placeholder="tu@email.com"
           />
-          {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
+          {errors.email && <p className="mt-2 text-sm font-retro text-tech-red">{errors.email}</p>}
         </div>
 
         <div className="relative">
-          <label htmlFor="password">Contraseña</label>
+          <label htmlFor="password" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            🔒 Contraseña
+          </label>
           <input
             id="password"
             name="password"
             type={showPassword ? 'text' : 'password'}
             required
-            className={`input w-full pr-10 ${errors.password && 'border-red-500'}`}
+            className={`input w-full pr-12 ${errors.password ? 'border-tech-red' : 'border-space-neon'}`}
             value={formData.password}
             onChange={handleChange}
             disabled={isSubmitting}
+            placeholder="Mínimo 6 caracteres"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute top-9 right-3 text-sm text-neutral-600"
+            className="absolute top-10 right-3 text-lg hover:scale-125 transition-transform"
+            aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
           >
             {showPassword ? '🙈' : '👁️'}
           </button>
-          {errors.password && <p className="text-red-600 text-sm">{errors.password}</p>}
+          {errors.password && <p className="mt-2 text-sm font-retro text-tech-red">{errors.password}</p>}
         </div>
 
         <div className="relative">
-          <label htmlFor="confirmPassword">Confirmar contraseña</label>
+          <label htmlFor="confirmPassword" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            🔒 Confirmar
+          </label>
           <input
             id="confirmPassword"
             name="confirmPassword"
             type={showConfirmPassword ? 'text' : 'password'}
             required
-            className={`input w-full pr-10 ${errors.confirmPassword && 'border-red-500'}`}
+            className={`input w-full pr-12 ${errors.confirmPassword ? 'border-tech-red' : 'border-space-neon'}`}
             value={formData.confirmPassword}
             onChange={handleChange}
             disabled={isSubmitting}
+            placeholder="Repite la contraseña"
           />
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute top-9 right-3 text-sm text-neutral-600"
+            className="absolute top-10 right-3 text-lg hover:scale-125 transition-transform"
+            aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
           >
             {showConfirmPassword ? '🙈' : '👁️'}
           </button>
-          {errors.confirmPassword && <p className="text-red-600 text-sm">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="mt-2 text-sm font-retro text-tech-red">{errors.confirmPassword}</p>}
         </div>
 
         <button
           type="submit"
-          className="btn btn-primary w-full"
+          className="btn btn-primary w-full text-lg py-4"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Registrando...' : 'Registrarse'}
+          {isSubmitting ? (
+            <span className="flex items-center justify-center space-x-2">
+              <span className="animate-spin">⚡</span>
+              <span>REGISTRANDO...</span>
+            </span>
+          ) : (
+            <span className="flex items-center justify-center space-x-2">
+              <span>🚀</span>
+              <span>CREAR CUENTA</span>
+            </span>
+          )}
         </button>
       </form>
     </div>

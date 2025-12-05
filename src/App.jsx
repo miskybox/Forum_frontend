@@ -1,8 +1,10 @@
 // Archivo: src/App.jsx
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
+import { useTheme } from './contexts/ThemeContext';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
 import "./index.css";
@@ -32,10 +34,20 @@ import TriviaInfinitePage from './pages/trivia/TriviaInfinitePage';
 
 
 function App() {
+  const { theme } = useTheme();
+
+  // Aplicar tema al body
+  React.useEffect(() => {
+    document.body.className = `theme-${theme}`;
+    return () => {
+      document.body.className = '';
+    };
+  }, [theme]);
+
   return (
     <>
       <Navbar />
-      <main className="min-h-[calc(100vh-12rem)]">
+      <main className={`min-h-[calc(100vh-12rem)] theme-${theme}`}>
         <Routes>
           {/* Rutas públicas */}
           <Route path="/" element={<HomePage />} />

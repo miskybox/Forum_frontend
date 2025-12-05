@@ -1,15 +1,16 @@
-// Archivo: src/pages/LoginPage.jsx
 import { useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import LoginForm from '../components/auth/LoginForm'
 import useAuth from '../hooks/useAuth'
 
+/**
+ * LoginPage con tema Space/Alien retro
+ */
 const LoginPage = () => {
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   
-  // Redirigir al usuario a la página principal o a la página de donde vino si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
       const from = location.state?.from?.pathname || '/'
@@ -18,34 +19,67 @@ const LoginPage = () => {
   }, [isAuthenticated, navigate, location])
   
   return (
-    <div className="min-h-screen bg-neutral-50 py-12 sm:py-16 lg:py-24">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+    <div className="theme-space min-h-screen py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+      {/* Efectos de fondo espacial */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-space-neon rounded-full opacity-60 animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-block">
-              <img
-                className="h-12 w-auto"
-                src="/src/assets/logoFV.png"
-                alt="ForumViajeros"
-              />
-            </Link>
-            <h1 className="mt-6 text-3xl font-bold text-neutral-900">
-              Bienvenido de nuevo
-            </h1>
-            <p className="mt-2 text-sm text-neutral-600">
-              Inicia sesión para acceder a tu cuenta y compartir tus experiencias de viaje.
-            </p>
+          {/* Header */}
+          <div className="text-center mb-8 animate-fade-in">
+            <div className="mb-6">
+              <div className="text-6xl mb-4 animate-pulse-neon">👽</div>
+              <h1 className="text-4xl md:text-5xl font-display text-space-neon neon-text mb-2">
+                ACCESO
+              </h1>
+              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-space-neon to-transparent mb-4"></div>
+              <p className="text-sm font-retro text-space-green opacity-80 uppercase tracking-wider">
+                INGRESA A TU CUENTA
+              </p>
+            </div>
           </div>
           
-          <LoginForm />
+          {/* Formulario */}
+          <div className="card border-space-neon animate-slide-in">
+            <LoginForm />
+          </div>
           
-          <div className="mt-8 text-center">
+          {/* Links adicionales */}
+          <div className="mt-8 text-center space-y-4">
+            <p className="text-sm font-retro text-space-neon opacity-70">
+              ¿No tienes cuenta?
+            </p>
             <Link 
-              to="/"
-              className="text-sm font-medium text-neutral-600 hover:text-primary-600"
+              to="/register"
+              className="inline-block btn btn-outline text-space-neon border-space-neon px-6 py-3"
             >
-              ← Volver a la página principal
+              <span className="flex items-center space-x-2">
+                <span>🚀</span>
+                <span>CREAR CUENTA</span>
+              </span>
             </Link>
+            <div className="pt-4">
+              <Link 
+                to="/"
+                className="text-sm font-retro text-space-green hover:text-space-neon transition-colors inline-flex items-center space-x-2"
+              >
+                <span>←</span>
+                <span>VOLVER AL INICIO</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

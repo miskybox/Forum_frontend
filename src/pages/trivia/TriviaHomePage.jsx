@@ -6,7 +6,7 @@ import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
 
 /**
- * Página principal de la Trivia Geográfica
+ * TriviaHomePage con tema Space
  */
 const TriviaHomePage = () => {
   const { isAuthenticated } = useAuth()
@@ -41,7 +41,6 @@ const TriviaHomePage = () => {
       return
     }
 
-    // Modo infinito usa API externa, redirigir directamente
     if (mode === 'INFINITE') {
       navigate('/trivia/infinite')
       return
@@ -67,60 +66,82 @@ const TriviaHomePage = () => {
     {
       mode: 'QUICK',
       icon: '⚡',
-      title: 'Quiz Rápido',
-      description: '10 preguntas aleatorias para calentar',
-      color: 'from-amber-500 to-orange-500',
+      title: 'QUICK',
+      description: '10 preguntas aleatorias',
       questions: 10
     },
     {
       mode: 'CHALLENGE',
       icon: '🏆',
-      title: 'Desafío',
-      description: '20 preguntas para demostrar tu conocimiento',
-      color: 'from-emerald-500 to-teal-500',
+      title: 'CHALLENGE',
+      description: '20 preguntas desafiantes',
       questions: 20
     },
     {
       mode: 'INFINITE',
       icon: '♾️',
-      title: 'Modo Infinito',
-      description: 'Preguntas ilimitadas de API externa. ¡Sin repeticiones!',
-      color: 'from-fuchsia-500 to-pink-500',
+      title: 'INFINITE',
+      description: 'Preguntas ilimitadas',
       questions: '∞',
       special: true
     },
     {
       mode: 'DAILY',
       icon: '📅',
-      title: 'Trivia Diaria',
-      description: 'Una partida especial cada día',
-      color: 'from-violet-500 to-purple-500',
+      title: 'DAILY',
+      description: 'Trivia diaria especial',
       questions: 15
     }
   ]
 
+  const getContinentEmoji = (continent) => {
+    const emojis = {
+      'Europa': '🇪🇺',
+      'América': '🌎',
+      'Asia': '🌏',
+      'África': '🌍',
+      'Oceanía': '🏝️'
+    }
+    return emojis[continent] || '🌐'
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900">
-      {/* Header */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/src/assets/pattern.svg')] opacity-10" />
-        <div className="container mx-auto px-4 py-12 relative">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-              🌍 Trivia Geográfica
-            </h1>
-            <p className="text-xl text-purple-200">
-              Pon a prueba tus conocimientos sobre países, capitales, banderas y más
-            </p>
-          </div>
-        </div>
+    <div className="theme-space min-h-screen py-8 relative overflow-hidden">
+      {/* Efectos de fondo futurista */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(25)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-future-neon rounded-full opacity-40 animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="text-6xl mb-4 animate-pulse-neon">⚡</div>
+          <h1 className="text-4xl md:text-6xl font-display text-future-neon neon-text mb-4">
+            TRIVIA GEOGRÁFICA
+          </h1>
+              <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-space-neon to-transparent mb-4"></div>
+              <p className="text-space-green font-retro text-sm uppercase tracking-wider opacity-80">
+                SPACE MODE
+              </p>
+        </div>
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-bold text-white mb-6">Elige un modo de juego</h2>
+            <h2 className="text-2xl font-display text-space-neon neon-text mb-6">
+              ELIGE UN MODO
+            </h2>
             
             <div className="grid md:grid-cols-2 gap-4">
               {gameModes.map(mode => (
@@ -128,33 +149,45 @@ const TriviaHomePage = () => {
                   key={mode.mode}
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className={`bg-gradient-to-br ${mode.color} p-6 rounded-2xl text-left text-white hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className="card border-space-neon hover:border-space-purple group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="text-4xl mb-3 block">{mode.icon}</span>
-                  <h3 className="text-xl font-bold mb-2">{mode.title}</h3>
-                  <p className="text-white/80 text-sm">{mode.description}</p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-white/60 text-sm">{mode.questions} preguntas</span>
-                    <span className="text-white font-bold">Jugar →</span>
+                  <div className="text-center p-6">
+                    <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
+                      {mode.icon}
+                    </div>
+                    <h3 className="text-xl font-display text-space-neon neon-text mb-2 uppercase">
+                      {mode.title}
+                    </h3>
+                    <p className="text-space-green font-retro text-xs mb-4 opacity-70">
+                      {mode.description}
+                    </p>
+                    <div className="flex items-center justify-between text-space-green font-retro text-xs">
+                      <span>{mode.questions} preguntas</span>
+                      <span className="text-space-neon group-hover:text-space-purple">→</span>
+                    </div>
                   </div>
                 </button>
               ))}
             </div>
 
             {/* Filtros por continente */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="text-lg font-bold text-white mb-4">🌎 Jugar por continente</h3>
-              <div className="flex flex-wrap gap-3">
-                {['Europa', 'América', 'Asia', 'África', 'Oceanía'].map(continent => (
-                  <button
-                    key={continent}
-                    onClick={() => startGame('CHALLENGE', { questions: 15, continent })}
-                    disabled={starting}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-white transition-colors disabled:opacity-50"
-                  >
-                    {getContinentEmoji(continent)} {continent}
-                  </button>
-                ))}
+            <div className="card border-space-purple">
+              <div className="p-6">
+                <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
+                  🌎 JUGAR POR CONTINENTE
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {['Europa', 'América', 'Asia', 'África', 'Oceanía'].map(continent => (
+                    <button
+                      key={continent}
+                      onClick={() => startGame('CHALLENGE', { questions: 15, continent })}
+                      disabled={starting}
+                      className="btn btn-outline text-space-neon border-space-neon px-4 py-2 text-xs disabled:opacity-50"
+                    >
+                      {getContinentEmoji(continent)} {continent}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -162,22 +195,32 @@ const TriviaHomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors group"
+                className="card border-space-neon hover:border-space-purple group"
               >
-                <span className="text-3xl mb-3 block">🏆</span>
-                <h3 className="text-lg font-bold text-white">Ranking Global</h3>
-                <p className="text-purple-200 text-sm">Compite con otros jugadores</p>
-                <span className="text-purple-300 mt-4 block group-hover:text-white">Ver ranking →</span>
+                <div className="p-6 text-center">
+                  <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🏆</span>
+                  <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
+                    RANKING
+                  </h3>
+                  <p className="text-space-green font-retro text-xs opacity-70">
+                    Compite con otros
+                  </p>
+                </div>
               </Link>
 
               <Link
                 to="/travel"
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-colors group"
+                className="card border-space-neon hover:border-space-purple group"
               >
-                <span className="text-3xl mb-3 block">🗺️</span>
-                <h3 className="text-lg font-bold text-white">Mi Mapa de Viajes</h3>
-                <p className="text-purple-200 text-sm">Registra los países que has visitado</p>
-                <span className="text-purple-300 mt-4 block group-hover:text-white">Explorar →</span>
+                <div className="p-6 text-center">
+                  <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🗺️</span>
+                  <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
+                    MI MAPA
+                  </h3>
+                  <p className="text-space-green font-retro text-xs opacity-70">
+                    Registra viajes
+                  </p>
+                </div>
               </Link>
             </div>
           </div>
@@ -185,48 +228,58 @@ const TriviaHomePage = () => {
           {/* Columna lateral - Stats */}
           <div className="space-y-6">
             {loading ? (
-              <div className="bg-white/10 rounded-2xl p-12 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-400 border-t-transparent mx-auto" />
+              <div className="card border-space-neon text-center py-12">
+                <div className="text-5xl mb-4 animate-spin">⚡</div>
+                <p className="text-space-green font-retro text-xs uppercase">CARGANDO...</p>
               </div>
             ) : isAuthenticated && stats ? (
               <TriviaStats stats={stats} />
             ) : (
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
-                <span className="text-6xl mb-4 block">🎮</span>
-                <h3 className="text-xl font-bold text-white mb-2">¡Únete al juego!</h3>
-                <p className="text-purple-200 mb-4">
-                  Inicia sesión para guardar tu progreso y competir en el ranking
+              <div className="card border-space-neon text-center p-6">
+                <span className="text-5xl mb-4 block">🎮</span>
+                <h3 className="text-xl font-display text-space-neon neon-text mb-2 uppercase">
+                  ÚNETE
+                </h3>
+                <p className="text-space-green font-retro text-xs mb-4 opacity-70">
+                  Inicia sesión para guardar progreso
                 </p>
                 <Link
                   to="/login"
-                  className="inline-block px-6 py-3 bg-white text-purple-600 rounded-xl font-bold hover:bg-purple-50 transition-colors"
+                  className="btn btn-primary text-space-dark border-space-neon"
                 >
-                  Iniciar sesión
+                  <span className="flex items-center space-x-2">
+                    <span>👽</span>
+                    <span>LOGIN</span>
+                  </span>
                 </Link>
               </div>
             )}
 
             {/* Tips */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="text-lg font-bold text-white mb-4">💡 Consejos</h3>
-              <ul className="space-y-3 text-purple-200 text-sm">
-                <li className="flex items-start gap-2">
-                  <span>⚡</span>
-                  <span>Responde rápido para ganar puntos extra</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>🔥</span>
-                  <span>Mantén tu racha para multiplicar puntos</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>📅</span>
-                  <span>Juega la trivia diaria para bonificaciones</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>🏆</span>
-                  <span>Completa partidas perfectas para subir de nivel</span>
-                </li>
-              </ul>
+            <div className="card border-space-purple">
+              <div className="p-6">
+                <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
+                  💡 CONSEJOS
+                </h3>
+                <ul className="space-y-3 text-space-green font-retro text-xs">
+                  <li className="flex items-start gap-2">
+                    <span>⚡</span>
+                    <span>Responde rápido para puntos extra</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>🔥</span>
+                    <span>Mantén tu racha activa</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>📅</span>
+                    <span>Juega la trivia diaria</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>🏆</span>
+                    <span>Partidas perfectas suben nivel</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -235,16 +288,4 @@ const TriviaHomePage = () => {
   )
 }
 
-const getContinentEmoji = (continent) => {
-  const emojis = {
-    'Europa': '🇪🇺',
-    'América': '🌎',
-    'Asia': '🌏',
-    'África': '🌍',
-    'Oceanía': '🏝️'
-  }
-  return emojis[continent] || '🌐'
-}
-
 export default TriviaHomePage
-

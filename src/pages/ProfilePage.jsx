@@ -1,11 +1,13 @@
-// Archivo: src/pages/ProfilePage.jsx
 import { useState, useEffect, useRef } from 'react'
 import { toast } from 'react-hot-toast'
 import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
 import ForumList from '../components/forums/ForumList'
-import PostList from '../components/post/PostList';
+import PostList from '../components/post/PostList'
 
+/**
+ * ProfilePage con tema Tech
+ */
 const ProfilePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
   
@@ -57,7 +59,6 @@ const ProfilePage = () => {
       [name]: value
     })
     
-    // Limpiar error del campo que se está editando
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -73,7 +74,6 @@ const ProfilePage = () => {
       [name]: value
     })
     
-    // Limpiar error del campo que se está editando
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -86,8 +86,7 @@ const ProfilePage = () => {
     const file = e.target.files[0]
     if (!file) return
     
-    // Verificar tamaño y tipo de archivo
-    if (file.size > 2 * 1024 * 1024) { // 2 MB
+    if (file.size > 2 * 1024 * 1024) {
       setErrors({
         ...errors,
         profileImage: 'La imagen debe ser menor a 2 MB'
@@ -106,14 +105,12 @@ const ProfilePage = () => {
     
     setProfileImage(file)
     
-    // Crear preview de la imagen
     const reader = new FileReader()
     reader.onload = () => {
       setImagePreview(reader.result)
     }
     reader.readAsDataURL(file)
     
-    // Limpiar error de imagen
     if (errors.profileImage) {
       setErrors({
         ...errors,
@@ -180,13 +177,10 @@ const ProfilePage = () => {
     setIsSubmitting(true)
     
     try {
-      // Actualizar información del perfil
       await userService.updateUser(currentUser.id, profileData)
       
-      // Si hay una nueva imagen, actualizarla
       if (profileImage) {
-        // Aquí agregaríamos la lógica para actualizar la imagen de perfil
-        // Esto dependerá de cómo esté implementado en el backend
+        // Lógica para actualizar imagen de perfil
       }
       
       toast.success('Perfil actualizado con éxito')
@@ -229,7 +223,6 @@ const ProfilePage = () => {
         passwordData.newPassword
       )
       
-      // Limpiar el formulario
       setPasswordData({
         currentPassword: '',
         newPassword: '',
@@ -259,20 +252,31 @@ const ProfilePage = () => {
   
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+      <div className="theme-tech min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-spin">🤖</div>
+          <p className="text-tech-neon font-retro text-sm uppercase tracking-wider">
+            CARGANDO PERFIL...
+          </p>
+        </div>
       </div>
     )
   }
   
   if (!isAuthenticated) {
     return (
-      <div className="bg-neutral-50 py-10">
+      <div className="theme-tech min-h-screen py-10">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
-            <div className="text-red-600 mb-4">Debes iniciar sesión para acceder a tu perfil</div>
-            <a href="/login" className="btn btn-primary">
-              Iniciar sesión
+          <div className="card border-tech-red text-center py-12 max-w-md mx-auto">
+            <div className="text-5xl mb-4">🔒</div>
+            <p className="text-tech-neon font-retro text-sm uppercase tracking-wider mb-6">
+              DEBES INICIAR SESIÓN
+            </p>
+            <a href="/login" className="btn btn-primary text-tech-dark border-tech-neon">
+              <span className="flex items-center space-x-2">
+                <span>👽</span>
+                <span>INICIAR SESIÓN</span>
+              </span>
             </a>
           </div>
         </div>
@@ -281,371 +285,286 @@ const ProfilePage = () => {
   }
   
   return (
-    <div className="bg-neutral-50 py-8 sm:py-12">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+    <div className="theme-tech min-h-screen py-8 relative overflow-hidden">
+      {/* Efectos de fondo tech */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-2xl animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          >
+            {['🤖', '⚡', '🔴', '💻'][Math.floor(Math.random() * 4)]}
+          </div>
+        ))}
+      </div>
+
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Cabecera del perfil */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div className="flex flex-col md:flex-row md:items-center">
-              <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                <div className="relative w-24 h-24 rounded-full overflow-hidden bg-primary-500 flex items-center justify-center text-white text-4xl">
-                  {imagePreview ? (
-                    <img 
-                      src={imagePreview} 
-                      alt={profileData.username}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    profileData.username?.charAt(0)?.toUpperCase() || 'U'
+          <div className="card border-tech-neon mb-8 animate-fade-in">
+            <div className="p-6">
+              <div className="flex flex-col md:flex-row md:items-center">
+                <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-tech-dark border-4 border-tech-neon flex items-center justify-center text-tech-neon text-4xl">
+                    {imagePreview ? (
+                      <img 
+                        src={imagePreview} 
+                        alt={profileData.username}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      profileData.username?.charAt(0)?.toUpperCase() || 'U'
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex-grow">
+                  <h1 className="text-2xl md:text-3xl font-display text-tech-neon neon-text mb-1 uppercase">
+                    {profileData.firstName} {profileData.lastName}
+                  </h1>
+                  <p className="text-tech-silver font-retro text-sm mb-2 opacity-80">
+                    @{profileData.username}
+                  </p>
+                  {profileData.bio && (
+                    <p className="text-tech-silver font-retro text-xs opacity-70">
+                      {profileData.bio}
+                    </p>
                   )}
                 </div>
-              </div>
-              
-              <div className="flex-grow">
-                <h1 className="text-2xl font-bold text-neutral-800 mb-1">
-                  {profileData.firstName} {profileData.lastName}
-                </h1>
-                <p className="text-neutral-600 mb-2">@{profileData.username}</p>
-                {profileData.bio && (
-                  <p className="text-neutral-700">{profileData.bio}</p>
-                )}
               </div>
             </div>
           </div>
           
           {/* Pestañas */}
           <div className="mb-6">
-            <div className="border-b border-neutral-200">
+            <div className="border-b-2 border-tech-neon/30">
               <nav className="flex -mb-px">
-                <button
-                  className={`py-4 px-6 text-sm font-medium ${
-                    activeTab === 'profile'
-                      ? 'border-b-2 border-primary-500 text-primary-600'
-                      : 'text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
-                  }`}
-                  onClick={() => setActiveTab('profile')}
-                >
-                  Perfil
-                </button>
-                <button
-                  className={`py-4 px-6 text-sm font-medium ${
-                    activeTab === 'password'
-                      ? 'border-b-2 border-primary-500 text-primary-600'
-                      : 'text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
-                  }`}
-                  onClick={() => setActiveTab('password')}
-                >
-                  Contraseña
-                </button>
-                <button
-                  className={`py-4 px-6 text-sm font-medium ${
-                    activeTab === 'forums'
-                      ? 'border-b-2 border-primary-500 text-primary-600'
-                      : 'text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
-                  }`}
-                  onClick={() => setActiveTab('forums')}
-                >
-                  Mis Foros
-                </button>
-                <button
-                  className={`py-4 px-6 text-sm font-medium ${
-                    activeTab === 'posts'
-                      ? 'border-b-2 border-primary-500 text-primary-600'
-                      : 'text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
-                  }`}
-                  onClick={() => setActiveTab('posts')}
-                >
-                  Mis Publicaciones
-                </button>
+                {[
+                  { id: 'profile', label: 'PERFIL', icon: '👤' },
+                  { id: 'password', label: 'CONTRASEÑA', icon: '🔒' },
+                  { id: 'forums', label: 'FOROS', icon: '🏺' },
+                  { id: 'posts', label: 'PUBLICACIONES', icon: '📝' },
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    className={`py-4 px-6 text-xs font-retro uppercase tracking-wider transition-colors ${
+                      activeTab === tab.id
+                        ? 'border-b-4 border-tech-neon text-tech-neon'
+                        : 'text-tech-silver hover:text-tech-neon hover:border-tech-neon/50'
+                    }`}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    <span className="flex items-center space-x-2">
+                      <span>{tab.icon}</span>
+                      <span>{tab.label}</span>
+                    </span>
+                  </button>
+                ))}
               </nav>
             </div>
           </div>
           
           {/* Contenido de las pestañas */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            {activeTab === 'profile' && (
-              <form onSubmit={handleUpdateProfile} className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold text-neutral-800 mb-4">
-                    Información personal
-                  </h2>
-                  
-                  {/* Imagen de perfil */}
-                  <div>
-                    <label htmlFor="profileImage" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Imagen de perfil
-                    </label>
+          <div className="card border-tech-neon">
+            <div className="p-6">
+              {activeTab === 'profile' && (
+                <form onSubmit={handleUpdateProfile} className="space-y-6">
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
+                      INFORMACIÓN PERSONAL
+                    </h2>
                     
-                    <div className="mt-1 flex items-center">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden bg-primary-500 flex items-center justify-center text-white text-xl mr-4">
-                        {imagePreview ? (
-                          <img 
-                            src={imagePreview} 
-                            alt={profileData.username}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          profileData.username?.charAt(0)?.toUpperCase() || 'U'
-                        )}
+                    {/* Imagen de perfil */}
+                    <div>
+                      <label htmlFor="profileImage" className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
+                        IMAGEN DE PERFIL
+                      </label>
+                      
+                      <div className="mt-1 flex items-center">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-tech-dark border-2 border-tech-neon flex items-center justify-center text-tech-neon text-xl mr-4">
+                          {imagePreview ? (
+                            <img 
+                              src={imagePreview} 
+                              alt={profileData.username}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            profileData.username?.charAt(0)?.toUpperCase() || 'U'
+                          )}
+                        </div>
+                        
+                        <input
+                          id="profileImage"
+                          name="profileImage"
+                          type="file"
+                          accept="image/*"
+                          ref={imageInputRef}
+                          className="sr-only"
+                          onChange={handleImageChange}
+                          disabled={isSubmitting}
+                        />
+                        
+                        <label
+                          htmlFor="profileImage"
+                          className="btn btn-outline text-tech-neon border-tech-neon px-4 py-2 cursor-pointer"
+                        >
+                          CAMBIAR
+                        </label>
                       </div>
                       
-                      <input
-                        id="profileImage"
-                        name="profileImage"
-                        type="file"
-                        accept="image/*"
-                        ref={imageInputRef}
-                        className="sr-only"
-                        onChange={handleImageChange}
-                        disabled={isSubmitting}
-                      />
-                      
-                      <label
-                        htmlFor="profileImage"
-                        className="cursor-pointer bg-white py-2 px-3 border border-neutral-300 rounded-md shadow-sm text-sm leading-4 font-medium text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                      >
-                        Cambiar
-                      </label>
-                    </div>
-                    
-                    {errors.profileImage && (
-                      <p className="mt-1 text-sm text-red-600">{errors.profileImage}</p>
-                    )}
-                  </div>
-                  
-                  {/* Grid de campos */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-neutral-700 mb-1">
-                        Nombre <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="firstName"
-                        name="firstName"
-                        type="text"
-                        autoComplete="given-name"
-                        required
-                        className={`input w-full ${errors.firstName ? 'border-red-500 focus:ring-red-500' : ''}`}
-                        value={profileData.firstName}
-                        onChange={handleProfileChange}
-                        disabled={isSubmitting}
-                      />
-                      {errors.firstName && (
-                        <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                      {errors.profileImage && (
+                        <p className="mt-2 text-sm font-retro text-tech-red">{errors.profileImage}</p>
                       )}
                     </div>
                     
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-neutral-700 mb-1">
-                        Apellido <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="lastName"
-                        name="lastName"
-                        type="text"
-                        autoComplete="family-name"
-                        required
-                        className={`input w-full ${errors.lastName ? 'border-red-500 focus:ring-red-500' : ''}`}
-                        value={profileData.lastName}
-                        onChange={handleProfileChange}
-                        disabled={isSubmitting}
-                      />
-                      {errors.lastName && (
-                        <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-                      )}
+                    {/* Grid de campos */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        { id: 'firstName', label: 'NOMBRE', required: true },
+                        { id: 'lastName', label: 'APELLIDO', required: true },
+                        { id: 'username', label: 'USUARIO', required: true },
+                        { id: 'email', label: 'EMAIL', required: true, type: 'email' },
+                      ].map(field => (
+                        <div key={field.id}>
+                          <label htmlFor={field.id} className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
+                            {field.label} {field.required && <span className="text-tech-red">*</span>}
+                          </label>
+                          <input
+                            id={field.id}
+                            name={field.id}
+                            type={field.type || 'text'}
+                            autoComplete={field.id === 'email' ? 'email' : field.id}
+                            required={field.required}
+                            className={`input w-full ${errors[field.id] ? 'border-tech-red' : 'border-tech-neon'}`}
+                            value={profileData[field.id]}
+                            onChange={handleProfileChange}
+                            disabled={isSubmitting}
+                          />
+                          {errors[field.id] && (
+                            <p className="mt-2 text-sm font-retro text-tech-red">{errors[field.id]}</p>
+                          )}
+                        </div>
+                      ))}
                     </div>
                     
                     <div>
-                      <label htmlFor="username" className="block text-sm font-medium text-neutral-700 mb-1">
-                        Nombre de usuario <span className="text-red-500">*</span>
+                      <label htmlFor="bio" className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
+                        BIOGRAFÍA
                       </label>
-                      <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        autoComplete="username"
-                        required
-                        className={`input w-full ${errors.username ? 'border-red-500 focus:ring-red-500' : ''}`}
-                        value={profileData.username}
+                      <textarea
+                        id="bio"
+                        name="bio"
+                        rows={4}
+                        className="input w-full border-tech-neon"
+                        value={profileData.bio}
                         onChange={handleProfileChange}
+                        placeholder="Cuéntanos sobre ti..."
                         disabled={isSubmitting}
                       />
-                      {errors.username && (
-                        <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
-                        Correo electrónico <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        className={`input w-full ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
-                        value={profileData.email}
-                        onChange={handleProfileChange}
-                        disabled={isSubmitting}
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                      )}
                     </div>
                   </div>
                   
-                  <div>
-                    <label htmlFor="bio" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Biografía
-                    </label>
-                    <textarea
-                      id="bio"
-                      name="bio"
-                      rows={4}
-                      className="input w-full"
-                      value={profileData.bio}
-                      onChange={handleProfileChange}
-                      placeholder="Cuéntanos sobre ti..."
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="submit"
+                      className="btn btn-primary text-tech-dark border-tech-neon"
                       disabled={isSubmitting}
-                    />
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center space-x-2">
+                          <span className="animate-spin">⚡</span>
+                          <span>GUARDANDO...</span>
+                        </span>
+                      ) : (
+                        <span className="flex items-center space-x-2">
+                          <span>💾</span>
+                          <span>GUARDAR</span>
+                        </span>
+                      )}
+                    </button>
                   </div>
-                </div>
-                
-                <div className="flex justify-end pt-2">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Guardando...
-                      </span>
-                    ) : (
-                      'Guardar cambios'
-                    )}
-                  </button>
-                </div>
-              </form>
-            )}
-            
-            {activeTab === 'password' && (
-              <form onSubmit={handleUpdatePassword} className="space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold text-neutral-800 mb-4">
-                    Cambiar contraseña
+                </form>
+              )}
+              
+              {activeTab === 'password' && (
+                <form onSubmit={handleUpdatePassword} className="space-y-6">
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
+                      CAMBIAR CONTRASEÑA
+                    </h2>
+                    
+                    {[
+                      { id: 'currentPassword', label: 'CONTRASEÑA ACTUAL' },
+                      { id: 'newPassword', label: 'NUEVA CONTRASEÑA' },
+                      { id: 'confirmPassword', label: 'CONFIRMAR CONTRASEÑA' },
+                    ].map(field => (
+                      <div key={field.id}>
+                        <label htmlFor={field.id} className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
+                          {field.label} <span className="text-tech-red">*</span>
+                        </label>
+                        <input
+                          id={field.id}
+                          name={field.id}
+                          type="password"
+                          autoComplete={field.id === 'currentPassword' ? 'current-password' : 'new-password'}
+                          required
+                          className={`input w-full ${errors[field.id] ? 'border-tech-red' : 'border-tech-neon'}`}
+                          value={passwordData[field.id]}
+                          onChange={handlePasswordChange}
+                          disabled={isSubmitting}
+                        />
+                        {errors[field.id] && (
+                          <p className="mt-2 text-sm font-retro text-tech-red">{errors[field.id]}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="submit"
+                      className="btn btn-primary text-tech-dark border-tech-neon"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center space-x-2">
+                          <span className="animate-spin">⚡</span>
+                          <span>GUARDANDO...</span>
+                        </span>
+                      ) : (
+                        <span className="flex items-center space-x-2">
+                          <span>🔐</span>
+                          <span>CAMBIAR</span>
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+              
+              {activeTab === 'forums' && (
+                <div>
+                  <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
+                    MIS FOROS
                   </h2>
-                  
-                  <div>
-                    <label htmlFor="currentPassword" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Contraseña actual <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="currentPassword"
-                      name="currentPassword"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      className={`input w-full ${errors.currentPassword ? 'border-red-500 focus:ring-red-500' : ''}`}
-                      value={passwordData.currentPassword}
-                      onChange={handlePasswordChange}
-                      disabled={isSubmitting}
-                    />
-                    {errors.currentPassword && (
-                      <p className="mt-1 text-sm text-red-600">{errors.currentPassword}</p>
-                    )}
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="newPassword" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Nueva contraseña <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="newPassword"
-                      name="newPassword"
-                      type="password"
-                      autoComplete="new-password"
-                      required
-                      className={`input w-full ${errors.newPassword ? 'border-red-500 focus:ring-red-500' : ''}`}
-                      value={passwordData.newPassword}
-                      onChange={handlePasswordChange}
-                      disabled={isSubmitting}
-                    />
-                    {errors.newPassword && (
-                      <p className="mt-1 text-sm text-red-600">{errors.newPassword}</p>
-                    )}
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Confirmar contraseña <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      autoComplete="new-password"
-                      required
-                      className={`input w-full ${errors.confirmPassword ? 'border-red-500 focus:ring-red-500' : ''}`}
-                      value={passwordData.confirmPassword}
-                      onChange={handlePasswordChange}
-                      disabled={isSubmitting}
-                    />
-                    {errors.confirmPassword && (
-                      <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-                    )}
-                  </div>
+                  <ForumList />
                 </div>
-                
-                <div className="flex justify-end pt-2">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Guardando...
-                      </span>
-                    ) : (
-                      'Cambiar contraseña'
-                    )}
-                  </button>
+              )}
+              
+              {activeTab === 'posts' && (
+                <div>
+                  <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
+                    MIS PUBLICACIONES
+                  </h2>
+                  <PostList />
                 </div>
-              </form>
-            )}
-            
-            {activeTab === 'forums' && (
-              <div>
-                <h2 className="text-xl font-semibold text-neutral-800 mb-4">
-                  Mis foros
-                </h2>
-                
-                {/* Aquí iría el componente para mostrar los foros del usuario */}
-                <ForumList />
-              </div>
-            )}
-            
-            {activeTab === 'posts' && (
-              <div>
-                <h2 className="text-xl font-semibold text-neutral-800 mb-4">
-                  Mis publicaciones
-                </h2>
-                
-                {/* Aquí iría el componente para mostrar las publicaciones del usuario */}
-                <PostList />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

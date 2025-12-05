@@ -8,7 +8,7 @@ import travelService from '../../services/travelService'
 import { Link } from 'react-router-dom'
 
 /**
- * Página principal del Mapa de Viajes
+ * TravelMapPage con tema Jungle
  */
 const TravelMapPage = () => {
   const { user, isAuthenticated } = useAuth()
@@ -44,7 +44,6 @@ const TravelMapPage = () => {
 
   const handleCountryClick = (isoCode) => {
     if (!isAuthenticated) return
-    // Verificar si ya está en la lista
     const existingPlace = places.find(p => p.country.isoCode === isoCode)
     if (existingPlace) {
       setEditingPlace(existingPlace)
@@ -68,60 +67,86 @@ const TravelMapPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="theme-jungle min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-emerald-500 border-t-transparent mx-auto" />
-          <p className="text-slate-500 mt-4">Cargando tu mapa...</p>
+          <div className="text-6xl mb-4 animate-spin">🌴</div>
+          <p className="text-jungle-gold font-retro text-sm uppercase tracking-wider">
+            CARGANDO MAPA...
+          </p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="theme-jungle min-h-screen relative overflow-hidden">
+      {/* Efectos de fondo jungla */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-3xl animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          >
+            {['🌴', '🌿', '🦁', '🐘', '🦜'][Math.floor(Math.random() * 5)]}
+          </div>
+        ))}
+      </div>
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 py-12">
+      <div className="bg-gradient-to-r from-jungle-dark via-jungle-green to-jungle-dark border-b-4 border-jungle-gold py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-                🗺️ Mi Mapa de Viajes
+              <h1 className="text-3xl md:text-5xl font-display text-jungle-gold neon-text flex items-center gap-3 mb-2">
+                🌴 MI MAPA DE VIAJES
               </h1>
-              <p className="text-emerald-100 mt-2">
-                Registra tus aventuras y descubre cuánto del mundo has explorado
+              <p className="text-jungle-leaf font-retro text-sm uppercase tracking-wider opacity-80">
+                REGISTRA TUS AVENTURAS
               </p>
             </div>
             
             {isAuthenticated ? (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-3 bg-white text-emerald-600 rounded-xl font-bold hover:bg-emerald-50 transition-colors flex items-center gap-2 self-start"
+                className="btn btn-primary text-jungle-dark border-jungle-gold px-6 py-3 self-start"
               >
-                <span className="text-xl">➕</span>
-                Agregar lugar
+                <span className="flex items-center space-x-2">
+                  <span>➕</span>
+                  <span>AGREGAR LUGAR</span>
+                </span>
               </button>
             ) : (
               <Link
                 to="/login"
-                className="px-6 py-3 bg-white text-emerald-600 rounded-xl font-bold hover:bg-emerald-50 transition-colors"
+                className="btn btn-outline text-jungle-gold border-jungle-gold px-6 py-3"
               >
-                Iniciar sesión para guardar
+                <span className="flex items-center space-x-2">
+                  <span>🔐</span>
+                  <span>INICIAR SESIÓN</span>
+                </span>
               </Link>
             )}
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {isAuthenticated ? (
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Columna principal - Mapa */}
             <div className="lg:col-span-2 space-y-8">
               {/* Mapa */}
-              <WorldMap 
-                visitedPlaces={places}
-                onCountryClick={handleCountryClick}
-              />
+              <div className="card border-jungle-gold">
+                <WorldMap 
+                  visitedPlaces={places}
+                  onCountryClick={handleCountryClick}
+                />
+              </div>
 
               {/* Lista de lugares */}
               <PlacesList 
@@ -136,24 +161,28 @@ const TravelMapPage = () => {
               <TravelStats stats={stats} />
               
               {/* Acciones rápidas */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="font-bold text-slate-800 mb-4">Acciones rápidas</h3>
-                <div className="space-y-3">
-                  <QuickAction 
-                    icon="🌍" 
-                    label="Ver ranking de viajeros"
-                    href="/travel/ranking"
-                  />
-                  <QuickAction 
-                    icon="📊" 
-                    label="Estadísticas detalladas"
-                    href="/profile"
-                  />
-                  <QuickAction 
-                    icon="🎮" 
-                    label="Jugar Trivia Geográfica"
-                    href="/trivia"
-                  />
+              <div className="card border-jungle-gold">
+                <div className="p-6">
+                  <h3 className="font-display text-jungle-gold neon-text mb-4 uppercase text-sm">
+                    ACCIONES RÁPIDAS
+                  </h3>
+                  <div className="space-y-3">
+                    <QuickAction 
+                      icon="🌍" 
+                      label="Ranking de viajeros"
+                      href="/travel/ranking"
+                    />
+                    <QuickAction 
+                      icon="📊" 
+                      label="Estadísticas"
+                      href="/profile"
+                    />
+                    <QuickAction 
+                      icon="🎮" 
+                      label="Jugar Trivia"
+                      href="/trivia"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -161,29 +190,37 @@ const TravelMapPage = () => {
         ) : (
           /* Vista para usuarios no autenticados */
           <div className="max-w-4xl mx-auto">
-            <WorldMap visitedPlaces={[]} />
+            <div className="card border-jungle-gold mb-8">
+              <WorldMap visitedPlaces={[]} />
+            </div>
             
-            <div className="mt-8 bg-white rounded-2xl p-8 text-center shadow-lg">
-              <span className="text-6xl mb-4 block">🌎</span>
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">
-                Empieza tu aventura viajera
+            <div className="card border-jungle-gold text-center p-8">
+              <span className="text-6xl mb-4 block animate-pulse-neon">🌎</span>
+              <h2 className="text-2xl font-display text-jungle-gold neon-text mb-4 uppercase">
+                EMPIEZA TU AVENTURA
               </h2>
-              <p className="text-slate-600 mb-6 max-w-lg mx-auto">
+              <p className="text-jungle-leaf font-retro text-sm mb-6 max-w-lg mx-auto opacity-80">
                 Crea una cuenta para guardar los países que has visitado, 
                 ver tu progreso mundial y competir con otros viajeros.
               </p>
               <div className="flex justify-center gap-4">
                 <Link
                   to="/register"
-                  className="px-6 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors"
+                  className="btn btn-primary text-jungle-dark border-jungle-gold px-6 py-3"
                 >
-                  Crear cuenta gratis
+                  <span className="flex items-center space-x-2">
+                    <span>🚀</span>
+                    <span>CREAR CUENTA</span>
+                  </span>
                 </Link>
                 <Link
                   to="/login"
-                  className="px-6 py-3 border-2 border-slate-200 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+                  className="btn btn-outline text-jungle-gold border-jungle-gold px-6 py-3"
                 >
-                  Ya tengo cuenta
+                  <span className="flex items-center space-x-2">
+                    <span>👽</span>
+                    <span>YA TENGO CUENTA</span>
+                  </span>
                 </Link>
               </div>
             </div>
@@ -205,13 +242,14 @@ const TravelMapPage = () => {
 const QuickAction = ({ icon, label, href }) => (
   <Link
     to={href}
-    className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group"
+    className="flex items-center gap-3 p-3 border-2 border-jungle-gold/30 hover:border-jungle-gold transition-colors group"
   >
-    <span className="text-2xl">{icon}</span>
-    <span className="text-slate-600 group-hover:text-slate-800">{label}</span>
-    <span className="ml-auto text-slate-300 group-hover:text-slate-400">→</span>
+    <span className="text-2xl group-hover:scale-125 transition-transform">{icon}</span>
+    <span className="text-jungle-leaf font-retro text-xs uppercase tracking-wider group-hover:text-jungle-gold">
+      {label}
+    </span>
+    <span className="ml-auto text-jungle-gold/50 group-hover:text-jungle-gold">→</span>
   </Link>
 )
 
 export default TravelMapPage
-

@@ -1,4 +1,3 @@
-// Archivo: src/components/forums/ForumList.jsx
 import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ForumCard from './ForumCard'
@@ -8,6 +7,9 @@ import categoryService from '../../services/categoryService'
 import useAuth from '../../hooks/useAuth'
 import PropTypes from 'prop-types'
 
+/**
+ * ForumList con estilo retro Adventure
+ */
 const ForumList = ({ categoryId: propCategoryId }) => {
   const { categoryId: paramCategoryId } = useParams()
   const categoryId = propCategoryId || paramCategoryId
@@ -28,19 +30,14 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         let forumData = []
         
         if (categoryId) {
-          // Si hay un ID de categoría, obtener los foros de esa categoría
           forumData = await forumService.getForumsByCategory(categoryId)
-          
-          // También obtener los detalles de la categoría
           const categoryData = await categoryService.getCategoryById(categoryId)
           setCategory(categoryData)
         } else if (searchTerm) {
-          // Si hay un término de búsqueda, buscar foros que coincidan
           forumData = await forumService.searchForums(searchTerm)
         } else {
-          // Por defecto, obtener todos los foros
           const response = await forumService.getAllForums()
-          forumData = response.content || response // Dependiendo de cómo devuelva la API los datos paginados
+          forumData = response.content || response
         }
         
         setForums(forumData)
@@ -63,43 +60,53 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-spin">🏺</div>
+          <p className="text-adventure-gold font-retro text-sm uppercase tracking-wider">
+            CARGANDO FOROS...
+          </p>
+        </div>
       </div>
     )
   }
   
   if (error) {
     return (
-      <div className="text-center py-10">
-        <div className="text-red-600 mb-4">{error}</div>
+      <div className="text-center py-10 card border-tech-red">
+        <div className="text-5xl mb-4">⚠️</div>
+        <div className="text-tech-red font-retro text-sm uppercase tracking-wider mb-6">
+          {error}
+        </div>
         <button 
           onClick={() => window.location.reload()}
-          className="btn btn-primary"
+          className="btn btn-primary text-adventure-dark border-adventure-gold"
         >
-          Reintentar
+          <span className="flex items-center space-x-2">
+            <span>🔄</span>
+            <span>REINTENTAR</span>
+          </span>
         </button>
       </div>
     )
   }
   
-  // Extract heading into a variable for clarity
   let heading;
   if (category) {
     heading = (
-      <h2 className="text-2xl font-bold text-neutral-800">
-        Foros de {category.name}
+      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+        FOROS DE {category.name.toUpperCase()}
       </h2>
     );
   } else if (searchTerm) {
     heading = (
-      <h2 className="text-2xl font-bold text-neutral-800">
-        Resultados para "{searchTerm}"
+      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+        RESULTADOS: "{searchTerm.toUpperCase()}"
       </h2>
     );
   } else {
     heading = (
-      <h2 className="text-2xl font-bold text-neutral-800">
-        Todos los foros
+      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+        TODOS LOS FOROS
       </h2>
     );
   }
@@ -115,8 +122,11 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
           
           {isAuthenticated && (
-            <Link to="/forums/create" className="btn btn-primary whitespace-nowrap">
-              Crear Foro
+            <Link to="/forums/create" className="btn btn-primary text-adventure-dark border-adventure-gold whitespace-nowrap">
+              <span className="flex items-center space-x-2">
+                <span>➕</span>
+                <span>CREAR FORO</span>
+              </span>
             </Link>
           )}
         </div>
@@ -127,28 +137,47 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         if (searchTerm) {
           emptyStateContent = (
             <>
-              <h3 className="text-xl font-semibold mb-2">No se encontraron resultados</h3>
-              <p className="text-neutral-600 mb-4">No hay foros que coincidan con tu búsqueda "{searchTerm}".</p>
+              <div className="text-5xl mb-4">🔍</div>
+              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+                NO SE ENCONTRARON RESULTADOS
+              </h3>
+              <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">
+                No hay foros que coincidan con "{searchTerm}"
+              </p>
               <button 
                 onClick={() => setSearchTerm('')}
-                className="btn btn-outline"
+                className="btn btn-outline text-adventure-gold border-adventure-gold"
               >
-                Ver todos los foros
+                <span className="flex items-center space-x-2">
+                  <span>🏺</span>
+                  <span>VER TODOS</span>
+                </span>
               </button>
             </>
           );
         } else if (category) {
           emptyStateContent = (
             <>
-              <h3 className="text-xl font-semibold mb-2">No hay foros en esta categoría</h3>
-              <p className="text-neutral-600 mb-4">Sé el primero en crear un foro en {category.name}.</p>
+              <div className="text-5xl mb-4">🗺️</div>
+              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+                NO HAY FOROS EN ESTA CATEGORÍA
+              </h3>
+              <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">
+                Sé el primero en crear un foro en {category.name}
+              </p>
               {isAuthenticated ? (
-                <Link to="/forums/create" className="btn btn-primary">
-                  Crear el primer foro
+                <Link to="/forums/create" className="btn btn-primary text-adventure-dark border-adventure-gold">
+                  <span className="flex items-center space-x-2">
+                    <span>⚱️</span>
+                    <span>CREAR EL PRIMER FORO</span>
+                  </span>
                 </Link>
               ) : (
-                <Link to="/login" className="btn btn-primary">
-                  Inicia sesión para crear un foro
+                <Link to="/login" className="btn btn-outline text-adventure-gold border-adventure-gold">
+                  <span className="flex items-center space-x-2">
+                    <span>🔐</span>
+                    <span>INICIA SESIÓN</span>
+                  </span>
                 </Link>
               )}
             </>
@@ -156,15 +185,26 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         } else {
           emptyStateContent = (
             <>
-              <h3 className="text-xl font-semibold mb-2">No hay foros disponibles</h3>
-              <p className="text-neutral-600 mb-4">Sé el primero en crear un foro en nuestra comunidad.</p>
+              <div className="text-5xl mb-4">🏺</div>
+              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+                NO HAY FOROS DISPONIBLES
+              </h3>
+              <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">
+                Sé el primero en crear un foro
+              </p>
               {isAuthenticated ? (
-                <Link to="/forums/create" className="btn btn-primary">
-                  Crear el primer foro
+                <Link to="/forums/create" className="btn btn-primary text-adventure-dark border-adventure-gold">
+                  <span className="flex items-center space-x-2">
+                    <span>⚱️</span>
+                    <span>CREAR EL PRIMER FORO</span>
+                  </span>
                 </Link>
               ) : (
-                <Link to="/login" className="btn btn-primary">
-                  Inicia sesión para crear un foro
+                <Link to="/login" className="btn btn-outline text-adventure-gold border-adventure-gold">
+                  <span className="flex items-center space-x-2">
+                    <span>🔐</span>
+                    <span>INICIA SESIÓN</span>
+                  </span>
                 </Link>
               )}
             </>
@@ -172,10 +212,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         }
 
         return forums.length === 0 ? (
-          <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-neutral-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
+          <div className="text-center py-12 card border-adventure-gold">
             {emptyStateContent}
           </div>
         ) : (

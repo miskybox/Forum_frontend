@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 
+/**
+ * ForumCard con estilo retro Adventure
+ */
 const ForumCard = ({ forum }) => {
   const formatRelativeDate = (dateString) => {
     const date = new Date(dateString)
@@ -9,40 +12,41 @@ const ForumCard = ({ forum }) => {
   }
 
   return (
-    <div className="card overflow-hidden hover:shadow-md transition-all">
+    <div className="card border-adventure-gold overflow-hidden hover:border-adventure-gold/80 transition-all group">
       <div className="md:flex">
-        <div className="md:w-1/3 bg-neutral-100">
+        <div className="md:w-1/3 bg-adventure-dark relative overflow-hidden">
           {forum.imageUrl ? (
             <Link to={`/forums/${forum.id}`} className="block h-full">
               <img 
                 src={forum.imageUrl} 
                 alt={forum.title} 
-                className="w-full h-full object-cover aspect-video md:aspect-auto"
+                className="w-full h-full object-cover aspect-video md:aspect-auto group-hover:scale-105 transition-transform duration-300"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-adventure-dark/80 to-transparent"></div>
             </Link>
           ) : (
-            <div className="flex items-center justify-center h-full min-h-[160px] bg-primary-50">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-              </svg>
+            <div className="flex items-center justify-center h-full min-h-[160px] bg-adventure-dark">
+              <div className="text-6xl opacity-50">🏺</div>
             </div>
           )}
         </div>
         
-        <div className="md:w-2/3 p-4 flex flex-col">
+        <div className="md:w-2/3 p-4 flex flex-col bg-adventure-dark/50">
           <div className="flex-grow">
-            <h3 className="text-lg font-semibold mb-2">
-              <Link to={`/forums/${forum.id}`} className="hover:text-primary-700 text-neutral-800">
-                {forum.title}
+            <h3 className="text-lg md:text-xl font-display text-adventure-gold neon-text mb-2 break-words">
+              <Link to={`/forums/${forum.id}`} className="hover:text-adventure-gold/80 transition-colors">
+                {forum.title.toUpperCase()}
               </Link>
             </h3>
             
-            <p className="text-neutral-600 mb-4 line-clamp-2">{forum.description}</p>
+            <p className="text-adventure-light font-retro text-xs mb-4 line-clamp-2 opacity-80">
+              {forum.description}
+            </p>
             
             {forum.tags && forum.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
                 {forum.tags.map(tag => (
-                  <span key={tag.id} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
+                  <span key={tag.id} className="inline-flex items-center px-2 py-1 border border-adventure-gold/50 text-adventure-gold font-retro text-xs uppercase tracking-wider">
                     {tag.name}
                   </span>
                 ))}
@@ -50,27 +54,22 @@ const ForumCard = ({ forum }) => {
             )}
           </div>
  
-          <div className="mt-2 pt-2 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-500">
-            <div className="flex items-center">
-              <div className="flex items-center mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-                {forum.postCount || 0} {forum.postCount === 1 ? 'publicación' : 'publicaciones'}
+          <div className="mt-2 pt-2 border-t-2 border-adventure-gold/30 flex justify-between items-center text-xs">
+            <div className="flex items-center gap-4 text-adventure-light font-retro">
+              <div className="flex items-center">
+                <span className="mr-1">💬</span>
+                {forum.postCount || 0} {forum.postCount === 1 ? 'PUBLICACIÓN' : 'PUBLICACIONES'}
               </div>
               
               <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                {forum.viewCount || 0} {forum.viewCount === 1 ? 'vista' : 'vistas'}
+                <span className="mr-1">👁️</span>
+                {forum.viewCount || 0} {forum.viewCount === 1 ? 'VISTA' : 'VISTAS'}
               </div>
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center text-adventure-light font-retro text-xs">
               <div className="flex items-center space-x-1">
-                <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center text-white text-xs overflow-hidden">
+                <div className="w-5 h-5 bg-adventure-gold rounded-full flex items-center justify-center text-adventure-dark text-xs overflow-hidden border border-adventure-gold">
                   {forum.creator?.profileImage ? (
                     <img 
                       src={forum.creator.profileImage} 
@@ -81,10 +80,10 @@ const ForumCard = ({ forum }) => {
                     forum.creator?.username?.charAt(0)?.toUpperCase() || 'U'
                   )}
                 </div>
-                <span>{forum.creator?.username || 'Usuario'}</span>
+                <span className="uppercase">{forum.creator?.username || 'USUARIO'}</span>
               </div>
-              <span className="mx-2">•</span>
-              <time dateTime={forum.createdAt}>
+              <span className="mx-2 text-adventure-gold">•</span>
+              <time dateTime={forum.createdAt} className="uppercase">
                 {formatRelativeDate(forum.createdAt)}
               </time>
             </div>

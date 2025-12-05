@@ -1,226 +1,424 @@
-/* Archivo: src/index.css (actualizado) */
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Bungee&family=Press+Start+2P&display=swap');
 
-/* Estilos base */
+/* Cursor normal - sin personalización */
+
+/* ============================================
+   ESTILOS BASE RETRO
+   ============================================ */
 html {
   scroll-behavior: smooth;
+  background: #000;
+  overflow-x: hidden;
 }
 
 body {
-  color: #1f2937; /* text-gray-800 */
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  background-color: #406958; /* bg-amber-50 */
+  color: #00ffff;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #000033 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Efecto de scanlines retro - Reducido para accesibilidad */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: overlay;
+}
+
+/* Efecto de ruido/VHS - Reducido para accesibilidad */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.01'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10001;
+  animation: scan 8s linear infinite;
+}
+
+/* ============================================
+   TIPOGRAFÍAS RETRO
+   ============================================ */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', system-ui, sans-serif;
-  font-weight: 500;
-  color: #111827; /* text-gray-900 */
+  font-family: 'Bungee', 'Impact', 'Arial Black', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    2px 2px 0px rgba(0,0,0,0.8);
 }
 
 h1 {
-  font-size: 1.875rem; /* text-3xl */
-  line-height: 2.25rem;
-}
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 2.25rem; /* md:text-4xl */
-    line-height: 2.5rem;
-  }
+  font-size: 2.5rem;
+  line-height: 1.2;
+  color: #00ffff;
 }
 
 h2 {
-  font-size: 1.5rem; /* text-2xl */
-  line-height: 2rem;
-}
-
-@media (min-width: 768px) {
-  h2 {
-    font-size: 1.875rem; /* md:text-3xl */
-    line-height: 2.25rem;
-  }
+  font-size: 2rem;
+  line-height: 1.3;
+  color: #ff00ff;
 }
 
 h3 {
-  font-size: 1.25rem; /* text-xl */
-  line-height: 1.75rem;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #39ff14;
 }
 
-@media (min-width: 768px) {
-  h3 {
-    font-size: 1.5rem; /* md:text-2xl */
-    line-height: 2rem;
-  }
-}
-
-a {
-  color: #280c7b; /* text-green-700 */
-  transition-property: color;
-  transition-duration: 150ms;
-}
-
-a:hover {
-  color: #166534; /* hover:text-green-900 */
-}
-
-/* Componentes */
+/* ============================================
+   BOTONES RETRO
+   ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  border-radius: 0;
+  font-family: 'Orbitron', monospace;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition-property: color, background-color, border-color;
-  transition-duration: 150ms;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 0.75rem 1.5rem;
+  border: 3px solid;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: none;
 }
 
-.btn:focus-visible {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #406958;
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  pointer-events: none;
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
-  background-color: #a76834; /* bg-green-700 */
-  color: #ffffff; /* text-white */
-  height: 2.5rem; /* h-10 */
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem;
-  padding-top: 0.5rem; /* py-2 */
-  padding-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+  border-color: #00ffff;
+  color: #000;
+  box-shadow: 
+    0 0 5px rgba(0,255,255,0.5),
+    inset 0 0 10px rgba(255,255,255,0.2);
 }
 
 .btn-primary:hover {
-  background-color: #eae3d6; /* hover:bg-green-800 */
+  box-shadow: 
+    0 0 8px rgba(0,255,255,0.7),
+    inset 0 0 15px rgba(255,255,255,0.3);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background-color: #b45309; /* bg-amber-700 */
-  color: #ffffff; /* text-white */
-  height: 2.5rem; /* h-10 */
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem;
-  padding-top: 0.5rem; /* py-2 */
-  padding-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ff6600 0%, #ffff00 100%);
+  border-color: #ffff00;
+  color: #000;
+  box-shadow: 
+    0 0 5px rgba(255,255,0,0.5),
+    inset 0 0 10px rgba(255,255,255,0.2);
 }
 
 .btn-secondary:hover {
-  background-color: #92400e; /* hover:bg-amber-800 */
+  box-shadow: 
+    0 0 8px rgba(255,255,0,0.7),
+    inset 0 0 15px rgba(255,255,255,0.3);
+  transform: translateY(-2px);
 }
 
 .btn-outline {
-  border: 1px solid #b45309; /* border-amber-700 */
-  background-color: transparent;
-  color: #b45309; /* text-amber-700 */
-  height: 2.5rem; /* h-10 */
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem;
-  padding-top: 0.5rem; /* py-2 */
-  padding-bottom: 0.5rem;
+  background: transparent;
+  border-color: currentColor;
+  color: currentColor;
+  box-shadow: 
+    0 0 5px currentColor,
+    inset 0 0 10px rgba(255,255,255,0.1);
 }
 
 .btn-outline:hover {
-  background-color: #b45309; /* bg-amber-700 */
-  color: #ffffff; /* text-white */
+  background: currentColor;
+  color: #000;
+  box-shadow: 
+    0 0 8px currentColor;
 }
 
+/* ============================================
+   INPUTS RETRO
+   ============================================ */
 .input {
   display: flex;
-  height: 2.5rem; /* h-10 */
-  width: 100%; /* w-full */
-  border-radius: 0.375rem; /* rounded-md */
-  border: 1px solid #d1d5db; /* border-gray-300 */
-  background-color: #ffffff; /* bg-white */
-  padding-left: 0.75rem; /* px-3 */
-  padding-right: 0.75rem;
-  padding-top: 0.5rem; /* py-2 */
-  padding-bottom: 0.5rem;
-  font-size: 0.875rem; /* text-sm */
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #00ffff;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ffff;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.875rem;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 5px #00ffff,
+    inset 0 0 10px rgba(0,255,255,0.1);
 }
 
-.input:focus-visible {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px #16a34a; /* ring-green-600 */
-}
-
-.input:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+.input:focus {
+  outline: none;
+  border-color: #ff00ff;
+  box-shadow: 
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    inset 0 0 10px rgba(255,0,255,0.2);
+  color: #ff00ff;
 }
 
 .input::placeholder {
-  color: #9ca3af; /* placeholder:text-gray-400 */
+  color: rgba(0, 255, 255, 0.5);
+  font-style: italic;
 }
 
+/* ============================================
+   CARDS RETRO
+   ============================================ */
 .card {
-  border-radius: 0.5rem; /* rounded-lg */
-  border: 1px solid #e5e7eb; /* border-gray-200 */
-  background-color: #ffffff; /* bg-white */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-  transition-property: box-shadow;
-  transition-duration: 200ms;
+  background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(26,0,51,0.9) 100%);
+  border: 2px solid #00ffff;
+  border-radius: 0;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 5px rgba(0,255,255,0.3),
+    inset 0 0 10px rgba(0,255,255,0.05);
+  transition: all 0.3s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(0,255,255,0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: all 0.5s;
 }
 
 .card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* hover:shadow-md */
+  border-color: #ff00ff;
+  box-shadow: 
+    0 0 8px rgba(255,0,255,0.5),
+    inset 0 0 15px rgba(255,0,255,0.1);
+  transform: translateY(-3px);
 }
 
+.card:hover::before {
+  animation: scan 2s linear infinite;
+}
+
+/* ============================================
+   ENLACES RETRO
+   ============================================ */
+a {
+  color: #00ffff;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 2px currentColor;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  transition: width 0.3s ease;
+}
+
+a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 4px currentColor;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   EFECTOS ESPECIALES
+   ============================================ */
+.neon-text {
+  text-shadow: 
+    0 0 3px currentColor,
+    0 0 6px currentColor;
+}
+
+.retro-border {
+  border: 3px solid;
+  border-image: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff) 1;
+  position: relative;
+}
+
+.retro-border::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0.5;
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
 .container {
   width: 100%;
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem;
-  margin-left: auto; /* mx-auto */
-  margin-right: auto;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 @media (min-width: 640px) {
   .container {
-    padding-left: 1.5rem; /* sm:px-6 */
-    padding-right: 1.5rem;
+    padding: 0 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .container {
-    padding-left: 2rem; /* lg:px-8 */
-    padding-right: 2rem;
+    padding: 0 2rem;
   }
 }
 
-/* Clases de utilidad para encabezados de sección */
-.section-header {
-  margin-bottom: 1.5rem; /* mb-6 */
-  text-align: center; /* text-center */
+/* Scrollbar retro */
+::-webkit-scrollbar {
+  width: 12px;
 }
 
-.section-header h2 {
-  font-size: 1.5rem; /* text-2xl */
-  line-height: 2rem;
-  font-weight: 700; /* font-bold */
-  margin-bottom: 0.5rem; /* mb-2 */
-  color: #111827; /* text-gray-900 */
+::-webkit-scrollbar-track {
+  background: #000;
+  border: 1px solid #00ffff;
 }
 
-@media (min-width: 768px) {
-  .section-header h2 {
-    font-size: 1.875rem; /* md:text-3xl */
-    line-height: 2.25rem;
-  }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ffff, #ff00ff);
+  border: 1px solid #00ffff;
 }
 
-.section-header p {
-  font-size: 1.125rem; /* text-lg */
-  line-height: 1.75rem;
-  color: #4b5563; /* text-gray-600 */
-  max-width: 42rem; /* max-w-2xl */
-  margin-left: auto; /* mx-auto */
-  margin-right: auto;
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff00ff, #00ffff);
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* ============================================
+   TEMAS POR SECCIÓN
+   ============================================ */
+
+/* Tema Adventure */
+.theme-adventure {
+  background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #2c1810 100%);
+  color: #ffd700;
+}
+
+.theme-adventure h1,
+.theme-adventure h2 {
+  color: #ffd700;
+  text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 2px 2px 0px #000;
+}
+
+/* Tema Space */
+.theme-future {
+  background: linear-gradient(135deg, #001122 0%, #003366 50%, #001122 100%);
+  color: #00ffff;
+}
+
+.theme-future h1,
+.theme-future h2 {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #8a2be2, 2px 2px 0px #000;
+}
+
+/* Tema Jungle */
+.theme-jungle {
+  background: linear-gradient(135deg, #0f5132 0%, #228b22 50%, #0f5132 100%);
+  color: #90ee90;
+}
+
+.theme-jungle h1,
+.theme-jungle h2 {
+  color: #daa520;
+  text-shadow: 0 0 10px #daa520, 0 0 20px #90ee90, 2px 2px 0px #000;
+}
+
+/* Tema Tech */
+.theme-tech {
+  background: linear-gradient(135deg, #1a1a1a 0%, #000000 50%, #1a1a1a 100%);
+  color: #ff0066;
+}
+
+.theme-tech h1,
+.theme-tech h2 {
+  color: #ff0066;
+  text-shadow: 0 0 10px #ff0066, 0 0 20px #cc0000, 0 0 30px #ff4500, 2px 2px 0px #000;
+}
+
+/* Tema Space (Login/Register) */
+.theme-space {
+  background: linear-gradient(135deg, #000000 0%, #000033 50%, #000000 100%);
+  color: #00ffff;
+}
+
+.theme-space h1,
+.theme-space h2 {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ff00, 0 0 30px #663399, 2px 2px 0px #000;
+}
+
+/* Tema Retro General */
+.theme-retro {
+  background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #000033 100%);
+  color: #00ffff;
 }

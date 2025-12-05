@@ -7,6 +7,9 @@ import postService from '../services/postService'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import PostList from '../components/post/PostList'
 
+/**
+ * ForumDetailsPage con tema Adventure
+ */
 const ForumDetailsPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -62,111 +65,180 @@ const ForumDetailsPage = () => {
   }
 
   if (loading) {
-    return <LoadingSpinner />
+    return (
+      <div className="theme-adventure min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-spin">🏺</div>
+          <p className="text-adventure-gold font-retro text-sm uppercase tracking-wider">CARGANDO AVENTURA...</p>
+        </div>
+      </div>
+    )
   }
 
   const isForumAuthor = currentUser && forum.createdBy === currentUser.id
   const canEditForum = isForumAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
 
-  // Componente para mostrar cuando no hay publicaciones
   const EmptyPostsMessage = () => (
-    <div className="text-center py-8 bg-gray-50 rounded-lg">
-      <p className="text-gray-500 mb-4">Aún no hay publicaciones en este foro</p>
+    <div className="text-center py-12 card border-adventure-gold">
+      <div className="text-5xl mb-4">🗺️</div>
+      <p className="text-adventure-light font-retro text-sm uppercase tracking-wider mb-6">
+        Aún no hay publicaciones en este foro
+      </p>
       {isAuthenticated ? (
         <Link 
           to={`/forums/${id}/posts/create`}
-          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+          className="btn btn-primary text-adventure-dark border-adventure-gold"
         >
-          Sé el primero en publicar
+          <span className="flex items-center space-x-2">
+            <span>✍️</span>
+            <span>SÉ EL PRIMERO</span>
+          </span>
         </Link>
       ) : (
         <Link 
           to="/login"
-          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+          className="btn btn-outline text-adventure-gold border-adventure-gold"
         >
-          Inicia sesión para publicar
+          <span className="flex items-center space-x-2">
+            <span>🔐</span>
+            <span>INICIA SESIÓN</span>
+          </span>
         </Link>
       )}
     </div>
-  );
+  )
 
-  // Renderiza el contenido de las publicaciones basado en el estado
   const renderPostContent = () => {
     if (postLoading) {
-      return <LoadingSpinner />;
+      return (
+        <div className="text-center py-12">
+          <div className="text-5xl mb-4 animate-spin">⚱️</div>
+          <p className="text-adventure-gold font-retro text-xs uppercase">CARGANDO...</p>
+        </div>
+      )
     } 
     
     if (posts.length > 0) {
-      return <PostList posts={posts} />;
+      return <PostList posts={posts} />
     }
     
-    return <EmptyPostsMessage />;
-  };
+    return <EmptyPostsMessage />
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        {/* Cabecera del foro */}
-        <div className="relative">
-          {forum.imagePath && (
-            <div className="h-48 bg-gradient-to-r from-primary-600 to-primary-800 relative">
-              <img
-                src={forum.imagePath}
-                alt={forum.title}
-                className="w-full h-full object-cover opacity-50"
-              />
-            </div>
-          )}
-          
-          {!forum.imagePath && (
-            <div className="h-32 bg-gradient-to-r from-primary-600 to-primary-800"></div>
-          )}
-          
-          <div className={`px-6 py-4 ${forum.imagePath ? '-mt-16' : ''}`}>
-            <h1 className={`text-3xl font-bold ${forum.imagePath ? 'text-white' : ''}`}>
-              {forum.title}
-            </h1>
+    <div className="theme-adventure min-h-screen py-8 relative overflow-hidden">
+      {/* Efectos de fondo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-3xl animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          >
+            {['🏺', '🗺️', '⚱️'][Math.floor(Math.random() * 3)]}
           </div>
-        </div>
-        
-        {/* Contenido del foro */}
-        <div className="px-6 py-4">
-          <p className="text-gray-700 mb-4">{forum.description}</p>
-          
-          {forum.rules && (
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold mb-2">Reglas del foro</h3>
-              <div className="text-gray-700 whitespace-pre-line">{forum.rules}</div>
-            </div>
-          )}
-          
-          {/* Acciones */}
-          <div className="flex flex-wrap justify-between items-center mt-4 mb-6">
-            <div>
-              {canEditForum && (
-                <div className="flex space-x-2">
-                  <Link
-                    to={`/forums/${id}/edit`}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Editar foro
-                  </Link>
-                  <button
-                    onClick={handleDeleteForum}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-                  >
-                    Eliminar foro
-                  </button>
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header del foro */}
+        <div className="card border-adventure-gold mb-8 animate-fade-in">
+          <div className="relative">
+            {forum.imagePath && (
+              <div className="h-48 bg-gradient-to-r from-adventure-brown to-adventure-dark relative overflow-hidden">
+                <img
+                  src={forum.imagePath}
+                  alt={forum.title}
+                  className="w-full h-full object-cover opacity-60"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-adventure-dark to-transparent"></div>
+              </div>
+            )}
+            
+            {!forum.imagePath && (
+              <div className="h-32 bg-gradient-to-r from-adventure-brown to-adventure-dark flex items-center justify-center">
+                <span className="text-6xl">🏺</span>
+              </div>
+            )}
+            
+            <div className={`px-6 py-6 ${forum.imagePath ? 'absolute bottom-0 left-0 right-0' : ''}`}>
+              <h1 className={`text-3xl md:text-4xl font-display ${forum.imagePath ? 'text-adventure-gold' : 'text-adventure-gold'} neon-text mb-2`}>
+                {forum.title}
+              </h1>
+              {forum.category && (
+                <div className="inline-block px-3 py-1 bg-adventure-gold/20 border border-adventure-gold text-adventure-gold font-retro text-xs uppercase tracking-wider">
+                  {forum.category.name}
                 </div>
               )}
             </div>
           </div>
           
-          {/* Lista de publicaciones */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">Publicaciones</h2>
-            {renderPostContent()}
+          {/* Descripción */}
+          <div className="px-6 py-4 border-t-2 border-adventure-gold/30">
+            <p className="text-adventure-light font-retro text-sm leading-relaxed mb-4">
+              {forum.description}
+            </p>
+            
+            {forum.rules && (
+              <div className="mt-6 p-4 bg-adventure-dark/50 border-2 border-adventure-gold/30">
+                <h3 className="text-adventure-gold font-display text-sm uppercase tracking-wider mb-3">
+                  📜 REGLAS DEL FORO
+                </h3>
+                <div className="text-adventure-light font-retro text-xs whitespace-pre-line leading-relaxed">
+                  {forum.rules}
+                </div>
+              </div>
+            )}
+            
+            {/* Acciones */}
+            {canEditForum && (
+              <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t-2 border-adventure-gold/30">
+                <Link
+                  to={`/forums/${id}/edit`}
+                  className="btn btn-outline text-adventure-gold border-adventure-gold px-4 py-2"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>✏️</span>
+                    <span>EDITAR</span>
+                  </span>
+                </Link>
+                <button
+                  onClick={handleDeleteForum}
+                  className="btn btn-outline text-tech-red border-tech-red px-4 py-2"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>🗑️</span>
+                    <span>ELIMINAR</span>
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
+        </div>
+        
+        {/* Lista de publicaciones */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+              PUBLICACIONES
+            </h2>
+            {isAuthenticated && (
+              <Link
+                to={`/forums/${id}/posts/create`}
+                className="btn btn-primary text-adventure-dark border-adventure-gold"
+              >
+                <span className="flex items-center space-x-2">
+                  <span>➕</span>
+                  <span>NUEVA</span>
+                </span>
+              </Link>
+            )}
+          </div>
+          {renderPostContent()}
         </div>
       </div>
     </div>
