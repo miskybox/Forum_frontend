@@ -66,9 +66,9 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {[
-                { to: '/privacy', label: 'Privacidad', icon: '🔒' },
-                { to: '/terms', label: 'Términos', icon: '📜' },
-                { to: '/cookies', label: 'Cookies', icon: '🍪' },
+                { to: '/about', label: 'Acerca de', icon: 'ℹ️' },
+                { to: '/contact', label: 'Contacto', icon: '📧' },
+                { to: '/help', label: 'Ayuda', icon: '❓' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link 

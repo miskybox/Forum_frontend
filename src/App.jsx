@@ -32,6 +32,21 @@ import TriviaPlayPage from './pages/trivia/TriviaPlayPage';
 import TriviaLeaderboardPage from './pages/trivia/TriviaLeaderboardPage';
 import TriviaInfinitePage from './pages/trivia/TriviaInfinitePage';
 
+// Dashboards
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import ModeratorDashboardPage from './pages/ModeratorDashboardPage';
+
+// Páginas de Blog
+import BlogHomePage from './pages/blog/BlogHomePage';
+import BlogPostPage from './pages/blog/BlogPostPage';
+import BlogCategoryPage from './pages/blog/BlogCategoryPage';
+import BlogSearchPage from './pages/blog/BlogSearchPage';
+
+// Páginas de Información
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import HelpPage from './pages/HelpPage';
+
 
 function App() {
   const { theme } = useTheme();
@@ -76,6 +91,17 @@ function App() {
             </ProtectedRoute>
           } />
           
+          {/* Rutas de Blog */}
+          <Route path="/blog" element={<BlogHomePage />} />
+          <Route path="/blog/search" element={<BlogSearchPage />} />
+          <Route path="/blog/category/:slug" element={<BlogCategoryPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          
+          {/* Rutas de Información */}
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          
           {/* Rutas protegidas (requieren autenticación) */}
           <Route path="/profile" element={
             <ProtectedRoute>
@@ -100,6 +126,18 @@ function App() {
           <Route path="/posts/:id/edit" element={
             <ProtectedRoute>
               <PostEditPage />
+            </ProtectedRoute>
+          } />
+          
+          {/* Dashboards */}
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute requiredRoles={['ROLE_ADMIN']}>
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/moderator/dashboard" element={
+            <ProtectedRoute requiredRoles={['ROLE_MODERATOR', 'ROLE_ADMIN']}>
+              <ModeratorDashboardPage />
             </ProtectedRoute>
           } />
           

@@ -55,12 +55,23 @@ const userService = {
   
   changePassword: async (id, currentPassword, newPassword) => {
     try {
-      const response = await api.put(`/users/${id}/change-password`, null, {
-        params: { currentPassword, newPassword }
+      const response = await api.put(`/users/${id}/change-password`, {
+        currentPassword,
+        newPassword
       })
       return response.data
     } catch (error) {
       console.error(`Error al cambiar contraseña del usuario con id ${id}:`, error)
+      throw error
+    }
+  },
+  
+  updateUserRoles: async (id, roles) => {
+    try {
+      const response = await api.put(`/users/${id}/roles`, roles)
+      return response.data
+    } catch (error) {
+      console.error(`Error al actualizar roles del usuario con id ${id}:`, error)
       throw error
     }
   }

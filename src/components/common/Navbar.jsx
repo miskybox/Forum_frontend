@@ -157,6 +157,26 @@ const Navbar = () => {
                     >
                       ✍️ {t('nav.createForum')}
                     </Link>
+                    {currentUser?.roles?.includes('ROLE_MODERATOR') && (
+                      <Link
+                        to="/moderator/dashboard"
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                      >
+                        🛡️ Panel Moderador
+                      </Link>
+                    )}
+                    {currentUser?.roles?.includes('ROLE_ADMIN') && (
+                      <Link
+                        to="/admin/dashboard"
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                      >
+                        ⚙️ Panel Admin
+                      </Link>
+                    )}
                     <div className="border-t border-current opacity-30 my-1"></div>
                     <button
                       onClick={() => {
