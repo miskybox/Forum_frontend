@@ -17,7 +17,20 @@
       "Bash(git checkout:*)",
       "Bash(git merge:*)",
       "Bash(git fetch:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(npm:*)",
+      "Bash(./mvnw.cmd test:*)",
+      "Bash(./mvnw.cmd spring-boot:run:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbGF1ZGV0ZXN0ZXIxNzY1MTI0ODU4IiwiZXhwIjoxNzY1MTI1NDY4fQ.VhiF3rZwNTCFKig5ca2gUmbuVSdDVuYiS0QP__z3tI7okJCmXqSNOL9k5ExJw1qf3iwHQZAi5r_V8oxNd2aQpA\")",
+      "Bash(npx playwright test:*)",
+      "Bash(psql:*)",
+      "Bash(timeout 10 psql:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(ping:*)",
+      "Bash(net stop postgresql-x64-17)"
     ],
     "deny": [],
     "ask": []
