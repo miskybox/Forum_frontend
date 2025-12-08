@@ -96,3 +96,4 @@
 Todas las rutas están correctamente definidas y todos los links internos apuntan a rutas existentes.
 No hay links rotos o rutas 404 inesperadas.
 
+
