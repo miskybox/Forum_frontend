@@ -30,7 +30,13 @@
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
       "Bash(ping:*)",
-      "Bash(net stop postgresql-x64-17)"
+      "Bash(net stop postgresql-x64-17)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlcmFwaTIwMjUiLCJleHAiOjE3NjUyMTc1NjJ9.ntUWAOmGv8U28QzFmfOo9XFrxRNTNzEf2RLANxL6GBa6CPm4XeAuZf5GIuFxuyCeINZsNzquW0XmAurZKxBPwA\")",
+      "Bash(grep:*)",
+      "Bash(for file in CommentRepositoryTest.java PostRepositoryTest.java)",
+      "Bash(do echo \"Processing $file...\")",
+      "Bash(done)",
+      "Bash(timeout 120 ./mvnw.cmd test:*)"
     ],
     "deny": [],
     "ask": []
