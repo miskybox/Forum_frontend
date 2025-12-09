@@ -38,9 +38,9 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
     if (answered) return
     setAnswered(true)
     onAnswer({
-      questionId: question.id,
+      questionId: Number(question.id),
       selectedAnswer: null,
-      responseTimeMs: (question.timeLimitSeconds || timeLimit) * 1000,
+      responseTimeMs: Number((question.timeLimitSeconds || timeLimit) * 1000),
       timedOut: true,
       hintUsed: false
     })
@@ -55,9 +55,9 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
     const responseTime = Date.now() - startTime
 
     onAnswer({
-      questionId: question.id,
+      questionId: Number(question.id),
       selectedAnswer: answer,
-      responseTimeMs: responseTime,
+      responseTimeMs: Number(Math.round(responseTime)),
       timedOut: false,
       hintUsed: false
     })

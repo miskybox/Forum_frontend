@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useLanguage } from '../../contexts/LanguageContext'
 import CountrySelector from './CountrySelector'
 import travelService from '../../services/travelService'
 import toast from 'react-hot-toast'
@@ -8,6 +9,7 @@ import toast from 'react-hot-toast'
  * Modal para agregar/editar un lugar visitado - Tema Jungle (Jumanji)
  */
 const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
+  const { t } = useLanguage()
   const [selectedCountry, setSelectedCountry] = useState(editPlace?.country || null)
   const [formData, setFormData] = useState({
     cityName: editPlace?.cityName || '',
@@ -20,17 +22,17 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
   const [loading, setLoading] = useState(false)
 
   const statusOptions = [
-    { value: 'VISITED', label: '✅ VISITADO', icon: '✅' },
-    { value: 'WISHLIST', label: '⭐ QUIERO IR', icon: '⭐' },
-    { value: 'LIVED', label: '🏠 HE VIVIDO', icon: '🏠' },
-    { value: 'LIVING', label: '📍 VIVO AQUÍ', icon: '📍' }
+    { value: 'VISITED', label: `✅ ${t('travel.visited').toUpperCase()}`, icon: '✅' },
+    { value: 'WISHLIST', label: `⭐ ${t('travel.wantToGo').toUpperCase()}`, icon: '⭐' },
+    { value: 'LIVED', label: `🏠 ${t('travel.lived').toUpperCase()}`, icon: '🏠' },
+    { value: 'LIVING', label: `📍 ${t('travel.living').toUpperCase()}`, icon: '📍' }
   ]
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!selectedCountry) {
-      toast.error('Selecciona un país')
+      toast.error(`⚠️ ${t('travel.selectCountry')}`)
       return
     }
 
@@ -39,27 +41,42 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     try {
       const placeData = {
         countryId: selectedCountry.id,
-        cityName: formData.cityName || null,
+        cityName: formData.cityName.trim() || null,
         status: formData.status,
         visitDate: formData.visitDate || null,
-        notes: formData.notes || null,
-        rating: formData.rating || null,
+        notes: formData.notes.trim() || null,
+        rating: formData.rating > 0 ? formData.rating : null,
         favorite: formData.favorite
       }
 
+      console.log('Enviando datos del lugar:', placeData)
+
       if (editPlace) {
-        await travelService.updatePlace(editPlace.id, placeData)
-        toast.success('Lugar actualizado')
+        const result = await travelService.updatePlace(editPlace.id, placeData)
+        console.log('Lugar actualizado:', result)
+        toast.success(`✅ ${t('travel.placeUpdated')}`)
       } else {
-        await travelService.addPlace(placeData)
-        toast.success(`${selectedCountry.flagEmoji} ${selectedCountry.name} agregado a tu mapa!`)
+        const result = await travelService.addPlace(placeData)
+        console.log('Lugar agregado:', result)
+        toast.success(`✅ ${selectedCountry.flagEmoji} ${selectedCountry.name} ${t('travel.placeAdded')}`)
       }
 
       onSuccess()
       onClose()
     } catch (error) {
-      console.error('Error:', error)
-      toast.error(error.response?.data?.message || 'Error al guardar')
+      console.error('Error al guardar lugar:', error)
+      console.error('Detalles del error:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.error ||
+                          error.message ||
+                          t('travel.errorSaving')
+
+      toast.error(`⚠️ ${errorMessage}`, { duration: 6000 })
     } finally {
       setLoading(false)
     }
@@ -82,16 +99,16 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl md:text-2xl font-display text-jungle-gold neon-text uppercase">
-                {editPlace ? '✏️ EDITAR LUGAR' : '🌍 AGREGAR LUGAR'}
+                {editPlace ? `✏️ ${t('travel.editingPlace').toUpperCase()}` : `🌍 ${t('travel.addingPlace').toUpperCase()}`}
               </h2>
               <p className="text-jungle-leaf font-retro text-xs uppercase tracking-wider opacity-80 mt-1">
-                {editPlace ? 'Modifica los detalles' : 'Añade un nuevo destino'}
+                {editPlace ? t('travel.modifyDetails') : t('travel.addNewDestination')}
               </p>
             </div>
             <button
               onClick={onClose}
               className="text-jungle-gold hover:text-jungle-leaf text-2xl transition-colors"
-              aria-label="Cerrar"
+              aria-label={t('common.close')}
             >
               ✕
             </button>
@@ -103,7 +120,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           {/* Selector de país */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              PAÍS <span className="text-tech-red">*</span>
+              {t('travel.country').toUpperCase()} <span className="text-tech-red">*</span>
             </label>
             <CountrySelector 
               onSelect={setSelectedCountry}
@@ -114,7 +131,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           {/* Ciudad (opcional) */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              CIUDAD (OPCIONAL)
+              {t('travel.cityOptional').toUpperCase()}
             </label>
             <input
               type="text"
@@ -128,7 +145,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           {/* Estado */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              ESTADO
+              {t('travel.status').toUpperCase()}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {statusOptions.map(option => (
@@ -154,20 +171,37 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           {/* Fecha de visita */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              FECHA DE VISITA
+              {t('travel.visitDateOptional').toUpperCase()}
             </label>
-            <input
-              type="date"
-              value={formData.visitDate}
-              onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
-              className="input w-full border-jungle-gold"
-            />
+            <div className="flex gap-2">
+              <input
+                type="date"
+                value={formData.visitDate}
+                onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
+                max={new Date().toISOString().split('T')[0]}
+                className="input w-full border-jungle-gold"
+                placeholder="Selecciona una fecha"
+              />
+              {formData.visitDate && (
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, visitDate: '' })}
+                  className="btn btn-outline text-jungle-gold border-jungle-gold px-4"
+                  title={t('travel.remove')}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+            <p className="text-jungle-leaf/60 text-xs mt-1 font-retro">
+              {t('travel.visitDateHelper')}
+            </p>
           </div>
 
           {/* Rating */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              PUNTUACIÓN
+              {t('travel.rating').toUpperCase()}
             </label>
             <div className="flex gap-2 items-center">
               {[1, 2, 3, 4, 5].map(star => (
@@ -188,7 +222,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   onClick={() => setFormData({ ...formData, rating: 0 })}
                   className="text-sm font-retro text-jungle-leaf hover:text-jungle-gold ml-2 uppercase text-xs"
                 >
-                  QUITAR
+                  {t('travel.remove').toUpperCase()}
                 </button>
               )}
             </div>
@@ -197,12 +231,12 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
           {/* Notas */}
           <div>
             <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              NOTAS
+              {t('travel.notes').toUpperCase()}
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              placeholder="¿Qué te pareció? ¿Algún lugar especial?"
+              placeholder={t('travel.notesPlaceholder')}
               rows={3}
               className="input w-full border-jungle-gold resize-none"
             />
@@ -217,7 +251,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               className="w-5 h-5 rounded border-jungle-gold text-jungle-gold focus:ring-jungle-gold"
             />
             <span className="text-jungle-leaf font-retro text-xs uppercase tracking-wider">
-              ❤️ MARCAR COMO FAVORITO
+              ❤️ {t('travel.markAsFavorite').toUpperCase()}
             </span>
           </label>
 
@@ -230,7 +264,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             >
               <span className="flex items-center justify-center space-x-2">
                 <span>✕</span>
-                <span>CANCELAR</span>
+                <span>{t('common.cancel').toUpperCase()}</span>
               </span>
             </button>
             <button
@@ -241,12 +275,12 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               {loading ? (
                 <span className="flex items-center justify-center space-x-2">
                   <span className="animate-spin">🌴</span>
-                  <span>GUARDANDO...</span>
+                  <span>{t('travel.saving').toUpperCase()}</span>
                 </span>
               ) : (
                 <span className="flex items-center justify-center space-x-2">
                   <span>{editPlace ? '✏️' : '➕'}</span>
-                  <span>{editPlace ? 'ACTUALIZAR' : 'AGREGAR'}</span>
+                  <span>{editPlace ? t('travel.update').toUpperCase() : t('travel.add').toUpperCase()}</span>
                 </span>
               )}
             </button>

@@ -48,13 +48,16 @@ const TriviaPlayPage = () => {
 
   const handleAnswer = async (answerData) => {
     try {
+      console.log('Enviando respuesta:', answerData)
       const response = await triviaService.answerQuestion({
         gameId: parseInt(gameId),
         ...answerData
       })
-      
+
+      console.log('Respuesta del servidor:', response)
+
       setResult(response)
-      
+
       // Actualizar estado del juego
       setGame(prev => ({
         ...prev,
@@ -64,13 +67,34 @@ const TriviaPlayPage = () => {
       }))
 
       if (!response.hasNextQuestion) {
-        // Finalizar partida
-        const finalGame = await triviaService.finishGame(gameId)
-        setGame(finalGame)
+        // Finalizar partida después de mostrar el resultado
+        setTimeout(async () => {
+          const finalGame = await triviaService.finishGame(gameId)
+          setGame(finalGame)
+          setGameFinished(true)
+        }, 100)
       }
     } catch (error) {
       console.error('Error enviando respuesta:', error)
-      toast.error('Error al enviar respuesta')
+      console.error('Detalles del error:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+
+      // Mostrar mensaje de error específico
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.error ||
+                          'Error al enviar respuesta. Por favor, intenta de nuevo.'
+
+      toast.error(errorMessage, { duration: 5000 })
+
+      // Permitir continuar a pesar del error
+      // Si hay siguiente pregunta, cargarla
+      if (result?.hasNextQuestion) {
+        toast.info('Continuando con la siguiente pregunta...', { duration: 3000 })
+        handleNext()
+      }
     }
   }
 
@@ -160,13 +184,15 @@ const TriviaPlayPage = () => {
       {/* Contenido principal */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {result ? (
-          <TriviaResult 
+          // Mostrar SOLO el resultado cuando hay uno
+          <TriviaResult
             result={result}
             onNext={handleNext}
             isLastQuestion={!result.hasNextQuestion}
           />
         ) : currentQuestion ? (
-          <TriviaQuestion 
+          // Mostrar SOLO la pregunta cuando no hay resultado
+          <TriviaQuestion
             question={currentQuestion}
             onAnswer={handleAnswer}
           />

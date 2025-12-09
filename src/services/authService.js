@@ -6,10 +6,29 @@ const authService = {
     try {
       console.log('Enviando datos de registro:', userData)
       const response = await api.post('/auth/register', userData)
+      console.log('Respuesta del registro:', response.data)
       return response.data
     } catch (error) {
-      console.error('Error en registro:', error.response?.data || error.message)
-      throw error
+      console.error('Error en registro - Detalles completos:', {
+        message: error.message,
+        response: error.response,
+        status: error.response?.status,
+        data: error.response?.data,
+        request: error.request
+      })
+      // Asegurar que el error se propague con toda la información
+      if (error.response) {
+        // Error del servidor - mantener el error original
+        throw error
+      } else if (error.request) {
+        // Error de red - crear un error más descriptivo
+        const networkError = new Error('No se pudo conectar con el servidor. Verifica que el backend esté corriendo.')
+        networkError.request = error.request
+        throw networkError
+      } else {
+        // Error en la configuración de la petición
+        throw error
+      }
     }
   },
 

@@ -50,8 +50,8 @@ export const AuthProvider = ({ children }) => {
 
               const userInfo = await authService.getCurrentUser()
               setCurrentUser(userInfo)
-            } catch (refreshErr) {
-              setError(refreshErr.response?.data?.message || 'Error al refrescar el token')
+            } catch (error_) {
+              setError(error_.response?.data?.message || 'Error al refrescar el token')
               logout()
             }
           } else {

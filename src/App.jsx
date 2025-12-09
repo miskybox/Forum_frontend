@@ -146,7 +146,34 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <Toaster position="bottom-right" />
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#1a1a2e',
+            color: '#fff',
+            border: '1px solid #00ffff',
+            padding: '16px',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: {
+              primary: '#00ff88',
+              secondary: '#1a1a2e',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ff4444',
+              secondary: '#1a1a2e',
+            },
+            style: {
+              border: '1px solid #ff4444',
+            },
+          },
+        }}
+      />
     </>
   )
 }

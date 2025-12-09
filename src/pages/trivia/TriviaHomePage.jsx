@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { useLanguage } from '../../contexts/LanguageContext'
 import TriviaStats from '../../components/trivia/TriviaStats'
 import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
@@ -10,6 +11,7 @@ import toast from 'react-hot-toast'
  */
 const TriviaHomePage = () => {
   const { isAuthenticated } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -66,30 +68,30 @@ const TriviaHomePage = () => {
     {
       mode: 'QUICK',
       icon: '⚡',
-      title: 'QUICK',
-      description: '10 preguntas aleatorias',
+      title: t('trivia.quick'),
+      description: `10 ${t('trivia.randomQuestions')}`,
       questions: 10
     },
     {
       mode: 'CHALLENGE',
       icon: '🏆',
-      title: 'CHALLENGE',
-      description: '20 preguntas desafiantes',
+      title: t('trivia.challenge'),
+      description: `20 ${t('trivia.challengingQuestions')}`,
       questions: 20
     },
     {
       mode: 'INFINITE',
       icon: '♾️',
-      title: 'INFINITE',
-      description: 'Preguntas ilimitadas',
+      title: t('trivia.infinite'),
+      description: t('trivia.unlimitedQuestions'),
       questions: '∞',
       special: true
     },
     {
       mode: 'DAILY',
       icon: '📅',
-      title: 'DAILY',
-      description: 'Trivia diaria especial',
+      title: t('trivia.daily'),
+      description: t('trivia.dailySpecial'),
       questions: 15
     }
   ]
@@ -128,11 +130,11 @@ const TriviaHomePage = () => {
         <div className="text-center mb-12 animate-fade-in">
           <div className="text-6xl mb-4 animate-pulse-neon">⚡</div>
           <h1 className="text-4xl md:text-6xl font-display text-future-neon neon-text mb-4">
-            TRIVIA GEOGRÁFICA
+            {t('trivia.title').toUpperCase()}
           </h1>
               <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-space-neon to-transparent mb-4"></div>
               <p className="text-space-green font-retro text-sm uppercase tracking-wider opacity-80">
-                SPACE MODE
+                {t('trivia.spaceMode')}
               </p>
         </div>
 
@@ -140,7 +142,7 @@ const TriviaHomePage = () => {
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
             <h2 className="text-2xl font-display text-space-neon neon-text mb-6">
-              ELIGE UN MODO
+              {t('trivia.chooseMode').toUpperCase()}
             </h2>
             
             <div className="grid md:grid-cols-2 gap-4">
@@ -162,7 +164,7 @@ const TriviaHomePage = () => {
                       {mode.description}
                     </p>
                     <div className="flex items-center justify-between text-space-green font-retro text-xs">
-                      <span>{mode.questions} preguntas</span>
+                      <span>{mode.questions} {t('trivia.questions')}</span>
                       <span className="text-space-neon group-hover:text-space-purple">→</span>
                     </div>
                   </div>
@@ -174,7 +176,7 @@ const TriviaHomePage = () => {
             <div className="card border-space-purple">
               <div className="p-6">
                 <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
-                  🌎 JUGAR POR CONTINENTE
+                  🌎 {t('trivia.playByContinent').toUpperCase()}
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {['Europa', 'América', 'Asia', 'África', 'Oceanía'].map(continent => (
@@ -200,10 +202,10 @@ const TriviaHomePage = () => {
                 <div className="p-6 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🏆</span>
                   <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
-                    RANKING
+                    {t('trivia.ranking').toUpperCase()}
                   </h3>
                   <p className="text-space-green font-retro text-xs opacity-70">
-                    Compite con otros
+                    {t('trivia.competeWithOthers')}
                   </p>
                 </div>
               </Link>
@@ -215,10 +217,10 @@ const TriviaHomePage = () => {
                 <div className="p-6 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🗺️</span>
                   <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
-                    MI MAPA
+                    {t('trivia.myMap').toUpperCase()}
                   </h3>
                   <p className="text-space-green font-retro text-xs opacity-70">
-                    Registra viajes
+                    {t('trivia.registerTrips')}
                   </p>
                 </div>
               </Link>
@@ -230,7 +232,7 @@ const TriviaHomePage = () => {
             {loading ? (
               <div className="card border-space-neon text-center py-12">
                 <div className="text-5xl mb-4 animate-spin">⚡</div>
-                <p className="text-space-green font-retro text-xs uppercase">CARGANDO...</p>
+                <p className="text-space-green font-retro text-xs uppercase">{t('trivia.loading').toUpperCase()}</p>
               </div>
             ) : isAuthenticated && stats ? (
               <TriviaStats stats={stats} />
@@ -238,10 +240,10 @@ const TriviaHomePage = () => {
               <div className="card border-space-neon text-center p-6">
                 <span className="text-5xl mb-4 block">🎮</span>
                 <h3 className="text-xl font-display text-space-neon neon-text mb-2 uppercase">
-                  ÚNETE
+                  {t('trivia.join').toUpperCase()}
                 </h3>
                 <p className="text-space-green font-retro text-xs mb-4 opacity-70">
-                  Inicia sesión para guardar progreso
+                  {t('trivia.loginToSaveProgress')}
                 </p>
                 <Link
                   to="/login"
@@ -249,7 +251,7 @@ const TriviaHomePage = () => {
                 >
                   <span className="flex items-center space-x-2">
                     <span>👽</span>
-                    <span>LOGIN</span>
+                    <span>{t('trivia.login')}</span>
                   </span>
                 </Link>
               </div>
@@ -259,24 +261,24 @@ const TriviaHomePage = () => {
             <div className="card border-space-purple">
               <div className="p-6">
                 <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
-                  💡 CONSEJOS
+                  💡 {t('trivia.tips.title').toUpperCase()}
                 </h3>
                 <ul className="space-y-3 text-space-green font-retro text-xs">
                   <li className="flex items-start gap-2">
                     <span>⚡</span>
-                    <span>Responde rápido para puntos extra</span>
+                    <span>{t('trivia.tips.speedBonus')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span>🔥</span>
-                    <span>Mantén tu racha activa</span>
+                    <span>{t('trivia.tips.keepStreak')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span>📅</span>
-                    <span>Juega la trivia diaria</span>
+                    <span>{t('trivia.tips.playDaily')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span>🏆</span>
-                    <span>Partidas perfectas suben nivel</span>
+                    <span>{t('trivia.tips.perfectGames')}</span>
                   </li>
                 </ul>
               </div>

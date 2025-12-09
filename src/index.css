@@ -1,30 +1,32 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
-
-/* Cursor normal - sin personalización */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
 
 /* ============================================
-   ESTILOS BASE RETRO
+   ADVENTURE EXPLORER RETRO THEME
+   Inspirado en Indiana Jones, Jumanji, Los Goonies
+   Colores cálidos, accesibles, estilo ochentero/noventero
    ============================================ */
+
 html {
   scroll-behavior: smooth;
-  background: #000;
+  background: #1a1410;
   overflow-x: hidden;
 }
 
 body {
-  color: #e0e8e8;
-  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  color: #fef9f0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
+  /* Fondo estilo pergamino antiguo con gradiente cálido */
+  background: linear-gradient(135deg, #1a1410 0%, #2d2419 50%, #1a1410 100%);
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Efecto de scanlines retro - Reducido para accesibilidad */
+/* Textura sutil de papel antiguo - MUY REDUCIDA para no cansar */
 body::before {
   content: '';
   position: fixed;
@@ -32,81 +34,67 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0.05) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(232, 144, 32, 0.02),
+      rgba(232, 144, 32, 0.02) 1px,
+      transparent 1px,
+      transparent 3px
+    );
   pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: overlay;
-}
-
-/* Efecto de ruido/VHS - Reducido para accesibilidad */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.01'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 10001;
-  animation: scan 8s linear infinite;
+  z-index: 1;
+  opacity: 0.5;
 }
 
 /* ============================================
-   TIPOGRAFÍAS RETRO
+   TIPOGRAFÍAS - Legibles pero con carácter
    ============================================ */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', 'Segoe UI', 'Arial', sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
+  font-family: 'Poppins', 'Impact', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #e89020; /* Dorado principal */
 }
 
 h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #e8f0f0;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 h2 {
-  font-size: 1.875rem;
-  font-weight: 600;
-  color: #d8e8e8;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
-  color: #c8d8d8;
 }
 
 h4 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #b8c8c8;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 @media (min-width: 768px) {
   h1 { font-size: 3rem; }
   h2 { font-size: 2.25rem; }
-  h3 { font-size: 1.75rem; }
+  h3 { font-size: 1.875rem; }
   h4 { font-size: 1.5rem; }
 }
 
 /* ============================================
-   BOTONES RETRO
+   BOTONES ESTILO AVENTURA RETRO
    ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 6px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 1rem;
   font-weight: 600;
@@ -114,186 +102,195 @@ h4 {
   border: 2px solid;
   position: relative;
   transition: all 0.2s ease;
-  overflow: hidden;
   text-decoration: none;
   cursor: pointer;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s;
-}
-
-.btn:hover::before {
-  left: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #9966aa 0%, #558888 100%);
-  border-color: #558888;
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #e89020 0%, #d67415 100%);
+  border-color: #b35713;
+  color: #1a1410;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #f0af48 0%, #e89020 100%);
+  box-shadow:
+    0 6px 12px rgba(232, 144, 32, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
   transform: translateY(-2px);
 }
 
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .btn-secondary {
-  background: linear-gradient(135deg, #cc7733 0%, #aa9944 100%);
-  border-color: #aa9944;
-  color: #000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #4a9b4f 0%, #357a39 100%);
+  border-color: #2c5f2f;
+  color: #fef9f0;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .btn-secondary:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #75b878 0%, #4a9b4f 100%);
+  box-shadow:
+    0 6px 12px rgba(74, 155, 79, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
   transform: translateY(-2px);
 }
 
 .btn-outline {
   background: transparent;
   border-color: currentColor;
-  color: currentColor;
+  color: #e89020;
 }
 
 .btn-outline:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(232, 144, 32, 0.1);
+  border-color: #e89020;
 }
 
 /* ============================================
-   INPUTS RETRO
+   INPUTS ESTILO PERGAMINO
    ============================================ */
-.input {
+.input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
   display: flex;
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 2px solid #3a4a5a;
-  background: rgba(15, 20, 30, 0.9);
-  color: #e0e8e8;
+  border: 2px solid #8b6841;
+  background: rgba(47, 35, 25, 0.6);
+  color: #fef9f0;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 1rem;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 10;
 }
 
-.input:focus {
+.input:focus,
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
-  border-color: #5a7a9a;
-  background: rgba(20, 25, 35, 0.95);
-  box-shadow: 0 0 0 3px rgba(90, 122, 154, 0.2);
+  border-color: #e89020;
+  background: rgba(47, 35, 25, 0.8);
+  box-shadow:
+    0 0 0 3px rgba(232, 144, 32, 0.2),
+    0 4px 6px rgba(0,0,0,0.2);
 }
 
-.input::placeholder {
-  color: #8a9aaa;
+.input::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #c0a07e;
 }
-
 
 /* ============================================
-   CARDS RETRO
+   CARDS ESTILO MAPA ANTIGUO
    ============================================ */
 .card {
-  background: linear-gradient(135deg, rgba(15,15,20,0.95) 0%, rgba(20,15,30,0.95) 100%);
-  border: 1px solid #445566;
+  background: linear-gradient(135deg,
+    rgba(45, 35, 25, 0.95) 0%,
+    rgba(60, 45, 35, 0.95) 100%);
+  border: 2px solid #8b6841;
   border-radius: 8px;
   padding: 1.5rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(232, 144, 32, 0.1);
   transition: all 0.3s ease;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(0,255,255,0.1),
-    transparent
-  );
-  transform: rotate(45deg);
-  transition: all 0.5s;
 }
 
 .card:hover {
-  border-color: #667788;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  border-color: #a8825d;
+  box-shadow:
+    0 6px 20px rgba(232, 144, 32, 0.2),
+    inset 0 1px 0 rgba(232, 144, 32, 0.15);
   transform: translateY(-2px);
 }
 
-.card:hover::before {
-  animation: scan 2s linear infinite;
+/* Borde dorado en cards especiales */
+.card.border-primary,
+.card.border-jungle-gold {
+  border-color: #e89020;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.4),
+    0 0 20px rgba(232, 144, 32, 0.2);
 }
 
 /* ============================================
-   ENLACES RETRO
+   ENLACES ESTILO AVENTURA
    ============================================ */
 a {
-  color: #00cccc;
+  color: #f0af48;
   text-decoration: none;
   position: relative;
-  transition: all 0.3s ease;
-}
-
-a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #00ffff, #ff00ff);
-  transition: width 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 a:hover {
-  color: #cc66cc;
+  color: #e89020;
 }
 
-a:hover::after {
-  width: 100%;
+a:focus {
+  outline: 2px solid #e89020;
+  outline-offset: 2px;
 }
 
 /* ============================================
-   EFECTOS ESPECIALES
+   EFECTOS NEON SUAVES (No excesivos)
    ============================================ */
 .neon-text {
-  text-shadow: 0 0 2px rgba(255,255,255,0.3);
-}
-
-.retro-border {
-  border: 3px solid;
-  border-image: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff) 1;
-  position: relative;
-}
-
-.retro-border::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
-  z-index: -1;
-  filter: blur(10px);
-  opacity: 0.5;
+  text-shadow:
+    0 0 10px rgba(232, 144, 32, 0.3),
+    0 0 20px rgba(232, 144, 32, 0.2);
 }
 
 /* ============================================
-   UTILIDADES
+   SCROLLBAR ESTILO ANTIGUO
+   ============================================ */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2419;
+  border: 1px solid #8b6841;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #e89020, #b35713);
+  border: 1px solid #8b6841;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f0af48, #e89020);
+  box-shadow: 0 0 10px rgba(232, 144, 32, 0.3);
+}
+
+/* ============================================
+   UTILIDADES CONTENEDOR
    ============================================ */
 .container {
   width: 100%;
@@ -314,92 +311,134 @@ a:hover::after {
   }
 }
 
-/* Scrollbar retro */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #000;
-  border: 1px solid #00ffff;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00ffff, #ff00ff);
-  border: 1px solid #00ffff;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #ff00ff, #00ffff);
-  box-shadow: 0 0 10px currentColor;
-}
-
 /* ============================================
-   TEMAS POR SECCIÓN
+   TEMAS POR SECCIÓN (Variantes del tema principal)
    ============================================ */
 
-/* Tema Adventure */
-.theme-adventure {
-  background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #2c1810 100%);
-  color: #ffd700;
-}
-
-.theme-adventure h1,
-.theme-adventure h2 {
-  color: #d4a84b;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Tema Space */
-.theme-future {
-  background: linear-gradient(135deg, #001122 0%, #003366 50%, #001122 100%);
-  color: #00ffff;
-}
-
-.theme-future h1,
-.theme-future h2 {
-  color: #66cccc;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Tema Jungle */
-.theme-jungle {
-  background: linear-gradient(135deg, #0f5132 0%, #228b22 50%, #0f5132 100%);
-  color: #90ee90;
-}
-
-.theme-jungle h1,
-.theme-jungle h2 {
-  color: #b8963d;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Tema Tech */
-.theme-tech {
-  background: linear-gradient(135deg, #1a1a1a 0%, #000000 50%, #1a1a1a 100%);
-  color: #ff0066;
-}
-
-.theme-tech h1,
-.theme-tech h2 {
-  color: #cc5577;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Tema Space (Login/Register) */
+/* Theme Space - Para Trivia (mantener compatibilidad) */
 .theme-space {
-  background: linear-gradient(135deg, #000000 0%, #000033 50%, #000000 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
   color: #00ffff;
 }
 
 .theme-space h1,
-.theme-space h2 {
-  color: #66cccc;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+.theme-space h2,
+.theme-space h3 {
+  color: #00ffff;
 }
 
-/* Tema Retro General */
-.theme-retro {
-  background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #000033 100%);
+.theme-space .text-space-neon {
   color: #00ffff;
+}
+
+.theme-space .text-space-green {
+  color: #00ff00;
+}
+
+.theme-space .text-space-dark {
+  color: #000033;
+}
+
+.theme-space .border-space-neon {
+  border-color: #00ffff;
+}
+
+.theme-space .border-space-purple {
+  border-color: #8a2be2;
+}
+
+.theme-space .bg-space-dark {
+  background-color: #000033;
+}
+
+/* Theme Jungle - Para Travel Map (mantener compatibilidad) */
+.theme-jungle {
+  background: linear-gradient(135deg, #0f5132 0%, #1a7240 50%, #0f5132 100%);
+  color: #90ee90;
+}
+
+.theme-jungle h1,
+.theme-jungle h2,
+.theme-jungle h3 {
+  color: #daa520;
+}
+
+.theme-jungle .text-jungle-gold {
+  color: #daa520;
+}
+
+.theme-jungle .text-jungle-leaf {
+  color: #90ee90;
+}
+
+.theme-jungle .text-jungle-dark {
+  color: #0f5132;
+}
+
+.theme-jungle .border-jungle-gold {
+  border-color: #daa520;
+}
+
+.theme-jungle .bg-jungle-dark {
+  background-color: #0f5132;
+}
+
+.theme-jungle .bg-jungle-green {
+  background-color: #228b22;
+}
+
+/* ============================================
+   ACCESIBILIDAD - Contraste mínimo WCAG AA
+   ============================================ */
+
+/* Asegurar contraste en texto sobre fondos oscuros */
+.bg-dark, .bg-dark-lighter, .bg-dark-soft {
+  color: #fef9f0;
+}
+
+/* Asegurar contraste en texto sobre fondos claros */
+.bg-light, .bg-light-soft, .bg-light-muted {
+  color: #1a1410;
+}
+
+/* Estados focus visibles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #e89020;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMACIONES SUAVES (No cansadoras)
+   ============================================ */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+  }
 }
