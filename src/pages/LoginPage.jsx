@@ -17,7 +17,7 @@ const generateStars = () =>
 const STARS = generateStars()
 
 /**
- * LoginPage con tema Space/Alien retro
+ * LoginPage con tema Adventure Explorer Retro
  */
 const LoginPage = () => {
   const { isAuthenticated } = useAuth()
@@ -33,13 +33,13 @@ const LoginPage = () => {
   }, [isAuthenticated, navigate, location])
   
   return (
-    <div className="theme-space min-h-screen py-12 sm:py-16 lg:py-24 relative overflow-hidden">
-      {/* Efectos de fondo espacial */}
+    <div className="min-h-screen py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+      {/* Efectos de fondo sutiles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {STARS.map((star) => (
           <div
             key={star.id}
-            className="absolute w-1 h-1 bg-space-neon rounded-full opacity-60 animate-float"
+            className="absolute w-1 h-1 bg-primary-400 rounded-full opacity-60 animate-float"
             style={{
               left: `${star.left}%`,
               top: `${star.top}%`,
@@ -55,40 +55,40 @@ const LoginPage = () => {
           {/* Header */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="mb-6">
-              <div className="text-6xl mb-4 animate-pulse-neon">👽</div>
-              <h1 className="text-4xl md:text-5xl font-display text-space-neon neon-text mb-2">
+              <div className="text-6xl mb-4">🗺️</div>
+              <h1 className="text-4xl md:text-5xl font-display text-primary-500 font-bold tracking-wider mb-2">
                 {t('auth.loginTitle')}
               </h1>
-              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-space-neon to-transparent mb-4"></div>
-              <p className="text-sm font-retro text-space-green opacity-80 uppercase tracking-wider">
+              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-primary-400 to-transparent mb-4"></div>
+              <p className="text-sm font-bold text-secondary-500 opacity-80 uppercase tracking-wider">
                 {t('auth.loginTitle')}
               </p>
             </div>
           </div>
           
           {/* Formulario */}
-          <div className="card border-space-neon animate-slide-in relative z-50">
+          <div className="card border-primary-600 animate-slide-in relative z-50">
             <LoginForm />
           </div>
           
           {/* Links adicionales */}
           <div className="mt-8 text-center space-y-4">
-            <p className="text-sm font-retro text-space-neon opacity-70">
+            <p className="text-sm font-bold text-primary-400 opacity-70">
               {t('auth.noAccount')}
             </p>
-            <Link 
+            <Link
               to="/register"
-              className="inline-block btn btn-outline text-space-neon border-space-neon px-6 py-3"
+              className="inline-block btn btn-outline text-primary-400 border-primary-600 px-6 py-3"
             >
               <span className="flex items-center space-x-2">
-                <span>🚀</span>
+                <span>🗺️</span>
                 <span>{t('auth.registerButton')}</span>
               </span>
             </Link>
             <div className="pt-4">
-              <Link 
+              <Link
                 to="/"
-                className="text-sm font-retro text-space-green hover:text-space-neon transition-colors inline-flex items-center space-x-2"
+                className="text-sm font-bold text-secondary-500 hover:text-primary-400 transition-colors inline-flex items-center space-x-2"
               >
                 <span>←</span>
                 <span>{t('common.back')}</span>

@@ -6,8 +6,17 @@ import TriviaStats from '../../components/trivia/TriviaStats'
 import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
 
+// Generar partículas decorativas una sola vez
+const PARTICLES = Array.from({ length: 20 }).map((_, i) => ({
+  id: i,
+  left: Math.random() * 100,
+  top: Math.random() * 100,
+  delay: Math.random() * 3,
+  duration: 3 + Math.random() * 2,
+}))
+
 /**
- * TriviaHomePage con tema Space
+ * TriviaHomePage con tema Adventure
  */
 const TriviaHomePage = () => {
   const { isAuthenticated } = useAuth()
@@ -108,18 +117,18 @@ const TriviaHomePage = () => {
   }
 
   return (
-    <div className="theme-space min-h-screen py-8 relative overflow-hidden">
-      {/* Efectos de fondo futurista */}
+    <div className="min-h-screen py-8 relative overflow-hidden">
+      {/* Efectos de fondo decorativo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(25)].map((_, i) => (
+        {PARTICLES.map((p) => (
           <div
-            key={i}
-            className="absolute w-1 h-1 bg-future-neon rounded-full opacity-40 animate-float"
+            key={p.id}
+            className="absolute w-2 h-2 bg-primary-500 rounded-full opacity-30 animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 2}s`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.duration}s`,
             }}
           />
         ))}
@@ -127,22 +136,22 @@ const TriviaHomePage = () => {
 
       {/* Header */}
       <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="text-6xl mb-4 animate-pulse-neon">⚡</div>
-          <h1 className="text-4xl md:text-6xl font-display text-future-neon neon-text mb-4">
-            {t('trivia.title').toUpperCase()}
+        <div className="text-center mb-12">
+          <div className="text-6xl mb-4">🧭</div>
+          <h1 className="text-4xl md:text-5xl font-bold text-primary-500 mb-4">
+            {t('trivia.title')}
           </h1>
-              <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-space-neon to-transparent mb-4"></div>
-              <p className="text-space-green font-retro text-sm uppercase tracking-wider opacity-80">
-                {t('trivia.spaceMode')}
-              </p>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-500 to-transparent mb-4"></div>
+          <p className="text-light-muted text-lg">
+            {t('trivia.chooseMode')}
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-display text-space-neon neon-text mb-6">
-              {t('trivia.chooseMode').toUpperCase()}
+            <h2 className="text-2xl font-bold text-primary-500 mb-6">
+              🎮 {t('trivia.chooseMode')}
             </h2>
             
             <div className="grid md:grid-cols-2 gap-4">
@@ -151,21 +160,21 @@ const TriviaHomePage = () => {
                   key={mode.mode}
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className="card border-space-neon hover:border-space-purple group disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="card hover:border-primary-500 group disabled:opacity-50 disabled:cursor-not-allowed text-left"
                 >
-                  <div className="text-center p-6">
+                  <div className="text-center p-4">
                     <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
                       {mode.icon}
                     </div>
-                    <h3 className="text-xl font-display text-space-neon neon-text mb-2 uppercase">
+                    <h3 className="text-xl font-bold text-primary-500 mb-2">
                       {mode.title}
                     </h3>
-                    <p className="text-space-green font-retro text-xs mb-4 opacity-70">
+                    <p className="text-light-muted text-sm mb-4">
                       {mode.description}
                     </p>
-                    <div className="flex items-center justify-between text-space-green font-retro text-xs">
+                    <div className="flex items-center justify-between text-light-soft text-sm">
                       <span>{mode.questions} {t('trivia.questions')}</span>
-                      <span className="text-space-neon group-hover:text-space-purple">→</span>
+                      <span className="text-primary-500 group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </div>
                 </button>
@@ -173,10 +182,10 @@ const TriviaHomePage = () => {
             </div>
 
             {/* Filtros por continente */}
-            <div className="card border-space-purple">
-              <div className="p-6">
-                <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
-                  🌎 {t('trivia.playByContinent').toUpperCase()}
+            <div className="card">
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-primary-500 mb-4">
+                  🌎 {t('trivia.playByContinent')}
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {['Europa', 'América', 'Asia', 'África', 'Oceanía'].map(continent => (
@@ -184,7 +193,7 @@ const TriviaHomePage = () => {
                       key={continent}
                       onClick={() => startGame('CHALLENGE', { questions: 15, continent })}
                       disabled={starting}
-                      className="btn btn-outline text-space-neon border-space-neon px-4 py-2 text-xs disabled:opacity-50"
+                      className="btn btn-outline px-4 py-2 text-sm disabled:opacity-50"
                     >
                       {getContinentEmoji(continent)} {continent}
                     </button>
@@ -197,14 +206,14 @@ const TriviaHomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
-                className="card border-space-neon hover:border-space-purple group"
+                className="card hover:border-primary-500 group"
               >
-                <div className="p-6 text-center">
+                <div className="p-4 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🏆</span>
-                  <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
-                    {t('trivia.ranking').toUpperCase()}
+                  <h3 className="text-lg font-bold text-primary-500 mb-2">
+                    {t('trivia.ranking')}
                   </h3>
-                  <p className="text-space-green font-retro text-xs opacity-70">
+                  <p className="text-light-muted text-sm">
                     {t('trivia.competeWithOthers')}
                   </p>
                 </div>
@@ -212,14 +221,14 @@ const TriviaHomePage = () => {
 
               <Link
                 to="/travel"
-                className="card border-space-neon hover:border-space-purple group"
+                className="card hover:border-secondary-500 group"
               >
-                <div className="p-6 text-center">
+                <div className="p-4 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🗺️</span>
-                  <h3 className="text-lg font-display text-space-neon neon-text mb-2 uppercase">
-                    {t('trivia.myMap').toUpperCase()}
+                  <h3 className="text-lg font-bold text-secondary-500 mb-2">
+                    {t('trivia.myMap')}
                   </h3>
-                  <p className="text-space-green font-retro text-xs opacity-70">
+                  <p className="text-light-muted text-sm">
                     {t('trivia.registerTrips')}
                   </p>
                 </div>
@@ -230,40 +239,40 @@ const TriviaHomePage = () => {
           {/* Columna lateral - Stats */}
           <div className="space-y-6">
             {loading ? (
-              <div className="card border-space-neon text-center py-12">
-                <div className="text-5xl mb-4 animate-spin">⚡</div>
-                <p className="text-space-green font-retro text-xs uppercase">{t('trivia.loading').toUpperCase()}</p>
+              <div className="card text-center py-12">
+                <div className="text-5xl mb-4 animate-spin">🧭</div>
+                <p className="text-light-muted">{t('trivia.loading')}</p>
               </div>
             ) : isAuthenticated && stats ? (
               <TriviaStats stats={stats} />
             ) : (
-              <div className="card border-space-neon text-center p-6">
+              <div className="card text-center p-6">
                 <span className="text-5xl mb-4 block">🎮</span>
-                <h3 className="text-xl font-display text-space-neon neon-text mb-2 uppercase">
-                  {t('trivia.join').toUpperCase()}
+                <h3 className="text-xl font-bold text-primary-500 mb-2">
+                  {t('trivia.join')}
                 </h3>
-                <p className="text-space-green font-retro text-xs mb-4 opacity-70">
+                <p className="text-light-muted text-sm mb-4">
                   {t('trivia.loginToSaveProgress')}
                 </p>
                 <Link
                   to="/login"
-                  className="btn btn-primary text-space-dark border-space-neon"
+                  className="btn btn-primary"
                 >
                   <span className="flex items-center space-x-2">
-                    <span>👽</span>
-                    <span>{t('trivia.login')}</span>
+                    <span>🚀</span>
+                    <span>{t('auth.loginButton')}</span>
                   </span>
                 </Link>
               </div>
             )}
 
             {/* Tips */}
-            <div className="card border-space-purple">
-              <div className="p-6">
-                <h3 className="text-lg font-display text-space-neon neon-text mb-4 uppercase">
-                  💡 {t('trivia.tips.title').toUpperCase()}
+            <div className="card border-secondary-600">
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-secondary-500 mb-4">
+                  💡 {t('trivia.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-space-green font-retro text-xs">
+                <ul className="space-y-3 text-light-soft text-sm">
                   <li className="flex items-start gap-2">
                     <span>⚡</span>
                     <span>{t('trivia.tips.speedBonus')}</span>

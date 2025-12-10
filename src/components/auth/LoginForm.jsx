@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast'
 import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
- * LoginForm con estilo retro Space/Alien
+ * LoginForm con estilo Adventure Explorer Retro
  */
 const LoginForm = () => {
   const location = useLocation()
@@ -138,13 +138,13 @@ const LoginForm = () => {
     <div className="p-6">
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
         {errors.auth && (
-          <div className="p-4 border-2 border-tech-red bg-black/50 text-tech-red font-retro text-xs uppercase tracking-wider">
+          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-wider">
             ⚠️ {errors.auth}
           </div>
         )}
 
         <div>
-          <label htmlFor="username" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -153,7 +153,7 @@ const LoginForm = () => {
             type="text"
             autoComplete="username"
             required
-            className={`input w-full ${errors.username ? 'border-tech-red' : 'border-space-neon'}`}
+            className={`input w-full ${errors.username ? 'border-error' : 'border-primary-600'}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -161,12 +161,12 @@ const LoginForm = () => {
             autoFocus
           />
           {errors.username && (
-            <p className="mt-2 text-sm font-retro text-tech-red">{errors.username}</p>
+            <p className="mt-2 text-sm font-bold text-error">{errors.username}</p>
           )}
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
@@ -176,7 +176,7 @@ const LoginForm = () => {
               type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               required
-              className={`input w-full pr-12 ${errors.password ? 'border-tech-red' : 'border-space-neon'}`}
+              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-primary-600'}`}
               value={formData.password}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -197,7 +197,7 @@ const LoginForm = () => {
             </button>
           </div>
           {errors.password && (
-            <p className="mt-2 text-sm font-retro text-tech-red">{errors.password}</p>
+            <p className="mt-2 text-sm font-bold text-error">{errors.password}</p>
           )}
         </div>
 
@@ -208,12 +208,12 @@ const LoginForm = () => {
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
-              <span className="animate-spin">⚡</span>
+              <span className="animate-spin">⏳</span>
               <span>{t('common.loading') || 'Cargando...'}</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">
-              <span>👽</span>
+              <span>🗺️</span>
               <span>{t('auth.loginButton') || 'Iniciar Sesión'}</span>
             </span>
           )}

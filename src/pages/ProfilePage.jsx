@@ -4,12 +4,23 @@ import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
 import ForumList from '../components/forums/ForumList'
 import PostList from '../components/post/PostList'
+import { useLanguage } from '../contexts/LanguageContext'
+
+// Generar partículas decorativas una sola vez
+const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
+  id: i,
+  left: Math.random() * 100,
+  top: Math.random() * 100,
+  delay: Math.random() * 3,
+  icon: ['🧭', '✈️', '🗺️', '🌍'][Math.floor(Math.random() * 4)],
+}))
 
 /**
- * ProfilePage con tema Tech
+ * ProfilePage con tema Adventure
  */
 const ProfilePage = () => {
   const { currentUser, isAuthenticated } = useAuth()
+  const { t } = useLanguage()
   
   const [profileData, setProfileData] = useState({
     username: '',
@@ -252,11 +263,11 @@ const ProfilePage = () => {
   
   if (loading) {
     return (
-      <div className="theme-tech min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-spin">🤖</div>
-          <p className="text-tech-neon font-retro text-sm uppercase tracking-wider">
-            CARGANDO PERFIL...
+          <div className="text-6xl mb-4 animate-spin">🧭</div>
+          <p className="text-light-muted">
+            {t('profile.loading')}
           </p>
         </div>
       </div>
@@ -265,17 +276,17 @@ const ProfilePage = () => {
   
   if (!isAuthenticated) {
     return (
-      <div className="theme-tech min-h-screen py-10">
+      <div className="min-h-screen py-10">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="card border-tech-red text-center py-12 max-w-md mx-auto">
+          <div className="card text-center py-12 max-w-md mx-auto">
             <div className="text-5xl mb-4">🔒</div>
-            <p className="text-tech-neon font-retro text-sm uppercase tracking-wider mb-6">
-              DEBES INICIAR SESIÓN
+            <p className="text-light-muted mb-6">
+              {t('profile.mustLogin')}
             </p>
-            <a href="/login" className="btn btn-primary text-tech-dark border-tech-neon">
+            <a href="/login" className="btn btn-primary">
               <span className="flex items-center space-x-2">
-                <span>👽</span>
-                <span>INICIAR SESIÓN</span>
+                <span>🚀</span>
+                <span>{t('auth.loginButton')}</span>
               </span>
             </a>
           </div>
@@ -285,20 +296,20 @@ const ProfilePage = () => {
   }
   
   return (
-    <div className="theme-tech min-h-screen py-8 relative overflow-hidden">
-      {/* Efectos de fondo tech */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-        {[...Array(20)].map((_, i) => (
+    <div className="min-h-screen py-8 relative overflow-hidden">
+      {/* Efectos de fondo decorativo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        {PARTICLES.map((p) => (
           <div
-            key={i}
+            key={p.id}
             className="absolute text-2xl animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              animationDelay: `${p.delay}s`,
             }}
           >
-            {['🤖', '⚡', '🔴', '💻'][Math.floor(Math.random() * 4)]}
+            {p.icon}
           </div>
         ))}
       </div>
@@ -306,11 +317,11 @@ const ProfilePage = () => {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Cabecera del perfil */}
-          <div className="card border-tech-neon mb-8 animate-fade-in">
+          <div className="card mb-8">
             <div className="p-6">
               <div className="flex flex-col md:flex-row md:items-center">
                 <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-tech-dark border-4 border-tech-neon flex items-center justify-center text-tech-neon text-4xl">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-dark-lighter border-4 border-primary-500 flex items-center justify-center text-primary-500 text-4xl">
                     {imagePreview ? (
                       <img 
                         src={imagePreview} 
@@ -324,14 +335,14 @@ const ProfilePage = () => {
                 </div>
                 
                 <div className="flex-grow">
-                  <h1 className="text-2xl md:text-3xl font-display text-tech-neon neon-text mb-1 uppercase">
+                  <h1 className="text-2xl md:text-3xl font-bold text-primary-500 mb-1">
                     {profileData.firstName} {profileData.lastName}
                   </h1>
-                  <p className="text-tech-silver font-retro text-sm mb-2 opacity-80">
+                  <p className="text-light-muted text-sm mb-2">
                     @{profileData.username}
                   </p>
                   {profileData.bio && (
-                    <p className="text-tech-silver font-retro text-xs opacity-70">
+                    <p className="text-light-soft text-sm">
                       {profileData.bio}
                     </p>
                   )}
@@ -342,20 +353,20 @@ const ProfilePage = () => {
           
           {/* Pestañas */}
           <div className="mb-6">
-            <div className="border-b-2 border-tech-neon/30">
+            <div className="border-b-2 border-accent-600/30">
               <nav className="flex -mb-px">
                 {[
-                  { id: 'profile', label: 'PERFIL', icon: '👤' },
-                  { id: 'password', label: 'CONTRASEÑA', icon: '🔒' },
-                  { id: 'forums', label: 'FOROS', icon: '🏺' },
-                  { id: 'posts', label: 'PUBLICACIONES', icon: '📝' },
+                  { id: 'profile', label: t('profile.tabs.profile'), icon: '👤' },
+                  { id: 'password', label: t('profile.tabs.password'), icon: '🔒' },
+                  { id: 'forums', label: t('profile.tabs.forums'), icon: '💬' },
+                  { id: 'posts', label: t('profile.tabs.posts'), icon: '📝' },
                 ].map(tab => (
                   <button
                     key={tab.id}
-                    className={`py-4 px-6 text-xs font-retro uppercase tracking-wider transition-colors ${
+                    className={`py-4 px-6 text-sm font-medium transition-colors ${
                       activeTab === tab.id
-                        ? 'border-b-4 border-tech-neon text-tech-neon'
-                        : 'text-tech-silver hover:text-tech-neon hover:border-tech-neon/50'
+                        ? 'border-b-4 border-primary-500 text-primary-500'
+                        : 'text-light-muted hover:text-primary-400'
                     }`}
                     onClick={() => setActiveTab(tab.id)}
                   >
@@ -370,23 +381,23 @@ const ProfilePage = () => {
           </div>
           
           {/* Contenido de las pestañas */}
-          <div className="card border-tech-neon">
+          <div className="card">
             <div className="p-6">
               {activeTab === 'profile' && (
                 <form onSubmit={handleUpdateProfile} className="space-y-6">
                   <div className="space-y-4">
-                    <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
-                      INFORMACIÓN PERSONAL
+                    <h2 className="text-xl font-bold text-primary-500 mb-4">
+                      {t('profile.personalInfo')}
                     </h2>
                     
                     {/* Imagen de perfil */}
                     <div>
-                      <label htmlFor="profileImage" className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
-                        IMAGEN DE PERFIL
+                      <label htmlFor="profileImage" className="block text-sm font-medium text-primary-400 mb-2">
+                        {t('profile.profileImage')}
                       </label>
                       
                       <div className="mt-1 flex items-center">
-                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-tech-dark border-2 border-tech-neon flex items-center justify-center text-tech-neon text-xl mr-4">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-dark-lighter border-2 border-primary-500 flex items-center justify-center text-primary-500 text-xl mr-4">
                           {imagePreview ? (
                             <img 
                               src={imagePreview} 
@@ -411,28 +422,28 @@ const ProfilePage = () => {
                         
                         <label
                           htmlFor="profileImage"
-                          className="btn btn-outline text-tech-neon border-tech-neon px-4 py-2 cursor-pointer"
+                          className="btn btn-outline px-4 py-2 cursor-pointer"
                         >
-                          CAMBIAR
+                          {t('profile.changeImage')}
                         </label>
                       </div>
                       
                       {errors.profileImage && (
-                        <p className="mt-2 text-sm font-retro text-tech-red">{errors.profileImage}</p>
+                        <p className="mt-2 text-sm text-error">{errors.profileImage}</p>
                       )}
                     </div>
                     
                     {/* Grid de campos */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
-                        { id: 'firstName', label: 'NOMBRE', required: true },
-                        { id: 'lastName', label: 'APELLIDO', required: true },
-                        { id: 'username', label: 'USUARIO', required: true },
-                        { id: 'email', label: 'EMAIL', required: true, type: 'email' },
+                        { id: 'firstName', label: t('profile.firstName'), required: true },
+                        { id: 'lastName', label: t('profile.lastName'), required: true },
+                        { id: 'username', label: t('auth.username'), required: true },
+                        { id: 'email', label: t('auth.email'), required: true, type: 'email' },
                       ].map(field => (
                         <div key={field.id}>
-                          <label htmlFor={field.id} className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
-                            {field.label} {field.required && <span className="text-tech-red">*</span>}
+                          <label htmlFor={field.id} className="block text-sm font-medium text-primary-400 mb-2">
+                            {field.label} {field.required && <span className="text-error">*</span>}
                           </label>
                           <input
                             id={field.id}
@@ -440,30 +451,30 @@ const ProfilePage = () => {
                             type={field.type || 'text'}
                             autoComplete={field.id === 'email' ? 'email' : field.id}
                             required={field.required}
-                            className={`input w-full ${errors[field.id] ? 'border-tech-red' : 'border-tech-neon'}`}
+                            className={`input w-full ${errors[field.id] ? 'border-error' : ''}`}
                             value={profileData[field.id]}
                             onChange={handleProfileChange}
                             disabled={isSubmitting}
                           />
                           {errors[field.id] && (
-                            <p className="mt-2 text-sm font-retro text-tech-red">{errors[field.id]}</p>
+                            <p className="mt-2 text-sm text-error">{errors[field.id]}</p>
                           )}
                         </div>
                       ))}
                     </div>
                     
                     <div>
-                      <label htmlFor="bio" className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
-                        BIOGRAFÍA
+                      <label htmlFor="bio" className="block text-sm font-medium text-primary-400 mb-2">
+                        {t('profile.bio')}
                       </label>
                       <textarea
                         id="bio"
                         name="bio"
                         rows={4}
-                        className="input w-full border-tech-neon"
+                        className="input w-full"
                         value={profileData.bio}
                         onChange={handleProfileChange}
-                        placeholder="Cuéntanos sobre ti..."
+                        placeholder={t('profile.bioPlaceholder')}
                         disabled={isSubmitting}
                       />
                     </div>
@@ -472,18 +483,18 @@ const ProfilePage = () => {
                   <div className="flex justify-end pt-2">
                     <button
                       type="submit"
-                      className="btn btn-primary text-tech-dark border-tech-neon"
+                      className="btn btn-primary"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center space-x-2">
-                          <span className="animate-spin">⚡</span>
-                          <span>GUARDANDO...</span>
+                          <span className="animate-spin">🧭</span>
+                          <span>{t('profile.updating')}</span>
                         </span>
                       ) : (
                         <span className="flex items-center space-x-2">
                           <span>💾</span>
-                          <span>GUARDAR</span>
+                          <span>{t('profile.updateProfile')}</span>
                         </span>
                       )}
                     </button>
@@ -494,18 +505,18 @@ const ProfilePage = () => {
               {activeTab === 'password' && (
                 <form onSubmit={handleUpdatePassword} className="space-y-6">
                   <div className="space-y-4">
-                    <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
-                      CAMBIAR CONTRASEÑA
+                    <h2 className="text-xl font-bold text-primary-500 mb-4">
+                      {t('profile.password')}
                     </h2>
                     
                     {[
-                      { id: 'currentPassword', label: 'CONTRASEÑA ACTUAL' },
-                      { id: 'newPassword', label: 'NUEVA CONTRASEÑA' },
-                      { id: 'confirmPassword', label: 'CONFIRMAR CONTRASEÑA' },
+                      { id: 'currentPassword', label: t('profile.currentPassword') },
+                      { id: 'newPassword', label: t('profile.newPassword') },
+                      { id: 'confirmPassword', label: t('profile.confirmPassword') },
                     ].map(field => (
                       <div key={field.id}>
-                        <label htmlFor={field.id} className="block text-sm font-retro text-tech-neon uppercase tracking-wider mb-2">
-                          {field.label} <span className="text-tech-red">*</span>
+                        <label htmlFor={field.id} className="block text-sm font-medium text-primary-400 mb-2">
+                          {field.label} <span className="text-error">*</span>
                         </label>
                         <input
                           id={field.id}
@@ -513,13 +524,13 @@ const ProfilePage = () => {
                           type="password"
                           autoComplete={field.id === 'currentPassword' ? 'current-password' : 'new-password'}
                           required
-                          className={`input w-full ${errors[field.id] ? 'border-tech-red' : 'border-tech-neon'}`}
+                          className={`input w-full ${errors[field.id] ? 'border-error' : ''}`}
                           value={passwordData[field.id]}
                           onChange={handlePasswordChange}
                           disabled={isSubmitting}
                         />
                         {errors[field.id] && (
-                          <p className="mt-2 text-sm font-retro text-tech-red">{errors[field.id]}</p>
+                          <p className="mt-2 text-sm text-error">{errors[field.id]}</p>
                         )}
                       </div>
                     ))}
@@ -528,18 +539,18 @@ const ProfilePage = () => {
                   <div className="flex justify-end pt-2">
                     <button
                       type="submit"
-                      className="btn btn-primary text-tech-dark border-tech-neon"
+                      className="btn btn-primary"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center space-x-2">
-                          <span className="animate-spin">⚡</span>
-                          <span>GUARDANDO...</span>
+                          <span className="animate-spin">🧭</span>
+                          <span>{t('profile.updating')}</span>
                         </span>
                       ) : (
                         <span className="flex items-center space-x-2">
                           <span>🔐</span>
-                          <span>CAMBIAR</span>
+                          <span>{t('profile.updatePassword')}</span>
                         </span>
                       )}
                     </button>
@@ -549,8 +560,8 @@ const ProfilePage = () => {
               
               {activeTab === 'forums' && (
                 <div>
-                  <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
-                    MIS FOROS
+                  <h2 className="text-xl font-bold text-primary-500 mb-4">
+                    {t('profile.myForums')}
                   </h2>
                   <ForumList />
                 </div>
@@ -558,8 +569,8 @@ const ProfilePage = () => {
               
               {activeTab === 'posts' && (
                 <div>
-                  <h2 className="text-xl font-display text-tech-neon neon-text mb-4 uppercase">
-                    MIS PUBLICACIONES
+                  <h2 className="text-xl font-bold text-primary-500 mb-4">
+                    {t('profile.myPosts')}
                   </h2>
                   <PostList />
                 </div>

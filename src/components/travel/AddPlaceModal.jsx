@@ -88,26 +88,26 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
       <div 
-        className="absolute inset-0 bg-jungle-dark/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-dark/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative card border-jungle-gold w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="relative card w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-jungle-green to-jungle-dark border-b-4 border-jungle-gold px-6 py-4">
+        <div className="sticky top-0 bg-dark-lighter border-b-2 border-secondary-600 px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl md:text-2xl font-display text-jungle-gold neon-text uppercase">
-                {editPlace ? `✏️ ${t('travel.editingPlace').toUpperCase()}` : `🌍 ${t('travel.addingPlace').toUpperCase()}`}
+              <h2 className="text-xl md:text-2xl font-bold text-secondary-500">
+                {editPlace ? `✏️ ${t('travel.editingPlace')}` : `🌍 ${t('travel.addingPlace')}`}
               </h2>
-              <p className="text-jungle-leaf font-retro text-xs uppercase tracking-wider opacity-80 mt-1">
+              <p className="text-light-muted text-sm mt-1">
                 {editPlace ? t('travel.modifyDetails') : t('travel.addNewDestination')}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-jungle-gold hover:text-jungle-leaf text-2xl transition-colors"
+              className="text-light-muted hover:text-primary-500 text-2xl transition-colors"
               aria-label={t('common.close')}
             >
               ✕
@@ -116,11 +116,11 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 bg-jungle-dark/50">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {/* Selector de país */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.country').toUpperCase()} <span className="text-tech-red">*</span>
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.country')} <span className="text-error">*</span>
             </label>
             <CountrySelector 
               onSelect={setSelectedCountry}
@@ -130,22 +130,22 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Ciudad (opcional) */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.cityOptional').toUpperCase()}
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.cityOptional')}
             </label>
             <input
               type="text"
               value={formData.cityName}
               onChange={(e) => setFormData({ ...formData, cityName: e.target.value })}
               placeholder="Ej: Barcelona, Tokio..."
-              className="input w-full border-jungle-gold"
+              className="input w-full"
             />
           </div>
 
           {/* Estado */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.status').toUpperCase()}
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.status')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {statusOptions.map(option => (
@@ -153,10 +153,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   key={option.value}
                   type="button"
                   onClick={() => setFormData({ ...formData, status: option.value })}
-                  className={`px-4 py-3 border-2 transition-all font-retro text-xs uppercase tracking-wider ${
+                  className={`px-4 py-3 border-2 transition-all text-sm rounded-lg ${
                     formData.status === option.value
-                      ? 'border-jungle-gold bg-jungle-gold/20 text-jungle-gold'
-                      : 'border-jungle-gold/30 text-jungle-leaf hover:border-jungle-gold/50'
+                      ? 'border-primary-500 bg-primary-500/20 text-primary-500'
+                      : 'border-accent-600/30 text-light-muted hover:border-accent-500'
                   }`}
                 >
                   <span className="flex items-center justify-center space-x-1">
@@ -170,8 +170,8 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Fecha de visita */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.visitDateOptional').toUpperCase()}
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.visitDateOptional')}
             </label>
             <div className="flex gap-2">
               <input
@@ -179,29 +179,29 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                 value={formData.visitDate}
                 onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
                 max={new Date().toISOString().split('T')[0]}
-                className="input w-full border-jungle-gold"
+                className="input w-full"
                 placeholder="Selecciona una fecha"
               />
               {formData.visitDate && (
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, visitDate: '' })}
-                  className="btn btn-outline text-jungle-gold border-jungle-gold px-4"
+                  className="btn btn-outline px-4"
                   title={t('travel.remove')}
                 >
                   ✕
                 </button>
               )}
             </div>
-            <p className="text-jungle-leaf/60 text-xs mt-1 font-retro">
+            <p className="text-light-muted/60 text-xs mt-1">
               {t('travel.visitDateHelper')}
             </p>
           </div>
 
           {/* Rating */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.rating').toUpperCase()}
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.rating')}
             </label>
             <div className="flex gap-2 items-center">
               {[1, 2, 3, 4, 5].map(star => (
@@ -220,9 +220,9 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: 0 })}
-                  className="text-sm font-retro text-jungle-leaf hover:text-jungle-gold ml-2 uppercase text-xs"
+                  className="text-sm text-light-muted hover:text-primary-500 ml-2"
                 >
-                  {t('travel.remove').toUpperCase()}
+                  {t('travel.remove')}
                 </button>
               )}
             </div>
@@ -230,15 +230,15 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Notas */}
           <div>
-            <label className="block text-sm font-retro text-jungle-gold uppercase tracking-wider mb-2">
-              {t('travel.notes').toUpperCase()}
+            <label className="block text-sm font-medium text-primary-400 mb-2">
+              {t('travel.notes')}
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder={t('travel.notesPlaceholder')}
               rows={3}
-              className="input w-full border-jungle-gold resize-none"
+              className="input w-full resize-none"
             />
           </div>
 
@@ -248,10 +248,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               type="checkbox"
               checked={formData.favorite}
               onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
-              className="w-5 h-5 rounded border-jungle-gold text-jungle-gold focus:ring-jungle-gold"
+              className="w-5 h-5 rounded border-accent-600 text-primary-500 focus:ring-primary-500"
             />
-            <span className="text-jungle-leaf font-retro text-xs uppercase tracking-wider">
-              ❤️ {t('travel.markAsFavorite').toUpperCase()}
+            <span className="text-light-muted text-sm">
+              ❤️ {t('travel.markAsFavorite')}
             </span>
           </label>
 
@@ -260,27 +260,27 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 btn btn-outline text-jungle-gold border-jungle-gold"
+              className="flex-1 btn btn-outline"
             >
               <span className="flex items-center justify-center space-x-2">
                 <span>✕</span>
-                <span>{t('common.cancel').toUpperCase()}</span>
+                <span>{t('common.cancel')}</span>
               </span>
             </button>
             <button
               type="submit"
               disabled={loading || !selectedCountry}
-              className="flex-1 btn btn-primary text-jungle-dark border-jungle-gold disabled:opacity-50"
+              className="flex-1 btn btn-primary disabled:opacity-50"
             >
               {loading ? (
                 <span className="flex items-center justify-center space-x-2">
-                  <span className="animate-spin">🌴</span>
-                  <span>{t('travel.saving').toUpperCase()}</span>
+                  <span className="animate-spin">🧭</span>
+                  <span>{t('travel.saving')}</span>
                 </span>
               ) : (
                 <span className="flex items-center justify-center space-x-2">
                   <span>{editPlace ? '✏️' : '➕'}</span>
-                  <span>{editPlace ? t('travel.update').toUpperCase() : t('travel.add').toUpperCase()}</span>
+                  <span>{editPlace ? t('travel.update') : t('travel.add')}</span>
                 </span>
               )}
             </button>

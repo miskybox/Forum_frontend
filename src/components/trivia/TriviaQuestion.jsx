@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
  * Componente que muestra una pregunta de trivia
  */
 const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
+  const { t } = useLanguage()
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [timeLeft, setTimeLeft] = useState(timeLimit)
   const [answered, setAnswered] = useState(false)
@@ -74,12 +76,12 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="card overflow-hidden">
       {/* Header con progreso y timer */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+      <div className="bg-dark-lighter border-b border-accent-600 px-6 py-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-white/80 text-sm">
-            Pregunta {question.questionIndex} de {question.totalQuestions}
+          <span className="text-light-muted text-sm">
+            {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}
           </span>
           <div className={`flex items-center gap-2 font-mono text-2xl font-bold ${getTimerColor()}`}>
             <span>⏱️</span>
@@ -88,17 +90,17 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
         </div>
         
         {/* Barra de tiempo */}
-        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+        <div className="h-2 bg-dark-soft rounded-full overflow-hidden">
           <div 
-            className="h-full bg-white rounded-full transition-all duration-1000 ease-linear"
+            className="h-full bg-primary-500 rounded-full transition-all duration-1000 ease-linear"
             style={{ width: `${timerPercent}%` }}
           />
         </div>
 
         {/* Puntos */}
-        <div className="flex items-center justify-between mt-3 text-white/80 text-sm">
+        <div className="flex items-center justify-between mt-3 text-light-muted text-sm">
           <span>{question.countryFlag} {question.countryName}</span>
-          <span>+{question.points} pts</span>
+          <span>+{question.points} {t('trivia.points')}</span>
         </div>
       </div>
 
@@ -116,7 +118,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
         )}
 
         {/* Texto de la pregunta */}
-        <h2 className="text-xl md:text-2xl font-bold text-slate-800 text-center mb-8">
+        <h2 className="text-xl md:text-2xl font-bold text-light text-center mb-8">
           {question.questionText}
         </h2>
 
@@ -130,12 +132,12 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
               className={`p-4 rounded-xl border-2 text-left font-medium transition-all ${
                 answered
                   ? selectedAnswer === option
-                    ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                    : 'border-slate-200 bg-slate-50 text-slate-400'
-                  : 'border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700'
+                    ? 'border-primary-500 bg-primary-500/20 text-primary-400'
+                    : 'border-accent-600/30 bg-dark-soft text-light-muted'
+                  : 'border-accent-600/50 hover:border-primary-500 hover:bg-primary-500/10 text-light'
               }`}
             >
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-600 mr-3 text-sm">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-dark-soft text-light-muted mr-3 text-sm">
                 {String.fromCharCode(65 + idx)}
               </span>
               {option}
@@ -150,13 +152,13 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
               key={level}
               className={`w-2 h-2 rounded-full ${
                 level <= question.difficulty 
-                  ? 'bg-amber-400' 
-                  : 'bg-slate-200'
+                  ? 'bg-primary-500' 
+                  : 'bg-dark-soft'
               }`}
             />
           ))}
-          <span className="text-slate-400 text-xs ml-2">
-            Nivel {question.difficulty}
+          <span className="text-light-muted text-xs ml-2">
+            {t('trivia.level')} {question.difficulty}
           </span>
         </div>
       </div>

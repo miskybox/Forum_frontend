@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast'
 import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
- * RegisterForm con estilo retro Space/Alien
+ * RegisterForm con estilo Adventure Explorer Retro
  */
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -124,7 +124,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const registerResponse = await register(userData)
+      await register(userData)
       toast.success('¡Registro exitoso! Redirigiendo a inicio de sesión...')
 
       // Esperar 1 segundo para que el usuario vea el mensaje
@@ -232,14 +232,14 @@ const RegisterForm = () => {
     <div className="p-6">
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         {errors.auth && (
-          <div className="p-4 border-2 border-tech-red bg-black/50 text-tech-red font-retro text-xs uppercase tracking-wider">
+          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-wider">
             ⚠️ {errors.auth}
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            <label htmlFor="firstName" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
               Nombre
             </label>
             <input
@@ -247,17 +247,17 @@ const RegisterForm = () => {
               name="firstName"
               type="text"
               required
-              className={`input w-full ${errors.firstName ? 'border-tech-red' : 'border-space-neon'}`}
+              className={`input w-full ${errors.firstName ? 'border-error' : 'border-primary-600'}`}
               value={formData.firstName}
               onChange={handleChange}
               disabled={isSubmitting}
               placeholder="Nombre"
             />
-            {errors.firstName && <p className="mt-2 text-sm font-retro text-tech-red">{errors.firstName}</p>}
+            {errors.firstName && <p className="mt-2 text-sm font-bold text-error">{errors.firstName}</p>}
           </div>
 
           <div>
-            <label htmlFor="lastName" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+            <label htmlFor="lastName" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
               Apellido
             </label>
             <input
@@ -265,18 +265,18 @@ const RegisterForm = () => {
               name="lastName"
               type="text"
               required
-              className={`input w-full ${errors.lastName ? 'border-tech-red' : 'border-space-neon'}`}
+              className={`input w-full ${errors.lastName ? 'border-error' : 'border-primary-600'}`}
               value={formData.lastName}
               onChange={handleChange}
               disabled={isSubmitting}
               placeholder="Apellido"
             />
-            {errors.lastName && <p className="mt-2 text-sm font-retro text-tech-red">{errors.lastName}</p>}
+            {errors.lastName && <p className="mt-2 text-sm font-bold text-error">{errors.lastName}</p>}
           </div>
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -285,17 +285,17 @@ const RegisterForm = () => {
             type="text"
             autoComplete="username"
             required
-            className={`input w-full ${errors.username ? 'border-tech-red' : 'border-space-neon'}`}
+            className={`input w-full ${errors.username ? 'border-error' : 'border-primary-600'}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
             placeholder={t('auth.username')}
           />
-          {errors.username && <p className="mt-2 text-sm font-retro text-tech-red">{errors.username}</p>}
+          {errors.username && <p className="mt-2 text-sm font-bold text-error">{errors.username}</p>}
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="email" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             📧 {t('auth.email')}
           </label>
           <input
@@ -303,17 +303,17 @@ const RegisterForm = () => {
             name="email"
             type="email"
             required
-            className={`input w-full ${errors.email ? 'border-tech-red' : 'border-space-neon'}`}
+            className={`input w-full ${errors.email ? 'border-error' : 'border-primary-600'}`}
             value={formData.email}
             onChange={handleChange}
             disabled={isSubmitting}
             placeholder={t('auth.email')}
           />
-          {errors.email && <p className="mt-2 text-sm font-retro text-tech-red">{errors.email}</p>}
+          {errors.email && <p className="mt-2 text-sm font-bold text-error">{errors.email}</p>}
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
@@ -322,7 +322,7 @@ const RegisterForm = () => {
               name="password"
               type={showPassword ? 'text' : 'password'}
               required
-              className={`input w-full pr-12 ${errors.password ? 'border-tech-red' : 'border-space-neon'}`}
+              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-primary-600'}`}
               value={formData.password}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -342,11 +342,11 @@ const RegisterForm = () => {
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
-          {errors.password && <p className="mt-2 text-sm font-retro text-tech-red">{errors.password}</p>}
+          {errors.password && <p className="mt-2 text-sm font-bold text-error">{errors.password}</p>}
         </div>
 
         <div className="relative">
-          <label htmlFor="confirmPassword" className="block text-sm font-retro text-space-neon uppercase tracking-wider mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
             🔒 {t('auth.confirmPassword')}
           </label>
           <div className="relative">
@@ -355,7 +355,7 @@ const RegisterForm = () => {
               name="confirmPassword"
               type={showConfirmPassword ? 'text' : 'password'}
               required
-              className={`input w-full pr-12 ${errors.confirmPassword ? 'border-tech-red' : 'border-space-neon'}`}
+              className={`input w-full pr-12 ${errors.confirmPassword ? 'border-error' : 'border-primary-600'}`}
               value={formData.confirmPassword}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -375,7 +375,7 @@ const RegisterForm = () => {
               {showConfirmPassword ? '🙈' : '👁️'}
             </button>
           </div>
-          {errors.confirmPassword && <p className="mt-2 text-sm font-retro text-tech-red">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="mt-2 text-sm font-bold text-error">{errors.confirmPassword}</p>}
         </div>
 
         <button
@@ -385,12 +385,12 @@ const RegisterForm = () => {
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
-              <span className="animate-spin">⚡</span>
+              <span className="animate-spin">⏳</span>
               <span>{t('common.loading')}</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">
-              <span>🚀</span>
+              <span>🗺️</span>
               <span>{t('auth.registerButton')}</span>
             </span>
           )}

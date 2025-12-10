@@ -4,14 +4,16 @@ import TriviaQuestion from '../../components/trivia/TriviaQuestion'
 import TriviaResult from '../../components/trivia/TriviaResult'
 import TriviaGameSummary from '../../components/trivia/TriviaGameSummary'
 import triviaService from '../../services/triviaService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import toast from 'react-hot-toast'
 
 /**
- * Página de juego de trivia
+ * Página de juego de trivia con tema Adventure
  */
 const TriviaPlayPage = () => {
   const { gameId } = useParams()
   const navigate = useNavigate()
+  const { t } = useLanguage()
   
   const [game, setGame] = useState(null)
   const [currentQuestion, setCurrentQuestion] = useState(null)
@@ -138,10 +140,10 @@ const TriviaPlayPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-400 border-t-transparent mx-auto" />
-          <p className="text-purple-200 mt-4">Cargando pregunta...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary-500 border-t-transparent mx-auto" />
+          <p className="text-light-muted mt-4">{t('trivia.loadingQuestion')}</p>
         </div>
       </div>
     )
@@ -149,33 +151,33 @@ const TriviaPlayPage = () => {
 
   if (gameFinished && game) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 py-12 px-4">
+      <div className="min-h-screen py-12 px-4">
         <TriviaGameSummary game={game} onPlayAgain={handlePlayAgain} />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900">
+    <div className="min-h-screen">
       {/* Header con progreso */}
-      <div className="bg-black/20 py-4">
+      <div className="bg-dark-lighter py-4 border-b border-accent-600">
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="text-white">
-            <span className="text-purple-300 text-sm">Puntuación</span>
+          <div className="text-light">
+            <span className="text-primary-400 text-sm">{t('trivia.score')}</span>
             <p className="text-2xl font-bold">{game?.score || 0}</p>
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="text-center text-white">
-              <span className="text-purple-300 text-sm">Correctas</span>
+            <div className="text-center text-light">
+              <span className="text-primary-400 text-sm">{t('trivia.correctAnswers')}</span>
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             
             <button
               onClick={handleAbandon}
-              className="px-4 py-2 bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
+              className="px-4 py-2 bg-error/20 text-error-light border border-error rounded-lg hover:bg-error/30 transition-colors text-sm"
             >
-              Abandonar
+              {t('trivia.abandon')}
             </button>
           </div>
         </div>
@@ -184,21 +186,19 @@ const TriviaPlayPage = () => {
       {/* Contenido principal */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {result ? (
-          // Mostrar SOLO el resultado cuando hay uno
           <TriviaResult
             result={result}
             onNext={handleNext}
             isLastQuestion={!result.hasNextQuestion}
           />
         ) : currentQuestion ? (
-          // Mostrar SOLO la pregunta cuando no hay resultado
           <TriviaQuestion
             question={currentQuestion}
             onAnswer={handleAnswer}
           />
         ) : (
-          <div className="text-center text-white py-12">
-            <p>Cargando pregunta...</p>
+          <div className="text-center text-light py-12">
+            <p>{t('trivia.loadingQuestion')}</p>
           </div>
         )}
       </div>

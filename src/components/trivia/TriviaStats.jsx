@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
  * Componente que muestra las estadísticas de trivia del usuario
  */
 const TriviaStats = ({ stats }) => {
+  const { t } = useLanguage()
+  
   if (!stats) return null
 
   const expProgress = stats.experienceToNextLevel > 0
@@ -11,12 +14,12 @@ const TriviaStats = ({ stats }) => {
     : 0
 
   return (
-    <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-violet-700 rounded-2xl p-6 text-white shadow-xl">
+    <div className="card p-6">
       {/* Header con nivel */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+            <div className="w-14 h-14 bg-dark-soft rounded-full flex items-center justify-center text-2xl border-2 border-primary-500">
               {stats.profileImageUrl ? (
                 <img 
                   src={stats.profileImageUrl} 
@@ -26,93 +29,71 @@ const TriviaStats = ({ stats }) => {
               ) : '🧠'}
             </div>
             <div>
-              <h3 className="text-xl font-bold">{stats.username}</h3>
-              <p className="text-purple-200">{stats.playerTitle}</p>
+              <h3 className="text-xl font-bold text-light">{stats.username}</h3>
+              <p className="text-light-muted text-sm">{stats.playerTitle}</p>
             </div>
           </div>
         </div>
         <div className="text-right">
-          <span className="text-4xl font-black">Lv.{stats.level}</span>
+          <span className="text-3xl font-bold text-primary-500">{t('trivia.level')} {stats.level}</span>
           {stats.globalRank && (
-            <p className="text-purple-200 text-sm">Rank #{stats.globalRank}</p>
+            <p className="text-light-muted text-sm">Rank #{stats.globalRank}</p>
           )}
         </div>
       </div>
 
       {/* Barra de experiencia */}
       <div className="mb-6">
-        <div className="flex justify-between text-sm mb-2">
-          <span>Experiencia</span>
+        <div className="flex justify-between text-sm mb-2 text-light-muted">
+          <span>XP</span>
           <span>{stats.experiencePoints} / {stats.experienceToNextLevel} XP</span>
         </div>
-        <div className="h-3 bg-purple-900/50 rounded-full overflow-hidden">
+        <div className="h-3 bg-dark-soft rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full"
+            className="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full"
             style={{ width: `${Math.min(expProgress, 100)}%` }}
           />
         </div>
       </div>
 
       {/* Grid de stats principales */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         <StatCard 
           icon="⭐" 
           value={stats.totalScore?.toLocaleString() || 0} 
-          label="Puntuación"
+          label={t('trivia.score')}
         />
         <StatCard 
           icon="🎮" 
           value={stats.totalGames || 0} 
-          label="Partidas"
+          label={t('trivia.questions')}
         />
         <StatCard 
           icon="🎯" 
           value={`${stats.accuracyPercentage?.toFixed(1) || 0}%`} 
-          label="Precisión"
+          label={t('trivia.correctAnswers')}
         />
         <StatCard 
           icon="🔥" 
           value={stats.bestStreak || 0} 
-          label="Mejor racha"
-        />
-      </div>
-
-      {/* Stats secundarios */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <MiniStat 
-          label="Correctas" 
-          value={`${stats.correctAnswers || 0}/${stats.totalQuestions || 0}`}
-        />
-        <MiniStat 
-          label="Perfectas" 
-          value={stats.perfectGames || 0}
-        />
-        <MiniStat 
-          label="Racha actual" 
-          value={`🔥 ${stats.currentStreak || 0}`}
+          label="Best streak"
         />
       </div>
 
       {/* Tiempo promedio */}
       {stats.avgResponseTime && (
-        <div className="bg-white/10 rounded-xl p-4 text-center">
-          <p className="text-purple-200 text-sm">Tiempo promedio de respuesta</p>
-          <p className="text-2xl font-bold">
+        <div className="bg-dark-soft rounded-xl p-4 text-center">
+          <p className="text-2xl font-bold text-primary-500">
             ⚡ {(stats.avgResponseTime / 1000).toFixed(1)}s
           </p>
-          {stats.bestResponseTime && (
-            <p className="text-purple-300 text-xs mt-1">
-              Mejor: {(stats.bestResponseTime / 1000).toFixed(2)}s
-            </p>
-          )}
         </div>
       )}
 
       {/* Racha diaria */}
       {stats.dailyStreak > 0 && (
-        <div className="mt-4 bg-amber-500/30 rounded-xl p-3 text-center border border-amber-400/50">
+        <div className="mt-4 bg-primary-500/20 rounded-xl p-3 text-center border border-primary-500/50">
           <span className="text-xl">🔥</span>
-          <span className="ml-2 font-bold">{stats.dailyStreak} días seguidos jugando</span>
+          <span className="ml-2 font-bold text-primary-500">{stats.dailyStreak}</span>
         </div>
       )}
     </div>
@@ -120,10 +101,10 @@ const TriviaStats = ({ stats }) => {
 }
 
 const StatCard = ({ icon, value, label }) => (
-  <div className="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+  <div className="bg-dark-soft rounded-xl p-3 text-center">
     <span className="text-2xl">{icon}</span>
-    <p className="text-xl font-bold mt-1">{value}</p>
-    <p className="text-purple-200 text-xs">{label}</p>
+    <p className="text-xl font-bold text-light mt-1">{value}</p>
+    <p className="text-light-muted text-xs">{label}</p>
   </div>
 )
 
@@ -134,9 +115,9 @@ StatCard.propTypes = {
 }
 
 const MiniStat = ({ label, value }) => (
-  <div className="bg-white/5 rounded-lg p-2 text-center">
-    <p className="text-purple-200 text-xs">{label}</p>
-    <p className="font-semibold">{value}</p>
+  <div className="bg-dark-soft rounded-lg p-2 text-center">
+    <p className="text-light-muted text-xs">{label}</p>
+    <p className="font-semibold text-light">{value}</p>
   </div>
 )
 
