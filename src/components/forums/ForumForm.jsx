@@ -218,54 +218,54 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
     <div className="max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-neutral-700 mb-1">
-            Título <span className="text-red-500">*</span>
+          <label htmlFor="title" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+            Título <span className="text-error">*</span>
           </label>
           <input
             id="title"
             name="title"
             type="text"
             required
-            className={`input w-full ${errors.title ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`input w-full ${errors.title ? 'border-error focus:ring-error' : ''}`}
             value={formData.title}
             onChange={handleChange}
             placeholder="Título del foro"
             disabled={isSubmitting}
           />
           {errors.title && (
-            <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+            <p className="mt-2 text-sm text-error font-medium">{errors.title}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-neutral-700 mb-1">
-            Descripción <span className="text-red-500">*</span>
+          <label htmlFor="description" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+            Descripción <span className="text-error">*</span>
           </label>
           <textarea
             id="description"
             name="description"
             rows={4}
             required
-            className={`input w-full ${errors.description ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`input w-full ${errors.description ? 'border-error focus:ring-error' : ''}`}
             value={formData.description}
             onChange={handleChange}
             placeholder="Descripción del foro"
             disabled={isSubmitting}
           />
           {errors.description && (
-            <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+            <p className="mt-2 text-sm text-error font-medium">{errors.description}</p>
           )}
         </div>
-        
+
         <div>
-          <label htmlFor="categoryId" className="block text-sm font-medium text-neutral-700 mb-1">
-            Continente <span className="text-red-500">*</span>
+          <label htmlFor="categoryId" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+            Continente <span className="text-error">*</span>
           </label>
           <select
             id="categoryId"
             name="categoryId"
             required
-            className={`input w-full ${errors.categoryId ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`input w-full ${errors.categoryId ? 'border-error focus:ring-error' : ''}`}
             value={formData.categoryId}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -278,15 +278,15 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             ))}
           </select>
           {errors.categoryId && (
-            <p className="mt-1 text-sm text-red-600">{errors.categoryId}</p>
+            <p className="mt-2 text-sm text-error font-medium">{errors.categoryId}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-neutral-700 mb-1">
+          <label htmlFor="image" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
             Imagen (opcional)
           </label>
-          
+
           <div className="mt-1 flex items-center">
             <input
               id="image"
@@ -299,31 +299,31 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             />
             <label
               htmlFor="image"
-              className="cursor-pointer bg-white py-2 px-3 border border-neutral-300 rounded-md shadow-sm text-sm leading-4 font-medium text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              className="cursor-pointer bg-dark-lighter py-2 px-4 border-2 border-accent-600 rounded-lg shadow-sm text-sm font-bold text-accent-500 hover:bg-accent-600 hover:text-dark transition-all duration-300"
             >
               Seleccionar imagen
             </label>
-            
-            <span className="ml-3 text-sm text-neutral-500">
+
+            <span className="ml-3 text-sm text-light-soft font-medium">
               {getImageLabel()}
             </span>
           </div>
-          
+
           {errors.image && (
-            <p className="mt-1 text-sm text-red-600">{errors.image}</p>
+            <p className="mt-2 text-sm text-error font-medium">{errors.image}</p>
           )}
-          
+
           {imagePreview && (
-            <div className="mt-3">
-              <div className="relative w-full h-48 bg-neutral-200 rounded overflow-hidden">
-                <img 
-                  src={imagePreview} 
-                  alt="Vista previa" 
+            <div className="mt-4">
+              <div className="relative w-full h-48 bg-dark-lighter rounded-lg overflow-hidden border-2 border-accent-600">
+                <img
+                  src={imagePreview}
+                  alt="Vista previa"
                   className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                  className="absolute top-2 right-2 bg-error text-white rounded-full p-2 hover:bg-red-600 transition-colors shadow-lg"
                   onClick={() => {
                     setImage(null)
                     setImagePreview('')
@@ -338,20 +338,20 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             </div>
           )}
         </div>
-        
-        <div className="flex gap-4 pt-2">
+
+        <div className="flex gap-4 pt-4">
           <button
             type="button"
-            className="btn btn-outline"
+            className="bg-dark border-2 border-accent-600 text-accent-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-accent-600 hover:text-dark transition-all duration-300"
             onClick={() => navigate(-1)}
             disabled={isSubmitting}
           >
             Cancelar
           </button>
-          
+
           <button
             type="submit"
-            className="btn btn-primary flex-1"
+            className="btn-primary flex-1 py-3"
             disabled={isSubmitting}
           >
             {getButtonContent()}

@@ -41,7 +41,7 @@ const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
       <div className={`${dimensions} text-4xl md:text-6xl animate-spin`}>
         {displayIcon}
       </div>
-      <p className="mt-4 text-adventure-gold font-retro text-xs uppercase tracking-wider opacity-70">
+      <p className="mt-4 text-adventure-gold font-retro text-xs uppercase tracking-normal opacity-70">
         CARGANDO...
       </p>
     </div>

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 /* ============================================
    ADVENTURE EXPLORER RETRO THEME
@@ -15,7 +15,7 @@ html {
 
 body {
   color: #fef9f0;
-  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   /* Fondo estilo pergamino antiguo con gradiente cálido */
@@ -51,44 +51,43 @@ body::before {
    TIPOGRAFÍAS - Legibles pero con carácter
    ============================================ */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Orbitron', 'Outfit', sans-serif;
+  font-family: 'Montserrat', 'Arial', sans-serif;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   line-height: 1.3;
   color: #e89020; /* Dorado principal */
-  text-transform: uppercase;
 }
 
 h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  text-shadow: 3px 3px 6px rgba(0,0,0,0.6), 0 0 20px rgba(232, 144, 32, 0.3);
-  letter-spacing: 0.05em;
-}
-
-h2 {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  letter-spacing: 0.03em;
-}
-
-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
   letter-spacing: 0.02em;
 }
 
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  letter-spacing: 0.01em;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 h4 {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 @media (min-width: 768px) {
-  h1 { font-size: 3rem; }
-  h2 { font-size: 2.25rem; }
-  h3 { font-size: 1.75rem; }
-  h4 { font-size: 1.375rem; }
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.125rem; }
 }
 
 /* ============================================
@@ -99,17 +98,16 @@ h4 {
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  font-family: 'Orbitron', 'Outfit', sans-serif;
+  font-family: 'Montserrat', 'Inter', sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.25rem;
   border: 2px solid;
   position: relative;
   transition: all 0.2s ease;
   text-decoration: none;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
 }
 
 .btn-primary {

@@ -20,48 +20,48 @@ const Navbar = () => {
     navigate('/')
   }
 
-  // Configuración de temas
+  // Configuración de tema Adventure Explorer Retro (WCAG AA)
   const themeConfig = {
     retro: {
-      bg: 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900',
-      border: 'border-cyan-500',
-      text: 'text-cyan-400',
-      hover: 'hover:text-cyan-300',
-      icon: '🌎'
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-primary-600',
+      text: 'text-primary-400',
+      hover: 'hover:text-primary-300',
+      icon: '🗺️'
     },
     adventure: {
-      bg: 'bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900',
-      border: 'border-amber-400',
-      text: 'text-amber-300',
-      hover: 'hover:text-amber-200',
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-primary-600',
+      text: 'text-primary-400',
+      hover: 'hover:text-primary-300',
       icon: '🏺'
     },
     future: {
-      bg: 'bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-900',
-      border: 'border-indigo-400',
-      text: 'text-indigo-300',
-      hover: 'hover:text-indigo-200',
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-secondary-600',
+      text: 'text-secondary-400',
+      hover: 'hover:text-secondary-300',
       icon: '⚡'
     },
     jungle: {
-      bg: 'bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900',
-      border: 'border-emerald-400',
-      text: 'text-emerald-300',
-      hover: 'hover:text-emerald-200',
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-secondary-600',
+      text: 'text-secondary-400',
+      hover: 'hover:text-secondary-300',
       icon: '🌴'
     },
     tech: {
-      bg: 'bg-gradient-to-r from-rose-900 via-slate-900 to-rose-900',
-      border: 'border-rose-400',
-      text: 'text-rose-300',
-      hover: 'hover:text-rose-200',
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-accent-600',
+      text: 'text-accent-500',
+      hover: 'hover:text-accent-400',
       icon: '🤖'
     },
     space: {
-      bg: 'bg-gradient-to-r from-violet-900 via-slate-900 to-violet-900',
-      border: 'border-violet-400',
-      text: 'text-violet-300',
-      hover: 'hover:text-violet-200',
+      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      border: 'border-warning',
+      text: 'text-warning',
+      hover: 'hover:text-primary-300',
       icon: '👽'
     }
   }
@@ -83,11 +83,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16 sm:h-20">
           
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <span className="text-3xl sm:text-4xl">{currentTheme.icon}</span>
-            <span className={`${currentTheme.text} text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide`}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}>
-              Forum<span className="text-white">Viajeros</span>
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+            <span className="text-3xl sm:text-4xl transform group-hover:scale-110 transition-transform">{currentTheme.icon}</span>
+            <span className="font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide">
+              <span className={currentTheme.text}>Forum</span>
+              <span className="text-light">Viajeros</span>
             </span>
           </Link>
           
@@ -99,8 +99,7 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`${currentTheme.text} ${currentTheme.hover} flex items-center space-x-2 px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 hover:bg-white/10`}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                  className={`${currentTheme.text} ${currentTheme.hover} flex items-center space-x-2 px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 hover:bg-white/10 tracking-wide`}
                 >
                   <span className="text-xl">{link.icon}</span>
                   <span>{link.label}</span>
@@ -130,11 +129,10 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-medium text-sm sm:text-base hover:bg-white/10 transition-all duration-200 flex items-center space-x-2`}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-white/10 transition-all duration-200 flex items-center space-x-2`}
                 >
                   <span className="text-lg">👤</span>
-                  <span className="hidden sm:inline">{currentUser?.username || 'Usuario'}</span>
+                  <span className="hidden sm:inline">{currentUser?.username || t('nav.user')}</span>
                   <span className="text-xs">▼</span>
                 </button>
                 
@@ -143,38 +141,34 @@ const Navbar = () => {
                   <div className={`absolute right-0 mt-2 w-52 ${currentTheme.bg} ${currentTheme.border} border-2 rounded-lg p-2 space-y-1 shadow-xl`}>
                     <Link
                       to="/profile"
-                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
                       onClick={() => setIsProfileMenuOpen(false)}
-                      style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
                     >
                       👤 {t('nav.myProfile')}
                     </Link>
                     <Link
                       to="/forums/create"
-                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
                       onClick={() => setIsProfileMenuOpen(false)}
-                      style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
                     >
                       ✍️ {t('nav.createForum')}
                     </Link>
                     {currentUser?.roles?.includes('ROLE_MODERATOR') && (
                       <Link
                         to="/moderator/dashboard"
-                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
                         onClick={() => setIsProfileMenuOpen(false)}
-                        style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
                       >
-                        🛡️ Panel Moderador
+                        🛡️ {t('nav.moderator') || 'Panel Moderador'}
                       </Link>
                     )}
                     {currentUser?.roles?.includes('ROLE_ADMIN') && (
                       <Link
                         to="/admin/dashboard"
-                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
                         onClick={() => setIsProfileMenuOpen(false)}
-                        style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
                       >
-                        ⚙️ Panel Admin
+                        ⚙️ {t('nav.admin') || 'Panel Admin'}
                       </Link>
                     )}
                     <div className="border-t border-current opacity-30 my-1"></div>
@@ -183,8 +177,7 @@ const Navbar = () => {
                         setIsProfileMenuOpen(false)
                         handleLogout()
                       }}
-                      className={`block w-full text-left ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-white/10`}
-                      style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                      className={`block w-full text-left ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
                     >
                       🚪 {t('nav.logout')}
                     </button>
@@ -195,15 +188,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-medium text-sm sm:text-base hover:bg-white/10 transition-all duration-200`}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-white/10 transition-all duration-200`}
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className={`bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 sm:px-4 py-2 rounded-lg font-medium text-sm sm:text-base hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md`}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
+                  className="btn-primary text-sm sm:text-base px-3 sm:px-4 py-2"
                 >
                   {t('nav.register')}
                 </Link>
@@ -232,9 +223,8 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-medium text-base border-l-4 ${currentTheme.border} hover:bg-white/10 transition-all duration-200`}
+                  className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-base border-l-4 ${currentTheme.border} hover:bg-white/10 transition-all duration-200`}
                   onClick={() => setIsMenuOpen(false)}
-                  style={{ fontFamily: "'Segoe UI', 'Roboto', 'Arial', sans-serif" }}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{link.icon}</span>

@@ -7,9 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'Segoe UI', 'sans-serif'],
-        display: ['Orbitron', 'Outfit', 'sans-serif'],
-        retro: ['Orbitron', 'monospace'],
+        sans: ['Inter', 'Segoe UI', 'sans-serif'],
+        display: ['Montserrat', 'Arial', 'sans-serif'],
+        retro: ['Montserrat', 'Arial Black', 'sans-serif'],
       },
       colors: {
         // TEMA PRINCIPAL: Adventure Explorer Retro (Estilo Indiana Jones/Jumanji)

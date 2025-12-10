@@ -31,7 +31,7 @@ const CategoryCard = ({ category }) => {
           </div>
         </div>
         <div className="p-4 bg-adventure-dark/50">
-          <div className="text-xs text-adventure-gold font-retro uppercase tracking-wider mb-2 truncate">
+          <div className="text-xs text-adventure-gold font-retro uppercase tracking-normal mb-2 truncate">
             {category.forumCount || 0} {category.forumCount === 1 ? 'FORO' : 'FOROS'} DISPONIBLES
           </div>
           <p className="text-adventure-light font-retro text-xs line-clamp-2 opacity-80 break-words">

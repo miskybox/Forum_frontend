@@ -62,7 +62,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
       <div className="flex justify-center items-center py-20">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🏺</div>
-          <p className="text-adventure-gold font-retro text-sm uppercase tracking-wider">
+          <p className="text-adventure-gold font-retro text-sm uppercase tracking-normal">
             CARGANDO FOROS...
           </p>
         </div>
@@ -74,7 +74,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
     return (
       <div className="text-center py-10 card border-tech-red">
         <div className="text-5xl mb-4">⚠️</div>
-        <div className="text-tech-red font-retro text-sm uppercase tracking-wider mb-6">
+        <div className="text-tech-red font-retro text-sm uppercase tracking-normal mb-6">
           {error}
         </div>
         <button 

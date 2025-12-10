@@ -1,18 +1,21 @@
-// Archivo: src/pages/PostCreatePage.jsx
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import PostForm from '../components/post/PostForm';
-import forumService from '../services/forumService';
+import { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import PostForm from '../components/post/PostForm'
+import forumService from '../services/forumService'
+import { useLanguage } from '../contexts/LanguageContext'
 
-
-
+/**
+ * PostCreatePage con tema Adventure Explorer Retro
+ * Paleta accesible WCAG AA
+ */
 const PostCreatePage = () => {
   const { forumId } = useParams()
-  
+  const { t } = useLanguage()
+
   const [forum, setForum] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  
+
   useEffect(() => {
     const fetchForum = async () => {
       try {
@@ -22,60 +25,72 @@ const PostCreatePage = () => {
         setError(null)
       } catch (err) {
         console.error('Error al cargar el foro:', err)
-        setError('No se pudo cargar el foro. Por favor, inténtalo de nuevo más tarde.')
+        setError(t('posts.loadError') || 'No se pudo cargar el foro. Por favor, inténtalo de nuevo más tarde.')
       } finally {
         setLoading(false)
       }
     }
-    
+
     fetchForum()
-  }, [forumId])
-  
+  }, [forumId, t])
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-      </div>
-    )
-  }
-  
-  if (error || !forum) {
-    return (
-      <div className="bg-neutral-50 py-10">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
-            <div className="text-red-600 mb-4">{error || 'Foro no encontrado'}</div>
-            <Link to="/forums" className="btn btn-primary">
-              Ver foros disponibles
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
-  }
-  
-  return (
-    <div className="bg-neutral-50 py-8 sm:py-12">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl sm:text-3xl font-bold text-neutral-800">
-              Nueva publicación
-            </h1>
-            
-            <Link 
-              to={`/forums/${forumId}`}
-              className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-            >
-              ← Volver al foro
-            </Link>
-          </div>
-          <p className="mt-2 text-neutral-600">
-            Comparte tu experiencia, pregunta o información en el foro "{forum.title}".
+      <div className="min-h-screen flex justify-center items-center py-20">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-spin">⏳</div>
+          <p className="text-primary-400 font-bold text-lg tracking-normal">
+            {t('common.loading') || 'CARGANDO...'}
           </p>
         </div>
-        
-        <div className="bg-white rounded-lg shadow-sm p-6">
+      </div>
+    )
+  }
+
+  if (error || !forum) {
+    return (
+      <div className="min-h-screen py-10">
+        <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+          <div className="card text-center py-10 px-6 border-error">
+            <div className="text-5xl mb-4">⚠️</div>
+            <div className="text-error mb-6 font-bold text-lg">
+              {error || t('posts.forumNotFound') || 'Foro no encontrado'}
+            </div>
+            <Link to="/forums" className="btn-primary inline-block">
+              {t('posts.viewForums') || 'Ver foros disponibles'}
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen py-8 sm:py-12">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="mb-8">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-display font-bold text-primary-500 mb-2">
+                {t('posts.newPost')}
+              </h1>
+              <p className="text-light-soft text-base sm:text-lg">
+                {t('posts.shareExperience')}{' '}
+                <span className="text-primary-400 font-bold">"{forum.title}"</span>.
+              </p>
+            </div>
+
+            <Link
+              to={`/forums/${forumId}`}
+              className="inline-flex items-center gap-2 px-4 py-2 text-primary-400 hover:text-primary-300 font-bold transition-colors border-2 border-primary-600 hover:border-primary-500 rounded-lg"
+            >
+              <span>←</span>
+              <span>{t('common.back')}</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="card max-w-4xl">
           <PostForm />
         </div>
       </div>

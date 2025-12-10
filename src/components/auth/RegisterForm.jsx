@@ -232,14 +232,14 @@ const RegisterForm = () => {
     <div className="p-6">
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         {errors.auth && (
-          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-wider">
+          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal">
             ⚠️ {errors.auth}
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+            <label htmlFor="firstName" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
               Nombre
             </label>
             <input
@@ -257,7 +257,7 @@ const RegisterForm = () => {
           </div>
 
           <div>
-            <label htmlFor="lastName" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+            <label htmlFor="lastName" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
               Apellido
             </label>
             <input
@@ -276,7 +276,7 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -295,7 +295,7 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="email" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             📧 {t('auth.email')}
           </label>
           <input
@@ -313,7 +313,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
@@ -346,7 +346,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="confirmPassword" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.confirmPassword')}
           </label>
           <div className="relative">

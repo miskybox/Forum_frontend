@@ -56,11 +56,11 @@ const LoginPage = () => {
           <div className="text-center mb-8 animate-fade-in">
             <div className="mb-6">
               <div className="text-6xl mb-4">🗺️</div>
-              <h1 className="text-4xl md:text-5xl font-display text-primary-500 font-bold tracking-wider mb-2">
+              <h1 className="text-3xl md:text-4xl font-display text-primary-500 font-bold tracking-normal mb-2">
                 {t('auth.loginTitle')}
               </h1>
               <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-primary-400 to-transparent mb-4"></div>
-              <p className="text-sm font-bold text-secondary-500 opacity-80 uppercase tracking-wider">
+              <p className="text-sm font-bold text-secondary-500 opacity-80 uppercase tracking-normal">
                 {t('auth.loginTitle')}
               </p>
             </div>

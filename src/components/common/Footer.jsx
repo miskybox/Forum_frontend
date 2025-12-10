@@ -36,7 +36,7 @@ const Footer = () => {
           
           {/* Enlaces útiles */}
           <div>
-            <h3 className="text-sm font-display font-bold text-neon-pink neon-text uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-display font-bold text-neon-pink neon-text uppercase tracking-normal mb-4">
               NAVEGACIÓN
             </h3>
             <ul className="space-y-3">
@@ -52,7 +52,7 @@ const Footer = () => {
                     className="text-gray-300 hover:text-neon-cyan transition-colors duration-300 flex items-center space-x-2 group"
                   >
                     <span className="text-lg group-hover:scale-125 transition-transform">{link.icon}</span>
-                    <span className="font-retro text-xs uppercase tracking-wider">{link.label}</span>
+                    <span className="font-retro text-xs uppercase tracking-normal">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -61,7 +61,7 @@ const Footer = () => {
           
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-display font-bold text-neon-green neon-text uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-display font-bold text-neon-green neon-text uppercase tracking-normal mb-4">
               LEGAL
             </h3>
             <ul className="space-y-3">
@@ -76,7 +76,7 @@ const Footer = () => {
                     className="text-gray-300 hover:text-neon-green transition-colors duration-300 flex items-center space-x-2 group"
                   >
                     <span className="text-lg group-hover:scale-125 transition-transform">{link.icon}</span>
-                    <span className="font-retro text-xs uppercase tracking-wider">{link.label}</span>
+                    <span className="font-retro text-xs uppercase tracking-normal">{link.label}</span>
                   </Link>
                 </li>
               ))}

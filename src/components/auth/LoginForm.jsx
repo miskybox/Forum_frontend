@@ -138,13 +138,13 @@ const LoginForm = () => {
     <div className="p-6">
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
         {errors.auth && (
-          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-wider">
+          <div className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal">
             ⚠️ {errors.auth}
           </div>
         )}
 
         <div>
-          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -166,7 +166,7 @@ const LoginForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-wider mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
