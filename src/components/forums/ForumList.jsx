@@ -78,7 +78,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           {error}
         </div>
         <button 
-          onClick={() => window.location.reload()}
+          onClick={() => globalThis?.window?.location?.reload?.()}
           className="btn btn-primary text-adventure-dark border-adventure-gold"
         >
           <span className="flex items-center space-x-2">
@@ -93,19 +93,19 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   let heading;
   if (category) {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+      <h2 className="text-2xl md:text-3xl font-bold text-adventure-gold neon-text">
         FOROS DE {category.name.toUpperCase()}
       </h2>
     );
   } else if (searchTerm) {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+      <h2 className="text-2xl md:text-3xl font-bold text-adventure-gold neon-text">
         RESULTADOS: "{searchTerm.toUpperCase()}"
       </h2>
     );
   } else {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-display text-adventure-gold neon-text">
+      <h2 className="text-2xl md:text-3xl font-bold text-adventure-gold neon-text">
         TODOS LOS FOROS
       </h2>
     );
@@ -138,7 +138,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🔍</div>
-              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+              <h3 className="text-xl font-bold text-adventure-gold neon-text mb-2 uppercase">
                 NO SE ENCONTRARON RESULTADOS
               </h3>
               <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">
@@ -159,7 +159,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🗺️</div>
-              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+              <h3 className="text-xl font-bold text-adventure-gold neon-text mb-2 uppercase">
                 NO HAY FOROS EN ESTA CATEGORÍA
               </h3>
               <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">
@@ -186,7 +186,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🏺</div>
-              <h3 className="text-xl font-display text-adventure-gold neon-text mb-2 uppercase">
+              <h3 className="text-xl font-bold text-adventure-gold neon-text mb-2 uppercase">
                 NO HAY FOROS DISPONIBLES
               </h3>
               <p className="text-adventure-light font-retro text-sm mb-6 opacity-80">

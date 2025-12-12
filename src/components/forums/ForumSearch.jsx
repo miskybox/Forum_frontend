@@ -25,7 +25,7 @@ const ForumSearch = ({ onSearch, initialValue = '' }) => {
         />
         <button
           type="submit"
-          className="absolute inset-y-0 right-0 pr-3 flex items-center hover:scale-110 transition-transform"
+          className="absolute inset-y-0 right-0 pr-3 flex items-center hover:scale-110 transition-transform z-10"
           aria-label="Buscar"
         >
           <span className="text-adventure-gold text-xl">🔍</span>

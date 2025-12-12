@@ -85,7 +85,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <span className="text-3xl sm:text-4xl transform group-hover:scale-110 transition-transform">{currentTheme.icon}</span>
-            <span className="font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide">
+            <span className="font-bold text-xl sm:text-2xl lg:text-3xl tracking-wide">
               <span className={currentTheme.text}>Forum</span>
               <span className="text-light">Viajeros</span>
             </span>

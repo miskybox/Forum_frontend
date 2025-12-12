@@ -48,7 +48,7 @@ const LoginForm = () => {
     } else if (formData.username.length < 3) {
       newErrors.username = '⚠️ El nombre de usuario debe tener al menos 3 caracteres'
     } else if (/[^a-zA-Z0-9._-]/.test(formData.username)) {
-      newErrors.username = '⚠️ Solo se permiten letras, números, punto (.), guión (-) y guión bajo (_)'
+      newErrors.username = '⚠️ Caracteres inválidos'
     }
 
     // Validar password
@@ -170,18 +170,18 @@ const LoginForm = () => {
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
-              required
-              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-primary-600'}`}
-              value={formData.password}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              placeholder={t('auth.password')}
-            />
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                required
+                className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-primary-600'}`}
+                value={formData.password}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                placeholder={typeof t === 'function' ? t('auth.passwordLoginPlaceholder') : 'Ingresa tu contraseña'}
+              />
             <button
               type="button"
               onClick={(e) => {
@@ -209,12 +209,12 @@ const LoginForm = () => {
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
               <span className="animate-spin">⏳</span>
-              <span>{t('common.loading') || 'Cargando...'}</span>
+              <span>Procesando...</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">
               <span>🗺️</span>
-              <span>{t('auth.loginButton') || 'Iniciar Sesión'}</span>
+              <span>Acceder</span>
             </span>
           )}
         </button>

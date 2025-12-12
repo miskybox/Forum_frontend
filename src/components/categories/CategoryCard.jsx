@@ -25,7 +25,7 @@ const CategoryCard = ({ category }) => {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-adventure-dark via-adventure-dark/50 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h3 className="text-white text-lg md:text-xl font-display neon-text uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+            <h3 className="text-white text-lg md:text-xl font-bold neon-text uppercase whitespace-nowrap overflow-hidden text-ellipsis">
               {category.name}
             </h3>
           </div>

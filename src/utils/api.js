@@ -18,7 +18,9 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    throw error;
+  }
 );
 
 api.interceptors.response.use(
@@ -45,12 +47,12 @@ api.interceptors.response.use(
       } catch (err) {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
-        return Promise.reject(err);
+        globalThis.location.href = "/login";
+        throw err;
       }
     }
 
-    return Promise.reject(error);
+    throw error;
   }
 );
 

@@ -37,7 +37,7 @@ const ForumCard = ({ forum }) => {
 
         <div className="md:w-2/3 p-4 flex flex-col bg-dark-lighter">
           <div className="flex-grow">
-            <h3 className="text-lg md:text-xl font-display text-primary-500 font-bold mb-2 break-words">
+            <h3 className="text-lg md:text-xl font-bold text-primary-500 mb-2 break-words">
               <Link to={`/forums/${forum.id}`} className="hover:text-primary-400 transition-colors">
                 {forum.title.toUpperCase()}
               </Link>

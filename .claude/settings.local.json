@@ -36,7 +36,15 @@
       "Bash(for file in CommentRepositoryTest.java PostRepositoryTest.java)",
       "Bash(do echo \"Processing $file...\")",
       "Bash(done)",
-      "Bash(timeout 120 ./mvnw.cmd test:*)"
+      "Bash(timeout 120 ./mvnw.cmd test:*)",
+      "Bash(timeout 5 .mvnw.cmd:*)",
+      "Bash(netstat:*)",
+      "Bash(.mvnw.cmd spring-boot:run:*)",
+      "Bash(timeout:*)",
+      "Bash(echo:*)",
+      "Bash(del test-login.json)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-auth.ps1)",
+      "Bash(powershell -Command \"$body = @{username=''admin'';password=''Admin123!''} | ConvertTo-Json; Invoke-RestMethod -Uri ''http://localhost:8080/api/auth/login'' -Method POST -ContentType ''application/json'' -Body $body | Select-Object -Property username, @{Name=''token_length'';Expression={$_accessToken.Length}}\")"
     ],
     "deny": [],
     "ask": []

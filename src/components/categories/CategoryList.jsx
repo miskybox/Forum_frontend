@@ -66,7 +66,7 @@ const CategoryList = () => {
     return (
       <div className="text-center py-12 card border-primary-600">
         <div className="text-5xl mb-4">🌍</div>
-        <h3 className="text-xl font-display text-primary-500 drop-shadow-md mb-2 uppercase">
+        <h3 className="text-xl font-bold text-primary-500 drop-shadow-md mb-2 uppercase">
           NO HAY CATEGORÍAS DISPONIBLES
         </h3>
         <p className="text-light-soft font-bold text-sm mb-4">

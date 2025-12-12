@@ -72,10 +72,10 @@ const HomePage = () => {
           {/* Título principal estilo póster retro */}
           <div className="mb-8 animate-fade-in">
             <div className="text-6xl md:text-7xl mb-6">🗺️</div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display mb-2 text-primary-500 tracking-wide font-bold">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-2 text-primary-500 tracking-wide uppercase">
               FORUM
             </h1>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display mb-4 text-secondary-500 tracking-wide font-bold">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 text-secondary-500 tracking-wide uppercase">
               VIAJEROS
             </h1>
             <p className="text-lg md:text-xl font-bold text-accent-500 tracking-wide mb-6">
@@ -142,7 +142,7 @@ const HomePage = () => {
                        style={{ animationDelay: `${index * 0.2}s` }}>
                     {world.icon}
                   </div>
-                  <h3 className={`font-display text-xs md:text-sm lg:text-base ${world.color} font-bold tracking-normal`}>
+                  <h3 className={`text-xs md:text-sm lg:text-base ${world.color} font-bold tracking-normal uppercase`}>
                     {world.title}
                   </h3>
                 </div>
@@ -156,7 +156,7 @@ const HomePage = () => {
       <section className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
           <div className="text-5xl mb-4">📜</div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display text-primary-500 mb-4 tracking-normal font-bold">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-500 mb-4 tracking-normal uppercase">
             {t('home.latestAdventures')}
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-500 to-transparent"></div>
@@ -175,7 +175,7 @@ const HomePage = () => {
               recentForums.map((forum) => (
                 <div key={forum.id} className="card group hover:border-primary-500">
                   <div className="p-6">
-                    <h3 className="text-xl font-display text-primary-400 mb-3 group-hover:text-primary-300 transition-colors font-bold tracking-wide">
+                    <h3 className="text-lg font-bold text-primary-400 mb-3 group-hover:text-primary-300 transition-colors tracking-normal uppercase">
                       {forum.title}
                     </h3>
                     <p className="text-sm text-light-soft mb-4 line-clamp-3">
@@ -215,7 +215,7 @@ const HomePage = () => {
       <section className="container mx-auto px-4 py-12 pb-20 relative z-10">
         <div className="text-center mb-12">
           <div className="text-5xl mb-4">🌍</div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display text-secondary-500 mb-4 tracking-normal font-bold">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-500 mb-4 tracking-normal uppercase">
             {t('home.continents')}
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-secondary-500 to-transparent"></div>

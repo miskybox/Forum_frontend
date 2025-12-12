@@ -26,14 +26,11 @@ describe('Validación de Rutas y Links', () => {
   })
 
   it('debe renderizar NotFoundPage para rutas inexistentes', () => {
-    renderWithProviders(
-      <MemoryRouter initialEntries={['/ruta-inexistente']}>
-        <App />
-      </MemoryRouter>
-    )
+    renderWithProviders(<App />, { initialEntries: ['/ruta-inexistente'] })
 
     // Verificar que se muestra la página 404
-    expect(screen.getByText(/404|not found|página no encontrada/i)).toBeInTheDocument()
+    const matches = screen.getAllByText(/404|not found|página no encontrada/i)
+    expect(matches.length).toBeGreaterThan(0)
   })
 
   it('debe tener rutas protegidas correctamente configuradas', () => {

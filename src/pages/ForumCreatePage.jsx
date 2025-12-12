@@ -10,7 +10,7 @@ const ForumCreatePage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-display font-bold text-primary-500 mb-2">
+              <h1 className="text-3xl sm:text-4xl font-bold text-primary-500 mb-2">
                 Crear Nuevo Foro
               </h1>
               <p className="text-light-soft text-base sm:text-lg">
@@ -35,7 +35,7 @@ const ForumCreatePage = () => {
 
         {/* Tips Card */}
         <div className="card max-w-4xl mt-6 border-secondary-600">
-          <h3 className="text-xl font-display font-bold text-secondary-500 mb-4">
+          <h3 className="text-xl font-bold text-secondary-500 mb-4">
             💡 Consejos para crear un buen foro
           </h3>
           <ul className="space-y-3 text-light-soft">

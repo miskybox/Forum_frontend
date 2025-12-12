@@ -43,7 +43,7 @@ const RegisterPage = () => {
           <div className="text-center mb-8 animate-fade-in">
             <div className="mb-6">
               <div className="text-6xl mb-4">🗺️</div>
-              <h1 className="text-3xl md:text-4xl font-display text-primary-500 font-bold tracking-normal mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-primary-500 tracking-normal mb-2">
                 {t('auth.registerTitle')}
               </h1>
               <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-primary-400 to-transparent mb-4"></div>

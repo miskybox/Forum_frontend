@@ -106,7 +106,7 @@ const PostList = ({ forumId: propForumId, posts: propPosts }) => {
       {forum && (
         <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h2 className="text-2xl md:text-3xl font-display text-primary-400 drop-shadow-md mb-2 uppercase">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary-400 drop-shadow-md mb-2 uppercase">
               PUBLICACIONES EN {forum.title.toUpperCase()}
             </h2>
             <p className="text-light-soft font-bold text-xs">
@@ -131,7 +131,7 @@ const PostList = ({ forumId: propForumId, posts: propPosts }) => {
       {posts.length === 0 ? (
         <div className="text-center py-12 card border-primary-600">
           <div className="text-5xl mb-4">📝</div>
-          <h3 className="text-xl font-display text-primary-400 drop-shadow-md mb-2 uppercase">
+          <h3 className="text-xl font-bold text-primary-400 drop-shadow-md mb-2 uppercase">
             NO HAY PUBLICACIONES
           </h3>
           <p className="text-light-soft font-bold text-sm mb-6">

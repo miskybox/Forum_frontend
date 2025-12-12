@@ -173,7 +173,7 @@ const ForumDetailsPage = () => {
             )}
 
             <div className={`px-6 py-6 ${forum.imagePath ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent' : ''}`}>
-              <h1 className="text-3xl md:text-4xl font-display text-primary-400 mb-3 tracking-wide font-bold">
+              <h1 className="text-3xl md:text-4xl font-bold text-primary-400 mb-3 tracking-wide">
                 {forum.title}
               </h1>
               {forum.category && (
@@ -192,7 +192,7 @@ const ForumDetailsPage = () => {
 
             {forum.rules && (
               <div className="mt-6 p-4 bg-dark-lighter border-2 border-accent-600 rounded-lg">
-                <h3 className="text-accent-500 font-display text-base uppercase tracking-normal mb-3 font-bold">
+                <h3 className="text-accent-500 font-bold text-base uppercase tracking-normal mb-3">
                   📜 {t('forums.rules')}
                 </h3>
                 <div className="text-light-soft text-sm whitespace-pre-line leading-relaxed">
@@ -230,7 +230,7 @@ const ForumDetailsPage = () => {
         {/* Lista de publicaciones */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-            <h2 className="text-xl md:text-2xl font-display text-primary-500 font-bold tracking-normal">
+            <h2 className="text-xl md:text-2xl font-bold text-primary-500 tracking-normal">
               {t('forums.posts')}
             </h2>
             {isAuthenticated && (

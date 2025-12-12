@@ -20,7 +20,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center mb-4 group">
               <div className="text-4xl mr-3 group-hover:animate-pulse-neon">✈️</div>
               <div>
-                <span className="text-2xl font-display font-bold text-neon-cyan neon-text block">
+                <span className="text-2xl font-bold text-neon-cyan neon-text block">
                   FORUM VIAJEROS
                 </span>
                 <span className="text-xs font-retro text-neon-yellow opacity-80">
@@ -36,7 +36,7 @@ const Footer = () => {
           
           {/* Enlaces útiles */}
           <div>
-            <h3 className="text-sm font-display font-bold text-neon-pink neon-text uppercase tracking-normal mb-4">
+            <h3 className="text-sm font-bold text-neon-pink neon-text uppercase tracking-normal mb-4">
               NAVEGACIÓN
             </h3>
             <ul className="space-y-3">
@@ -61,7 +61,7 @@ const Footer = () => {
           
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-display font-bold text-neon-green neon-text uppercase tracking-normal mb-4">
+            <h3 className="text-sm font-bold text-neon-green neon-text uppercase tracking-normal mb-4">
               LEGAL
             </h3>
             <ul className="space-y-3">

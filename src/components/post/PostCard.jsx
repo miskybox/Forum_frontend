@@ -26,7 +26,7 @@ const PostCard = ({ post }) => {
         <div className="p-5 bg-dark-lighter">
           {/* Título y metadata */}
           <div className="mb-3">
-            <h3 className="text-xl font-display text-primary-400 mb-2 hover:text-primary-300 transition-colors uppercase">
+            <h3 className="text-xl font-bold text-primary-400 mb-2 hover:text-primary-300 transition-colors uppercase">
               {post.title}
             </h3>
             <div className="flex items-center text-xs text-light-soft font-bold">
@@ -73,7 +73,7 @@ const PostCard = ({ post }) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {post.images.length > 4 && index === 3 && (
-                      <div className="absolute inset-0 bg-dark/80 flex items-center justify-center text-primary-400 font-display text-lg border-2 border-primary-600">
+                      <div className="absolute inset-0 bg-dark/80 flex items-center justify-center text-primary-400 font-bold text-lg border-2 border-primary-600">
                         +{post.images.length - 4}
                       </div>
                     )}
@@ -98,7 +98,7 @@ const PostCard = ({ post }) => {
             </div>
 
             <div>
-              <span className="text-primary-400 font-display text-xs uppercase tracking-normal hover:text-primary-300 transition-colors">
+              <span className="text-primary-400 font-bold text-xs uppercase tracking-normal hover:text-primary-300 transition-colors">
                 {t('common.readMore').toUpperCase()} →
               </span>
             </div>
