@@ -21,7 +21,7 @@ const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
  * TravelMapPage con tema Adventure
  */
 const TravelMapPage = () => {
-  const { user, isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth()
   const { t } = useLanguage()
   const [places, setPlaces] = useState([])
   const [stats, setStats] = useState(null)

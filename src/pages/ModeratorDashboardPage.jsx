@@ -77,7 +77,7 @@ const ModeratorDashboardPage = () => {
       await forumService.deleteForum(forumId)
       toast.success('Foro eliminado correctamente')
       loadDashboardData()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al eliminar el foro')
     }
   }
@@ -91,7 +91,7 @@ const ModeratorDashboardPage = () => {
       await postService.deletePost(postId)
       toast.success('Post eliminado correctamente')
       loadDashboardData()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al eliminar el post')
     }
   }

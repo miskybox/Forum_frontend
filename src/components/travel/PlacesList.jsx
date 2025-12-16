@@ -31,7 +31,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
       await travelService.deletePlace(placeId)
       toast.success('Lugar eliminado')
       onRefresh()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al eliminar')
     } finally {
       setDeletingId(null)
@@ -42,7 +42,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
     try {
       await travelService.toggleFavorite(placeId)
       onRefresh()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al actualizar')
     }
   }

@@ -85,7 +85,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
             <p className="text-slate-500 mt-4">Aún no hay jugadores</p>
           </div>
         ) : (
-          leaderboard?.entries?.map((entry, idx) => (
+          leaderboard?.entries?.map((entry, _idx) => (
             <div 
               key={entry.userId}
               className={`flex items-center gap-4 p-4 ${

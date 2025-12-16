@@ -84,7 +84,7 @@ const AdminDashboardPage = () => {
       await userService.deleteUser(userId)
       toast.success('Usuario eliminado correctamente')
       loadDashboardData()
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al eliminar el usuario')
     }
   }

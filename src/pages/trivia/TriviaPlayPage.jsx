@@ -122,7 +122,7 @@ const TriviaPlayPage = () => {
       setResult(null)
       setCurrentQuestion(newGame.firstQuestion)
       setGame(newGame)
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al iniciar nueva partida')
     }
   }
