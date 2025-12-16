@@ -265,5 +265,94 @@ describe('triviaService', () => {
       expect(result.correct).toBe(false)
     })
   })
+
+  // === TESTS DE ERRORES ===
+  describe('Manejo de errores', () => {
+    it('startGame - propaga error de validación', async () => {
+      const error = { response: { status: 400, data: { message: 'Modo de juego inválido' } } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(triviaService.startGame({ gameMode: 'INVALID' })).rejects.toEqual(error)
+    })
+
+    it('getGameStatus - propaga error 404 si partida no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(triviaService.getGameStatus(999)).rejects.toEqual(error)
+    })
+
+    it('getNextQuestion - propaga error si partida finalizada', async () => {
+      const error = { response: { status: 400, data: { message: 'Partida ya finalizada' } } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(triviaService.getNextQuestion(1)).rejects.toEqual(error)
+    })
+
+    it('answerQuestion - propaga error si ya respondida', async () => {
+      const error = { response: { status: 400, data: { message: 'Pregunta ya respondida' } } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(triviaService.answerQuestion({ gameId: 1, questionId: 1 })).rejects.toEqual(error)
+    })
+
+    it('finishGame - propaga error de autorización', async () => {
+      const error = { response: { status: 403 } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(triviaService.finishGame(1)).rejects.toEqual(error)
+    })
+
+    it('abandonGame - propaga error si partida no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.delete.mockRejectedValueOnce(error)
+
+      await expect(triviaService.abandonGame(999)).rejects.toEqual(error)
+    })
+
+    it('getGameHistory - usa valores por defecto correctamente', async () => {
+      api.get.mockResolvedValueOnce({ data: { content: [], totalPages: 0 } })
+
+      await triviaService.getGameHistory()
+
+      expect(api.get).toHaveBeenCalledWith('/trivia/my-games', { params: { page: 0, size: 10 } })
+    })
+
+    it('getMyScore - propaga error de autenticación', async () => {
+      const error = { response: { status: 401 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(triviaService.getMyScore()).rejects.toEqual(error)
+    })
+
+    it('getUserScore - propaga error 404 si usuario no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(triviaService.getUserScore(999)).rejects.toEqual(error)
+    })
+
+    it('getLeaderboard - usa valores por defecto', async () => {
+      api.get.mockResolvedValueOnce({ data: { content: [] } })
+
+      await triviaService.getLeaderboard()
+
+      expect(api.get).toHaveBeenCalledWith('/trivia/leaderboard', { params: { type: 'score', page: 0, size: 20 } })
+    })
+
+    it('getRandomQuestion - propaga error de servidor', async () => {
+      const error = { response: { status: 500 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(triviaService.getRandomQuestion()).rejects.toEqual(error)
+    })
+
+    it('checkAnswer - propaga error si pregunta no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(triviaService.checkAnswer(999, 'respuesta')).rejects.toEqual(error)
+    })
+  })
 })
 

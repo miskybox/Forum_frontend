@@ -149,5 +149,66 @@ describe('countryService', () => {
       expect(api.get).toHaveBeenCalledWith('/countries/random', { params: { count: 10 } })
     })
   })
+
+  // === TESTS DE ERRORES ===
+  describe('Manejo de errores', () => {
+    it('getAllCountries - propaga error de red', async () => {
+      const error = new Error('Network Error')
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getAllCountries()).rejects.toThrow('Network Error')
+    })
+
+    it('getCountryById - propaga error 404', async () => {
+      const error = { response: { status: 404, data: { message: 'País no encontrado' } } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getCountryById(999)).rejects.toEqual(error)
+    })
+
+    it('getCountryByIsoCode - propaga error cuando código no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getCountryByIsoCode('XX')).rejects.toEqual(error)
+    })
+
+    it('searchCountries - retorna array vacío para búsqueda sin resultados', async () => {
+      api.get.mockResolvedValueOnce({ data: [] })
+
+      const result = await countryService.searchCountries('paisinexistente')
+
+      expect(result).toEqual([])
+    })
+
+    it('getCountriesByContinent - propaga error para continente inválido', async () => {
+      const error = { response: { status: 400, data: { message: 'Continente inválido' } } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getCountriesByContinent('Invalid')).rejects.toEqual(error)
+    })
+
+    it('getAllContinents - propaga error de servidor', async () => {
+      const error = { response: { status: 500 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getAllContinents()).rejects.toEqual(error)
+    })
+
+    it('getCountryStats - propaga error de autorización', async () => {
+      const error = { response: { status: 401 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(countryService.getCountryStats()).rejects.toEqual(error)
+    })
+
+    it('getRandomCountries - maneja cantidad cero', async () => {
+      api.get.mockResolvedValueOnce({ data: [] })
+
+      await countryService.getRandomCountries(0)
+
+      expect(api.get).toHaveBeenCalledWith('/countries/random', { params: { count: 0 } })
+    })
+  })
 })
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import authService from './authService'
 import api from '../utils/api'
 
@@ -23,6 +23,13 @@ describe('authService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorageMock.getItem.mockReturnValue(null)
+    // Suprimir console.log/error durante los tests
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   describe('register - POST /auth/register', () => {
@@ -30,10 +37,12 @@ describe('authService', () => {
       const userData = {
         username: 'newuser',
         email: 'newuser@example.com',
-        password: 'password123'
+        password: 'password123',
+        firstName: 'New',
+        lastName: 'User'
       }
       const mockResponse = { data: { id: 1, username: 'newuser', email: 'newuser@example.com' } }
-      
+
       api.post.mockResolvedValueOnce(mockResponse)
 
       const result = await authService.register(userData)
@@ -42,10 +51,30 @@ describe('authService', () => {
       expect(result).toEqual(mockResponse.data)
     })
 
-    it('maneja errores de registro', async () => {
+    it('maneja errores de servidor (usuario ya existe)', async () => {
       const userData = { username: 'existinguser', email: 'existing@example.com', password: 'pass' }
-      const error = { response: { data: { message: 'Usuario ya existe' } } }
-      
+      const error = { response: { status: 400, data: { message: 'Usuario ya existe' } } }
+
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(authService.register(userData)).rejects.toEqual(error)
+    })
+
+    it('maneja errores de red durante el registro', async () => {
+      const userData = { username: 'newuser', email: 'new@example.com', password: 'pass123' }
+      const error = { request: {}, message: 'Network Error' }
+
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(authService.register(userData)).rejects.toThrow(
+        'No se pudo conectar con el servidor'
+      )
+    })
+
+    it('maneja errores de configuración de la petición', async () => {
+      const userData = { username: 'newuser', email: 'new@example.com' }
+      const error = new Error('Request configuration error')
+
       api.post.mockRejectedValueOnce(error)
 
       await expect(authService.register(userData)).rejects.toEqual(error)

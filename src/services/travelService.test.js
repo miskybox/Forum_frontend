@@ -253,5 +253,64 @@ describe('travelService', () => {
       expect(result).toBe(false)
     })
   })
+
+  // === TESTS DE ERRORES ===
+  describe('Manejo de errores', () => {
+    it('addPlace - propaga error de validación', async () => {
+      const error = { response: { status: 400, data: { message: 'Datos inválidos' } } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(travelService.addPlace({})).rejects.toEqual(error)
+    })
+
+    it('updatePlace - propaga error 404 si lugar no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.put.mockRejectedValueOnce(error)
+
+      await expect(travelService.updatePlace(999, {})).rejects.toEqual(error)
+    })
+
+    it('deletePlace - propaga error de autorización', async () => {
+      const error = { response: { status: 403, data: { message: 'No autorizado' } } }
+      api.delete.mockRejectedValueOnce(error)
+
+      await expect(travelService.deletePlace(1)).rejects.toEqual(error)
+    })
+
+    it('getPlaceById - propaga error si no encuentra el lugar', async () => {
+      const error = { response: { status: 404 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(travelService.getPlaceById(999)).rejects.toEqual(error)
+    })
+
+    it('getMyPlaces - propaga error de autenticación', async () => {
+      const error = { response: { status: 401 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(travelService.getMyPlaces()).rejects.toEqual(error)
+    })
+
+    it('toggleFavorite - propaga error de servidor', async () => {
+      const error = { response: { status: 500 } }
+      api.patch.mockRejectedValueOnce(error)
+
+      await expect(travelService.toggleFavorite(1)).rejects.toEqual(error)
+    })
+
+    it('getMyStats - propaga error de red', async () => {
+      const error = new Error('Network Error')
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(travelService.getMyStats()).rejects.toThrow('Network Error')
+    })
+
+    it('getRanking - propaga error de servidor', async () => {
+      const error = { response: { status: 500 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(travelService.getRanking()).rejects.toEqual(error)
+    })
+  })
 })
 

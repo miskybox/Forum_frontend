@@ -118,5 +118,79 @@ describe('userService', () => {
       await expect(userService.changePassword(1, 'wrongPass', 'newPass')).rejects.toEqual(error)
     })
   })
+
+  describe('updateUserRoles - PUT /users/:id/roles', () => {
+    it('actualiza roles de un usuario', async () => {
+      const roles = ['USER', 'MODERATOR']
+      const mockUpdated = { id: 1, username: 'testuser', roles }
+      api.put.mockResolvedValueOnce({ data: mockUpdated })
+
+      const result = await userService.updateUserRoles(1, roles)
+
+      expect(api.put).toHaveBeenCalledWith('/users/1/roles', roles)
+      expect(result).toEqual(mockUpdated)
+    })
+
+    it('asigna rol de administrador', async () => {
+      const roles = ['USER', 'ADMIN']
+      api.put.mockResolvedValueOnce({ data: { id: 1, roles } })
+
+      await userService.updateUserRoles(1, roles)
+
+      expect(api.put).toHaveBeenCalledWith('/users/1/roles', ['USER', 'ADMIN'])
+    })
+
+    it('maneja error de autorización al cambiar roles', async () => {
+      const error = { response: { status: 403, data: { message: 'Sin permisos' } } }
+      api.put.mockRejectedValueOnce(error)
+
+      await expect(userService.updateUserRoles(1, ['ADMIN'])).rejects.toEqual(error)
+    })
+  })
+
+  // === TESTS DE ERRORES ADICIONALES ===
+  describe('Manejo de errores adicionales', () => {
+    it('getAllUsers - propaga error de autenticación', async () => {
+      const error = { response: { status: 401 } }
+      api.get.mockRejectedValueOnce(error)
+
+      await expect(userService.getAllUsers()).rejects.toEqual(error)
+    })
+
+    it('createUser - propaga error de validación', async () => {
+      const error = { response: { status: 400, data: { message: 'Email inválido' } } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(userService.createUser({ email: 'invalid' }, ['USER'])).rejects.toEqual(error)
+    })
+
+    it('createUser - propaga error de email duplicado', async () => {
+      const error = { response: { status: 409, data: { message: 'Email ya registrado' } } }
+      api.post.mockRejectedValueOnce(error)
+
+      await expect(userService.createUser({ email: 'exists@example.com' }, ['USER'])).rejects.toEqual(error)
+    })
+
+    it('updateUser - propaga error 404 si usuario no existe', async () => {
+      const error = { response: { status: 404 } }
+      api.put.mockRejectedValueOnce(error)
+
+      await expect(userService.updateUser(999, {})).rejects.toEqual(error)
+    })
+
+    it('deleteUser - propaga error de autorización', async () => {
+      const error = { response: { status: 403 } }
+      api.delete.mockRejectedValueOnce(error)
+
+      await expect(userService.deleteUser(1)).rejects.toEqual(error)
+    })
+
+    it('deleteUser - propaga error si usuario no puede eliminarse', async () => {
+      const error = { response: { status: 400, data: { message: 'No se puede eliminar este usuario' } } }
+      api.delete.mockRejectedValueOnce(error)
+
+      await expect(userService.deleteUser(1)).rejects.toEqual(error)
+    })
+  })
 })
 
