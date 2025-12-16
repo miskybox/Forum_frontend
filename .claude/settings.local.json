@@ -50,7 +50,12 @@
       "Bash(powershell -Command \"$body = @{username=''admin'';password=''Admin123!''} | ConvertTo-Json; $login = Invoke-RestMethod -Uri ''http://localhost:8080/api/auth/login'' -Method POST -ContentType ''application/json'' -Body $body; $token = $login.accessToken; Write-Host ''Token OK''; $headers = @{Authorization=\"\"Bearer $token\"\"}; try { $game = Invoke-RestMethod -Uri ''http://localhost:8080/api/trivia/games'' -Method POST -Headers $headers -ContentType ''application/json'' -Body ''{\"\"gameMode\"\":\"\"QUICK\"\",\"\"totalQuestions\"\":10}'' } catch { Write-Host ''Error:'' $_Exception.Message; Write-Host ''Response:'' $_ErrorDetails.Message }\")",
       "Bash(powershell.exe -ExecutionPolicy Bypass -File test-trivia-debug.ps1)",
       "Bash(powershell.exe -ExecutionPolicy Bypass -File test-trivia-error.ps1)",
-      "Bash(powershell.exe -ExecutionPolicy Bypass -File check-active-game.ps1)"
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File check-active-game.ps1)",
+      "Bash(./mvnw.cmd clean:*)",
+      "Bash(openssl rand:*)",
+      "Bash(start:*)",
+      "Bash(powershell:*)",
+      "Bash(mvnw.cmd spring-boot:run:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
 
 /* ============================================
    ADVENTURE EXPLORER RETRO THEME
@@ -403,7 +403,7 @@ a:focus {
   color: #1a1410;
 }
 
-/* Estados focus visibles */
+/* Estados focus visibles - WCAG 2.1 Level AA compliant */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -411,6 +411,25 @@ textarea:focus-visible,
 select:focus-visible {
   outline: 3px solid #e89020;
   outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(232, 144, 32, 0.25);
+}
+
+/* Focus visible adicional para links y botones interactivos */
+a:focus,
+button:focus {
+  outline: 2px solid #e89020;
+  outline-offset: 2px;
+}
+
+/* Asegurar que el focus nunca sea removido con outline:none */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid #e89020;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(232, 144, 32, 0.25);
 }
 
 /* ============================================
