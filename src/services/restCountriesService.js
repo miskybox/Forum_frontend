@@ -146,7 +146,7 @@ const createQuestion = (country, type, allCountries) => {
         difficulty: 2
       }
 
-    case 'currency':
+    case 'currency': {
       const currencies = Object.values(country.currencies || {})
       if (currencies.length === 0) return null
       const currency = currencies[0]
@@ -161,8 +161,9 @@ const createQuestion = (country, type, allCountries) => {
         countryCode: country.cca2,
         difficulty: 2
       }
+    }
 
-    case 'language':
+    case 'language': {
       const languages = Object.values(country.languages || {})
       if (languages.length === 0) return null
       return {
@@ -176,8 +177,9 @@ const createQuestion = (country, type, allCountries) => {
         countryCode: country.cca2,
         difficulty: 2
       }
+    }
 
-    case 'population':
+    case 'population': {
       const population = country.population
       const populationRanges = getPopulationRanges(population)
       return {
@@ -188,6 +190,7 @@ const createQuestion = (country, type, allCountries) => {
         countryCode: country.cca2,
         difficulty: 3
       }
+    }
 
     case 'region':
       return {
@@ -202,7 +205,7 @@ const createQuestion = (country, type, allCountries) => {
         difficulty: 1
       }
 
-    case 'area':
+    case 'area': {
       const area = country.area
       const areaRanges = getAreaRanges(area)
       return {
@@ -213,6 +216,7 @@ const createQuestion = (country, type, allCountries) => {
         countryCode: country.cca2,
         difficulty: 3
       }
+    }
 
     default:
       return null
