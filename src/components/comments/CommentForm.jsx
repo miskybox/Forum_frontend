@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast'
 import useAuth from '../../hooks/useAuth'
 import commentService from '../../services/commentService'
 import PropTypes from 'prop-types'
+import { sanitizeInput, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
 
 const CommentForm = ({ postId, onCommentAdded }) => {
   const [content, setContent] = useState('')
@@ -22,11 +23,26 @@ const CommentForm = ({ postId, onCommentAdded }) => {
       return
     }
 
+    // Validar longitud
+    const lengthValidation = validateLength(
+      content,
+      LENGTH_LIMITS.COMMENT_CONTENT.min,
+      LENGTH_LIMITS.COMMENT_CONTENT.max
+    )
+
+    if (!lengthValidation.valid) {
+      toast.error(lengthValidation.error)
+      return
+    }
+
     try {
       setIsSubmitting(true)
 
+      // Sanitizar el contenido antes de enviarlo
+      const sanitizedContent = sanitizeInput(content.trim(), 'BASIC')
+
       const commentData = {
-        content: content.trim(),
+        content: sanitizedContent,
         postId,
       }
 
@@ -71,7 +87,11 @@ const CommentForm = ({ postId, onCommentAdded }) => {
           onChange={(e) => setContent(e.target.value)}
           disabled={isSubmitting}
           required
+          maxLength={LENGTH_LIMITS.COMMENT_CONTENT.max}
         ></textarea>
+        <div className="text-sm text-gray-500 mt-1">
+          {content.length}/{LENGTH_LIMITS.COMMENT_CONTENT.max} caracteres
+        </div>
         <div className="flex justify-end mt-3">
           <button
             type="submit"

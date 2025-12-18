@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import forumService from '../../services/forumService'
 import postService from '../../services/postService'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { sanitizeInput, sanitizeArray, validateTag, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
 
 const PostForm = ({ postId = null, forumId = null }) => {
   const navigate = useNavigate()
@@ -80,13 +81,35 @@ const PostForm = ({ postId = null, forumId = null }) => {
   }
 
   const handleAddTag = () => {
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()]
-      }))
-      setTagInput('')
+    if (!tagInput.trim()) {
+      return
     }
+
+    // Validar el tag
+    const tagValidation = validateTag(tagInput)
+
+    if (!tagValidation.valid) {
+      toast.error(tagValidation.error)
+      return
+    }
+
+    // Verificar límite de tags
+    if (formData.tags.length >= LENGTH_LIMITS.TAG_MAX_COUNT) {
+      toast.error(`No puedes agregar más de ${LENGTH_LIMITS.TAG_MAX_COUNT} etiquetas`)
+      return
+    }
+
+    // Verificar duplicados
+    if (formData.tags.includes(tagValidation.cleaned)) {
+      toast.error('Esta etiqueta ya fue agregada')
+      return
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      tags: [...prev.tags, tagValidation.cleaned]
+    }))
+    setTagInput('')
   }
 
   const handleRemoveTag = (tagToRemove) => {
@@ -98,9 +121,40 @@ const PostForm = ({ postId = null, forumId = null }) => {
 
   const validateForm = () => {
     const newErrors = {}
-    if (!formData.title.trim()) newErrors.title = 'El título es obligatorio'
-    if (!formData.content.trim()) newErrors.content = 'El contenido es obligatorio'
-    if (!formData.forumId) newErrors.forumId = 'Debes seleccionar un foro'
+
+    // Validar título
+    if (!formData.title.trim()) {
+      newErrors.title = 'El título es obligatorio'
+    } else {
+      const titleValidation = validateLength(
+        formData.title,
+        LENGTH_LIMITS.POST_TITLE.min,
+        LENGTH_LIMITS.POST_TITLE.max
+      )
+      if (!titleValidation.valid) {
+        newErrors.title = titleValidation.error
+      }
+    }
+
+    // Validar contenido
+    if (!formData.content.trim()) {
+      newErrors.content = 'El contenido es obligatorio'
+    } else {
+      const contentValidation = validateLength(
+        formData.content,
+        LENGTH_LIMITS.POST_CONTENT.min,
+        LENGTH_LIMITS.POST_CONTENT.max
+      )
+      if (!contentValidation.valid) {
+        newErrors.content = contentValidation.error
+      }
+    }
+
+    // Validar foro
+    if (!formData.forumId) {
+      newErrors.forumId = 'Debes seleccionar un foro'
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -111,12 +165,22 @@ const PostForm = ({ postId = null, forumId = null }) => {
 
     try {
       setLoading(true)
+
+      // Sanitizar datos antes de enviar
+      const sanitizedData = {
+        title: sanitizeInput(formData.title.trim(), 'BASIC'),
+        content: sanitizeInput(formData.content.trim(), 'MEDIUM'),
+        forumId: formData.forumId,
+        tags: sanitizeArray(formData.tags, 'STRICT'),
+        status: formData.status
+      }
+
       if (postId) {
-        await postService.updatePost(postId, formData)
+        await postService.updatePost(postId, sanitizedData)
         toast.success('Post actualizado con éxito')
         navigate(`/posts/${postId}`)
       } else {
-        const newPost = await postService.createPost(formData)
+        const newPost = await postService.createPost(sanitizedData)
         toast.success('Post creado con éxito')
         navigate(`/posts/${newPost.id}`)
       }
@@ -149,8 +213,12 @@ const PostForm = ({ postId = null, forumId = null }) => {
             onChange={handleChange}
             className={`w-full px-3 py-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
             placeholder="Título de tu publicación"
+            maxLength={LENGTH_LIMITS.POST_TITLE.max}
           />
-          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
+          <div className="flex justify-between mt-1">
+            {errors.title && <p className="text-sm text-red-600">{errors.title}</p>}
+            <p className="text-sm text-gray-500 ml-auto">{formData.title.length}/{LENGTH_LIMITS.POST_TITLE.max}</p>
+          </div>
         </div>
 
         {!forumId && (
@@ -182,12 +250,18 @@ const PostForm = ({ postId = null, forumId = null }) => {
             rows="8"
             className={`w-full px-3 py-2 border rounded-md ${errors.content ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
             placeholder="Escribe el contenido de tu publicación aquí..."
+            maxLength={LENGTH_LIMITS.POST_CONTENT.max}
           />
-          {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
+          <div className="flex justify-between mt-1">
+            {errors.content && <p className="text-sm text-red-600">{errors.content}</p>}
+            <p className="text-sm text-gray-500 ml-auto">{formData.content.length}/{LENGTH_LIMITS.POST_CONTENT.max}</p>
+          </div>
         </div>
 
         <div className="mb-4">
-          <label htmlFor="tagInput" className="block text-sm font-medium text-gray-700 mb-1">Etiquetas</label>
+          <label htmlFor="tagInput" className="block text-sm font-medium text-gray-700 mb-1">
+            Etiquetas ({formData.tags.length}/{LENGTH_LIMITS.TAG_MAX_COUNT})
+          </label>
           <div className="flex">
             <input
               id="tagInput"
@@ -196,11 +270,20 @@ const PostForm = ({ postId = null, forumId = null }) => {
               onChange={(e) => setTagInput(e.target.value)}
               className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="Añadir etiqueta"
+              maxLength={LENGTH_LIMITS.TAG.max}
+              disabled={formData.tags.length >= LENGTH_LIMITS.TAG_MAX_COUNT}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAddTag()
+                }
+              }}
             />
             <button
               type="button"
               onClick={handleAddTag}
-              className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700"
+              className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={formData.tags.length >= LENGTH_LIMITS.TAG_MAX_COUNT}
             >
               Añadir
             </button>

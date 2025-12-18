@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import categoryService from '../../services/categoryService'
 import forumService from '../../services/forumService'
+import { sanitizeInput, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
 
 const ForumForm = ({ initialData = null, isEdit = false }) => {
   const [formData, setFormData] = useState({
@@ -99,72 +100,94 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
   
   const validateForm = () => {
     const newErrors = {}
-    
+
+    // Validar título
     if (!formData.title.trim()) {
       newErrors.title = 'El título es obligatorio'
-    } else if (formData.title.length < 5) {
-      newErrors.title = 'El título debe tener al menos 5 caracteres'
+    } else {
+      const titleValidation = validateLength(
+        formData.title,
+        LENGTH_LIMITS.FORUM_TITLE.min,
+        LENGTH_LIMITS.FORUM_TITLE.max
+      )
+      if (!titleValidation.valid) {
+        newErrors.title = titleValidation.error
+      }
     }
-    
+
+    // Validar descripción
     if (!formData.description.trim()) {
       newErrors.description = 'La descripción es obligatoria'
-    } else if (formData.description.length < 10) {
-      newErrors.description = 'La descripción debe tener al menos 10 caracteres'
+    } else {
+      const descriptionValidation = validateLength(
+        formData.description,
+        LENGTH_LIMITS.FORUM_DESCRIPTION.min,
+        LENGTH_LIMITS.FORUM_DESCRIPTION.max
+      )
+      if (!descriptionValidation.valid) {
+        newErrors.description = descriptionValidation.error
+      }
     }
-    
+
+    // Validar categoría
     if (!formData.categoryId) {
       newErrors.categoryId = 'Selecciona una categoría'
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
   
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
-    
+
     setIsSubmitting(true)
-    
+
     try {
       let response
-      
-      if (isEdit) {
 
-        response = await forumService.updateForum(initialData.id, formData)
-        
+      // Sanitizar datos antes de enviar
+      const sanitizedData = {
+        title: sanitizeInput(formData.title.trim(), 'BASIC'),
+        description: sanitizeInput(formData.description.trim(), 'BASIC'),
+        categoryId: formData.categoryId
+      }
+
+      if (isEdit) {
+        response = await forumService.updateForum(initialData.id, sanitizedData)
+
         if (image) {
           response = await forumService.uploadForumImage(initialData.id, image)
         }
-        
+
         toast.success('¡Foro actualizado con éxito!')
       } else {
+        response = await forumService.createForum(sanitizedData)
 
-        response = await forumService.createForum(formData)
-        
         if (image) {
           response = await forumService.uploadForumImage(response.id, image)
         }
-        
+
         toast.success('¡Foro creado con éxito!')
       }
-      
+
       navigate(`/forums/${response.id}`)
     } catch (error) {
       console.error('Error al guardar el foro:', error)
       toast.error(error.response?.data?.message || 'Error al guardar el foro. Por favor, inténtalo de nuevo.')
-      
+
       if (error.response?.status === 400 && error.response?.data?.errors) {
         const backendErrors = error.response.data.errors
         const formattedErrors = {}
-        
+
         Object.keys(backendErrors).forEach(key => {
           formattedErrors[key] = backendErrors[key]
         })
-        
+
         setErrors({
           ...errors,
           ...formattedErrors
@@ -231,10 +254,16 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             onChange={handleChange}
             placeholder="Título del foro"
             disabled={isSubmitting}
+            maxLength={LENGTH_LIMITS.FORUM_TITLE.max}
           />
-          {errors.title && (
-            <p className="mt-2 text-sm text-error font-medium">{errors.title}</p>
-          )}
+          <div className="flex justify-between mt-2">
+            {errors.title && (
+              <p className="text-sm text-error font-medium">{errors.title}</p>
+            )}
+            <p className="text-sm text-light-soft ml-auto">
+              {formData.title.length}/{LENGTH_LIMITS.FORUM_TITLE.max}
+            </p>
+          </div>
         </div>
 
         <div>
@@ -251,10 +280,16 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             onChange={handleChange}
             placeholder="Descripción del foro"
             disabled={isSubmitting}
+            maxLength={LENGTH_LIMITS.FORUM_DESCRIPTION.max}
           />
-          {errors.description && (
-            <p className="mt-2 text-sm text-error font-medium">{errors.description}</p>
-          )}
+          <div className="flex justify-between mt-2">
+            {errors.description && (
+              <p className="text-sm text-error font-medium">{errors.description}</p>
+            )}
+            <p className="text-sm text-light-soft ml-auto">
+              {formData.description.length}/{LENGTH_LIMITS.FORUM_DESCRIPTION.max}
+            </p>
+          </div>
         </div>
 
         <div>
