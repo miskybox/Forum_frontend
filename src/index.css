@@ -40,6 +40,13 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode */
+.dark body {
+  color: #f9f4eb;
+  background: linear-gradient(135deg, #1a1410 0%, #2b2520 50%, #3a291e 100%);
 }
 
 /* Textura sutil de papel antiguo - efecto pergamino */
@@ -72,6 +79,10 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.01em;
   line-height: 1.3;
   color: #735139; /* Marrón oscuro - mejor contraste */
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #e5d4ba; /* Beige claro para dark mode */
 }
 
 h1 {
@@ -203,6 +214,18 @@ select {
   z-index: 10;
 }
 
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="date"],
+.dark input[type="number"],
+.dark textarea,
+.dark select {
+  background: #3d342e;
+  border-color: #735139;
+  color: #f9f4eb;
+}
+
 .input:focus,
 input:focus,
 textarea:focus,
@@ -215,10 +238,27 @@ select:focus {
     0 2px 4px rgba(0,0,0,0.1);
 }
 
+.dark .input:focus,
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  background: #3d342e;
+  border-color: #c09974;
+  box-shadow:
+    0 0 0 3px rgba(192, 153, 116, 0.3),
+    0 2px 4px rgba(0,0,0,0.3);
+}
+
 .input::placeholder,
 input::placeholder,
 textarea::placeholder {
   color: #a87d58;
+}
+
+.dark .input::placeholder,
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #8d6647;
 }
 
 /* ============================================
@@ -235,10 +275,21 @@ textarea::placeholder {
   transition: all 0.2s ease;
 }
 
+.dark .card {
+  background: #2b2520;
+  border-color: #524740;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 .card:hover {
   border-color: #a87d58;
   box-shadow: 0 4px 12px rgba(58, 41, 30, 0.15);
   transform: translateY(-1px);
+}
+
+.dark .card:hover {
+  border-color: #c09974;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* Borde destacado en cards especiales */
@@ -246,6 +297,12 @@ textarea::placeholder {
 .card.border-accent {
   border-color: #8d6647;
   box-shadow: 0 2px 8px rgba(141, 102, 71, 0.15);
+}
+
+.dark .card.border-primary,
+.dark .card.border-accent {
+  border-color: #a87d58;
+  box-shadow: 0 2px 8px rgba(168, 125, 88, 0.25);
 }
 
 /* ============================================
@@ -258,13 +315,25 @@ a {
   transition: all 0.2s ease;
 }
 
+.dark a {
+  color: #d4ba97;
+}
+
 a:hover {
   color: #5e4330;
+}
+
+.dark a:hover {
+  color: #e5d4ba;
 }
 
 a:focus {
   outline: 2px solid #735139;
   outline-offset: 2px;
+}
+
+.dark a:focus {
+  outline-color: #c09974;
 }
 
 /* ============================================

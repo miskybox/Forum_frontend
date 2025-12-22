@@ -10,7 +10,7 @@ import logo from '../../assets/logoFV.png'
  */
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()
-  const { theme } = useTheme()
+  const { theme, isDarkMode, toggleDarkMode } = useTheme()
   const { language, toggleLanguage, t } = useLanguage()
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -116,6 +116,18 @@ const Navbar = () => {
 
           {/* Botones de usuario y selector de idioma */}
           <div className="flex items-center space-x-2 sm:space-x-4">
+
+            {/* Toggle Dark Mode */}
+            <button
+              onClick={toggleDarkMode}
+              className={`flex items-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px]`}
+              title={isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
+              aria-label={isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            >
+              <span className="text-xl sm:text-2xl" aria-hidden="true">
+                {isDarkMode ? '☀️' : '🌙'}
+              </span>
+            </button>
 
             {/* Selector de idioma */}
             <button

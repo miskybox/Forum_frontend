@@ -4,12 +4,19 @@ import { useLocation } from 'react-router-dom';
 const ThemeContext = createContext();
 
 /**
- * Contexto de temas retro por sección
- * Cada ruta tiene su propio tema inspirado en películas de los 80s/90s
+ * Contexto de temas con soporte para modo claro/oscuro
  */
 export const ThemeProvider = ({ children }) => {
   const location = useLocation();
   const [theme, setTheme] = useState('retro');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Cargar preferencia guardada o usar preferencia del sistema
+    const saved = localStorage.getItem('darkMode');
+    if (saved !== null) {
+      return saved === 'true';
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
 
   useEffect(() => {
     // Determinar tema basado en la ruta
@@ -26,14 +33,29 @@ export const ThemeProvider = ({ children }) => {
     } else if (path.startsWith('/login') || path.startsWith('/register')) {
       setTheme('space');
     } else if (path === '/') {
-      setTheme('retro'); // General 80s
+      setTheme('retro');
     } else {
       setTheme('retro');
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    // Aplicar clase dark al html cuando está en modo oscuro
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    // Guardar preferencia
+    localStorage.setItem('darkMode', isDarkMode);
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prev => !prev);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, isDarkMode, toggleDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );
