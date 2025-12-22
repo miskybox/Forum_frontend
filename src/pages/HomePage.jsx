@@ -95,7 +95,7 @@ const HomePage = () => {
           <div className="flex flex-wrap justify-center gap-6 mb-16">
             <Link
               to="/forums"
-              className="btn-primary text-sm md:text-base px-5 md:px-6 py-3 md:py-4 font-bold tracking-normal group"
+              className="bg-primary-600 text-light border-2 border-primary-800 px-6 md:px-8 py-3 md:py-4 rounded-none font-bold tracking-wide text-sm md:text-base hover:bg-primary-700 hover:border-primary-900 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] flex items-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl">🏺</span>
@@ -105,7 +105,7 @@ const HomePage = () => {
 
             <Link
               to="/trivia"
-              className="bg-gradient-to-r from-secondary-600 to-secondary-500 text-light border-2 border-secondary-700 px-5 md:px-6 py-3 md:py-4 rounded-lg font-bold tracking-normal text-sm md:text-base hover:from-secondary-500 hover:to-secondary-400 transition-all duration-300 shadow-lg hover:shadow-xl group"
+              className="bg-secondary-600 text-light border-2 border-secondary-800 px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold tracking-wide text-sm md:text-base hover:bg-secondary-700 hover:border-secondary-900 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] flex items-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl">🎯</span>
@@ -115,7 +115,7 @@ const HomePage = () => {
 
             <Link
               to="/travel"
-              className="bg-dark border-2 border-accent-600 text-accent-500 px-5 md:px-6 py-3 md:py-4 rounded-lg font-bold tracking-normal text-sm md:text-base hover:bg-accent-600 hover:text-dark transition-all duration-300 shadow-lg hover:shadow-xl group"
+              className="bg-accent-600 text-light border-2 border-accent-800 px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold tracking-wide text-sm md:text-base hover:bg-accent-700 hover:border-accent-900 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] flex items-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl">🗺️</span>

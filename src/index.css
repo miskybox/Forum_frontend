@@ -253,15 +253,13 @@ textarea::placeholder {
    ============================================ */
 a {
   color: #735139;
-  text-decoration: underline;
-  text-decoration-color: transparent;
+  text-decoration: none;
   position: relative;
   transition: all 0.2s ease;
 }
 
 a:hover {
   color: #5e4330;
-  text-decoration-color: #5e4330;
 }
 
 a:focus {

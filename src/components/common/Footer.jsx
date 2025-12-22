@@ -41,7 +41,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 hover:text-primary-950 hover:underline transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
+                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
                   >
                     <span className="text-base" aria-hidden="true">{link.icon}</span>
                     <span className="font-medium text-sm uppercase tracking-wide">{link.label}</span>
@@ -65,7 +65,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 hover:text-primary-950 hover:underline transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
+                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
                   >
                     <span className="text-base" aria-hidden="true">{link.icon}</span>
                     <span className="font-medium text-sm uppercase tracking-wide">{link.label}</span>
