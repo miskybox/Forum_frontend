@@ -9,30 +9,31 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-b from-primary-50 to-primary-100 border-t-2 border-primary-600 py-4 relative" role="contentinfo">
+    <footer className="bg-gradient-to-b from-primary-50 to-primary-100 border-t-2 border-primary-600 py-6 relative" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
-          {/* Logo y descripción */}
-          <div className="col-span-1 md:col-span-2">
-            <Link to="/" className="flex items-center mb-1 group">
-              <img
-                src={logo}
-                alt="ForumViajeros - Travel Community"
-                className="h-8 w-auto transition-transform duration-200"
-              />
-            </Link>
-            <p className="text-[11px] text-primary-950 font-sans leading-snug max-w-md">
-              Explora el mundo a través de las experiencias de otros viajeros.
-              Comparte tus aventuras y conecta con la comunidad global.
-            </p>
-          </div>
+        {/* Logo y descripción centrados */}
+        <div className="text-center mb-6">
+          <Link to="/" className="inline-flex items-center justify-center mb-3 group">
+            <img
+              src={logo}
+              alt="ForumViajeros - Travel Community"
+              className="h-12 w-auto transition-transform duration-200"
+            />
+          </Link>
+          <p className="text-sm text-primary-950 font-sans leading-relaxed max-w-2xl mx-auto">
+            Explora el mundo a través de las experiencias de otros viajeros.
+            Comparte tus aventuras y conecta con la comunidad global.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4 max-w-2xl mx-auto">
 
           {/* Enlaces útiles */}
-          <div>
-            <h3 className="text-[11px] font-bold text-primary-950 uppercase tracking-wide mb-1">
+          <div className="text-center md:text-left">
+            <h3 className="text-xs font-bold text-primary-950 uppercase tracking-wide mb-2">
               Navegación
             </h3>
-            <ul className="space-y-0.5">
+            <ul className="space-y-1 inline-block text-left">
               {[
                 { to: '/categories', label: 'Continentes', icon: '🌍' },
                 { to: '/forums', label: 'Foros', icon: '💬' },
@@ -42,10 +43,10 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-1 group min-h-[32px]"
+                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-2 group min-h-[36px]"
                   >
-                    <span className="text-xs" aria-hidden="true">{link.icon}</span>
-                    <span className="font-medium text-[11px] uppercase tracking-wide">{link.label}</span>
+                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
+                    <span className="font-medium text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -53,11 +54,11 @@ const Footer = () => {
           </div>
 
           {/* Legal */}
-          <div>
-            <h3 className="text-[11px] font-bold text-primary-950 uppercase tracking-wide mb-1">
+          <div className="text-center md:text-left">
+            <h3 className="text-xs font-bold text-primary-950 uppercase tracking-wide mb-2">
               Legal
             </h3>
-            <ul className="space-y-0.5">
+            <ul className="space-y-1 inline-block text-left">
               {[
                 { to: '/about', label: 'Acerca de', icon: 'ℹ️' },
                 { to: '/contact', label: 'Contacto', icon: '📧' },
@@ -66,10 +67,10 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-1 group min-h-[32px]"
+                    className="text-primary-800 hover:text-primary-950 transition-colors duration-200 flex items-center space-x-2 group min-h-[36px]"
                   >
-                    <span className="text-xs" aria-hidden="true">{link.icon}</span>
-                    <span className="font-medium text-[11px] uppercase tracking-wide">{link.label}</span>
+                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
+                    <span className="font-medium text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -78,7 +79,7 @@ const Footer = () => {
         </div>
 
         {/* Línea divisoria */}
-        <div className="border-t border-primary-400 my-2"></div>
+        <div className="border-t border-primary-400 my-4"></div>
 
         {/* Copyright y redes */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-2">

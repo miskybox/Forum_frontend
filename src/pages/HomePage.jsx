@@ -125,7 +125,7 @@ const HomePage = () => {
           </div>
 
           {/* Grid de secciones - Estilo mapa del tesoro */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-6">
             {[
               { to: '/forums', icon: '🏺', title: t('home.adventure'), color: 'text-primary-500' },
               { to: '/travel', icon: '🌴', title: t('home.jungle'), color: 'text-secondary-500' },
@@ -153,10 +153,10 @@ const HomePage = () => {
       </section>
 
       {/* Sección de Foros Recientes */}
-      <section className="container mx-auto px-4 py-12 relative z-10">
-        <div className="text-center mb-12">
-          <div className="text-5xl mb-4">📜</div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-500 mb-4 tracking-normal uppercase">
+      <section className="container mx-auto px-4 py-6 relative z-10">
+        <div className="text-center mb-6">
+          <div className="text-4xl mb-2">📜</div>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-500 mb-2 tracking-normal uppercase">
             {t('home.latestAdventures')}
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-500 to-transparent"></div>
@@ -201,10 +201,10 @@ const HomePage = () => {
           </div>
         )}
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-6">
           <Link
             to="/forums"
-            className="inline-block bg-primary-600 border-2 border-primary-800 text-light px-8 py-4 rounded-lg font-bold uppercase tracking-normal hover:bg-primary-700 hover:border-primary-900 transition-all duration-300 shadow-lg min-h-[48px]"
+            className="inline-block bg-primary-600 border-2 border-primary-800 text-light px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-primary-700 hover:border-primary-900 transition-all duration-300 shadow-lg min-h-[44px] text-sm"
           >
             {t('home.viewAllForums')} →
           </Link>
@@ -212,10 +212,10 @@ const HomePage = () => {
       </section>
 
       {/* Sección de Categorías */}
-      <section className="container mx-auto px-4 py-12 pb-20 relative z-10">
-        <div className="text-center mb-12">
-          <div className="text-5xl mb-4">🌍</div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-500 mb-4 tracking-normal uppercase">
+      <section className="container mx-auto px-4 py-6 pb-24 relative z-10">
+        <div className="text-center mb-6">
+          <div className="text-4xl mb-2">🌍</div>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary-500 mb-2 tracking-normal uppercase">
             {t('home.continents')}
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-secondary-500 to-transparent"></div>
