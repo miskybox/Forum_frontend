@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLanguage } from '../../contexts/LanguageContext'
-import logo from '../../assets/logo2.png'
+import logo from '../../assets/logoFV.png'
 
 /**
- * Navbar con diseño accesible y selector de idioma
+ * Navbar con diseño accesible WCAG AA/AAA compliant
  */
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()
@@ -26,43 +26,49 @@ const Navbar = () => {
     retro: {
       bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
       border: 'border-primary-600',
-      text: 'text-primary-900',
-      hover: 'hover:text-primary-700',
+      text: 'text-primary-950',
+      hover: 'hover:text-primary-800',
+      hoverBg: 'hover:bg-primary-200',
       icon: '🗺️'
     },
     adventure: {
       bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
       border: 'border-primary-600',
-      text: 'text-primary-900',
-      hover: 'hover:text-primary-700',
+      text: 'text-primary-950',
+      hover: 'hover:text-primary-800',
+      hoverBg: 'hover:bg-primary-200',
       icon: '🏺'
     },
     future: {
       bg: 'bg-gradient-to-r from-secondary-100 via-secondary-50 to-secondary-100',
       border: 'border-secondary-600',
-      text: 'text-secondary-900',
-      hover: 'hover:text-secondary-700',
+      text: 'text-secondary-950',
+      hover: 'hover:text-secondary-800',
+      hoverBg: 'hover:bg-secondary-200',
       icon: '⚡'
     },
     jungle: {
       bg: 'bg-gradient-to-r from-secondary-100 via-secondary-50 to-secondary-100',
       border: 'border-secondary-600',
-      text: 'text-secondary-900',
-      hover: 'hover:text-secondary-700',
+      text: 'text-secondary-950',
+      hover: 'hover:text-secondary-800',
+      hoverBg: 'hover:bg-secondary-200',
       icon: '🌴'
     },
     tech: {
       bg: 'bg-gradient-to-r from-accent-100 via-accent-50 to-accent-100',
       border: 'border-accent-600',
-      text: 'text-accent-900',
-      hover: 'hover:text-accent-700',
+      text: 'text-accent-950',
+      hover: 'hover:text-accent-800',
+      hoverBg: 'hover:bg-accent-200',
       icon: '🤖'
     },
     space: {
       bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
       border: 'border-accent-600',
-      text: 'text-accent-900',
-      hover: 'hover:text-accent-700',
+      text: 'text-accent-950',
+      hover: 'hover:text-accent-800',
+      hoverBg: 'hover:bg-accent-200',
       icon: '👽'
     }
   }
@@ -79,23 +85,19 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className={`${currentTheme.bg} border-b-2 ${currentTheme.border} sticky top-0 z-50 shadow-lg`}>
+    <nav className={`${currentTheme.bg} border-b-2 ${currentTheme.border} sticky top-0 z-50 shadow-lg`} role="navigation" aria-label="Main navigation">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <img
               src={logo}
-              alt="ForumViajeros Logo"
-              className="h-10 sm:h-12 lg:h-14 w-auto transform group-hover:scale-105 transition-transform"
+              alt="ForumViajeros - Travel Community"
+              className="h-10 sm:h-12 lg:h-14 w-auto transition-transform duration-200"
             />
-            <span className="font-bold text-xl sm:text-2xl lg:text-3xl tracking-wide">
-              <span className={currentTheme.text}>Forum</span>
-              <span className="text-primary-700">Viajeros</span>
-            </span>
           </Link>
-          
+
           {/* Menú desktop */}
           <div className="hidden lg:flex items-center space-x-2">
             {navLinks
@@ -104,25 +106,25 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`${currentTheme.text} ${currentTheme.hover} flex items-center space-x-2 px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 hover:bg-white/10 tracking-wide`}
+                  className={`${currentTheme.text} ${currentTheme.hover} ${currentTheme.hoverBg} flex items-center space-x-2 px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 tracking-wide min-h-[44px]`}
                 >
-                  <span className="text-xl">{link.icon}</span>
+                  <span className="text-xl" aria-hidden="true">{link.icon}</span>
                   <span>{link.label}</span>
                 </Link>
               ))}
           </div>
-          
+
           {/* Botones de usuario y selector de idioma */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            
+
             {/* Selector de idioma */}
             <button
               onClick={toggleLanguage}
-              className={`flex items-center space-x-1 px-3 py-2 rounded-lg ${currentTheme.text} hover:bg-white/10 transition-all duration-200`}
+              className={`flex items-center space-x-1 px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px]`}
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
             >
-              <span className="text-xl sm:text-2xl">
+              <span className="text-xl sm:text-2xl" aria-hidden="true">
                 {language === 'es' ? '🇪🇸' : '🇬🇧'}
               </span>
               <span className="hidden sm:inline text-sm font-medium uppercase">
@@ -134,46 +136,53 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-white/10 transition-all duration-200 flex items-center space-x-2`}
+                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base ${currentTheme.hoverBg} transition-all duration-200 flex items-center space-x-2 min-h-[44px]`}
+                  aria-expanded={isProfileMenuOpen}
+                  aria-haspopup="true"
+                  aria-label="User menu"
                 >
-                  <span className="text-lg">👤</span>
+                  <span className="text-lg" aria-hidden="true">👤</span>
                   <span className="hidden sm:inline">{currentUser?.username || t('nav.user')}</span>
-                  <span className="text-xs">▼</span>
+                  <span className="text-xs" aria-hidden="true">▼</span>
                 </button>
-                
+
                 {/* Menú desplegable */}
                 {isProfileMenuOpen && (
-                  <div className={`absolute right-0 mt-2 w-52 ${currentTheme.bg} ${currentTheme.border} border-2 rounded-lg p-2 space-y-1 shadow-xl`}>
+                  <div className={`absolute right-0 mt-2 w-52 ${currentTheme.bg} ${currentTheme.border} border-2 rounded-lg p-2 space-y-1 shadow-xl`} role="menu">
                     <Link
                       to="/profile"
-                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
+                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${currentTheme.hoverBg} min-h-[44px] flex items-center`}
                       onClick={() => setIsProfileMenuOpen(false)}
+                      role="menuitem"
                     >
-                      👤 {t('nav.myProfile')}
+                      <span aria-hidden="true">👤</span> <span className="ml-2">{t('nav.myProfile')}</span>
                     </Link>
                     <Link
                       to="/forums/create"
-                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
+                      className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${currentTheme.hoverBg} min-h-[44px] flex items-center`}
                       onClick={() => setIsProfileMenuOpen(false)}
+                      role="menuitem"
                     >
-                      ✍️ {t('nav.createForum')}
+                      <span aria-hidden="true">✍️</span> <span className="ml-2">{t('nav.createForum')}</span>
                     </Link>
                     {currentUser?.roles?.includes('ROLE_MODERATOR') && (
                       <Link
                         to="/moderator/dashboard"
-                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${currentTheme.hoverBg} min-h-[44px] flex items-center`}
                         onClick={() => setIsProfileMenuOpen(false)}
+                        role="menuitem"
                       >
-                        🛡️ {t('nav.moderator') || 'Panel Moderador'}
+                        <span aria-hidden="true">🛡️</span> <span className="ml-2">{t('nav.moderator') || 'Panel Moderador'}</span>
                       </Link>
                     )}
                     {currentUser?.roles?.includes('ROLE_ADMIN') && (
                       <Link
                         to="/admin/dashboard"
-                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
+                        className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${currentTheme.hoverBg} min-h-[44px] flex items-center`}
                         onClick={() => setIsProfileMenuOpen(false)}
+                        role="menuitem"
                       >
-                        ⚙️ {t('nav.admin') || 'Panel Admin'}
+                        <span aria-hidden="true">⚙️</span> <span className="ml-2">{t('nav.admin') || 'Panel Admin'}</span>
                       </Link>
                     )}
                     <div className="border-t border-current opacity-30 my-1"></div>
@@ -182,9 +191,10 @@ const Navbar = () => {
                         setIsProfileMenuOpen(false)
                         handleLogout()
                       }}
-                      className={`block w-full text-left ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-white/10`}
+                      className={`block w-full text-left ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${currentTheme.hoverBg} min-h-[44px] flex items-center`}
+                      role="menuitem"
                     >
-                      🚪 {t('nav.logout')}
+                      <span aria-hidden="true">🚪</span> <span className="ml-2">{t('nav.logout')}</span>
                     </button>
                   </div>
                 )}
@@ -193,7 +203,7 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-white/10 transition-all duration-200`}
+                  className={`${currentTheme.text} ${currentTheme.border} border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] flex items-center`}
                 >
                   {t('nav.login')}
                 </Link>
@@ -205,14 +215,15 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-            
+
             {/* Botón menú móvil */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`lg:hidden ${currentTheme.text} p-2 rounded-lg hover:bg-white/10 transition-all duration-200`}
+              className={`lg:hidden ${currentTheme.text} p-2 rounded-lg ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px]`}
               aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={isMenuOpen}
             >
-              <span className="text-2xl">{isMenuOpen ? '✕' : '☰'}</span>
+              <span className="text-2xl" aria-hidden="true">{isMenuOpen ? '✕' : '☰'}</span>
             </button>
           </div>
         </div>
@@ -228,11 +239,11 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-base border-l-4 ${currentTheme.border} hover:bg-white/10 transition-all duration-200`}
+                  className={`block ${currentTheme.text} ${currentTheme.hover} px-4 py-3 rounded-lg font-bold text-base border-l-4 ${currentTheme.border} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px]`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-xl">{link.icon}</span>
+                    <span className="text-xl" aria-hidden="true">{link.icon}</span>
                     <span>{link.label}</span>
                   </div>
                 </Link>

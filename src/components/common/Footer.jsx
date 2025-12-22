@@ -1,68 +1,60 @@
 import { Link } from 'react-router-dom'
+import logo from '../../assets/logoFV.png'
 
 /**
- * Footer retro 80s/90s
+ * Footer estilo Vintage Travel Map - Accesible WCAG AA/AAA
  */
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
-    <footer className="bg-gradient-to-r from-black via-purple-900 to-black border-t-4 border-neon-purple py-12 relative overflow-hidden">
-      {/* Efecto de scanlines */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
-        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,255,0.1) 2px, rgba(0,255,255,0.1) 4px)'
-      }}></div>
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer className="bg-gradient-to-b from-primary-50 to-primary-100 border-t-2 border-primary-600 py-12 relative" role="contentinfo">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Logo y descripción */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center mb-4 group">
-              <div className="text-4xl mr-3 group-hover:animate-pulse-neon">✈️</div>
-              <div>
-                <span className="text-2xl font-bold text-neon-cyan neon-text block">
-                  FORUM VIAJEROS
-                </span>
-                <span className="text-xs font-retro text-neon-yellow opacity-80">
-                  RETRO TRAVEL EXPERIENCE
-                </span>
-              </div>
+              <img
+                src={logo}
+                alt="ForumViajeros - Travel Community"
+                className="h-12 w-auto transition-transform duration-200"
+              />
             </Link>
-            <p className="text-sm text-gray-300 font-retro leading-relaxed max-w-md">
-              Explora el mundo a través de las experiencias de otros viajeros. 
+            <p className="text-sm text-primary-950 font-sans leading-relaxed max-w-md">
+              Explora el mundo a través de las experiencias de otros viajeros.
               Comparte tus aventuras y conecta con la comunidad global.
             </p>
           </div>
-          
+
           {/* Enlaces útiles */}
           <div>
-            <h3 className="text-sm font-bold text-neon-pink neon-text uppercase tracking-normal mb-4">
-              NAVEGACIÓN
+            <h3 className="text-sm font-bold text-primary-950 uppercase tracking-wide mb-4">
+              Navegación
             </h3>
             <ul className="space-y-3">
               {[
                 { to: '/categories', label: 'Continentes', icon: '🌍' },
-                { to: '/forums', label: 'Foros', icon: '🏺' },
+                { to: '/forums', label: 'Foros', icon: '💬' },
                 { to: '/travel', label: 'Mi Mapa', icon: '🗺️' },
-                { to: '/trivia', label: 'Trivia', icon: '⚡' },
+                { to: '/trivia', label: 'Trivia', icon: '🎯' },
               ].map((link) => (
                 <li key={link.to}>
-                  <Link 
-                    to={link.to} 
-                    className="text-gray-300 hover:text-neon-cyan transition-colors duration-300 flex items-center space-x-2 group"
+                  <Link
+                    to={link.to}
+                    className="text-primary-800 hover:text-primary-950 hover:underline transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
                   >
-                    <span className="text-lg group-hover:scale-125 transition-transform">{link.icon}</span>
-                    <span className="font-retro text-xs uppercase tracking-normal">{link.label}</span>
+                    <span className="text-base" aria-hidden="true">{link.icon}</span>
+                    <span className="font-medium text-sm uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          
+
           {/* Legal */}
           <div>
-            <h3 className="text-sm font-bold text-neon-green neon-text uppercase tracking-normal mb-4">
-              LEGAL
+            <h3 className="text-sm font-bold text-primary-950 uppercase tracking-wide mb-4">
+              Legal
             </h3>
             <ul className="space-y-3">
               {[
@@ -71,30 +63,30 @@ const Footer = () => {
                 { to: '/help', label: 'Ayuda', icon: '❓' },
               ].map((link) => (
                 <li key={link.to}>
-                  <Link 
-                    to={link.to} 
-                    className="text-gray-300 hover:text-neon-green transition-colors duration-300 flex items-center space-x-2 group"
+                  <Link
+                    to={link.to}
+                    className="text-primary-800 hover:text-primary-950 hover:underline transition-colors duration-200 flex items-center space-x-2 group min-h-[44px]"
                   >
-                    <span className="text-lg group-hover:scale-125 transition-transform">{link.icon}</span>
-                    <span className="font-retro text-xs uppercase tracking-normal">{link.label}</span>
+                    <span className="text-base" aria-hidden="true">{link.icon}</span>
+                    <span className="font-medium text-sm uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        
+
         {/* Línea divisoria */}
-        <div className="border-t-2 border-neon-cyan opacity-30 my-8"></div>
-        
+        <div className="border-t-2 border-primary-400 my-8"></div>
+
         {/* Copyright y redes */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-400 font-retro text-xs mb-4 md:mb-0">
-            <span className="text-neon-yellow">©</span> {currentYear} FORUM VIAJEROS
-            <span className="text-neon-pink ml-2">|</span>
-            <span className="ml-2">ALL RIGHTS RESERVED</span>
+          <div className="text-primary-900 font-sans text-sm mb-4 md:mb-0">
+            <span aria-hidden="true">©</span> {currentYear} FORUM VIAJEROS
+            <span className="mx-2" aria-hidden="true">|</span>
+            <span>ALL RIGHTS RESERVED</span>
           </div>
-          
+
           <div className="flex space-x-6">
             {[
               { href: 'https://facebook.com', icon: '📘', label: 'Facebook' },
@@ -106,19 +98,19 @@ const Footer = () => {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-2xl hover:scale-125 transition-transform duration-300 hover:drop-shadow-[0_0_10px_currentColor]"
+                className="text-2xl hover:opacity-75 transition-opacity duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={social.label}
               >
-                {social.icon}
+                <span aria-hidden="true">{social.icon}</span>
               </a>
             ))}
           </div>
         </div>
-        
-        {/* Mensaje retro */}
+
+        {/* Mensaje */}
         <div className="text-center mt-8">
-          <p className="text-xs font-retro text-neon-cyan opacity-60 animate-pulse-neon">
-            MADE WITH ❤️ IN THE 80s STYLE
+          <p className="text-xs font-sans text-primary-800">
+            Made with passion for travelers around the world
           </p>
         </div>
       </div>

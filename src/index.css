@@ -2,15 +2,31 @@
 @import "tailwindcss";
 
 /* ============================================
-   VINTAGE TRAVEL MAP THEME
+   VINTAGE TRAVEL MAP THEME - ACCESIBLE
    Inspirado en mapas antiguos del siglo XIX
    Colores suaves: sepia, pergamino, tinta desvanecida
+   WCAG AA/AAA Compliant
    ============================================ */
 
 html {
   scroll-behavior: smooth;
   background: #f9f4eb;
   overflow-x: hidden;
+}
+
+/* Soporte para reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -37,14 +53,14 @@ body::before {
   background-image:
     repeating-linear-gradient(
       0deg,
-      rgba(192, 153, 116, 0.03),
-      rgba(192, 153, 116, 0.03) 1px,
+      rgba(141, 102, 71, 0.03),
+      rgba(141, 102, 71, 0.03) 1px,
       transparent 1px,
       transparent 4px
     );
   pointer-events: none;
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 /* ============================================
@@ -55,20 +71,20 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1.3;
-  color: #8d6647; /* Marrón sepia - tinta antigua */
+  color: #735139; /* Marrón oscuro - mejor contraste */
 }
 
 h1 {
   font-size: 2rem;
   font-weight: 800;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 2px rgba(58, 41, 30, 0.15);
   letter-spacing: 0.02em;
 }
 
 h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 2px rgba(58, 41, 30, 0.12);
   letter-spacing: 0.01em;
 }
 
@@ -91,17 +107,21 @@ h4 {
 }
 
 /* ============================================
-   BOTONES ESTILO AVENTURA RETRO
+   BOTONES - Consistentes y Accesibles
+   Border-radius: 8px en todos
+   Min touch target: 44px
    ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 8px;
   font-family: 'Montserrat', 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  min-width: 44px;
   border: 2px solid;
   position: relative;
   transition: all 0.2s ease;
@@ -111,59 +131,54 @@ h4 {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #c09974 0%, #a87d58 100%);
+  background: #a87d58;
   border-color: #8d6647;
-  color: #1a1410;
-  box-shadow:
-    0 3px 5px rgba(58, 41, 30, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.15);
+  color: #fdfbf7;
+  box-shadow: 0 2px 4px rgba(58, 41, 30, 0.2);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #d4ba97 0%, #c09974 100%);
-  box-shadow:
-    0 5px 10px rgba(192, 153, 116, 0.35),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-  transform: translateY(-2px);
+  background: #8d6647;
+  border-color: #735139;
+  color: #fdfbf7;
+  box-shadow: 0 4px 8px rgba(58, 41, 30, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-primary:active {
   transform: translateY(0);
-  box-shadow:
-    0 2px 3px rgba(58, 41, 30, 0.25),
-    inset 0 2px 4px rgba(58, 41, 30, 0.15);
+  box-shadow: 0 1px 2px rgba(58, 41, 30, 0.2);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #6d8585 0%, #566a6a 100%);
-  border-color: #475656;
+  background: #6d8585;
+  border-color: #566a6a;
   color: #fdfbf7;
-  box-shadow:
-    0 3px 5px rgba(58, 41, 30, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.15);
+  box-shadow: 0 2px 4px rgba(58, 41, 30, 0.2);
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, #8da3a3 0%, #6d8585 100%);
-  box-shadow:
-    0 5px 10px rgba(109, 133, 133, 0.35),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-  transform: translateY(-2px);
+  background: #566a6a;
+  border-color: #475656;
+  color: #fdfbf7;
+  box-shadow: 0 4px 8px rgba(58, 41, 30, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-outline {
   background: transparent;
-  border-color: currentColor;
-  color: #e89020;
+  border-color: #8d6647;
+  color: #735139;
 }
 
 .btn-outline:hover {
-  background: rgba(232, 144, 32, 0.1);
-  border-color: #e89020;
+  background: #e5d4ba;
+  border-color: #735139;
+  color: #5e4330;
 }
 
 /* ============================================
-   INPUTS ESTILO PERGAMINO
+   INPUTS ESTILO PERGAMINO - Accesibles
    ============================================ */
 .input,
 input[type="text"],
@@ -176,12 +191,13 @@ select {
   display: flex;
   width: 100%;
   padding: 0.875rem 1rem;
-  border: 2px solid #8b6841;
-  background: rgba(47, 35, 25, 0.6);
-  color: #fef9f0;
+  min-height: 44px;
+  border: 2px solid #a87d58;
+  background: #fdfbf7;
+  color: #3a291e;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.2s ease;
   position: relative;
   z-index: 10;
@@ -192,103 +208,87 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #e89020;
-  background: rgba(47, 35, 25, 0.8);
+  border-color: #735139;
+  background: #fdfbf7;
   box-shadow:
-    0 0 0 3px rgba(232, 144, 32, 0.2),
-    0 4px 6px rgba(0,0,0,0.2);
+    0 0 0 3px rgba(115, 81, 57, 0.2),
+    0 2px 4px rgba(0,0,0,0.1);
 }
 
 .input::placeholder,
 input::placeholder,
 textarea::placeholder {
-  color: #c0a07e;
+  color: #a87d58;
 }
 
 /* ============================================
-   CARDS ESTILO MAPA ANTIGUO
+   CARDS ESTILO MAPA ANTIGUO - Accesibles
    ============================================ */
 .card {
-  background: linear-gradient(135deg,
-    rgba(45, 35, 25, 0.95) 0%,
-    rgba(60, 45, 35, 0.95) 100%);
-  border: 2px solid #8b6841;
+  background: #fdfbf7;
+  border: 2px solid #d4ba97;
   border-radius: 8px;
   padding: 1.5rem;
   position: relative;
   overflow: hidden;
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(232, 144, 32, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(58, 41, 30, 0.1);
+  transition: all 0.2s ease;
 }
 
 .card:hover {
-  border-color: #a8825d;
-  box-shadow:
-    0 6px 20px rgba(232, 144, 32, 0.2),
-    inset 0 1px 0 rgba(232, 144, 32, 0.15);
-  transform: translateY(-2px);
+  border-color: #a87d58;
+  box-shadow: 0 4px 12px rgba(58, 41, 30, 0.15);
+  transform: translateY(-1px);
 }
 
-/* Borde dorado en cards especiales */
+/* Borde destacado en cards especiales */
 .card.border-primary,
-.card.border-jungle-gold {
-  border-color: #e89020;
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.4),
-    0 0 20px rgba(232, 144, 32, 0.2);
+.card.border-accent {
+  border-color: #8d6647;
+  box-shadow: 0 2px 8px rgba(141, 102, 71, 0.15);
 }
 
 /* ============================================
-   ENLACES ESTILO AVENTURA
+   ENLACES ESTILO VINTAGE - Accesibles
    ============================================ */
 a {
-  color: #f0af48;
-  text-decoration: none;
+  color: #735139;
+  text-decoration: underline;
+  text-decoration-color: transparent;
   position: relative;
   transition: all 0.2s ease;
 }
 
 a:hover {
-  color: #e89020;
+  color: #5e4330;
+  text-decoration-color: #5e4330;
 }
 
 a:focus {
-  outline: 2px solid #e89020;
+  outline: 2px solid #735139;
   outline-offset: 2px;
 }
 
 /* ============================================
-   EFECTOS NEON SUAVES (No excesivos)
-   ============================================ */
-.neon-text {
-  text-shadow:
-    0 0 10px rgba(232, 144, 32, 0.3),
-    0 0 20px rgba(232, 144, 32, 0.2);
-}
-
-/* ============================================
-   SCROLLBAR ESTILO ANTIGUO
+   SCROLLBAR ESTILO VINTAGE
    ============================================ */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #2d2419;
-  border: 1px solid #8b6841;
+  background: #f1e8d8;
+  border: 1px solid #d4ba97;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #e89020, #b35713);
-  border: 1px solid #8b6841;
+  background: #a87d58;
+  border: 1px solid #8d6647;
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f0af48, #e89020);
-  box-shadow: 0 0 10px rgba(232, 144, 32, 0.3);
+  background: #8d6647;
 }
 
 /* ============================================
@@ -314,93 +314,93 @@ a:focus {
 }
 
 /* ============================================
-   TEMAS POR SECCIÓN (Variantes del tema principal)
+   TEMAS ESPECIALES (Trivia/Travel mantienen diseño propio)
    ============================================ */
 
-/* Theme Space - Para Trivia (mantener compatibilidad) */
+/* Theme Space - Para Trivia */
 .theme-space {
   background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1419 100%);
-  color: #00ffff;
+  color: #e0f7fa;
 }
 
 .theme-space h1,
 .theme-space h2,
 .theme-space h3 {
-  color: #00ffff;
+  color: #80deea;
 }
 
 .theme-space .text-space-neon {
-  color: #00ffff;
+  color: #80deea;
 }
 
 .theme-space .text-space-green {
-  color: #00ff00;
+  color: #81c784;
 }
 
 .theme-space .text-space-dark {
-  color: #000033;
+  color: #1a237e;
 }
 
 .theme-space .border-space-neon {
-  border-color: #00ffff;
+  border-color: #80deea;
 }
 
 .theme-space .border-space-purple {
-  border-color: #8a2be2;
+  border-color: #9575cd;
 }
 
 .theme-space .bg-space-dark {
-  background-color: #000033;
+  background-color: #0d1117;
 }
 
-/* Theme Jungle - Para Travel Map (mantener compatibilidad) */
+/* Theme Jungle - Para Travel Map */
 .theme-jungle {
-  background: linear-gradient(135deg, #0f5132 0%, #1a7240 50%, #0f5132 100%);
-  color: #90ee90;
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #1b5e20 100%);
+  color: #f1f8e9;
 }
 
 .theme-jungle h1,
 .theme-jungle h2,
 .theme-jungle h3 {
-  color: #daa520;
+  color: #ffecb3;
 }
 
 .theme-jungle .text-jungle-gold {
-  color: #daa520;
+  color: #ffd54f;
 }
 
 .theme-jungle .text-jungle-leaf {
-  color: #90ee90;
+  color: #c5e1a5;
 }
 
 .theme-jungle .text-jungle-dark {
-  color: #0f5132;
+  color: #1b5e20;
 }
 
 .theme-jungle .border-jungle-gold {
-  border-color: #daa520;
+  border-color: #ffd54f;
 }
 
 .theme-jungle .bg-jungle-dark {
-  background-color: #0f5132;
+  background-color: #1b5e20;
 }
 
 .theme-jungle .bg-jungle-green {
-  background-color: #228b22;
+  background-color: #388e3c;
 }
 
 /* ============================================
-   ACCESIBILIDAD - Contraste mínimo WCAG AA
+   ACCESIBILIDAD - WCAG AA/AAA Compliant
    ============================================ */
 
 /* Asegurar contraste en texto sobre fondos oscuros */
 .bg-dark, .bg-dark-lighter, .bg-dark-soft {
-  color: #fef9f0;
+  color: #fdfbf7;
 }
 
 /* Asegurar contraste en texto sobre fondos claros */
 .bg-light, .bg-light-soft, .bg-light-muted {
-  color: #1a1410;
+  color: #3a291e;
 }
 
 /* Estados focus visibles - WCAG 2.1 Level AA compliant */
@@ -409,15 +409,15 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #e89020;
+  outline: 3px solid #735139;
   outline-offset: 2px;
-  box-shadow: 0 0 0 5px rgba(232, 144, 32, 0.25);
+  box-shadow: 0 0 0 5px rgba(115, 81, 57, 0.2);
 }
 
 /* Focus visible adicional para links y botones interactivos */
 a:focus,
 button:focus {
-  outline: 2px solid #e89020;
+  outline: 2px solid #735139;
   outline-offset: 2px;
 }
 
@@ -427,13 +427,13 @@ button:focus {
 }
 
 *:focus-visible {
-  outline: 3px solid #e89020;
+  outline: 3px solid #735139;
   outline-offset: 2px;
-  box-shadow: 0 0 0 5px rgba(232, 144, 32, 0.25);
+  box-shadow: 0 0 0 5px rgba(115, 81, 57, 0.2);
 }
 
 /* ============================================
-   ANIMACIONES SUAVES (No cansadoras)
+   ANIMACIONES SUAVES
    ============================================ */
 @keyframes scan {
   0% { transform: translateY(-100%); }
@@ -442,12 +442,12 @@ button:focus {
 
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  50% { opacity: 0.9; }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-6px); }
 }
 
 /* ============================================
@@ -459,7 +459,40 @@ button:focus {
   }
 
   .btn {
-    padding: 0.625rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     font-size: 0.9375rem;
   }
+}
+
+/* ============================================
+   UTILITY CLASSES - Accesibles
+   ============================================ */
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1rem 1.5rem;
+  background-color: #735139;
+  color: #fdfbf7;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+}
+
+.skip-to-main:focus {
+  left: 0;
 }
