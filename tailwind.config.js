@@ -12,88 +12,88 @@ export default {
         retro: ['Montserrat', 'Arial Black', 'sans-serif'],
       },
       colors: {
-        // TEMA PRINCIPAL: Adventure Explorer Retro (Estilo Indiana Jones/Jumanji)
-        // Paleta unificada con contraste WCAG AA mínimo
+        // TEMA: Vintage Travel Map (Mapa de viajes antiguo)
+        // Inspirado en mapas del siglo XIX con tonos sepia, pergamino y tintas desvanecidas
 
-        // Colores principales
+        // Colores principales: Sepia/Pergamino envejecido
         primary: {
-          50: '#fef9ed',   // Pergamino muy claro
-          100: '#fdf2d5',  // Pergamino claro
-          200: '#fae4ab',  // Arena clara
-          300: '#f5cd76',  // Dorado suave
-          400: '#f0af48',  // Dorado medio
-          500: '#e89020',  // Dorado principal ✓ Contraste AA
-          600: '#d67415',  // Dorado oscuro ✓ Contraste AAA
-          700: '#b35713',  // Bronce ✓ Contraste AAA
-          800: '#8f4616',  // Bronce oscuro
-          900: '#753b16',  // Marrón oscuro
-          950: '#421f09',  // Casi negro
+          50: '#fdfbf7',   // Pergamino casi blanco
+          100: '#f9f4eb',  // Pergamino muy claro
+          200: '#f1e8d8',  // Pergamino claro
+          300: '#e5d4ba',  // Beige pergamino
+          400: '#d4ba97',  // Sepia claro
+          500: '#c09974',  // Sepia medio ✓ Contraste AA
+          600: '#a87d58',  // Sepia oscuro ✓ Contraste AAA
+          700: '#8d6647',  // Marrón sepia
+          800: '#735139',  // Marrón antiguo
+          900: '#5e4330',  // Marrón profundo
+          950: '#3a291e',  // Casi negro cálido
         },
 
-        // Secundario: Verde aventura/jungla
+        // Secundario: Tinta desvanecida (azul-gris vintage)
         secondary: {
-          50: '#f3f9f3',
-          100: '#e4f2e5',
-          200: '#cbe6cc',
-          300: '#a5d3a7',
-          400: '#75b878',  // Verde suave
-          500: '#4a9b4f',  // Verde medio ✓ Contraste AA
-          600: '#357a39',  // Verde oscuro ✓ Contraste AAA
-          700: '#2c5f2f',  // Verde profundo
-          800: '#274d29',
-          900: '#224023',
-          950: '#0f2311',
+          50: '#f5f7f7',
+          100: '#e8eded',
+          200: '#d0dada',
+          300: '#b3c2c2',  // Gris azulado claro
+          400: '#8da3a3',  // Tinta desvanecida
+          500: '#6d8585',  // Tinta vintage ✓ Contraste AA
+          600: '#566a6a',  // Azul gris oscuro ✓ Contraste AAA
+          700: '#475656',  // Tinta oscura
+          800: '#3c4848',
+          900: '#343d3d',
+          950: '#1f2626',
         },
 
-        // Acento: Marrón tierra/cuero
+        // Acento: Rojo oxidado/terracota (sellos antiguos, rutas marcadas)
         accent: {
-          50: '#faf8f5',
-          100: '#f2ede5',
-          200: '#e5d9c8',
-          300: '#d4bfa4',  // Beige
-          400: '#c0a07e',  // Marrón claro
-          500: '#a8825d',  // Marrón medio ✓ Contraste AA
-          600: '#8b6841',  // Marrón tierra ✓ Contraste AAA
-          700: '#6d4f32',  // Cuero oscuro
-          800: '#5c422b',
-          900: '#4e3825',
-          950: '#2c1d12',
+          50: '#fdf6f5',
+          100: '#f9ebe9',
+          200: '#f3d5d1',
+          300: '#eab8b0',  // Terracota claro
+          400: '#dd9284',  // Coral vintage
+          500: '#c8745f',  // Terracota medio ✓ Contraste AA
+          600: '#a85a45',  // Rojo oxidado ✓ Contraste AAA
+          700: '#8a4836',  // Ladrillo oscuro
+          800: '#723d2f',
+          900: '#5f362a',
+          950: '#361c16',
         },
 
-        // Fondos oscuros accesibles
+        // Fondos: Papel envejecido
         dark: {
-          DEFAULT: '#1a1410',  // Casi negro cálido
-          lighter: '#2d2419', // Marrón muy oscuro
-          soft: '#3f3328',    // Marrón oscuro suave
+          DEFAULT: '#2b2520',  // Marrón papel viejo
+          lighter: '#3d342e',  // Marrón medio
+          soft: '#524740',     // Marrón suave
         },
 
-        // Textos claros accesibles
+        // Textos: Tinta sobre pergamino
         light: {
-          DEFAULT: '#fef9f0',  // Pergamino claro ✓ Alto contraste
-          soft: '#f5ebe0',     // Beige claro
-          muted: '#e8ddd0',    // Beige apagado
+          DEFAULT: '#fdfbf7',  // Pergamino blanco ✓ Alto contraste
+          soft: '#f9f4eb',     // Beige muy claro
+          muted: '#f1e8d8',    // Beige apagado
         },
 
-        // Semantic colors
+        // Semantic colors (tonos vintage apagados)
         success: {
-          light: '#75b878',
-          DEFAULT: '#4a9b4f',  // ✓ Contraste AA
-          dark: '#357a39',     // ✓ Contraste AAA
+          light: '#9db89f',
+          DEFAULT: '#6d8870',  // Verde oliva vintage ✓ Contraste AA
+          dark: '#4f6352',     // Verde oscuro ✓ Contraste AAA
         },
         error: {
-          light: '#f28b82',
-          DEFAULT: '#dc3545',  // ✓ Contraste AA
-          dark: '#b02a37',     // ✓ Contraste AAA
+          light: '#d4918a',
+          DEFAULT: '#b85850',  // Rojo teja ✓ Contraste AA
+          dark: '#8d4340',     // Rojo oscuro ✓ Contraste AAA
         },
         warning: {
-          light: '#ffc75f',
-          DEFAULT: '#ff9800',  // ✓ Contraste AA
-          dark: '#e67e00',     // ✓ Contraste AAA
+          light: '#d9b88f',
+          DEFAULT: '#b8935f',  // Ocre dorado ✓ Contraste AA
+          dark: '#8d6f47',     // Ocre oscuro ✓ Contraste AAA
         },
         info: {
-          light: '#64b5f6',
-          DEFAULT: '#2196f3',  // ✓ Contraste AA
-          dark: '#1769aa',     // ✓ Contraste AAA
+          light: '#98b3b8',
+          DEFAULT: '#6d8a8f',  // Azul grisáceo ✓ Contraste AA
+          dark: '#526770',     // Azul petróleo ✓ Contraste AAA
         },
       },
       animation: {

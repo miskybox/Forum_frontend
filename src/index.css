@@ -2,31 +2,31 @@
 @import "tailwindcss";
 
 /* ============================================
-   ADVENTURE EXPLORER RETRO THEME
-   Inspirado en Indiana Jones, Jumanji, Los Goonies
-   Colores cálidos, accesibles, estilo ochentero/noventero
+   VINTAGE TRAVEL MAP THEME
+   Inspirado en mapas antiguos del siglo XIX
+   Colores suaves: sepia, pergamino, tinta desvanecida
    ============================================ */
 
 html {
   scroll-behavior: smooth;
-  background: #1a1410;
+  background: #f9f4eb;
   overflow-x: hidden;
 }
 
 body {
-  color: #fef9f0;
+  color: #3a291e;
   font-family: 'Inter', 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  /* Fondo estilo pergamino antiguo con gradiente cálido */
-  background: linear-gradient(135deg, #1a1410 0%, #2d2419 50%, #1a1410 100%);
+  /* Fondo estilo pergamino envejecido con textura sutil */
+  background: linear-gradient(135deg, #fdfbf7 0%, #f9f4eb 50%, #f1e8d8 100%);
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Textura sutil de papel antiguo - MUY REDUCIDA para no cansar */
+/* Textura sutil de papel antiguo - efecto pergamino */
 body::before {
   content: '';
   position: fixed;
@@ -37,14 +37,14 @@ body::before {
   background-image:
     repeating-linear-gradient(
       0deg,
-      rgba(232, 144, 32, 0.02),
-      rgba(232, 144, 32, 0.02) 1px,
+      rgba(192, 153, 116, 0.03),
+      rgba(192, 153, 116, 0.03) 1px,
       transparent 1px,
-      transparent 3px
+      transparent 4px
     );
   pointer-events: none;
   z-index: 1;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* ============================================
@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1.3;
-  color: #e89020; /* Dorado principal */
+  color: #8d6647; /* Marrón sepia - tinta antigua */
 }
 
 h1 {
@@ -111,43 +111,43 @@ h4 {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #e89020 0%, #d67415 100%);
-  border-color: #b35713;
+  background: linear-gradient(135deg, #c09974 0%, #a87d58 100%);
+  border-color: #8d6647;
   color: #1a1410;
   box-shadow:
-    0 4px 6px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.2);
+    0 3px 5px rgba(58, 41, 30, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #f0af48 0%, #e89020 100%);
+  background: linear-gradient(135deg, #d4ba97 0%, #c09974 100%);
   box-shadow:
-    0 6px 12px rgba(232, 144, 32, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+    0 5px 10px rgba(192, 153, 116, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.25);
   transform: translateY(-2px);
 }
 
 .btn-primary:active {
   transform: translateY(0);
   box-shadow:
-    0 2px 4px rgba(0,0,0,0.3),
-    inset 0 2px 4px rgba(0,0,0,0.2);
+    0 2px 3px rgba(58, 41, 30, 0.25),
+    inset 0 2px 4px rgba(58, 41, 30, 0.15);
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #4a9b4f 0%, #357a39 100%);
-  border-color: #2c5f2f;
-  color: #fef9f0;
+  background: linear-gradient(135deg, #6d8585 0%, #566a6a 100%);
+  border-color: #475656;
+  color: #fdfbf7;
   box-shadow:
-    0 4px 6px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.2);
+    0 3px 5px rgba(58, 41, 30, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, #75b878 0%, #4a9b4f 100%);
+  background: linear-gradient(135deg, #8da3a3 0%, #6d8585 100%);
   box-shadow:
-    0 6px 12px rgba(74, 155, 79, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+    0 5px 10px rgba(109, 133, 133, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.25);
   transform: translateY(-2px);
 }
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLanguage } from '../../contexts/LanguageContext'
+import logo from '../../assets/logo2.png'
 
 /**
  * Navbar con diseño accesible y selector de idioma
@@ -20,48 +21,48 @@ const Navbar = () => {
     navigate('/')
   }
 
-  // Configuración de tema Adventure Explorer Retro (WCAG AA)
+  // Configuración de tema Vintage Travel Map (WCAG AA)
   const themeConfig = {
     retro: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
       border: 'border-primary-600',
-      text: 'text-primary-400',
-      hover: 'hover:text-primary-300',
+      text: 'text-primary-900',
+      hover: 'hover:text-primary-700',
       icon: '🗺️'
     },
     adventure: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
       border: 'border-primary-600',
-      text: 'text-primary-400',
-      hover: 'hover:text-primary-300',
+      text: 'text-primary-900',
+      hover: 'hover:text-primary-700',
       icon: '🏺'
     },
     future: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      bg: 'bg-gradient-to-r from-secondary-100 via-secondary-50 to-secondary-100',
       border: 'border-secondary-600',
-      text: 'text-secondary-400',
-      hover: 'hover:text-secondary-300',
+      text: 'text-secondary-900',
+      hover: 'hover:text-secondary-700',
       icon: '⚡'
     },
     jungle: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      bg: 'bg-gradient-to-r from-secondary-100 via-secondary-50 to-secondary-100',
       border: 'border-secondary-600',
-      text: 'text-secondary-400',
-      hover: 'hover:text-secondary-300',
+      text: 'text-secondary-900',
+      hover: 'hover:text-secondary-700',
       icon: '🌴'
     },
     tech: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
+      bg: 'bg-gradient-to-r from-accent-100 via-accent-50 to-accent-100',
       border: 'border-accent-600',
-      text: 'text-accent-500',
-      hover: 'hover:text-accent-400',
+      text: 'text-accent-900',
+      hover: 'hover:text-accent-700',
       icon: '🤖'
     },
     space: {
-      bg: 'bg-gradient-to-r from-dark-lighter via-dark to-dark-lighter',
-      border: 'border-warning',
-      text: 'text-warning',
-      hover: 'hover:text-primary-300',
+      bg: 'bg-gradient-to-r from-primary-100 via-primary-50 to-primary-100',
+      border: 'border-accent-600',
+      text: 'text-accent-900',
+      hover: 'hover:text-accent-700',
       icon: '👽'
     }
   }
@@ -84,10 +85,14 @@ const Navbar = () => {
           
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
-            <span className="text-3xl sm:text-4xl transform group-hover:scale-110 transition-transform">{currentTheme.icon}</span>
+            <img
+              src={logo}
+              alt="ForumViajeros Logo"
+              className="h-10 sm:h-12 lg:h-14 w-auto transform group-hover:scale-105 transition-transform"
+            />
             <span className="font-bold text-xl sm:text-2xl lg:text-3xl tracking-wide">
               <span className={currentTheme.text}>Forum</span>
-              <span className="text-light">Viajeros</span>
+              <span className="text-primary-700">Viajeros</span>
             </span>
           </Link>
           
