@@ -136,9 +136,21 @@ const Navbar = () => {
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
             >
-              <span className="text-2xl" aria-hidden="true">
-                {language === 'es' ? '🇪🇸' : '🇬🇧'}
-              </span>
+              {/* Bandera de España: rojo-amarillo-rojo */}
+              {language === 'es' ? (
+                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-primary-400" aria-hidden="true">
+                  <div className="h-1/4 bg-red-600"></div>
+                  <div className="h-2/4 bg-yellow-400"></div>
+                  <div className="h-1/4 bg-red-600"></div>
+                </div>
+              ) : (
+                /* Bandera del Reino Unido: Cruz de San Jorge simplificada */
+                <div className="flex items-center justify-center w-6 h-4 bg-blue-700 rounded overflow-hidden border border-primary-400 relative" aria-hidden="true">
+                  <div className="absolute inset-0 bg-white opacity-30"></div>
+                  <div className="absolute w-full h-0.5 bg-red-600"></div>
+                  <div className="absolute h-full w-0.5 bg-red-600"></div>
+                </div>
+              )}
               <span className="text-sm font-bold uppercase">
                 {language === 'es' ? 'ES' : 'EN'}
               </span>
