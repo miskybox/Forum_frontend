@@ -120,7 +120,7 @@ const Navbar = () => {
             {/* Toggle Dark Mode */}
             <button
               onClick={toggleDarkMode}
-              className={`flex items-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px]`}
+              className={`flex items-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px] cursor-pointer hover:scale-110`}
               title={isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
               aria-label={isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
             >
@@ -132,15 +132,12 @@ const Navbar = () => {
             {/* Selector de idioma */}
             <button
               onClick={toggleLanguage}
-              className={`flex items-center space-x-1 px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px]`}
+              className={`flex items-center justify-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px] cursor-pointer hover:scale-110`}
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
             >
-              <span className="text-xl sm:text-2xl" aria-hidden="true">
+              <span className="text-2xl sm:text-3xl" aria-hidden="true">
                 {language === 'es' ? '🇪🇸' : '🇬🇧'}
-              </span>
-              <span className="hidden sm:inline text-sm font-medium uppercase">
-                {language}
               </span>
             </button>
 
