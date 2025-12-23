@@ -169,10 +169,10 @@ const TriviaHomePage = () => {
                     <h3 className="text-xl font-bold text-primary-500 mb-2">
                       {mode.title}
                     </h3>
-                    <p className="text-light-muted text-sm mb-4">
+                    <p className="text-primary-700 dark:text-primary-300 text-sm mb-4 font-semibold">
                       {mode.description}
                     </p>
-                    <div className="flex items-center justify-between text-light-soft text-sm">
+                    <div className="flex items-center justify-between text-primary-600 dark:text-primary-400 text-sm font-semibold">
                       <span>{mode.questions} {t('trivia.questions')}</span>
                       <span className="text-primary-500 group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -269,10 +269,10 @@ const TriviaHomePage = () => {
             {/* Tips */}
             <div className="card border-secondary-600">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-secondary-500 mb-4">
+                <h3 className="text-lg font-bold text-secondary-700 dark:text-secondary-300 mb-4">
                   💡 {t('trivia.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-light-soft text-sm">
+                <ul className="space-y-3 text-secondary-700 dark:text-secondary-300 text-sm font-semibold">
                   <li className="flex items-start gap-2">
                     <span>⚡</span>
                     <span>{t('trivia.tips.speedBonus')}</span>

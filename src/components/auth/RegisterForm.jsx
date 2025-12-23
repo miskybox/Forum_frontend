@@ -353,7 +353,7 @@ const RegisterForm = () => {
 
         <button
           type="submit"
-          className="btn btn-primary w-full text-lg py-4"
+          className="btn btn-primary w-full text-lg py-4 rounded-lg"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

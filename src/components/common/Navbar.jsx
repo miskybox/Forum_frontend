@@ -132,11 +132,11 @@ const Navbar = () => {
             {/* Selector de idioma */}
             <button
               onClick={toggleLanguage}
-              className={`flex items-center justify-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px] cursor-pointer hover:scale-110`}
+              className={`flex items-center justify-center px-3 py-2 rounded-lg ${currentTheme.text} ${currentTheme.hoverBg} transition-all duration-200 min-h-[44px] min-w-[44px] cursor-pointer hover:scale-110 border-2 ${currentTheme.border}`}
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
             >
-              <span className="text-2xl sm:text-3xl" aria-hidden="true">
+              <span className="text-3xl sm:text-4xl" aria-hidden="true">
                 {language === 'es' ? '🇪🇸' : '🇬🇧'}
               </span>
             </button>

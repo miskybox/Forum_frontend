@@ -109,14 +109,14 @@ const TravelMapPage = () => {
       </div>
 
       {/* Header */}
-      <div className="bg-dark-lighter border-b-2 border-secondary-600 py-12 relative z-10">
+      <div className="bg-secondary-50 dark:bg-secondary-900 border-b-2 border-secondary-600 py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-secondary-500 flex items-center gap-3 mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-secondary-700 dark:text-secondary-300 flex items-center gap-3 mb-2">
                 🗺️ {t('travel.title')}
               </h1>
-              <p className="text-light-muted">
+              <p className="text-secondary-600 dark:text-secondary-400">
                 {t('travel.addNewDestination')}
               </p>
             </div>
