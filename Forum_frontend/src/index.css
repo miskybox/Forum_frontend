@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ============================================
+   PALETA ÚNICA - SIN MODO OSCURO
+   #A0937D #E7D4B5 #F6E6CB #B6C7AA
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+  background: #F6E6CB;
+  overflow-x: hidden;
+}
+
+body {
+  color: #2D2A26;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: #F6E6CB;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   TIPOGRAFÍAS
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  color: #2D2A26;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.125rem; }
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  border: 2px solid;
+  position: relative;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  background: #B6C7AA;
+  border-color: #A0B596;
+  color: #2D2A26;
+  box-shadow: 0 2px 4px rgba(160, 147, 125, 0.25);
+}
+
+.btn-primary:hover {
+  background: #A0B596;
+  border-color: #8FA184;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(160, 147, 125, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(160, 147, 125, 0.2);
+}
+
+.btn-secondary {
+  background: #8B7E6A;
+  border-color: #766A59;
+  color: #FEFDFB;
+  box-shadow: 0 2px 4px rgba(160, 147, 125, 0.25);
+}
+
+.btn-secondary:hover {
+  background: #766A59;
+  border-color: #5C4A3A;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(160, 147, 125, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: #A0937D;
+  color: #2D2A26;
+}
+
+.btn-outline:hover {
+  background: rgba(160, 147, 125, 0.1);
+  border-color: #8B7E6A;
+}
+
+/* ============================================
+   INPUTS
+   ============================================ */
+.input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+  display: flex;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  min-height: 44px;
+  border: 2px solid #A0937D;
+  background: #FEFDFB;
+  color: #2D2A26;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.input:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #8B7E6A;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(160, 147, 125, 0.25);
+}
+
+.input::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #A0937D;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+  background: #FEFDFB;
+  border: 2px solid #E7D4B5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(160, 147, 125, 0.15);
+  transition: all 0.2s ease;
+  color: #2D2A26;
+}
+
+.card:hover {
+  border-color: #B6C7AA;
+  box-shadow: 0 4px 12px rgba(182, 199, 170, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   ENLACES
+   ============================================ */
+a {
+  color: #A0937D;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #8B7E6A;
+}
+
+a:focus {
+  outline: 2px solid #A0937D;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E7D4B5;
+  border: 1px solid #D4C9B9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A0937D;
+  border: 1px solid #8B7E6A;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8B7E6A;
+}
+
+/* ============================================
+   CONTENEDOR
+   ============================================ */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #A0937D;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(160, 147, 125, 0.25);
+}
+
+a:focus,
+button:focus {
+  outline: 2px solid #A0937D;
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid #A0937D;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(160, 147, 125, 0.25);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1rem 1.5rem;
+  background-color: #5C4A3A;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+}
+
+.skip-to-main:focus {
+  left: 0;
+}
