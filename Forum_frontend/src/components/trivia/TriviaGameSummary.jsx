@@ -15,7 +15,7 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
     if (accuracy >= 90) return { grade: 'S', color: 'text-warning', message: t('trivia.summary.perfect') }
     if (accuracy >= 80) return { grade: 'A', color: 'text-success', message: t('trivia.summary.excellent') }
     if (accuracy >= 70) return { grade: 'B', color: 'text-info', message: t('trivia.summary.veryGood') }
-    if (accuracy >= 60) return { grade: 'C', color: 'text-secondary-500', message: t('trivia.summary.wellDone') }
+    if (accuracy >= 60) return { grade: 'C', color: 'text-terracotta-500', message: t('trivia.summary.wellDone') }
     if (accuracy >= 50) return { grade: 'D', color: 'text-warning-dark', message: t('trivia.summary.canImprove') }
     return { grade: 'F', color: 'text-error', message: t('trivia.summary.keepPracticing') }
   }
@@ -28,7 +28,7 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
       <div className={`relative px-6 py-8 text-center ${
         game.perfectGame
           ? 'bg-gradient-to-br from-warning-dark via-warning to-warning'
-          : 'bg-gradient-to-br from-primary-600 to-secondary-600'
+          : 'bg-gradient-to-br from-secondary to-accent'
       }`}>
         {game.perfectGame && (
           <div className="absolute inset-0 overflow-hidden">
@@ -88,16 +88,16 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 
         {/* Barra de precisión */}
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-primary-700 dark:text-primary-300 mb-2 font-semibold">
+          <div className="flex justify-between text-sm text-text mb-2 font-semibold">
             <span>{t('trivia.precision')}</span>
             <span className="font-bold">{accuracy.toFixed(1)}%</span>
           </div>
-          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-3 bg-primary-dark rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-1000 ${
                 accuracy >= 80 ? 'bg-success' :
                 accuracy >= 60 ? 'bg-info' :
-                accuracy >= 40 ? 'bg-warning-dark' : 'bg-error'
+                accuracy >= 40 ? 'bg-warning' : 'bg-error'
               }`}
               style={{ width: `${accuracy}%` }}
             />
@@ -108,21 +108,21 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
         <div className="flex flex-col gap-3">
           <button
             onClick={onPlayAgain}
-            className="w-full py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-bold hover:from-primary-600 hover:to-secondary-600 transition-colors"
+            className="w-full py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-xl font-bold hover:from-secondary-dark hover:to-accent-dark transition-colors"
           >
             🎮 {t('trivia.summary.playAgainButton')}
           </button>
 
           <Link
             to="/trivia/leaderboard"
-            className="w-full py-3 border-2 border-accent-600/50 rounded-xl font-bold text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors text-center"
+            className="w-full py-3 border-2 border-secondary rounded-xl font-bold text-text hover:bg-secondary-light transition-colors text-center"
           >
             🏆 {t('trivia.summary.viewRanking')}
           </Link>
 
           <Link
             to="/trivia"
-            className="w-full py-3 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-200 transition-colors text-center font-semibold"
+            className="w-full py-3 text-text hover:text-accent transition-colors text-center font-semibold"
           >
             ← {t('trivia.infinite.backToMenu')}
           </Link>
@@ -133,10 +133,10 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 }
 
 const StatBox = ({ icon, value, label }) => (
-  <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 text-center">
+  <div className="bg-secondary-light rounded-xl p-4 text-center">
     <span className="text-2xl">{icon}</span>
-    <p className="text-2xl font-bold text-primary-800 dark:text-primary-200 mt-1">{value}</p>
-    <p className="text-primary-600 dark:text-primary-400 text-sm font-semibold">{label}</p>
+    <p className="text-2xl font-bold text-text mt-1">{value}</p>
+    <p className="text-text-light text-sm font-semibold">{label}</p>
   </div>
 )
 
@@ -166,4 +166,3 @@ TriviaGameSummary.propTypes = {
 }
 
 export default TriviaGameSummary
-
