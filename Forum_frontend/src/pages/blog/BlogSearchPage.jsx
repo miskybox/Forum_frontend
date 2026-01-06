@@ -37,7 +37,7 @@ const BlogSearchPage = () => {
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
-          <Link to="/blog" className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-4">
+          <Link to="/blog" className="inline-flex items-center text-ocean-600 hover:text-ocean-700 mb-4">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -73,7 +73,7 @@ const BlogSearchPage = () => {
             </p>
             <Link
               to="/blog"
-              className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-ocean-600 text-white rounded-lg hover:bg-ocean-700 transition-colors"
             >
               Ver todos los artículos
             </Link>

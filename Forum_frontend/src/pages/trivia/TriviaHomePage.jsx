@@ -16,7 +16,7 @@ const PARTICLES = Array.from({ length: 20 }).map((_, i) => ({
 }))
 
 /**
- * TriviaHomePage con tema Adventure
+ * TriviaHomePage - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
  */
 const TriviaHomePage = () => {
   const { isAuthenticated } = useAuth()
@@ -123,7 +123,7 @@ const TriviaHomePage = () => {
         {PARTICLES.map((p) => (
           <div
             key={p.id}
-            className="absolute w-2 h-2 bg-primary-500 rounded-full opacity-30 animate-float"
+            className="absolute w-2 h-2 bg-accent rounded-full opacity-30 animate-float"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
@@ -138,11 +138,11 @@ const TriviaHomePage = () => {
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">🧭</div>
-          <h1 className="text-4xl md:text-5xl font-bold text-primary-800 dark:text-primary-100 mb-4 tracking-normal uppercase">
+          <h1 className="text-4xl md:text-5xl font-bold text-text mb-4 tracking-normal uppercase">
             {t('trivia.title')}
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-600 dark:via-primary-400 to-transparent mb-4"></div>
-          <p className="text-primary-800 dark:text-primary-200 text-lg font-semibold tracking-normal">
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-4"></div>
+          <p className="text-text text-lg font-semibold tracking-normal">
             {t('trivia.chooseMode')}
           </p>
         </div>
@@ -150,7 +150,7 @@ const TriviaHomePage = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-bold text-primary-800 dark:text-primary-100 mb-6 tracking-normal uppercase">
+            <h2 className="text-2xl font-bold text-text mb-6 tracking-normal uppercase">
               🎮 {t('trivia.chooseMode')}
             </h2>
 
@@ -160,21 +160,21 @@ const TriviaHomePage = () => {
                   key={mode.mode}
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className="card hover:border-primary-500 group disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                  className="card hover:border-secondary group disabled:opacity-50 disabled:cursor-not-allowed text-left"
                 >
                   <div className="text-center p-4">
                     <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
                       {mode.icon}
                     </div>
-                    <h3 className="text-xl font-bold text-primary-900 dark:text-primary-100 mb-2 tracking-normal uppercase">
+                    <h3 className="text-xl font-bold text-text mb-2 tracking-normal uppercase">
                       {mode.title}
                     </h3>
-                    <p className="text-primary-800 dark:text-primary-200 text-sm mb-4">
+                    <p className="text-text-light text-sm mb-4">
                       {mode.description}
                     </p>
-                    <div className="flex items-center justify-between text-primary-800 dark:text-primary-200 text-sm font-semibold">
+                    <div className="flex items-center justify-between text-text text-sm font-semibold">
                       <span>{mode.questions} {t('trivia.questions')}</span>
-                      <span className="text-primary-700 dark:text-primary-300 group-hover:translate-x-1 transition-transform">→</span>
+                      <span className="text-accent group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </div>
                 </button>
@@ -184,18 +184,24 @@ const TriviaHomePage = () => {
             {/* Filtros por continente */}
             <div className="card">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-primary-900 dark:text-primary-100 mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-text mb-4 tracking-normal uppercase">
                   🌎 {t('trivia.playByContinent')}
                 </h3>
                 <div className="flex flex-wrap gap-3">
-                  {['Europa', 'América', 'Asia', 'África', 'Oceanía'].map(continent => (
+                  {[
+                    { key: 'europe', apiValue: 'Europa' },
+                    { key: 'america', apiValue: 'América' },
+                    { key: 'asia', apiValue: 'Asia' },
+                    { key: 'africa', apiValue: 'África' },
+                    { key: 'oceania', apiValue: 'Oceanía' }
+                  ].map(continent => (
                     <button
-                      key={continent}
-                      onClick={() => startGame('CHALLENGE', { questions: 15, continent })}
+                      key={continent.key}
+                      onClick={() => startGame('CHALLENGE', { questions: 15, continent: continent.apiValue })}
                       disabled={starting}
                       className="btn btn-outline px-4 py-2 text-sm disabled:opacity-50"
                     >
-                      {getContinentEmoji(continent)} {continent}
+                      {getContinentEmoji(continent.apiValue)} {t(`continentsNames.${continent.key}`)}
                     </button>
                   ))}
                 </div>
@@ -206,14 +212,14 @@ const TriviaHomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
-                className="card hover:border-primary-500 group"
+                className="card hover:border-secondary group"
               >
                 <div className="p-4 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🏆</span>
-                  <h3 className="text-lg font-bold text-primary-900 dark:text-primary-100 mb-2 tracking-normal uppercase">
+                  <h3 className="text-lg font-bold text-text mb-2 tracking-normal uppercase">
                     {t('trivia.ranking')}
                   </h3>
-                  <p className="text-primary-800 dark:text-primary-200 text-sm">
+                  <p className="text-text-light text-sm">
                     {t('trivia.competeWithOthers')}
                   </p>
                 </div>
@@ -221,14 +227,14 @@ const TriviaHomePage = () => {
 
               <Link
                 to="/travel"
-                className="card hover:border-secondary-500 group"
+                className="card hover:border-accent group"
               >
                 <div className="p-4 text-center">
                   <span className="text-4xl mb-3 block group-hover:scale-110 transition-transform">🗺️</span>
-                  <h3 className="text-lg font-bold text-secondary-800 dark:text-secondary-200 mb-2 tracking-normal uppercase">
+                  <h3 className="text-lg font-bold text-accent mb-2 tracking-normal uppercase">
                     {t('trivia.myMap')}
                   </h3>
-                  <p className="text-primary-800 dark:text-primary-200 text-sm">
+                  <p className="text-text-light text-sm">
                     {t('trivia.registerTrips')}
                   </p>
                 </div>
@@ -241,7 +247,7 @@ const TriviaHomePage = () => {
             {loading && (
               <div className="card text-center py-12">
                 <div className="text-5xl mb-4 animate-spin">🧭</div>
-                <p className="text-primary-800 dark:text-primary-200 font-semibold">{t('trivia.loading')}</p>
+                <p className="text-text font-semibold">{t('trivia.loading')}</p>
               </div>
             )}
             {!loading && isAuthenticated && stats && (
@@ -250,10 +256,10 @@ const TriviaHomePage = () => {
             {!loading && (!isAuthenticated || !stats) && (
               <div className="card text-center p-6">
                 <span className="text-5xl mb-4 block">🎮</span>
-                <h3 className="text-xl font-bold text-primary-900 dark:text-primary-100 mb-2 tracking-normal uppercase">
+                <h3 className="text-xl font-bold text-text mb-2 tracking-normal uppercase">
                   {t('trivia.join')}
                 </h3>
-                <p className="text-primary-800 dark:text-primary-200 text-sm mb-4">
+                <p className="text-text-light text-sm mb-4">
                   {t('trivia.loginToSaveProgress')}
                 </p>
                 <Link
@@ -269,12 +275,12 @@ const TriviaHomePage = () => {
             )}
 
             {/* Tips */}
-            <div className="card border-secondary-600">
+            <div className="card border-accent">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-secondary-800 dark:text-secondary-200 mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-accent mb-4 tracking-normal uppercase">
                   💡 {t('trivia.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-primary-800 dark:text-primary-200 text-sm">
+                <ul className="space-y-3 text-text-light text-sm">
                   <li className="flex items-start gap-2">
                     <span>⚡</span>
                     <span>{t('trivia.tips.speedBonus')}</span>

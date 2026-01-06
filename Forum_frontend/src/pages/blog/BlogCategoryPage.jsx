@@ -48,7 +48,7 @@ const BlogCategoryPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div
-        className="bg-gradient-to-r from-primary-700 to-primary-500 text-white py-16"
+        className="bg-gradient-to-r from-ocean-700 to-ocean-500 text-white py-16"
         style={category?.color ? {
           background: `linear-gradient(135deg, ${category.color} 0%, ${category.color}dd 100%)`
         } : {}}

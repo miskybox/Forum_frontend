@@ -137,7 +137,7 @@ export const validateTag = (tag) => {
   }
 
   // Validar caracteres permitidos (solo alfanuméricos, espacios, guiones)
-  const validPattern = /^[a-zA-Z0-9\sáéíóúñÁÉÍÓÚÑ\-]+$/
+  const validPattern = /^[a-zA-Z0-9\sáéíóúñÁÉÍÓÚÑ-]+$/
   if (!validPattern.test(cleaned)) {
     return { valid: false, cleaned, error: 'El tag contiene caracteres no permitidos' }
   }

@@ -217,7 +217,7 @@ const RegisterForm = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+            <label htmlFor="firstName" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
               Nombre
             </label>
             <input
@@ -228,7 +228,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.firstName ? 'true' : 'false'}
               aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-              className={`input w-full ${errors.firstName ? 'border-error' : 'border-primary-600'}`}
+              className={`input w-full ${errors.firstName ? 'border-error' : 'border-ocean-600'}`}
               value={formData.firstName}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -242,7 +242,7 @@ const RegisterForm = () => {
           </div>
 
           <div>
-            <label htmlFor="lastName" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+            <label htmlFor="lastName" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
               Apellido
             </label>
             <input
@@ -253,7 +253,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.lastName ? 'true' : 'false'}
               aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-              className={`input w-full ${errors.lastName ? 'border-error' : 'border-primary-600'}`}
+              className={`input w-full ${errors.lastName ? 'border-error' : 'border-ocean-600'}`}
               value={formData.lastName}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -268,7 +268,7 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -280,7 +280,7 @@ const RegisterForm = () => {
             aria-required="true"
             aria-invalid={errors.username ? 'true' : 'false'}
             aria-describedby={errors.username ? 'username-error' : undefined}
-            className={`input w-full ${errors.username ? 'border-error' : 'border-primary-600'}`}
+            className={`input w-full ${errors.username ? 'border-error' : 'border-ocean-600'}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -294,7 +294,7 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+          <label htmlFor="email" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             📧 {t('auth.email')}
           </label>
           <input
@@ -305,7 +305,7 @@ const RegisterForm = () => {
             aria-required="true"
             aria-invalid={errors.email ? 'true' : 'false'}
             aria-describedby={errors.email ? 'email-error' : undefined}
-            className={`input w-full ${errors.email ? 'border-error' : 'border-primary-600'}`}
+            className={`input w-full ${errors.email ? 'border-error' : 'border-ocean-600'}`}
             value={formData.email}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -319,7 +319,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
@@ -331,7 +331,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.password ? 'true' : 'false'}
               aria-describedby={errors.password ? 'password-error' : undefined}
-              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-primary-600'}`}
+              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-ocean-600'}`}
               value={formData.password}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -360,7 +360,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="confirmPassword" className="block text-sm font-bold text-primary-400 uppercase tracking-normal mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.confirmPassword')}
           </label>
           <div className="relative">
@@ -372,7 +372,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.confirmPassword ? 'true' : 'false'}
               aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
-              className={`input w-full pr-12 ${errors.confirmPassword ? 'border-error' : 'border-primary-600'}`}
+              className={`input w-full pr-12 ${errors.confirmPassword ? 'border-error' : 'border-ocean-600'}`}
               value={formData.confirmPassword}
               onChange={handleChange}
               disabled={isSubmitting}

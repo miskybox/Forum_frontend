@@ -31,9 +31,9 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   const getRankStyle = (rank) => {
     switch (rank) {
       case 1: return 'bg-gradient-to-r from-warning-dark to-warning text-white font-bold'
-      case 2: return 'bg-gradient-to-r from-secondary-500 to-secondary-600 text-white font-bold'
-      case 3: return 'bg-gradient-to-r from-accent-600 to-accent-700 text-white font-bold'
-      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold'
+      case 2: return 'bg-gradient-to-r from-terracotta-500 to-terracotta-600 text-white font-bold'
+      case 3: return 'bg-gradient-to-r from-ocean-500 to-ocean-600 text-white font-bold'
+      default: return 'bg-accent text-primary-light font-semibold'
     }
   }
 
@@ -49,7 +49,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   return (
     <div className="card overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-secondary-600 px-6 py-6">
+      <div className="bg-gradient-to-r from-secondary to-accent px-6 py-6">
         <h2 className="text-2xl font-bold text-white mb-4">🏆 {t('trivia.globalRanking')}</h2>
 
         {/* Tabs */}
@@ -64,7 +64,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
               onClick={() => setType(tab.value)}
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
                 type === tab.value
-                  ? 'bg-white text-primary-800'
+                  ? 'bg-white text-text'
                   : 'bg-white/20 text-white/80 hover:bg-white/30'
               }`}
             >
@@ -75,17 +75,17 @@ const TriviaLeaderboard = ({ currentUserId }) => {
       </div>
 
       {/* Lista */}
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="divide-y divide-primary-dark">
         {loading && (
           <div className="p-12 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent mx-auto" />
-            <p className="text-primary-800 dark:text-primary-400 mt-4 font-semibold">{t('trivia.loadingRanking')}</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-secondary border-t-transparent mx-auto" />
+            <p className="text-text-light mt-4 font-semibold">{t('trivia.loadingRanking')}</p>
           </div>
         )}
         {!loading && leaderboard?.entries?.length === 0 && (
           <div className="p-12 text-center">
             <span className="text-6xl">🏜️</span>
-            <p className="text-primary-800 dark:text-primary-400 mt-4 font-semibold">{t('trivia.noPlayersYet')}</p>
+            <p className="text-text-light mt-4 font-semibold">{t('trivia.noPlayersYet')}</p>
           </div>
         )}
         {!loading && leaderboard?.entries?.length > 0 && (
@@ -93,7 +93,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
             <div
               key={entry.userId}
               className={`flex items-center gap-4 p-4 ${
-                entry.userId === currentUserId ? 'bg-primary-100 dark:bg-primary-900/30' : ''
+                entry.userId === currentUserId ? 'bg-secondary-light' : ''
               }`}
             >
               {/* Rank */}
@@ -114,27 +114,27 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                     ) : '👤'}
                   </span>
                   <div>
-                    <p className="font-bold text-primary-800 dark:text-primary-200 truncate">
+                    <p className="font-bold text-text truncate">
                       {entry.username}
                       {entry.userId === currentUserId && (
-                        <span className="ml-2 text-xs bg-primary-200 dark:bg-primary-700 text-primary-800 dark:text-primary-300 px-2 py-0.5 rounded-full font-semibold">
+                        <span className="ml-2 text-xs bg-secondary text-text px-2 py-0.5 rounded-full font-semibold">
                           {t('trivia.you')}
                         </span>
                       )}
                     </p>
-                    <p className="text-sm text-primary-800 dark:text-primary-400 font-semibold">{entry.playerTitle}</p>
+                    <p className="text-sm text-text-light font-semibold">{entry.playerTitle}</p>
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
               <div className="text-right">
-                <p className="text-xl font-bold text-primary-800 dark:text-primary-200">
+                <p className="text-xl font-bold text-text">
                   {type === 'score' && entry.score?.toLocaleString()}
                   {type === 'accuracy' && `${entry.accuracyPercentage?.toFixed(1)}%`}
                   {type === 'streak' && `🔥 ${entry.bestStreak}`}
                 </p>
-                <p className="text-xs text-primary-800 dark:text-primary-400 font-semibold">
+                <p className="text-xs text-text-light font-semibold">
                   {t('trivia.level')} {entry.level} • {entry.totalGames} {t('trivia.games')}
                 </p>
               </div>
@@ -145,7 +145,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
       {/* Footer con total */}
       {leaderboard && (
-        <div className="bg-gray-100 dark:bg-gray-800 px-6 py-4 text-center text-primary-800 dark:text-primary-400 text-sm font-semibold">
+        <div className="bg-primary px-6 py-4 text-center text-text-light text-sm font-semibold">
           {leaderboard.totalPlayers?.toLocaleString()} {t('trivia.playersInRanking')}
         </div>
       )}
@@ -158,4 +158,3 @@ TriviaLeaderboard.propTypes = {
 }
 
 export default TriviaLeaderboard
-

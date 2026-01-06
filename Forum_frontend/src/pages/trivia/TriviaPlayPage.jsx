@@ -142,7 +142,7 @@ const TriviaPlayPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary-500 border-t-transparent mx-auto" />
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-ocean-500 border-t-transparent mx-auto" />
           <p className="text-light-muted mt-4">{t('trivia.loadingQuestion')}</p>
         </div>
       </div>
@@ -160,16 +160,16 @@ const TriviaPlayPage = () => {
   return (
     <div className="min-h-screen">
       {/* Header con progreso */}
-      <div className="bg-dark-lighter py-4 border-b border-accent-600">
+      <div className="bg-dark-lighter py-4 border-b border-ocean-500">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="text-light">
-            <span className="text-primary-400 text-sm">{t('trivia.score')}</span>
+            <span className="text-ocean-400 text-sm">{t('trivia.score')}</span>
             <p className="text-2xl font-bold">{game?.score || 0}</p>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="text-center text-light">
-              <span className="text-primary-400 text-sm">{t('trivia.correctAnswers')}</span>
+              <span className="text-ocean-400 text-sm">{t('trivia.correctAnswers')}</span>
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             

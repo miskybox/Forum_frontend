@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
- * Componente que muestra las estadísticas de trivia del usuario
+ * TriviaStats - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
  */
 const TriviaStats = ({ stats }) => {
   const { t } = useLanguage()
-  
+
   if (!stats) return null
 
   const expProgress = stats.experienceToNextLevel > 0
@@ -19,7 +19,7 @@ const TriviaStats = ({ stats }) => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-14 h-14 bg-primary-100 dark:bg-primary-800 rounded-full flex items-center justify-center text-2xl border-2 border-primary-500">
+            <div className="w-14 h-14 bg-primary-dark rounded-full flex items-center justify-center text-2xl border-2 border-secondary">
               {stats.profileImageUrl ? (
                 <img
                   src={stats.profileImageUrl}
@@ -29,28 +29,28 @@ const TriviaStats = ({ stats }) => {
               ) : '🧠'}
             </div>
             <div>
-              <h3 className="text-xl font-bold text-primary-900 dark:text-primary-100">{stats.username}</h3>
-              <p className="text-primary-800 dark:text-primary-200 text-sm font-semibold">{stats.playerTitle}</p>
+              <h3 className="text-xl font-bold text-text">{stats.username}</h3>
+              <p className="text-text-light text-sm font-semibold">{stats.playerTitle}</p>
             </div>
           </div>
         </div>
         <div className="text-right">
-          <span className="text-3xl font-bold text-primary-700 dark:text-primary-300">{t('trivia.level')} {stats.level}</span>
+          <span className="text-3xl font-bold text-accent">{t('trivia.level')} {stats.level}</span>
           {stats.globalRank && (
-            <p className="text-primary-800 dark:text-primary-200 text-sm font-semibold">{t('trivia.rank')} #{stats.globalRank}</p>
+            <p className="text-text-light text-sm font-semibold">{t('trivia.rank')} #{stats.globalRank}</p>
           )}
         </div>
       </div>
 
       {/* Barra de experiencia */}
       <div className="mb-6">
-        <div className="flex justify-between text-sm mb-2 text-primary-800 dark:text-primary-200 font-semibold">
+        <div className="flex justify-between text-sm mb-2 text-text font-semibold">
           <span>XP</span>
           <span>{stats.experiencePoints} / {stats.experienceToNextLevel} XP</span>
         </div>
-        <div className="h-3 bg-primary-200 dark:bg-primary-800 rounded-full overflow-hidden">
+        <div className="h-3 bg-primary-dark rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full"
+            className="h-full bg-gradient-to-r from-secondary to-secondary-dark rounded-full"
             style={{ width: `${Math.min(expProgress, 100)}%` }}
           />
         </div>
@@ -82,8 +82,8 @@ const TriviaStats = ({ stats }) => {
 
       {/* Tiempo promedio */}
       {stats.avgResponseTime && (
-        <div className="bg-primary-100 dark:bg-primary-800 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-primary-800 dark:text-primary-200">
+        <div className="bg-primary-dark rounded-xl p-4 text-center">
+          <p className="text-2xl font-bold text-text">
             ⚡ {(stats.avgResponseTime / 1000).toFixed(1)}s
           </p>
         </div>
@@ -91,9 +91,9 @@ const TriviaStats = ({ stats }) => {
 
       {/* Racha diaria */}
       {stats.dailyStreak > 0 && (
-        <div className="mt-4 bg-accent-100 dark:bg-accent-900 rounded-xl p-3 text-center border-2 border-accent-500">
+        <div className="mt-4 bg-secondary-light rounded-xl p-3 text-center border-2 border-secondary">
           <span className="text-xl">🔥</span>
-          <span className="ml-2 font-bold text-accent-800 dark:text-accent-200">{stats.dailyStreak}</span>
+          <span className="ml-2 font-bold text-text">{stats.dailyStreak}</span>
         </div>
       )}
     </div>
@@ -101,10 +101,10 @@ const TriviaStats = ({ stats }) => {
 }
 
 const StatCard = ({ icon, value, label }) => (
-  <div className="bg-primary-100 dark:bg-primary-800 rounded-xl p-3 text-center">
-    <span className="text-2xl">{icon}</span>
-    <p className="text-xl font-bold text-primary-900 dark:text-primary-100 mt-1">{value}</p>
-    <p className="text-primary-800 dark:text-primary-200 text-xs font-semibold">{label}</p>
+  <div className="bg-primary-dark rounded-xl p-3 text-center">
+    <span className="text-2xl" aria-hidden="true">{icon}</span>
+    <p className="text-xl font-bold text-text mt-1">{value}</p>
+    <p className="text-text-light text-xs font-semibold">{label}</p>
   </div>
 )
 
@@ -115,9 +115,9 @@ StatCard.propTypes = {
 }
 
 const MiniStat = ({ label, value }) => (
-  <div className="bg-primary-100 dark:bg-primary-800 rounded-lg p-2 text-center">
-    <p className="text-primary-800 dark:text-primary-200 text-xs font-semibold">{label}</p>
-    <p className="font-bold text-primary-900 dark:text-primary-100">{value}</p>
+  <div className="bg-primary-dark rounded-lg p-2 text-center">
+    <p className="text-text-light text-xs font-semibold">{label}</p>
+    <p className="font-bold text-text">{value}</p>
   </div>
 )
 
@@ -150,4 +150,3 @@ TriviaStats.propTypes = {
 }
 
 export default TriviaStats
-

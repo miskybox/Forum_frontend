@@ -20,7 +20,7 @@ const CommentList = ({ comments, onCommentDeleted }) => {
             onClick={() => setSortOrder('newest')}
             className={`ml-2 px-2 py-1 rounded ${
               sortOrder === 'newest' 
-                ? 'bg-primary-100 text-primary-800' 
+                ? 'bg-ocean-100 text-ocean-800' 
                 : 'hover:bg-gray-100'
             }`}
           >
@@ -30,7 +30,7 @@ const CommentList = ({ comments, onCommentDeleted }) => {
             onClick={() => setSortOrder('oldest')}
             className={`ml-2 px-2 py-1 rounded ${
               sortOrder === 'oldest' 
-                ? 'bg-primary-100 text-primary-800' 
+                ? 'bg-ocean-100 text-ocean-800' 
                 : 'hover:bg-gray-100'
             }`}
           >

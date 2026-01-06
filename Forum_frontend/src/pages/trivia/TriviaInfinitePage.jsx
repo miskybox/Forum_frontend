@@ -147,9 +147,9 @@ const TriviaInfinitePage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary-400 border-t-transparent mx-auto" />
-          <p className="text-primary-200 mt-4 font-semibold">{t('trivia.infinite.loadingQuestions')}</p>
-          <p className="text-primary-300/70 text-sm mt-2 font-medium">{t('trivia.infinite.generatingTrivia')}</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-ocean-400 border-t-transparent mx-auto" />
+          <p className="text-ocean-200 mt-4 font-semibold">{t('trivia.infinite.loadingQuestions')}</p>
+          <p className="text-ocean-300/70 text-sm mt-2 font-medium">{t('trivia.infinite.generatingTrivia')}</p>
         </div>
       </div>
     )
@@ -161,23 +161,23 @@ const TriviaInfinitePage = () => {
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 max-w-md w-full text-center">
           <span className="text-6xl mb-4 block">🏁</span>
           <h2 className="text-3xl font-black text-white mb-2">{t('trivia.infinite.gameOver')}</h2>
-          <p className="text-primary-200 mb-6 font-semibold">{t('trivia.infinite.infiniteMode')}</p>
+          <p className="text-ocean-200 mb-6 font-semibold">{t('trivia.infinite.infiniteMode')}</p>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="bg-white/10 rounded-xl p-4">
-              <p className="text-primary-300 text-sm font-semibold">{t('trivia.infinite.scoreLabel')}</p>
+              <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.scoreLabel')}</p>
               <p className="text-3xl font-bold text-white">{score}</p>
             </div>
             <div className="bg-white/10 rounded-xl p-4">
-              <p className="text-primary-300 text-sm font-semibold">{t('trivia.infinite.bestStreakLabel')}</p>
+              <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.bestStreakLabel')}</p>
               <p className="text-3xl font-bold text-white">🔥 {bestStreak}</p>
             </div>
             <div className="bg-white/10 rounded-xl p-4">
-              <p className="text-primary-300 text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
+              <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
               <p className="text-3xl font-bold text-white">{totalAnswered}</p>
             </div>
             <div className="bg-white/10 rounded-xl p-4">
-              <p className="text-primary-300 text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>
+              <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>
               <p className="text-3xl font-bold text-white">
                 {totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0}%
               </p>
@@ -187,7 +187,7 @@ const TriviaInfinitePage = () => {
           <div className="space-y-3">
             <button
               onClick={handleRestart}
-              className="w-full py-4 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-all"
+              className="w-full py-4 bg-ocean-600 text-white rounded-xl font-bold hover:bg-ocean-700 transition-all"
             >
               🔄 {t('trivia.infinite.playAgain')}
             </button>
@@ -211,11 +211,11 @@ const TriviaInfinitePage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <div>
-                <p className="text-primary-300 text-xs font-bold">{t('trivia.infinite.scoreText')}</p>
+                <p className="text-ocean-300 text-xs font-bold">{t('trivia.infinite.scoreText')}</p>
                 <p className="text-2xl font-black text-white">{score}</p>
               </div>
               <div>
-                <p className="text-primary-300 text-xs font-bold">{t('trivia.infinite.streakText')}</p>
+                <p className="text-ocean-300 text-xs font-bold">{t('trivia.infinite.streakText')}</p>
                 <p className="text-2xl font-black text-warning-light">🔥 {streak}</p>
               </div>
             </div>
@@ -244,7 +244,7 @@ const TriviaInfinitePage = () => {
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 md:p-8">
             {/* Tipo de pregunta */}
             <div className="flex items-center justify-between mb-6">
-              <span className="px-3 py-1 bg-primary-500/30 text-primary-200 rounded-full text-sm">
+              <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm">
                 {getQuestionTypeLabel(currentQuestion.type)}
               </span>
               {currentQuestion.countryCode && (
@@ -288,7 +288,7 @@ const TriviaInfinitePage = () => {
             {answered && (
               <button
                 onClick={handleNext}
-                className="w-full mt-6 py-4 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-all"
+                className="w-full mt-6 py-4 bg-ocean-600 text-white rounded-xl font-bold hover:bg-ocean-700 transition-all"
               >
                 {t('trivia.infinite.nextQuestion')} →
               </button>
@@ -296,15 +296,15 @@ const TriviaInfinitePage = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-400 border-t-transparent mx-auto" />
-            <p className="text-primary-200 mt-4 font-semibold">{t('trivia.infinite.loadingMore')}</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-ocean-400 border-t-transparent mx-auto" />
+            <p className="text-ocean-200 mt-4 font-semibold">{t('trivia.infinite.loadingMore')}</p>
           </div>
         )}
       </div>
 
       {/* Footer con info */}
       <div className="fixed bottom-0 left-0 right-0 bg-black/30 py-2 text-center">
-        <p className="text-primary-300/70 text-xs font-medium">
+        <p className="text-ocean-300/70 text-xs font-medium">
           ♾️ {t('trivia.infinite.modeInfo')} • {usedQuestionIds.size} {t('trivia.infinite.uniqueQuestions')}
         </p>
       </div>

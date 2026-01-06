@@ -35,7 +35,7 @@ const PostContent = ({ post }) => {
             </svg>
             {post.viewCount || 0} visitas
           </span>
-          <Link to={`/forums/${post.forumId}`} className="text-primary-600 hover:text-primary-800">
+          <Link to={`/forums/${post.forumId}`} className="text-ocean-600 hover:text-ocean-800">
             Volver al foro
           </Link>
         </div>
@@ -45,7 +45,7 @@ const PostContent = ({ post }) => {
             {post.tags.map(tag => (
               <span 
                 key={tag} 
-                className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm"
+                className="bg-ocean-100 text-ocean-800 px-3 py-1 rounded-full text-sm"
               >
                 {tag}
               </span>

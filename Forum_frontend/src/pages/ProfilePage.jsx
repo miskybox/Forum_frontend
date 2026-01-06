@@ -321,7 +321,7 @@ const ProfilePage = () => {
             <div className="p-6">
               <div className="flex flex-col md:flex-row md:items-center">
                 <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-dark-lighter border-4 border-primary-500 flex items-center justify-center text-primary-500 text-4xl">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden bg-dark-lighter border-4 border-ocean-500 flex items-center justify-center text-ocean-500 text-4xl">
                     {imagePreview ? (
                       <img 
                         src={imagePreview} 
@@ -335,7 +335,7 @@ const ProfilePage = () => {
                 </div>
                 
                 <div className="flex-grow">
-                  <h1 className="text-2xl md:text-3xl font-bold text-primary-500 mb-1">
+                  <h1 className="text-2xl md:text-3xl font-bold text-ocean-500 mb-1">
                     {profileData.firstName} {profileData.lastName}
                   </h1>
                   <p className="text-light-muted text-sm mb-2">
@@ -353,7 +353,7 @@ const ProfilePage = () => {
           
           {/* Pestañas */}
           <div className="mb-6">
-            <div className="border-b-2 border-accent-600/30">
+            <div className="border-b-2 border-ocean-500/30">
               <nav className="flex -mb-px">
                 {[
                   { id: 'profile', label: t('profile.tabs.profile'), icon: '👤' },
@@ -365,8 +365,8 @@ const ProfilePage = () => {
                     key={tab.id}
                     className={`py-4 px-6 text-sm font-medium transition-colors ${
                       activeTab === tab.id
-                        ? 'border-b-4 border-primary-500 text-primary-500'
-                        : 'text-light-muted hover:text-primary-400'
+                        ? 'border-b-4 border-ocean-500 text-ocean-500'
+                        : 'text-light-muted hover:text-ocean-400'
                     }`}
                     onClick={() => setActiveTab(tab.id)}
                   >
@@ -386,18 +386,18 @@ const ProfilePage = () => {
               {activeTab === 'profile' && (
                 <form onSubmit={handleUpdateProfile} className="space-y-6">
                   <div className="space-y-4">
-                    <h2 className="text-xl font-bold text-primary-500 mb-4">
+                    <h2 className="text-xl font-bold text-ocean-500 mb-4">
                       {t('profile.personalInfo')}
                     </h2>
                     
                     {/* Imagen de perfil */}
                     <div>
-                      <label htmlFor="profileImage" className="block text-sm font-medium text-primary-400 mb-2">
+                      <label htmlFor="profileImage" className="block text-sm font-medium text-ocean-400 mb-2">
                         {t('profile.profileImage')}
                       </label>
                       
                       <div className="mt-1 flex items-center">
-                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-dark-lighter border-2 border-primary-500 flex items-center justify-center text-primary-500 text-xl mr-4">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-dark-lighter border-2 border-ocean-500 flex items-center justify-center text-ocean-500 text-xl mr-4">
                           {imagePreview ? (
                             <img 
                               src={imagePreview} 
@@ -442,7 +442,7 @@ const ProfilePage = () => {
                         { id: 'email', label: t('auth.email'), required: true, type: 'email' },
                       ].map(field => (
                         <div key={field.id}>
-                          <label htmlFor={field.id} className="block text-sm font-medium text-primary-400 mb-2">
+                          <label htmlFor={field.id} className="block text-sm font-medium text-ocean-400 mb-2">
                             {field.label} {field.required && <span className="text-error">*</span>}
                           </label>
                           <input
@@ -464,7 +464,7 @@ const ProfilePage = () => {
                     </div>
                     
                     <div>
-                      <label htmlFor="bio" className="block text-sm font-medium text-primary-400 mb-2">
+                      <label htmlFor="bio" className="block text-sm font-medium text-ocean-400 mb-2">
                         {t('profile.bio')}
                       </label>
                       <textarea
@@ -505,7 +505,7 @@ const ProfilePage = () => {
               {activeTab === 'password' && (
                 <form onSubmit={handleUpdatePassword} className="space-y-6">
                   <div className="space-y-4">
-                    <h2 className="text-xl font-bold text-primary-500 mb-4">
+                    <h2 className="text-xl font-bold text-ocean-500 mb-4">
                       {t('profile.password')}
                     </h2>
                     
@@ -515,7 +515,7 @@ const ProfilePage = () => {
                       { id: 'confirmPassword', label: t('profile.confirmPassword') },
                     ].map(field => (
                       <div key={field.id}>
-                        <label htmlFor={field.id} className="block text-sm font-medium text-primary-400 mb-2">
+                        <label htmlFor={field.id} className="block text-sm font-medium text-ocean-400 mb-2">
                           {field.label} <span className="text-error">*</span>
                         </label>
                         <input
@@ -560,7 +560,7 @@ const ProfilePage = () => {
               
               {activeTab === 'forums' && (
                 <div>
-                  <h2 className="text-xl font-bold text-primary-500 mb-4">
+                  <h2 className="text-xl font-bold text-ocean-500 mb-4">
                     {t('profile.myForums')}
                   </h2>
                   <ForumList />
@@ -569,7 +569,7 @@ const ProfilePage = () => {
               
               {activeTab === 'posts' && (
                 <div>
-                  <h2 className="text-xl font-bold text-primary-500 mb-4">
+                  <h2 className="text-xl font-bold text-ocean-500 mb-4">
                     {t('profile.myPosts')}
                   </h2>
                   <PostList />

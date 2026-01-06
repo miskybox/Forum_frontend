@@ -72,11 +72,11 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
   }
   
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm border border-neutral-100">
+    <div className="bg-white p-4 rounded-lg shadow-sm border border-earth-100">
       <div className="flex items-start space-x-3">
         {/* Avatar del autor */}
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm overflow-hidden">
+          <div className="w-10 h-10 bg-ocean-500 rounded-full flex items-center justify-center text-white text-sm overflow-hidden">
             {comment.author?.profileImage ? (
               <img 
                 src={comment.author.profileImage} 
@@ -93,11 +93,11 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
         <div className="flex-grow min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
             <div>
-              <span className="font-medium text-neutral-800">
+              <span className="font-medium text-earth-800">
                 {comment.author?.username || 'Usuario desconocido'}
               </span>
               <span className="mx-1">•</span>
-              <time className="text-sm text-neutral-500" dateTime={comment.createdAt}>
+              <time className="text-sm text-earth-500" dateTime={comment.createdAt}>
                 {formatRelativeDate(comment.createdAt)}
               </time>
             </div>
@@ -107,7 +107,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
               <div className="flex items-center space-x-2 mt-1 sm:mt-0">
                 <button
                   type="button"
-                  className="text-neutral-500 hover:text-primary-600 text-sm font-medium"
+                  className="text-earth-500 hover:text-ocean-600 text-sm font-medium"
                   onClick={handleEditClick}
                   disabled={isSubmitting}
                 >
@@ -115,7 +115,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
                 </button>
                 <button
                   type="button"
-                  className="text-neutral-500 hover:text-red-600 text-sm font-medium"
+                  className="text-earth-500 hover:text-red-600 text-sm font-medium"
                   onClick={handleDeleteComment}
                   disabled={isSubmitting}
                 >
@@ -155,7 +155,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
               </div>
             </div>
           ) : (
-            <div className="text-neutral-700 break-words">
+            <div className="text-earth-700 break-words">
               {comment.content}
             </div>
           )}

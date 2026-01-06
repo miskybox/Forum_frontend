@@ -17,7 +17,7 @@ const TriviaLeaderboardPage = () => {
             <div>
               <Link 
                 to="/trivia"
-                className="text-primary-300 hover:text-light transition-colors text-sm mb-2 inline-block"
+                className="text-ocean-300 hover:text-light transition-colors text-sm mb-2 inline-block"
               >
                 ← Volver al menú
               </Link>
@@ -25,7 +25,7 @@ const TriviaLeaderboardPage = () => {
             </div>
             <Link
               to="/trivia"
-              className="px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors"
+              className="px-6 py-3 bg-ocean-600 text-white rounded-xl font-bold hover:bg-ocean-700 transition-colors"
             >
               🎮 Jugar ahora
             </Link>

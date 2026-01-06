@@ -18,7 +18,7 @@ const translations = {
     },
     // Home
     home: {
-      welcome: '¡Bienvenido a ForumViajeros!',
+      welcome: '¡Bienvenido a Forum Viajeros!',
       subtitle: 'La comunidad de viajeros más grande',
       demo: 'VERSIÓN DEMO',
       adventureAwaits: 'LA AVENTURA TE ESPERA...',
@@ -124,6 +124,17 @@ const translations = {
       errorDeletingForum: 'No se pudo eliminar el foro',
       confirmDeleteForum: '¿Estás seguro de que quieres eliminar este foro? Esta acción no se puede deshacer.',
       forumDeletedSuccess: 'Foro eliminado con éxito',
+    },
+    // Categories
+    categories: {
+      exploreByContinent: 'Explora por continentes',
+      description: 'Descubre foros y conversaciones organizados por regiones del mundo. Encuentra información sobre destinos específicos o comparte tus propias experiencias.',
+      notFindingWhat: '¿No encuentras lo que buscas?',
+      suggestion: 'Si tienes alguna sugerencia para nuevas categorías o regiones, no dudes en contactarnos.',
+      loading: 'Cargando categorías...',
+      noCategories: 'No hay categorías disponibles',
+      error: 'No se pudieron cargar las categorías. Por favor, inténtalo de nuevo más tarde.',
+      retry: 'Reintentar',
     },
     // Trivia
     trivia: {
@@ -307,6 +318,26 @@ const translations = {
       privacy: 'Privacidad',
       terms: 'Términos',
       rights: 'Todos los derechos reservados',
+      description: 'Explora el mundo a través de las experiencias de otros viajeros. Comparte tus aventuras y conecta con la comunidad global.',
+      navigation: 'Navegación',
+      legal: 'Legal',
+      continents: 'Continentes',
+      forums: 'Foros',
+      myMap: 'Mi Mapa',
+      help: 'Ayuda',
+      socialNetworks: 'Redes sociales',
+      visitFacebook: 'Visitar nuestra página de Facebook (se abre en nueva ventana)',
+      visitInstagram: 'Visitar nuestro Instagram (se abre en nueva ventana)',
+      visitTwitter: 'Visitar nuestro Twitter (se abre en nueva ventana)',
+      madeWith: 'Hecho con pasión para viajeros de todo el mundo',
+    },
+    // Continentes
+    continentsNames: {
+      europe: 'Europa',
+      america: 'América',
+      asia: 'Asia',
+      africa: 'África',
+      oceania: 'Oceanía',
     },
     // Profile
     profile: {
@@ -360,7 +391,7 @@ const translations = {
     },
     // Home
     home: {
-      welcome: 'Welcome to ForumViajeros!',
+      welcome: 'Welcome to Forum Viajeros!',
       subtitle: 'The largest travelers community',
       demo: 'DEMO VERSION',
       adventureAwaits: 'ADVENTURE AWAITS...',
@@ -466,6 +497,17 @@ const translations = {
       errorDeletingForum: 'Could not delete forum',
       confirmDeleteForum: 'Are you sure you want to delete this forum? This action cannot be undone.',
       forumDeletedSuccess: 'Forum deleted successfully',
+    },
+    // Categories
+    categories: {
+      exploreByContinent: 'Explore by continents',
+      description: 'Discover forums and conversations organized by regions of the world. Find information about specific destinations or share your own experiences.',
+      notFindingWhat: 'Not finding what you\'re looking for?',
+      suggestion: 'If you have any suggestions for new categories or regions, don\'t hesitate to contact us.',
+      loading: 'Loading categories...',
+      noCategories: 'No categories available',
+      error: 'Could not load categories. Please try again later.',
+      retry: 'Retry',
     },
     // Trivia
     trivia: {
@@ -649,6 +691,26 @@ const translations = {
       privacy: 'Privacy',
       terms: 'Terms',
       rights: 'All rights reserved',
+      description: 'Explore the world through the experiences of other travelers. Share your adventures and connect with the global community.',
+      navigation: 'Navigation',
+      legal: 'Legal',
+      continents: 'Continents',
+      forums: 'Forums',
+      myMap: 'My Map',
+      help: 'Help',
+      socialNetworks: 'Social networks',
+      visitFacebook: 'Visit our Facebook page (opens in new window)',
+      visitInstagram: 'Visit our Instagram (opens in new window)',
+      visitTwitter: 'Visit our Twitter (opens in new window)',
+      madeWith: 'Made with passion for travelers around the world',
+    },
+    // Continentes
+    continentsNames: {
+      europe: 'Europe',
+      america: 'America',
+      asia: 'Asia',
+      africa: 'Africa',
+      oceania: 'Oceania',
     },
     // Profile
     profile: {

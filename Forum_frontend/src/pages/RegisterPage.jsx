@@ -26,7 +26,7 @@ const RegisterPage = () => {
               {Array.from({ length: 30 }, (_, i) => (
                 <div
                   key={i}
-                  className="absolute w-1 h-1 bg-primary-400 rounded-full opacity-60 animate-float"
+                  className="absolute w-1 h-1 bg-ocean-400 rounded-full opacity-60 animate-float"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
@@ -43,29 +43,29 @@ const RegisterPage = () => {
           <div className="text-center mb-8 animate-fade-in">
             <div className="mb-6">
               <div className="text-6xl mb-4">🗺️</div>
-              <h1 className="text-3xl md:text-4xl font-bold text-primary-500 tracking-normal mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-ocean-500 tracking-normal mb-2">
                 {t('auth.registerTitle')}
               </h1>
-              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-primary-400 to-transparent mb-4"></div>
-              <p className="text-sm font-bold text-secondary-500 opacity-80 uppercase tracking-normal">
+              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-ocean-400 to-transparent mb-4"></div>
+              <p className="text-sm font-bold text-terracotta-500 opacity-80 uppercase tracking-normal">
                 {t('auth.registerTitle')}
               </p>
             </div>
           </div>
           
           {/* Formulario */}
-          <div className="card border-primary-600 animate-slide-in">
+          <div className="card border-ocean-600 animate-slide-in">
             <RegisterForm />
           </div>
           
           {/* Links adicionales */}
           <div className="mt-8 text-center space-y-4">
-            <p className="text-sm font-bold text-primary-400 opacity-70">
+            <p className="text-sm font-bold text-ocean-400 opacity-70">
               {t('auth.hasAccount')}
             </p>
             <Link
               to="/login"
-              className="inline-block btn btn-outline text-primary-400 border-primary-600 px-6 py-3"
+              className="inline-block btn btn-outline text-ocean-400 border-ocean-600 px-6 py-3"
             >
               <span className="flex items-center space-x-2">
                 <span>🗺️</span>
@@ -75,7 +75,7 @@ const RegisterPage = () => {
             <div className="pt-4">
               <Link
                 to="/"
-                className="text-sm font-bold text-secondary-500 hover:text-primary-400 transition-colors inline-flex items-center space-x-2"
+                className="text-sm font-bold text-terracotta-500 hover:text-ocean-400 transition-colors inline-flex items-center space-x-2"
               >
                 <span>←</span>
                 <span>{t('common.back')}</span>

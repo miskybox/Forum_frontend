@@ -47,7 +47,7 @@ const ForumEditPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
       </div>
     )
   }
@@ -73,13 +73,13 @@ const ForumEditPage = () => {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl sm:text-3xl font-bold text-primary-500 tracking-normal uppercase">
+            <h1 className="text-2xl sm:text-3xl font-bold text-ocean-500 tracking-normal uppercase">
               {t('forums.editForum')}
             </h1>
 
             <Link
               to={`/forums/${id}`}
-              className="text-primary-400 hover:text-primary-300 text-sm font-bold"
+              className="text-ocean-400 hover:text-ocean-300 text-sm font-bold"
             >
               ← {t('forums.backToForum')}
             </Link>

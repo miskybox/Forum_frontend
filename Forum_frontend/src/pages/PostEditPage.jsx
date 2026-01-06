@@ -45,18 +45,18 @@ const PostEditPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
       </div>
     )
   }
   
   if (error || !post) {
     return (
-      <div className="bg-neutral-50 py-10">
+      <div className="bg-earth-50 py-10">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
           <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
             <div className="text-red-600 mb-4">{error || 'Publicación no encontrada'}</div>
-            <p className="mb-4 text-neutral-600">Serás redirigido en unos segundos...</p>
+            <p className="mb-4 text-earth-600">Serás redirigido en unos segundos...</p>
             <Link to={`/posts/${id}`} className="btn btn-primary">
               Volver a la publicación
             </Link>
@@ -67,22 +67,22 @@ const PostEditPage = () => {
   }
   
   return (
-    <div className="bg-neutral-50 py-8 sm:py-12">
+    <div className="bg-earth-50 py-8 sm:py-12">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl sm:text-3xl font-bold text-neutral-800">
+            <h1 className="text-2xl sm:text-3xl font-bold text-earth-800">
               Editar publicación
             </h1>
             
             <Link 
               to={`/posts/${id}`}
-              className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+              className="text-ocean-600 hover:text-ocean-700 text-sm font-medium"
             >
               ← Volver a la publicación
             </Link>
           </div>
-          <p className="mt-2 text-neutral-600">
+          <p className="mt-2 text-earth-600">
             Actualiza la información de tu publicación "{post.title}".
           </p>
         </div>

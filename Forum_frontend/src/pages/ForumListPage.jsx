@@ -33,10 +33,10 @@ const ForumListPage = () => {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-12 animate-fade-in">
           <div className="text-6xl md:text-7xl mb-6">🏺</div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-500 mb-4 tracking-normal uppercase">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-ocean-500 mb-4 tracking-normal uppercase">
             {t('forums.title')}
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-500 to-transparent mb-4"></div>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-ocean-500 to-transparent mb-4"></div>
           <p className="text-light-soft font-bold text-sm md:text-base tracking-normal">
             {t('forums.subtitle')}
           </p>

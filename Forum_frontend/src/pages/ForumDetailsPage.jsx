@@ -71,7 +71,7 @@ const ForumDetailsPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🏺</div>
-          <p className="text-primary-400 font-bold text-lg tracking-normal">
+          <p className="text-ocean-400 font-bold text-lg tracking-normal">
             {t('forums.loadingAdventure')}
           </p>
         </div>
@@ -83,7 +83,7 @@ const ForumDetailsPage = () => {
   const canEditForum = isForumAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
 
   const EmptyPostsMessage = () => (
-    <div className="text-center py-12 card border-primary-600 hover:border-primary-500 transition-colors">
+    <div className="text-center py-12 card border-ocean-600 hover:border-ocean-500 transition-colors">
       <div className="text-5xl mb-4">🗺️</div>
       <p className="text-light-soft font-bold text-base uppercase tracking-normal mb-6">
         {t('forums.noPosts')}
@@ -101,7 +101,7 @@ const ForumDetailsPage = () => {
       ) : (
         <Link
           to="/login"
-          className="inline-block bg-dark border-2 border-secondary-600 text-secondary-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-secondary-600 hover:text-dark transition-all duration-300"
+          className="inline-block bg-dark border-2 border-terracotta-600 text-terracotta-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-terracotta-600 hover:text-dark transition-all duration-300"
         >
           <span className="flex items-center space-x-2">
             <span>🔐</span>
@@ -117,7 +117,7 @@ const ForumDetailsPage = () => {
       return (
         <div className="text-center py-12">
           <div className="text-5xl mb-4 animate-spin">⏳</div>
-          <p className="text-primary-400 font-bold text-base uppercase tracking-normal">
+          <p className="text-ocean-400 font-bold text-base uppercase tracking-normal">
             {t('common.loading')}
           </p>
         </div>
@@ -153,7 +153,7 @@ const ForumDetailsPage = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header del foro */}
-        <div className="card border-primary-600 mb-8 animate-fade-in overflow-hidden">
+        <div className="card border-ocean-600 mb-8 animate-fade-in overflow-hidden">
           <div className="relative">
             {forum.imagePath && (
               <div className="h-48 bg-gradient-to-r from-dark-lighter to-dark relative overflow-hidden">
@@ -173,11 +173,11 @@ const ForumDetailsPage = () => {
             )}
 
             <div className={`px-6 py-6 ${forum.imagePath ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent' : ''}`}>
-              <h1 className="text-3xl md:text-4xl font-bold text-primary-400 mb-3 tracking-wide">
+              <h1 className="text-3xl md:text-4xl font-bold text-ocean-400 mb-3 tracking-wide">
                 {forum.title}
               </h1>
               {forum.category && (
-                <div className="inline-block px-4 py-2 bg-secondary-600/20 border-2 border-secondary-600 text-secondary-400 font-bold text-xs uppercase tracking-normal rounded">
+                <div className="inline-block px-4 py-2 bg-terracotta-600/20 border-2 border-terracotta-600 text-terracotta-400 font-bold text-xs uppercase tracking-normal rounded">
                   {forum.category.name}
                 </div>
               )}
@@ -185,14 +185,14 @@ const ForumDetailsPage = () => {
           </div>
 
           {/* Descripción */}
-          <div className="px-6 py-4 border-t-2 border-primary-600/30">
+          <div className="px-6 py-4 border-t-2 border-ocean-600/30">
             <p className="text-light-soft text-base leading-relaxed mb-4">
               {forum.description}
             </p>
 
             {forum.rules && (
-              <div className="mt-6 p-4 bg-dark-lighter border-2 border-accent-600 rounded-lg">
-                <h3 className="text-accent-500 font-bold text-base uppercase tracking-normal mb-3">
+              <div className="mt-6 p-4 bg-dark-lighter border-2 border-ocean-500 rounded-lg">
+                <h3 className="text-forest-500 font-bold text-base uppercase tracking-normal mb-3">
                   📜 {t('forums.rules')}
                 </h3>
                 <div className="text-light-soft text-sm whitespace-pre-line leading-relaxed">
@@ -203,10 +203,10 @@ const ForumDetailsPage = () => {
 
             {/* Acciones */}
             {canEditForum && (
-              <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t-2 border-primary-600/30">
+              <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t-2 border-ocean-600/30">
                 <Link
                   to={`/forums/${id}/edit`}
-                  className="inline-block bg-dark border-2 border-primary-600 text-primary-500 px-5 py-2 rounded-lg font-bold uppercase tracking-normal hover:bg-primary-600 hover:text-dark transition-all duration-300"
+                  className="inline-block bg-dark border-2 border-ocean-600 text-ocean-500 px-5 py-2 rounded-lg font-bold uppercase tracking-normal hover:bg-ocean-600 hover:text-dark transition-all duration-300"
                 >
                   <span className="flex items-center space-x-2">
                     <span>✏️</span>
@@ -230,7 +230,7 @@ const ForumDetailsPage = () => {
         {/* Lista de publicaciones */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-            <h2 className="text-xl md:text-2xl font-bold text-primary-500 tracking-normal">
+            <h2 className="text-xl md:text-2xl font-bold text-ocean-500 tracking-normal">
               {t('forums.posts')}
             </h2>
             {isAuthenticated && (

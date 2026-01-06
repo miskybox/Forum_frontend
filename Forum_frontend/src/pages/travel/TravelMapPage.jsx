@@ -78,10 +78,10 @@ const TravelMapPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-primary">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🧭</div>
-          <p className="text-primary-800 dark:text-primary-300">
+          <p className="text-text-light">
             {t('common.loading')}
           </p>
         </div>
@@ -90,7 +90,7 @@ const TravelMapPage = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-primary">
       {/* Efectos de fondo decorativo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         {PARTICLES.map((p) => (
@@ -109,18 +109,18 @@ const TravelMapPage = () => {
       </div>
 
       {/* Header */}
-      <div className="bg-secondary-50 dark:bg-secondary-900 border-b-2 border-secondary-600 py-12 relative z-10">
+      <div className="bg-transparent border-b-2 border-secondary py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-secondary-700 dark:text-secondary-100 flex items-center gap-3 mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-text flex items-center gap-3 mb-2">
                 🗺️ {t('travel.title')}
               </h1>
-              <p className="text-secondary-600 dark:text-secondary-200">
+              <p className="text-text-light">
                 {t('travel.addNewDestination')}
               </p>
             </div>
-            
+
             {isAuthenticated ? (
               <button
                 onClick={() => setIsModalOpen(true)}
@@ -153,14 +153,14 @@ const TravelMapPage = () => {
             <div className="lg:col-span-2 space-y-8">
               {/* Mapa */}
               <div className="card">
-                <WorldMap 
+                <WorldMap
                   visitedPlaces={places}
                   onCountryClick={handleCountryClick}
                 />
               </div>
 
               {/* Lista de lugares */}
-              <PlacesList 
+              <PlacesList
                 places={places}
                 onEdit={handleEditPlace}
                 onRefresh={loadData}
@@ -170,26 +170,26 @@ const TravelMapPage = () => {
             {/* Columna lateral - Stats */}
             <div className="space-y-6">
               <TravelStats stats={stats} />
-              
+
               {/* Acciones rápidas */}
               <div className="card">
                 <div className="p-4">
-                  <h3 className="font-bold text-primary-900 dark:text-primary-100 mb-4 text-sm uppercase">
+                  <h3 className="font-bold text-text mb-4 text-sm uppercase">
                     {t('common.showMore')}
                   </h3>
                   <div className="space-y-3">
-                    <QuickAction 
-                      icon="🌍" 
+                    <QuickAction
+                      icon="🌍"
                       label={t('trivia.ranking')}
                       href="/travel/ranking"
                     />
-                    <QuickAction 
-                      icon="📊" 
+                    <QuickAction
+                      icon="📊"
                       label={t('travel.statistics')}
                       href="/profile"
                     />
-                    <QuickAction 
-                      icon="🎮" 
+                    <QuickAction
+                      icon="🎮"
                       label={t('nav.trivia')}
                       href="/trivia"
                     />
@@ -204,13 +204,13 @@ const TravelMapPage = () => {
             <div className="card mb-8">
               <WorldMap visitedPlaces={[]} />
             </div>
-            
+
             <div className="card text-center p-8">
               <span className="text-6xl mb-4 block">🌎</span>
-              <h2 className="text-2xl font-bold text-primary-900 dark:text-primary-100 mb-4">
+              <h2 className="text-2xl font-bold text-text mb-4">
                 {t('home.adventureAwaits')}
               </h2>
-              <p className="text-primary-800 dark:text-primary-200 text-sm mb-6 max-w-lg mx-auto">
+              <p className="text-text-light text-sm mb-6 max-w-lg mx-auto">
                 {t('travel.addNewDestination')}
               </p>
               <div className="flex justify-center gap-4">
@@ -239,7 +239,7 @@ const TravelMapPage = () => {
       </div>
 
       {/* Modal */}
-      <AddPlaceModal 
+      <AddPlaceModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onSuccess={handleSuccess}
@@ -252,13 +252,13 @@ const TravelMapPage = () => {
 const QuickAction = ({ icon, label, href }) => (
   <Link
     to={href}
-    className="flex items-center gap-3 p-3 border-2 border-primary-300 dark:border-primary-600 hover:border-primary-500 transition-colors group rounded-lg bg-primary-50 dark:bg-primary-900"
+    className="flex items-center gap-3 p-3 border-2 border-secondary hover:border-secondary-dark transition-colors group rounded-lg bg-primary-light"
   >
     <span className="text-2xl group-hover:scale-125 transition-transform">{icon}</span>
-    <span className="text-primary-900 dark:text-primary-100 text-sm font-semibold group-hover:text-primary-600">
+    <span className="text-text text-sm font-semibold group-hover:text-accent">
       {label}
     </span>
-    <span className="ml-auto text-primary-700 dark:text-primary-300 group-hover:text-primary-500">→</span>
+    <span className="ml-auto text-text-light group-hover:text-accent">→</span>
   </Link>
 )
 

@@ -16,7 +16,7 @@ const ForumCard = ({ forum }) => {
   }
 
   return (
-    <div className="card border-primary-600 overflow-hidden hover:border-primary-500 transition-all group">
+    <div className="card border-ocean-600 overflow-hidden hover:border-ocean-500 transition-all group">
       <div className="md:flex">
         <div className="md:w-1/3 bg-dark relative overflow-hidden">
           {forum.imageUrl ? (
@@ -37,8 +37,8 @@ const ForumCard = ({ forum }) => {
 
         <div className="md:w-2/3 p-4 flex flex-col bg-dark-lighter">
           <div className="flex-grow">
-            <h3 className="text-lg md:text-xl font-bold text-primary-500 mb-2 break-words">
-              <Link to={`/forums/${forum.id}`} className="hover:text-primary-400 transition-colors">
+            <h3 className="text-lg md:text-xl font-bold text-ocean-500 mb-2 break-words">
+              <Link to={`/forums/${forum.id}`} className="hover:text-ocean-400 transition-colors">
                 {forum.title.toUpperCase()}
               </Link>
             </h3>
@@ -50,7 +50,7 @@ const ForumCard = ({ forum }) => {
             {forum.tags && forum.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
                 {forum.tags.map(tag => (
-                  <span key={tag.id} className="inline-flex items-center px-2 py-1 bg-secondary-600/20 border-2 border-secondary-600 text-secondary-400 font-bold text-xs uppercase tracking-normal">
+                  <span key={tag.id} className="inline-flex items-center px-2 py-1 bg-terracotta-600/20 border-2 border-terracotta-600 text-terracotta-400 font-bold text-xs uppercase tracking-normal">
                     {tag.name}
                   </span>
                 ))}
@@ -58,8 +58,8 @@ const ForumCard = ({ forum }) => {
             )}
           </div>
 
-          <div className="mt-2 pt-2 border-t-2 border-primary-600/30 flex justify-between items-center text-xs">
-            <div className="flex items-center gap-4 text-accent-500 font-bold">
+          <div className="mt-2 pt-2 border-t-2 border-ocean-600/30 flex justify-between items-center text-xs">
+            <div className="flex items-center gap-4 text-forest-500 font-bold">
               <div className="flex items-center">
                 <span className="mr-1">💬</span>
                 {forum.postCount || 0} {(forum.postCount === 1 ? t('common.post') : t('common.posts')).toUpperCase()}
@@ -73,7 +73,7 @@ const ForumCard = ({ forum }) => {
 
             <div className="flex items-center text-light-soft font-bold text-xs">
               <div className="flex items-center space-x-1">
-                <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center text-dark text-xs overflow-hidden border border-primary-500">
+                <div className="w-5 h-5 bg-ocean-500 rounded-full flex items-center justify-center text-dark text-xs overflow-hidden border border-ocean-500">
                   {forum.creator?.profileImage ? (
                     <img
                       src={forum.creator.profileImage}
@@ -86,7 +86,7 @@ const ForumCard = ({ forum }) => {
                 </div>
                 <span className="uppercase">{forum.creator?.username || t('common.user').toUpperCase()}</span>
               </div>
-              <span className="mx-2 text-primary-400">•</span>
+              <span className="mx-2 text-ocean-400">•</span>
               <time dateTime={forum.createdAt} className="uppercase">
                 {formatRelativeDate(forum.createdAt)}
               </time>

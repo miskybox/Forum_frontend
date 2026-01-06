@@ -203,7 +203,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
       </div>
     )
   }
@@ -336,7 +336,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             />
             <label
               htmlFor="image"
-              className="cursor-pointer bg-dark-lighter py-2 px-4 border-2 border-accent-600 rounded-lg shadow-sm text-sm font-bold text-accent-500 hover:bg-accent-600 hover:text-dark transition-all duration-300"
+              className="cursor-pointer bg-dark-lighter py-2 px-4 border-2 border-ocean-500 rounded-lg shadow-sm text-sm font-bold text-forest-500 hover:bg-ocean-500 hover:text-dark transition-all duration-300"
             >
               {t('forums.selectImage')}
             </label>
@@ -352,7 +352,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
 
           {imagePreview && (
             <div className="mt-4">
-              <div className="relative w-full h-48 bg-dark-lighter rounded-lg overflow-hidden border-2 border-accent-600">
+              <div className="relative w-full h-48 bg-dark-lighter rounded-lg overflow-hidden border-2 border-ocean-500">
                 <img
                   src={imagePreview}
                   alt="Vista previa"
@@ -379,7 +379,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
         <div className="flex gap-4 pt-4">
           <button
             type="button"
-            className="bg-dark border-2 border-accent-600 text-accent-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-accent-600 hover:text-dark transition-all duration-300"
+            className="bg-dark border-2 border-ocean-500 text-forest-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-ocean-500 hover:text-dark transition-all duration-300"
             onClick={() => navigate(-1)}
             disabled={isSubmitting}
           >

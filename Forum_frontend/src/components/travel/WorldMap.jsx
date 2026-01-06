@@ -33,7 +33,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
   const width = 960
   const height = 500
 
-  // Colores según estado (paleta marina accesible)
+  // Colores según estado (paleta accesible)
   const statusColors = {
     VISITED: '#24968d',    // Turquesa profundo
     WISHLIST: '#f23d36',   // Coral intenso
@@ -128,23 +128,23 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
   if (!geoData) {
     return (
-      <div className="relative w-full bg-gradient-to-br from-primary-900 via-primary-800 to-dark-lighter rounded-2xl p-6 shadow-2xl">
+      <div className="relative w-full bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl p-6 shadow-2xl">
         <div className="aspect-[2/1] w-full flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-success"></div>
-          <span className="ml-4 text-light">Cargando mapa...</span>
+          <span className="ml-4 text-text">Cargando mapa...</span>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="relative w-full bg-gradient-to-br from-primary-900 via-dark-lighter to-dark rounded-2xl p-4 md:p-6 shadow-2xl overflow-hidden">
+    <div className="relative w-full bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl p-4 md:p-6 shadow-2xl overflow-hidden">
       {/* Estrellas decorativas */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {STARS.map((star) => (
           <div
             key={star.id}
-            className="absolute w-1 h-1 bg-light/70 rounded-full opacity-30"
+            className="absolute w-1 h-1 bg-accent rounded-full opacity-30"
             style={{
               left: `${star.left}%`,
               top: `${star.top}%`,
@@ -155,8 +155,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       </div>
 
       {/* Leyenda */}
-      <div className="absolute top-4 right-4 bg-primary-900/90 backdrop-blur-md rounded-xl p-4 z-20 border border-primary-700/40">
-        <h4 className="text-light font-semibold mb-3 text-sm flex items-center gap-2">
+      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
+        <h4 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
           <span className="text-lg">🗺️</span> Leyenda
         </h4>
         <div className="space-y-2">
@@ -167,11 +167,11 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
             { status: 'LIVING', label: 'Vivo aquí', color: statusColors.LIVING, emoji: '📍' },
           ].map(item => (
             <div key={item.status} className="flex items-center gap-2">
-              <div 
-                className="w-4 h-4 rounded-sm shadow-sm" 
+              <div
+                className="w-4 h-4 rounded-sm shadow-sm"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-light/80 text-xs">{item.emoji} {item.label}</span>
+              <span className="text-white text-xs">{item.emoji} {item.label}</span>
             </div>
           ))}
         </div>
@@ -179,22 +179,22 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
       {/* Tooltip */}
       {hoveredCountry && (
-        <div 
-          className="absolute bg-primary-50 border border-primary-200 rounded-lg px-4 py-2 shadow-xl z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
-          style={{ 
-            left: tooltip.x, 
+        <div
+          className="absolute bg-primary-light border border-secondary rounded-lg px-4 py-2 shadow-xl z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
+          style={{
+            left: tooltip.x,
             top: tooltip.y - 10,
             minWidth: '150px'
           }}
         >
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-primary-900">
+            <span className="font-semibold text-white">
               {geoData.features.find(f => f.properties.ISO_A2 === hoveredCountry)?.properties.ADMIN || hoveredCountry}
             </span>
           </div>
           {visitedMap[hoveredCountry] && (
-            <span 
-              className="inline-block mt-1 text-xs px-2 py-1 rounded-full text-light font-medium"
+            <span
+              className="inline-block mt-1 text-xs px-2 py-1 rounded-full text-white font-medium"
               style={{ backgroundColor: statusColors[visitedMap[hoveredCountry]] }}
             >
               {visitedMap[hoveredCountry]}
@@ -204,19 +204,19 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       )}
 
       {/* Estadísticas rápidas */}
-      <div className="absolute top-4 left-4 bg-primary-900/90 backdrop-blur-md rounded-xl p-4 z-20 border border-primary-700/40">
-        <div className="text-light text-sm">
+      <div className="absolute top-4 left-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
+        <div className="text-white text-sm">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-2xl">🌍</span>
             <span className="font-bold text-lg">{Object.keys(visitedMap).length}</span>
           </div>
-          <span className="text-light/70 text-xs">países marcados</span>
+          <span className="text-slate-200 text-xs">países marcados</span>
         </div>
       </div>
 
       {/* Mapa SVG */}
       <div className="relative aspect-[2/1] w-full">
-        <svg 
+        <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-full"
           style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
@@ -239,7 +239,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
           {/* Océano */}
           <rect x="0" y="0" width={width} height={height} fill="url(#oceanGradient)" />
-          
+
           {/* Líneas de grid */}
           <g className="opacity-10">
             {VERTICAL_LINES.map((line) => (
@@ -295,8 +295,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         </svg>
 
         {/* Mensaje para interactuar */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary-900/80 backdrop-blur-sm rounded-full px-4 py-2 border border-primary-700/40">
-          <span className="text-light/80 text-sm">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary-light/90 backdrop-blur-sm rounded-full px-4 py-2 border border-secondary">
+          <span className="text-text text-sm">
             🖱️ Haz clic en un país para agregar o editar
           </span>
         </div>

@@ -13,7 +13,7 @@ const BlogHero = () => {
   }
 
   return (
-    <section className="relative bg-gradient-to-r from-primary-700 via-primary-600 to-primary-500 text-white overflow-hidden">
+    <section className="relative bg-gradient-to-r from-ocean-700 via-ocean-600 to-ocean-500 text-white overflow-hidden">
       {/* Pattern background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -42,7 +42,7 @@ const BlogHero = () => {
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-full transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-ocean-600 hover:bg-ocean-700 text-white p-3 rounded-full transition-colors"
                 aria-label="Buscar"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

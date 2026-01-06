@@ -30,7 +30,7 @@ const BlogCard = ({ post }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-ocean-500 to-ocean-700 flex items-center justify-center">
             <span className="text-6xl text-white/30">📝</span>
           </div>
         )}
@@ -59,7 +59,7 @@ const BlogCard = ({ post }) => {
         )}
 
         {/* Título */}
-        <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-primary-600 transition-colors line-clamp-2">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-ocean-600 transition-colors line-clamp-2">
           <Link to={`/blog/${post.slug}`}>
             {post.title}
           </Link>

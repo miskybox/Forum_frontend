@@ -65,11 +65,11 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
     })
   }
 
-  // Color del timer según tiempo restante (usando colores del tema)
+  // Color del timer según tiempo restante
   const getTimerColor = () => {
-    if (timeLeft > 10) return 'text-success dark:text-success-light'
-    if (timeLeft > 5) return 'text-warning dark:text-warning-light'
-    return 'text-error dark:text-error-light animate-pulse'
+    if (timeLeft > 10) return 'text-success'
+    if (timeLeft > 5) return 'text-warning'
+    return 'text-error animate-pulse'
   }
 
   // Porcentaje para barra de progreso
@@ -78,9 +78,9 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
   return (
     <div className="card overflow-hidden">
       {/* Header con progreso y timer */}
-      <div className="bg-primary-100 dark:bg-primary-900/30 border-b-2 border-accent-600 px-6 py-4">
+      <div className="bg-primary border-b-2 border-secondary px-6 py-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-primary-800 dark:text-primary-300 text-sm font-semibold">
+          <span className="text-text text-sm font-semibold">
             {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}
           </span>
           <div className={`flex items-center gap-2 font-mono text-2xl font-bold ${getTimerColor()}`}>
@@ -90,15 +90,15 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
         </div>
 
         {/* Barra de tiempo */}
-        <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-2 bg-primary-dark rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary-500 rounded-full transition-all duration-1000 ease-linear"
+            className="h-full bg-secondary rounded-full transition-all duration-1000 ease-linear"
             style={{ width: `${timerPercent}%` }}
           />
         </div>
 
         {/* Puntos */}
-        <div className="flex items-center justify-between mt-3 text-primary-800 dark:text-primary-400 text-sm font-semibold">
+        <div className="flex items-center justify-between mt-3 text-text text-sm font-semibold">
           <span>{question.countryFlag} {question.countryName}</span>
           <span>+{question.points} {t('trivia.points')}</span>
         </div>
@@ -118,7 +118,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
         )}
 
         {/* Texto de la pregunta */}
-        <h2 className="text-xl md:text-2xl font-bold text-primary-800 dark:text-primary-200 text-center mb-8">
+        <h2 className="text-xl md:text-2xl font-bold text-text text-center mb-8">
           {question.questionText}
         </h2>
 
@@ -129,12 +129,12 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
             let stateClasses
             if (answered) {
               if (selectedAnswer === option) {
-                stateClasses = 'border-primary-500 bg-primary-500/20 text-primary-800 dark:text-primary-300'
+                stateClasses = 'border-secondary bg-secondary-light text-text'
               } else {
-                stateClasses = 'border-accent-600/30 bg-gray-100 dark:bg-gray-800 text-primary-800 dark:text-primary-200'
+                stateClasses = 'border-accent/30 bg-primary text-text'
               }
             } else {
-              stateClasses = 'border-accent-600/50 hover:border-primary-500 hover:bg-primary-500/10 text-primary-800 dark:text-primary-200'
+              stateClasses = 'border-secondary hover:border-secondary-dark hover:bg-secondary-light text-text'
             }
             const buttonClass = `${baseClasses} ${stateClasses}`
             return (
@@ -144,7 +144,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
                 disabled={answered}
                 className={buttonClass}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 mr-3 text-sm font-bold">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent text-primary-light mr-3 text-sm font-bold">
                   {String.fromCodePoint(65 + idx)}
                 </span>
                 {option}
@@ -160,12 +160,12 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
               key={level}
               className={`w-2 h-2 rounded-full ${
                 level <= question.difficulty
-                  ? 'bg-primary-500'
-                  : 'bg-gray-300 dark:bg-gray-700'
+                  ? 'bg-secondary'
+                  : 'bg-primary-dark'
               }`}
             />
           ))}
-          <span className="text-primary-800 dark:text-primary-400 text-xs ml-2 font-semibold">
+          <span className="text-text-light text-xs ml-2 font-semibold">
             {t('trivia.level')} {question.difficulty}
           </span>
         </div>
@@ -193,4 +193,3 @@ TriviaQuestion.propTypes = {
 }
 
 export default TriviaQuestion
-

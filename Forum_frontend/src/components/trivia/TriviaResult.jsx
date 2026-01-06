@@ -59,7 +59,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       {/* Botón continuar */}
       <button
         onClick={onNext}
-        className="w-full py-4 bg-white text-gray-800 dark:text-gray-900 rounded-xl font-bold text-lg hover:bg-white/90 transition-colors"
+        className="w-full py-4 bg-white text-text rounded-xl font-bold text-lg hover:bg-primary-light transition-colors"
       >
         {isLastQuestion ? `🏆 ${t('trivia.result.viewResults')}` : `➡️ ${t('trivia.nextQuestion')}`}
       </button>
@@ -83,4 +83,3 @@ TriviaResult.propTypes = {
 }
 
 export default TriviaResult
-

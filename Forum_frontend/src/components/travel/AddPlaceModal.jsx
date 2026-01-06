@@ -6,7 +6,7 @@ import travelService from '../../services/travelService'
 import toast from 'react-hot-toast'
 
 /**
- * Modal para agregar/editar un lugar visitado - Tema Jungle (Jumanji)
+ * Modal para agregar/editar un lugar visitado
  */
 const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
   const { t } = useLanguage()
@@ -88,7 +88,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-dark/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-text/80 backdrop-blur-sm"
         onClick={onClose}
         role="button"
         tabIndex={0}
@@ -103,21 +103,21 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
       />
 
       {/* Modal */}
-      <div className="relative card w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="relative card w-full max-w-lg max-h-[90vh] overflow-y-auto bg-primary-light border-2 border-secondary">
         {/* Header */}
-        <div className="sticky top-0 bg-dark-lighter border-b-2 border-secondary-600 px-6 py-4">
+        <div className="sticky top-0 bg-primary-dark border-b-2 border-secondary px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-secondary-500 tracking-normal uppercase">
+              <h2 className="text-xl md:text-2xl font-bold text-text tracking-normal uppercase">
                 {editPlace ? `✏️ ${t('travel.editingPlace')}` : `🌍 ${t('travel.addingPlace')}`}
               </h2>
-              <p className="text-light-muted text-sm mt-1">
+              <p className="text-text-light text-sm mt-1">
                 {editPlace ? t('travel.modifyDetails') : t('travel.addNewDestination')}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-light-muted hover:text-primary-500 text-2xl transition-colors"
+              className="text-text-lighter hover:text-accent text-2xl transition-colors"
               aria-label={t('common.close')}
             >
               ✕
@@ -129,7 +129,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {/* Selector de país */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.country')} <span className="text-error">*</span>
             </label>
             <CountrySelector
@@ -140,7 +140,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Ciudad (opcional) */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.cityOptional')}
             </label>
             <input
@@ -154,7 +154,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Estado */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.status')}
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -165,8 +165,8 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   onClick={() => setFormData({ ...formData, status: option.value })}
                   className={`px-4 py-3 border-2 transition-all text-sm rounded-lg ${
                     formData.status === option.value
-                      ? 'border-primary-500 bg-primary-500/20 text-primary-500'
-                      : 'border-accent-600/30 text-light-muted hover:border-accent-500'
+                      ? 'border-accent bg-accent/20 text-text'
+                      : 'border-secondary text-text-light hover:border-accent'
                   }`}
                 >
                   <span className="flex items-center justify-center space-x-1">
@@ -180,7 +180,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Fecha de visita */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.visitDateOptional')}
             </label>
             <div className="flex gap-2">
@@ -203,14 +203,14 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                 </button>
               )}
             </div>
-            <p className="text-light-muted/60 text-xs mt-1">
+            <p className="text-text-lighter text-xs mt-1">
               {t('travel.visitDateHelper')}
             </p>
           </div>
 
           {/* Rating */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.rating')}
             </label>
             <div className="flex gap-2 items-center">
@@ -230,7 +230,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: 0 })}
-                  className="text-sm text-light-muted hover:text-primary-500 ml-2"
+                  className="text-sm text-text-light hover:text-accent ml-2"
                 >
                   {t('travel.remove')}
                 </button>
@@ -240,7 +240,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
           {/* Notas */}
           <div>
-            <label className="block text-sm font-medium text-primary-400 mb-2">
+            <label className="block text-sm font-medium text-text mb-2">
               {t('travel.notes')}
             </label>
             <textarea
@@ -258,9 +258,9 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               type="checkbox"
               checked={formData.favorite}
               onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
-              className="w-5 h-5 rounded border-accent-600 text-primary-500 focus:ring-primary-500"
+              className="w-5 h-5 rounded border-accent text-accent focus:ring-accent"
             />
-            <span className="text-light-muted text-sm">
+            <span className="text-text text-sm">
               ❤️ {t('travel.markAsFavorite')}
             </span>
           </label>

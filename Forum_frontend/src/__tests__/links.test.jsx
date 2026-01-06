@@ -36,36 +36,41 @@ describe('Links y Navegación - Verificación Completa', () => {
     it('tiene link a Foros (/forums)', () => {
       renderWithProviders(<Navbar />)
 
-      const forumsLink = screen.getByRole('link', { name: /foros/i })
-      expect(forumsLink).toHaveAttribute('href', '/forums')
+      const forumsLinks = screen.getAllByRole('link', { name: /foros/i })
+      expect(forumsLinks.length).toBeGreaterThan(0)
+      expect(forumsLinks[0]).toHaveAttribute('href', '/forums')
     })
 
     it('tiene link a Trivia (/trivia)', () => {
       renderWithProviders(<Navbar />)
 
-      const triviaLink = screen.getByRole('link', { name: /trivia/i })
-      expect(triviaLink).toHaveAttribute('href', '/trivia')
+      const triviaLinks = screen.getAllByRole('link', { name: /trivia/i })
+      expect(triviaLinks.length).toBeGreaterThan(0)
+      expect(triviaLinks[0]).toHaveAttribute('href', '/trivia')
     })
 
     it('tiene link a Mi Mapa (/travel)', () => {
       renderWithProviders(<Navbar />)
 
-      const mapLink = screen.getByRole('link', { name: /mi mapa/i })
-      expect(mapLink).toHaveAttribute('href', '/travel')
+      const mapLinks = screen.getAllByRole('link', { name: /mi mapa/i })
+      expect(mapLinks.length).toBeGreaterThan(0)
+      expect(mapLinks[0]).toHaveAttribute('href', '/travel')
     })
 
     it('tiene link a Login (/login)', () => {
       renderWithProviders(<Navbar />)
 
-      const loginLink = screen.getByRole('link', { name: /entrar/i })
-      expect(loginLink).toHaveAttribute('href', '/login')
+      const loginLinks = screen.getAllByRole('link', { name: /entrar/i })
+      expect(loginLinks.length).toBeGreaterThan(0)
+      expect(loginLinks[0]).toHaveAttribute('href', '/login')
     })
 
     it('tiene link a Registro (/register)', () => {
       renderWithProviders(<Navbar />)
 
-      const registerLink = screen.getByRole('link', { name: /registrarse/i })
-      expect(registerLink).toHaveAttribute('href', '/register')
+      const registerLinks = screen.getAllByRole('link', { name: /registrarse/i })
+      expect(registerLinks.length).toBeGreaterThan(0)
+      expect(registerLinks[0]).toHaveAttribute('href', '/register')
     })
   })
 

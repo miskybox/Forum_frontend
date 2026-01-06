@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom'
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa'
+import { useLanguage } from '../../contexts/LanguageContext'
 import logo from '../../assets/logoFV.png'
 
 /**
- * Footer estilo Voyager - Accesible WCAG AA/AAA
+ * Footer - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
  */
 const Footer = () => {
+  const { t } = useLanguage()
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-50 dark:bg-primary-900 border-t-2 border-primary-600 dark:border-primary-400 py-6 relative" role="contentinfo">
+    <footer className="bg-transparent border-t-2 border-accent py-6 relative" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Logo y descripción centrados */}
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex items-center justify-center mb-3 group">
             <img
               src={logo}
-              alt="ForumViajeros - Travel Community"
+              alt="Forum Viajeros"
               className="h-12 w-auto transition-transform duration-200"
             />
           </Link>
-          <p className="text-sm text-primary-800 dark:text-primary-100 font-sans leading-relaxed max-w-2xl mx-auto">
-            Explora el mundo a través de las experiencias de otros viajeros.
-            Comparte tus aventuras y conecta con la comunidad global.
+          <p className="text-sm text-text-light font-sans leading-relaxed max-w-2xl mx-auto font-medium">
+            {t('footer.description')}
           </p>
         </div>
 
@@ -30,23 +31,23 @@ const Footer = () => {
 
           {/* Enlaces útiles */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-primary-800 dark:text-primary-100 uppercase tracking-wide mb-2">
-              Navegación
+            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+              {t('footer.navigation')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/categories', label: 'Continentes', icon: '🌍' },
-                { to: '/forums', label: 'Foros', icon: '💬' },
-                { to: '/travel', label: 'Mi Mapa', icon: '🗺️' },
+                { to: '/categories', label: t('footer.continents'), icon: '🌍' },
+                { to: '/forums', label: t('footer.forums'), icon: '💬' },
+                { to: '/travel', label: t('footer.myMap'), icon: '🗺️' },
                 { to: '/trivia', label: 'Trivia', icon: '🎯' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 dark:text-primary-100 hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-200 flex items-center space-x-2 group min-h-[36px]"
+                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
                   >
                     <span className="text-sm" aria-hidden="true">{link.icon}</span>
-                    <span className="font-medium text-xs uppercase tracking-wide">{link.label}</span>
+                    <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -55,22 +56,22 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-primary-800 dark:text-primary-100 uppercase tracking-wide mb-2">
-              Legal
+            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+              {t('footer.legal')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/about', label: 'Acerca de', icon: 'ℹ️' },
-                { to: '/contact', label: 'Contacto', icon: '📧' },
-                { to: '/help', label: 'Ayuda', icon: '❓' },
+                { to: '/about', label: t('footer.about'), icon: 'ℹ️' },
+                { to: '/contact', label: t('footer.contact'), icon: '📧' },
+                { to: '/help', label: t('footer.help'), icon: '❓' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-primary-800 dark:text-primary-100 hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-200 flex items-center space-x-2 group min-h-[36px]"
+                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
                   >
                     <span className="text-sm" aria-hidden="true">{link.icon}</span>
-                    <span className="font-medium text-xs uppercase tracking-wide">{link.label}</span>
+                    <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -79,52 +80,52 @@ const Footer = () => {
         </div>
 
         {/* Línea divisoria */}
-        <div className="border-t border-primary-300 dark:border-primary-600 my-4"></div>
+        <div className="border-t border-accent my-4"></div>
 
         {/* Copyright y redes */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-          <div className="text-primary-800 dark:text-primary-100 font-sans text-[11px]">
+          <div className="text-text-light font-sans text-xs font-medium">
             <span className="sr-only">Copyright </span>
-            <span aria-hidden="true">©</span> {currentYear} <span className="font-semibold" style={{ textTransform: 'none' }}>ForumViajeros</span>
+            <span aria-hidden="true">©</span> {currentYear} <span className="font-bold" style={{ textTransform: 'none' }}>Forum Viajeros</span>
             <span className="mx-2" aria-hidden="true">·</span>
-            <span className="text-[10px]">Todos los derechos reservados</span>
+            <span className="text-xs">{t('footer.rights')}</span>
           </div>
 
-          <nav className="flex space-x-3" aria-label="Redes sociales">
+          <nav className="flex space-x-3" aria-label={t('footer.socialNetworks')}>
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-800 dark:text-primary-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
-              aria-label="Visitar nuestra página de Facebook (se abre en nueva ventana)"
+              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              aria-label={t('footer.visitFacebook')}
             >
-              <FaFacebook className="text-base" aria-hidden="true" />
+              <FaFacebook className="text-lg" aria-hidden="true" />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-800 dark:text-primary-100 hover:text-pink-600 dark:hover:text-pink-400 transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
-              aria-label="Visitar nuestro Instagram (se abre en nueva ventana)"
+              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              aria-label={t('footer.visitInstagram')}
             >
-              <FaInstagram className="text-base" aria-hidden="true" />
+              <FaInstagram className="text-lg" aria-hidden="true" />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-800 dark:text-primary-100 hover:text-sky-500 dark:hover:text-sky-400 transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
-              aria-label="Visitar nuestro Twitter (se abre en nueva ventana)"
+              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              aria-label={t('footer.visitTwitter')}
             >
-              <FaTwitter className="text-base" aria-hidden="true" />
+              <FaTwitter className="text-lg" aria-hidden="true" />
             </a>
           </nav>
         </div>
 
         {/* Mensaje */}
         <div className="text-center mt-2">
-          <p className="text-[10px] font-sans text-primary-700 dark:text-primary-200 leading-tight" lang="en">
-            Made with passion for travelers around the world
+          <p className="text-xs font-sans text-text-light leading-tight font-medium">
+            {t('footer.madeWith')}
           </p>
         </div>
       </div>

@@ -67,7 +67,7 @@ const CommentForm = ({ postId, onCommentAdded }) => {
       <div className="bg-white rounded-lg p-4 shadow mb-4">
         <p className="text-center text-gray-600">
           Debes{' '}
-          <a href="/login" className="text-primary-600 hover:underline">
+          <a href="/login" className="text-ocean-600 hover:underline">
             iniciar sesión
           </a>{' '}
           para comentar.
@@ -81,7 +81,7 @@ const CommentForm = ({ postId, onCommentAdded }) => {
       <h3 className="text-lg font-semibold mb-3">Deja un comentario</h3>
       <form onSubmit={handleSubmit}>
         <textarea
-          className="w-full border border-gray-300 rounded-lg p-3 min-h-[100px] focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className="w-full border border-gray-300 rounded-lg p-3 min-h-[100px] focus:ring-2 focus:ring-ocean-500 focus:border-transparent"
           placeholder="Escribe tu comentario aquí..."
           value={content}
           onChange={(e) => setContent(e.target.value)}

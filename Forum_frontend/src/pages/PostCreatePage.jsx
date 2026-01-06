@@ -39,7 +39,7 @@ const PostCreatePage = () => {
       <div className="min-h-screen flex justify-center items-center py-20">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">⏳</div>
-          <p className="text-primary-400 font-bold text-lg tracking-normal">
+          <p className="text-ocean-400 font-bold text-lg tracking-normal">
             {t('common.loading') || 'CARGANDO...'}
           </p>
         </div>
@@ -71,18 +71,18 @@ const PostCreatePage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-primary-500 mb-2">
+              <h1 className="text-3xl sm:text-4xl font-bold text-ocean-500 mb-2">
                 {t('posts.newPost')}
               </h1>
               <p className="text-light-soft text-base sm:text-lg">
                 {t('posts.shareExperience')}{' '}
-                <span className="text-primary-400 font-bold">"{forum.title}"</span>.
+                <span className="text-ocean-400 font-bold">"{forum.title}"</span>.
               </p>
             </div>
 
             <Link
               to={`/forums/${forumId}`}
-              className="inline-flex items-center gap-2 px-4 py-2 text-primary-400 hover:text-primary-300 font-bold transition-colors border-2 border-primary-600 hover:border-primary-500 rounded-lg"
+              className="inline-flex items-center gap-2 px-4 py-2 text-ocean-400 hover:text-ocean-300 font-bold transition-colors border-2 border-ocean-600 hover:border-ocean-500 rounded-lg"
             >
               <span>←</span>
               <span>{t('common.back')}</span>

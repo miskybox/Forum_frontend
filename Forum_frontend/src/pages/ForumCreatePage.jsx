@@ -13,7 +13,7 @@ const ForumCreatePage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-primary-500 mb-2 tracking-normal uppercase">
+              <h1 className="text-3xl sm:text-4xl font-bold text-ocean-500 mb-2 tracking-normal uppercase">
                 {t('forums.createNew')}
               </h1>
               <p className="text-light-soft text-base sm:text-lg">
@@ -23,7 +23,7 @@ const ForumCreatePage = () => {
 
             <Link
               to="/forums"
-              className="inline-flex items-center gap-2 px-4 py-2 text-primary-400 hover:text-primary-300 font-bold transition-colors border-2 border-primary-600 hover:border-primary-500 rounded-lg"
+              className="inline-flex items-center gap-2 px-4 py-2 text-ocean-400 hover:text-ocean-300 font-bold transition-colors border-2 border-ocean-600 hover:border-ocean-500 rounded-lg"
             >
               <span>←</span>
               <span>{t('forums.backToForums')}</span>
@@ -37,33 +37,33 @@ const ForumCreatePage = () => {
         </div>
 
         {/* Tips Card */}
-        <div className="card max-w-4xl mt-6 border-secondary-600">
-          <h3 className="text-xl font-bold text-secondary-500 mb-4 tracking-normal uppercase">
+        <div className="card max-w-4xl mt-6 border-terracotta-600">
+          <h3 className="text-xl font-bold text-terracotta-500 mb-4 tracking-normal uppercase">
             💡 {t('forums.tipsTitle')}
           </h3>
           <ul className="space-y-3 text-light-soft">
             <li className="flex items-start gap-3">
-              <span className="text-primary-500 text-xl">✓</span>
+              <span className="text-ocean-500 text-xl">✓</span>
               <span>
-                <strong className="text-primary-400">{t('forums.tipDescriptiveTitle')}</strong> {t('forums.tipDescriptiveTitleText')}
+                <strong className="text-ocean-400">{t('forums.tipDescriptiveTitle')}</strong> {t('forums.tipDescriptiveTitleText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-primary-500 text-xl">✓</span>
+              <span className="text-ocean-500 text-xl">✓</span>
               <span>
-                <strong className="text-primary-400">{t('forums.tipFullDescription')}</strong> {t('forums.tipFullDescriptionText')}
+                <strong className="text-ocean-400">{t('forums.tipFullDescription')}</strong> {t('forums.tipFullDescriptionText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-primary-500 text-xl">✓</span>
+              <span className="text-ocean-500 text-xl">✓</span>
               <span>
-                <strong className="text-primary-400">{t('forums.tipAppropriateCategory')}</strong> {t('forums.tipAppropriateCategoryText')}
+                <strong className="text-ocean-400">{t('forums.tipAppropriateCategory')}</strong> {t('forums.tipAppropriateCategoryText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-primary-500 text-xl">✓</span>
+              <span className="text-ocean-500 text-xl">✓</span>
               <span>
-                <strong className="text-primary-400">{t('forums.tipBeSpecific')}</strong> {t('forums.tipBeSpecificText')}
+                <strong className="text-ocean-400">{t('forums.tipBeSpecific')}</strong> {t('forums.tipBeSpecificText')}
               </span>
             </li>
           </ul>

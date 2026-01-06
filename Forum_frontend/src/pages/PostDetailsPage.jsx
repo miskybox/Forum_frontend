@@ -83,7 +83,7 @@ const PostDetailsPage = () => {
       <div className="mb-4">
         <Link 
           to={`/forums/${post.forumId}`}
-          className="text-primary-600 hover:text-primary-800 flex items-center"
+          className="text-ocean-600 hover:text-ocean-800 flex items-center"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -135,7 +135,7 @@ const PostDetailsPage = () => {
           <CommentForm postId={id} onCommentAdded={handleCommentAdded} />
         ) : (
           <div className="mt-4 text-gray-600">
-            <Link to="/login" className="text-primary-600 hover:underline">
+            <Link to="/login" className="text-ocean-600 hover:underline">
               Inicia sesión
             </Link>{' '}
             para comentar.

@@ -21,17 +21,17 @@ const PostCard = ({ post }) => {
   }
 
   return (
-    <div className="card border-primary-600 overflow-hidden hover:border-primary-500 transition-all group">
+    <div className="card border-ocean-600 overflow-hidden hover:border-ocean-500 transition-all group">
       <Link to={`/posts/${post.id}`} className="block">
         <div className="p-5 bg-dark-lighter">
           {/* Título y metadata */}
           <div className="mb-3">
-            <h3 className="text-xl font-bold text-primary-400 mb-2 hover:text-primary-300 transition-colors uppercase">
+            <h3 className="text-xl font-bold text-ocean-400 mb-2 hover:text-ocean-300 transition-colors uppercase">
               {post.title}
             </h3>
             <div className="flex items-center text-xs text-light-soft font-bold">
               <div className="flex items-center">
-                <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-dark text-xs overflow-hidden mr-2 border border-primary-500">
+                <div className="w-6 h-6 bg-ocean-500 rounded-full flex items-center justify-center text-dark text-xs overflow-hidden mr-2 border border-ocean-500">
                   {post.author?.profileImage ? (
                     <img
                       src={post.author.profileImage}
@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
                 </div>
                 <span className="uppercase">{post.author?.username || t('common.user').toUpperCase()}</span>
               </div>
-              <span className="mx-2 text-primary-400">•</span>
+              <span className="mx-2 text-ocean-400">•</span>
               <time dateTime={post.createdAt} className="uppercase">
                 {formatRelativeDate(post.createdAt)}
               </time>
@@ -65,7 +65,7 @@ const PostCard = ({ post }) => {
                 {post.images.slice(0, 4).map((image, index) => (
                   <div
                     key={image.id || index}
-                    className={`relative ${post.images.length > 2 && index === 0 ? 'col-span-2' : ''} bg-dark rounded-md overflow-hidden aspect-video border border-primary-600/30`}
+                    className={`relative ${post.images.length > 2 && index === 0 ? 'col-span-2' : ''} bg-dark rounded-md overflow-hidden aspect-video border border-ocean-600/30`}
                   >
                     <img
                       src={image.url}
@@ -73,7 +73,7 @@ const PostCard = ({ post }) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {post.images.length > 4 && index === 3 && (
-                      <div className="absolute inset-0 bg-dark/80 flex items-center justify-center text-primary-400 font-bold text-lg border-2 border-primary-600">
+                      <div className="absolute inset-0 bg-dark/80 flex items-center justify-center text-ocean-400 font-bold text-lg border-2 border-ocean-600">
                         +{post.images.length - 4}
                       </div>
                     )}
@@ -84,7 +84,7 @@ const PostCard = ({ post }) => {
           )}
           
           {/* Footer con estadísticas */}
-          <div className="flex justify-between items-center pt-3 border-t-2 border-primary-600/30 text-xs">
+          <div className="flex justify-between items-center pt-3 border-t-2 border-ocean-600/30 text-xs">
             <div className="flex items-center space-x-4 text-light-soft font-bold">
               <div className="flex items-center">
                 <span className="mr-1">💬</span>
@@ -98,7 +98,7 @@ const PostCard = ({ post }) => {
             </div>
 
             <div>
-              <span className="text-primary-400 font-bold text-xs uppercase tracking-normal hover:text-primary-300 transition-colors">
+              <span className="text-ocean-400 font-bold text-xs uppercase tracking-normal hover:text-ocean-300 transition-colors">
                 {t('common.readMore').toUpperCase()} →
               </span>
             </div>
