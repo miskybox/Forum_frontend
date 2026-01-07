@@ -279,6 +279,14 @@ const translations = {
       editingPlace: 'Editar Lugar',
       modifyDetails: 'Modifica los detalles',
       addNewDestination: 'Añade un nuevo destino',
+      kmExplored: 'km² explorados',
+      countriesVisited: 'Países visitados',
+      cities: 'Ciudades',
+      continents: 'Continentes',
+      inWishlist: 'En wishlist',
+      achievementsUnlocked: 'Logros desbloqueados',
+      more: 'más',
+      favoritePlace: 'Lugar favorito: ',
     },
     // Posts
     posts: {
@@ -657,6 +665,14 @@ const translations = {
       editingPlace: 'Edit Place',
       modifyDetails: 'Modify the details',
       addNewDestination: 'Add a new destination',
+      kmExplored: 'km² explored',
+      countriesVisited: 'Countries visited',
+      cities: 'Cities',
+      continents: 'Continents',
+      inWishlist: 'In wishlist',
+      achievementsUnlocked: 'Achievements unlocked',
+      more: 'more',
+      favoritePlace: 'Favorite place: ',
     },
     // Posts
     posts: {

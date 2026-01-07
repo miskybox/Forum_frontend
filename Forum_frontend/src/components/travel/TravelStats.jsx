@@ -49,7 +49,7 @@ const TravelStats = ({ stats }) => {
           />
         </div>
         <p className="text-text-light text-xs mt-1 font-semibold">
-          {stats.totalAreaVisitedSqKm?.toLocaleString()} km² explorados
+          {stats.totalAreaVisitedSqKm?.toLocaleString()} {t('travel.kmExplored')}
         </p>
       </div>
 
@@ -58,24 +58,24 @@ const TravelStats = ({ stats }) => {
         <StatCard
           icon="🌍"
           value={stats.countriesVisited || 0}
-          label="Países visitados"
+          label={t('travel.countriesVisited')}
           subLabel="/195"
         />
         <StatCard
           icon="🏙️"
           value={stats.citiesVisited || 0}
-          label="Ciudades"
+          label={t('travel.cities')}
         />
         <StatCard
           icon="🌎"
           value={stats.continentsVisited || 0}
-          label="Continentes"
+          label={t('travel.continents')}
           subLabel="/7"
         />
         <StatCard
           icon="📍"
           value={stats.countriesWishlist || 0}
-          label="En wishlist"
+          label={t('travel.inWishlist')}
         />
       </div>
 
@@ -99,7 +99,7 @@ const TravelStats = ({ stats }) => {
       {/* Badges */}
       {stats.badges && stats.badges.length > 0 && (
         <div>
-          <h4 className="text-sm font-bold text-text mb-2">Logros desbloqueados</h4>
+          <h4 className="text-sm font-bold text-text mb-2">{t('travel.achievementsUnlocked')}</h4>
           <div className="flex flex-wrap gap-2">
             {stats.badges.slice(0, 6).map((badge) => (
               <span
@@ -112,7 +112,7 @@ const TravelStats = ({ stats }) => {
             ))}
             {stats.badges.length > 6 && (
               <span className="px-3 py-1 bg-secondary rounded-full text-sm text-text font-medium">
-                +{stats.badges.length - 6} más
+                +{stats.badges.length - 6} {t('travel.more')}
               </span>
             )}
           </div>
@@ -122,7 +122,7 @@ const TravelStats = ({ stats }) => {
       {/* Lugar favorito */}
       {stats.favoritePlace && (
         <div className="mt-4 pt-4 border-t border-accent">
-          <span className="text-text-light text-sm font-semibold">Lugar favorito: </span>
+          <span className="text-text-light text-sm font-semibold">{t('travel.favoritePlace')}</span>
           <span className="font-bold text-text">❤️ {stats.favoritePlace}</span>
         </div>
       )}
