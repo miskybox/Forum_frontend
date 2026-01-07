@@ -49,15 +49,11 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
         favorite: formData.favorite
       }
 
-      console.log('Enviando datos del lugar:', placeData)
-
       if (editPlace) {
-        const result = await travelService.updatePlace(editPlace.id, placeData)
-        console.log('Lugar actualizado:', result)
+        await travelService.updatePlace(editPlace.id, placeData)
         toast.success(`✅ ${t('travel.placeUpdated')}`)
       } else {
-        const result = await travelService.addPlace(placeData)
-        console.log('Lugar agregado:', result)
+        await travelService.addPlace(placeData)
         toast.success(`✅ ${selectedCountry.flagEmoji} ${selectedCountry.name} ${t('travel.placeAdded')}`)
       }
 

@@ -60,7 +60,8 @@
       "Bash(xargs:*)",
       "Bash(./mvnw.cmd:*)",
       "Bash(git rm:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-flow.ps1)"
     ],
     "deny": [],
     "ask": []
