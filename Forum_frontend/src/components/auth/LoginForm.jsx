@@ -139,7 +139,7 @@ const LoginForm = () => {
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
         {errors.auth && (
           <div 
-            className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal"
+            className="p-4 border-2 border-error bg-primary-light text-error font-bold text-xs uppercase tracking-normal"
             role="alert"
             aria-live="assertive"
           >
@@ -149,7 +149,7 @@ const LoginForm = () => {
         )}
 
         <div>
-          <label htmlFor="username" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
+          <label htmlFor="username" className="block text-sm font-bold text-text-dark uppercase tracking-normal mb-2">
             👤 {t('auth.username')}
           </label>
           <input
@@ -161,7 +161,7 @@ const LoginForm = () => {
             aria-required="true"
             aria-invalid={errors.username ? 'true' : 'false'}
             aria-describedby={errors.username ? 'username-error' : undefined}
-            className={`input w-full ${errors.username ? 'border-error' : 'border-ocean-600'}`}
+            className={`input w-full ${errors.username ? 'border-error' : 'border-text-dark'}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -176,7 +176,7 @@ const LoginForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
+          <label htmlFor="password" className="block text-sm font-bold text-text-dark uppercase tracking-normal mb-2">
             🔒 {t('auth.password')}
           </label>
           <div className="relative">
@@ -189,11 +189,11 @@ const LoginForm = () => {
                 aria-required="true"
                 aria-invalid={errors.password ? 'true' : 'false'}
                 aria-describedby={errors.password ? 'password-error' : undefined}
-                className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-ocean-600'}`}
+                className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-text-dark'}`}
                 value={formData.password}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                placeholder={typeof t === 'function' ? t('auth.passwordLoginPlaceholder') : 'Ingresa tu contraseña'}
+                placeholder={typeof t === 'function' ? t('auth.passwordLoginPlaceholder') : 'Mínimo 8 caracteres'}
               />
             <button
               type="button"

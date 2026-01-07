@@ -32,7 +32,10 @@ export default {
         },
 
         text: {
-          DEFAULT: '#2D2A26',  // Texto principal oscuro
+          darkest: '#14110D',  // Texto más oscuro para navegación y botones
+          darker: '#1B1712',   // Texto muy oscuro
+          dark: '#231E18',     // Texto oscuro reforzado
+          DEFAULT: '#2D2A26',  // Texto principal
           light: '#5C4A3A',    // Texto secundario
           lighter: '#8B7E6A',  // Texto terciario
         },

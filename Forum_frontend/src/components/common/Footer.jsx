@@ -22,7 +22,7 @@ const Footer = () => {
               className="h-12 w-auto transition-transform duration-200"
             />
           </Link>
-          <p className="text-sm text-text-light font-sans leading-relaxed max-w-2xl mx-auto font-medium">
+          <p className="text-sm text-[#231E18] font-sans leading-relaxed max-w-2xl mx-auto font-medium">
             {t('footer.description')}
           </p>
         </div>
@@ -31,7 +31,7 @@ const Footer = () => {
 
           {/* Enlaces útiles */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-bold text-[#1B1712] uppercase tracking-wide mb-2">
               {t('footer.navigation')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
@@ -44,7 +44,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-[#14110D] hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
                   >
                     <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
@@ -56,7 +56,7 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-bold text-[#1B1712] uppercase tracking-wide mb-2">
               {t('footer.legal')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
@@ -68,7 +68,7 @@ const Footer = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-[#14110D] hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
                   >
                     <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
@@ -84,7 +84,7 @@ const Footer = () => {
 
         {/* Copyright y redes */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-          <div className="text-text-light font-sans text-xs font-medium">
+          <div className="text-[#231E18] font-sans text-xs font-medium">
             <span className="sr-only">Copyright </span>
             <span aria-hidden="true">©</span> {currentYear} <span className="font-bold" style={{ textTransform: 'none' }}>Forum Viajeros</span>
             <span className="mx-2" aria-hidden="true">·</span>
@@ -96,7 +96,7 @@ const Footer = () => {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-[#14110D] hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitFacebook')}
             >
               <FaFacebook className="text-lg" aria-hidden="true" />
@@ -105,7 +105,7 @@ const Footer = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-[#14110D] hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitInstagram')}
             >
               <FaInstagram className="text-lg" aria-hidden="true" />
@@ -114,7 +114,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-[#14110D] hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitTwitter')}
             >
               <FaTwitter className="text-lg" aria-hidden="true" />
@@ -124,7 +124,7 @@ const Footer = () => {
 
         {/* Mensaje */}
         <div className="text-center mt-2">
-          <p className="text-xs font-sans text-text-light leading-tight font-medium">
+          <p className="text-xs font-sans text-[#231E18] leading-tight font-medium">
             {t('footer.madeWith')}
           </p>
         </div>

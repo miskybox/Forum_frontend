@@ -1,9 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import RegisterForm from './RegisterForm'
-import { AuthContext } from '../../contexts/AuthContext'
+import { renderWithProviders } from '../../__tests__/test-utils'
 
 vi.mock('react-hot-toast', () => ({
   default: {
@@ -41,23 +40,19 @@ describe('RegisterForm', () => {
   })
 
   const renderRegisterForm = () => {
-    return render(
-      <MemoryRouter>
-        <AuthContext.Provider value={mockAuthContext}>
-          <RegisterForm />
-        </AuthContext.Provider>
-      </MemoryRouter>
-    )
+    return renderWithProviders(<RegisterForm />, {
+      authValue: mockAuthContext
+    })
   }
 
-  // Helper para obtener campos
+  // Helper para obtener campos - ACTUALIZADO con nuevo placeholder
   const getFields = () => ({
     firstName: screen.getByPlaceholderText('Nombre'),
     lastName: screen.getByPlaceholderText('Apellido'),
     username: screen.getByPlaceholderText('Nombre de usuario'),
     email: screen.getByPlaceholderText('tu@email.com'),
-    password: screen.getByPlaceholderText('Mínimo 6 caracteres'),
-    confirmPassword: screen.getByPlaceholderText('Repite la contraseña'),
+    password: screen.getByPlaceholderText(/mínimo 8 caracteres/i),
+    confirmPassword: screen.getByPlaceholderText(/repite/i),
     submitButton: screen.getByRole('button', { name: /crear cuenta/i })
   })
 
@@ -83,8 +78,8 @@ describe('RegisterForm', () => {
     await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
-    await user.type(fields.password, 'password123')
-    await user.type(fields.confirmPassword, 'differentpass')
+    await user.type(fields.password, 'Password123!')
+    await user.type(fields.confirmPassword, 'DifferentPass123!')
     await user.click(fields.submitButton)
 
     await waitFor(() => {
@@ -103,18 +98,37 @@ describe('RegisterForm', () => {
     await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
-    await user.type(fields.password, 'password123')
-    await user.type(fields.confirmPassword, 'password123')
+    await user.type(fields.password, 'Password123!')
+    await user.type(fields.confirmPassword, 'Password123!')
     await user.click(fields.submitButton)
 
     await waitFor(() => {
       expect(mockRegister).toHaveBeenCalledWith({
         username: 'johndoe',
         email: 'john@example.com',
-        password: 'password123',
+        password: 'Password123!',
         firstName: 'John',
         lastName: 'Doe'
       })
+    })
+  })
+
+  it('navega a /login después de registro exitoso', async () => {
+    const user = userEvent.setup()
+    mockRegister.mockResolvedValueOnce({ success: true })
+    renderRegisterForm()
+
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'Password123!')
+    await user.type(fields.confirmPassword, 'Password123!')
+    await user.click(fields.submitButton)
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/login')
     })
   })
 
@@ -130,7 +144,7 @@ describe('RegisterForm', () => {
     expect(fields.confirmPassword).toBeRequired()
   })
 
-  it('valida longitud mínima de contraseña', async () => {
+  it('valida longitud mínima de contraseña (8 caracteres)', async () => {
     const user = userEvent.setup()
     renderRegisterForm()
 
@@ -139,12 +153,67 @@ describe('RegisterForm', () => {
     await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
-    await user.type(fields.password, '123')
-    await user.type(fields.confirmPassword, '123')
+    await user.type(fields.password, 'Short1!')
+    await user.type(fields.confirmPassword, 'Short1!')
     await user.click(fields.submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/m[ií]nimo 6 caracteres/i)).toBeInTheDocument()
+      const errorElement = screen.getByRole('alert')
+      expect(errorElement).toHaveTextContent(/mínimo 8 caracteres/i)
+    })
+  })
+
+  it('valida que la contraseña tenga al menos una mayúscula', async () => {
+    const user = userEvent.setup()
+    renderRegisterForm()
+
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'password123!')
+    await user.type(fields.confirmPassword, 'password123!')
+    await user.click(fields.submitButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/debe contener al menos una letra mayúscula/i)).toBeInTheDocument()
+    })
+  })
+
+  it('valida que la contraseña tenga al menos una minúscula', async () => {
+    const user = userEvent.setup()
+    renderRegisterForm()
+
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'PASSWORD123!')
+    await user.type(fields.confirmPassword, 'PASSWORD123!')
+    await user.click(fields.submitButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/debe contener al menos una letra minúscula/i)).toBeInTheDocument()
+    })
+  })
+
+  it('valida que la contraseña tenga al menos un carácter especial', async () => {
+    const user = userEvent.setup()
+    renderRegisterForm()
+
+    const fields = getFields()
+    await user.type(fields.firstName, 'John')
+    await user.type(fields.lastName, 'Doe')
+    await user.type(fields.username, 'johndoe')
+    await user.type(fields.email, 'john@example.com')
+    await user.type(fields.password, 'Password123')
+    await user.type(fields.confirmPassword, 'Password123')
+    await user.click(fields.submitButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/debe contener al menos un carácter especial/i)).toBeInTheDocument()
     })
   })
 
@@ -163,8 +232,8 @@ describe('RegisterForm', () => {
     await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'existinguser')
     await user.type(fields.email, 'john@example.com')
-    await user.type(fields.password, 'password123')
-    await user.type(fields.confirmPassword, 'password123')
+    await user.type(fields.password, 'Password123!')
+    await user.type(fields.confirmPassword, 'Password123!')
     await user.click(fields.submitButton)
 
     await waitFor(() => {
@@ -182,8 +251,8 @@ describe('RegisterForm', () => {
     await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
-    await user.type(fields.password, 'password123')
-    await user.type(fields.confirmPassword, 'password123')
+    await user.type(fields.password, 'Password123!')
+    await user.type(fields.confirmPassword, 'Password123!')
     await user.click(fields.submitButton)
 
     expect(fields.submitButton).toBeDisabled()
@@ -195,14 +264,14 @@ describe('RegisterForm', () => {
 
     const inputs = screen.getAllByRole('textbox')
     const passwordInputs = document.querySelectorAll('input[type="password"]')
-    
+
     // 4 campos de texto + 2 de contraseña
     expect(inputs.length + passwordInputs.length).toBe(6)
   })
 
   it('campo de email tiene tipo email', () => {
     renderRegisterForm()
-    
+
     const emailInput = screen.getByPlaceholderText('tu@email.com')
     expect(emailInput).toHaveAttribute('type', 'email')
   })

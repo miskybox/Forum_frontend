@@ -7,6 +7,7 @@ import Footer from './components/common/Footer';
 import { useTheme } from './contexts/ThemeContext';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
+import LocalStorageDebug from './components/debug/LocalStorageDebug';
 import "./index.css";
 
 // Páginas principales
@@ -159,6 +160,10 @@ function App() {
         </Routes>
       </main>
       <Footer />
+
+      {/* Componente de debug para verificar localStorage */}
+      <LocalStorageDebug />
+
       {/* Toaster con accesibilidad mejorada */}
       <Toaster 
         position="top-center"

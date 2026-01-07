@@ -166,8 +166,14 @@ const ProfilePage = () => {
     
     if (!passwordData.newPassword) {
       newErrors.newPassword = 'La nueva contraseña es obligatoria'
-    } else if (passwordData.newPassword.length < 6) {
-      newErrors.newPassword = 'La contraseña debe tener al menos 6 caracteres'
+    } else if (passwordData.newPassword.length < 8) {
+      newErrors.newPassword = 'Debe tener mínimo 8 caracteres, mayúsculas, minúsculas y un símbolo especial'
+    } else if (!/[A-Z]/.test(passwordData.newPassword)) {
+      newErrors.newPassword = 'Debe incluir al menos una letra mayúscula'
+    } else if (!/[a-z]/.test(passwordData.newPassword)) {
+      newErrors.newPassword = 'Debe incluir al menos una letra minúscula'
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(passwordData.newPassword)) {
+      newErrors.newPassword = 'Debe incluir al menos un carácter especial (!@#$%^&*...)'
     }
     
     if (passwordData.newPassword !== passwordData.confirmPassword) {
@@ -517,6 +523,11 @@ const ProfilePage = () => {
                       <div key={field.id}>
                         <label htmlFor={field.id} className="block text-sm font-medium text-ocean-400 mb-2">
                           {field.label} <span className="text-error">*</span>
+                          {field.id === 'newPassword' && (
+                            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+                              Debe tener mínimo 8 caracteres, incluir mayúsculas, minúsculas y un símbolo especial.
+                            </span>
+                          )}
                         </label>
                         <input
                           id={field.id}

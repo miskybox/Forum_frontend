@@ -56,8 +56,14 @@ const RegisterForm = () => {
     // Validar contraseña
     if (!formData.password) {
       newErrors.password = '⚠️ La contraseña es obligatoria'
-    } else if (formData.password.length < 6) {
-      newErrors.password = '⚠️ La contraseña debe tener: mínimo 6 caracteres'
+    } else if (formData.password.length < 8) {
+      newErrors.password = '⚠️ Mínimo 8 caracteres, una mayúscula, una minúscula y un carácter especial'
+    } else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password = '⚠️ Debe contener al menos una letra mayúscula'
+    } else if (!/[a-z]/.test(formData.password)) {
+      newErrors.password = '⚠️ Debe contener al menos una letra minúscula'
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      newErrors.password = '⚠️ Debe contener al menos un carácter especial (!@#$%^&*...)'
     }
 
     // Validar confirmación de contraseña
@@ -109,8 +115,8 @@ const RegisterForm = () => {
 
     try {
       await register(userData)
-      toast.success('Registro exitoso')
-      navigate('/')
+      toast.success('Registro exitoso. Por favor inicia sesión')
+      navigate('/login')
     } catch (error) {
       console.error('Error al registrar usuario', {
         data: error.response?.data
@@ -321,6 +327,9 @@ const RegisterForm = () => {
         <div className="relative">
           <label htmlFor="password" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.password')}
+            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+              {t('auth.passwordHint')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -345,7 +354,7 @@ const RegisterForm = () => {
                 setShowPassword(!showPassword)
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
-              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showPassword}
               tabIndex={-1}
             >
@@ -362,6 +371,9 @@ const RegisterForm = () => {
         <div className="relative">
           <label htmlFor="confirmPassword" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
             🔒 {t('auth.confirmPassword')}
+            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+              {t('auth.confirmPasswordHint')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -376,7 +388,7 @@ const RegisterForm = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               disabled={isSubmitting}
-              placeholder={'Repite la contraseña'}
+              placeholder={t('auth.confirmPasswordPlaceholder')}
             />
             <button
               type="button"
@@ -386,7 +398,7 @@ const RegisterForm = () => {
                 setShowConfirmPassword(!showConfirmPassword)
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
-              aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showConfirmPassword}
               tabIndex={-1}
             >

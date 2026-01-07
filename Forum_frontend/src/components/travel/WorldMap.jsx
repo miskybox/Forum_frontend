@@ -155,8 +155,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       </div>
 
       {/* Leyenda */}
-      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
-        <h4 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
+      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary text-white">
+        <h4 className="text-cream-100 font-semibold mb-3 text-sm flex items-center gap-2 drop-shadow-sm">
           <span className="text-lg">🗺️</span> Leyenda
         </h4>
         <div className="space-y-2">
@@ -171,7 +171,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
                 className="w-4 h-4 rounded-sm shadow-sm"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-white text-xs">{item.emoji} {item.label}</span>
+              <span className="text-xs drop-shadow-sm">{item.emoji} {item.label}</span>
             </div>
           ))}
         </div>
@@ -204,13 +204,13 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       )}
 
       {/* Estadísticas rápidas */}
-      <div className="absolute top-4 left-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
-        <div className="text-white text-sm">
+      <div className="absolute top-4 left-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary text-white">
+        <div className="text-sm drop-shadow-sm">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-2xl">🌍</span>
             <span className="font-bold text-lg">{Object.keys(visitedMap).length}</span>
           </div>
-          <span className="text-slate-200 text-xs">países marcados</span>
+          <span className="text-white/80 text-xs">países marcados</span>
         </div>
       </div>
 
@@ -295,8 +295,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         </svg>
 
         {/* Mensaje para interactuar */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary-light/90 backdrop-blur-sm rounded-full px-4 py-2 border border-secondary">
-          <span className="text-text text-sm">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary-light/90 backdrop-blur-sm rounded-full px-4 py-2 border border-secondary text-white">
+          <span className="text-sm font-semibold drop-shadow-sm">
             🖱️ Haz clic en un país para agregar o editar
           </span>
         </div>
