@@ -350,6 +350,27 @@ const translations = {
       howEditProfileAnswer: 'Ve a tu perfil desde el menú de usuario y haz clic en "Editar Perfil".',
       backHome: 'Volver al inicio',
     },
+    // Contact
+    contact: {
+      title: 'Contacto',
+      subtitle: '¿Tienes preguntas, sugerencias o necesitas ayuda? Estamos aquí para ayudarte.',
+      email: 'Email',
+      socialNetworks: 'Redes Sociales',
+      socialDescription: 'Síguenos en nuestras redes sociales para estar al día con las últimas novedades.',
+    },
+    // About
+    about: {
+      title: 'Acerca de Forum Viajeros',
+      description1: 'Forum Viajeros es una plataforma dedicada a conectar viajeros de todo el mundo, permitiéndoles compartir experiencias, consejos y descubrir nuevos destinos.',
+      description2: 'Nuestra misión es crear una comunidad global de viajeros que se ayuden mutuamente a explorar el mundo de manera más enriquecedora y segura.',
+    },
+    // Not Found
+    notFound: {
+      title: 'Página no encontrada',
+      description: 'Lo sentimos, la página que estás buscando no existe o ha sido movida.',
+      backHome: 'Volver a la página principal',
+      exploreForums: 'Explorar foros',
+    },
     // Common
     common: {
       loading: 'Cargando...',
@@ -789,6 +810,27 @@ const translations = {
       howEditProfile: 'How do I edit my profile?',
       howEditProfileAnswer: 'Go to your profile from the user menu and click "Edit Profile".',
       backHome: 'Back to home',
+    },
+    // Contact
+    contact: {
+      title: 'Contact',
+      subtitle: 'Have questions, suggestions or need help? We are here to help you.',
+      email: 'Email',
+      socialNetworks: 'Social Networks',
+      socialDescription: 'Follow us on our social networks to stay up to date with the latest news.',
+    },
+    // About
+    about: {
+      title: 'About Forum Viajeros',
+      description1: 'Forum Viajeros is a platform dedicated to connecting travelers from around the world, allowing them to share experiences, tips and discover new destinations.',
+      description2: 'Our mission is to create a global community of travelers who help each other explore the world in a more enriching and safe way.',
+    },
+    // Not Found
+    notFound: {
+      title: 'Page not found',
+      description: 'Sorry, the page you are looking for does not exist or has been moved.',
+      backHome: 'Back to home page',
+      exploreForums: 'Explore forums',
     },
     // Common
     common: {
