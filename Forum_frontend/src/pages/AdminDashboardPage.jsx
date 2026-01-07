@@ -123,7 +123,7 @@ const AdminDashboardPage = () => {
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.totalUsers')}</p>
@@ -137,7 +137,7 @@ const AdminDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.totalForums')}</p>
@@ -151,7 +151,7 @@ const AdminDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.totalPosts')}</p>
@@ -165,7 +165,7 @@ const AdminDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.categories')}</p>
@@ -182,7 +182,7 @@ const AdminDashboardPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Lista de Usuarios */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">{t('admin.recentUsers')}</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -237,7 +237,7 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Foros Recientes */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">{t('admin.recentForums')}</h2>
           <div className="space-y-4">
             {recentForums.map((forum) => (
@@ -259,7 +259,7 @@ const AdminDashboardPage = () => {
       {/* Modal de Edición de Roles */}
       {showRoleModal && editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="bg-earth-50 rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-xl font-bold mb-4">{t('admin.editRolesOf')} {editingUser.username}</h3>
             <div className="space-y-2 mb-4">
               {roles.map((role) => (

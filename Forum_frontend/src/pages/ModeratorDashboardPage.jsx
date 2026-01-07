@@ -113,7 +113,7 @@ const ModeratorDashboardPage = () => {
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.totalForums')}</p>
@@ -127,7 +127,7 @@ const ModeratorDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.totalPosts')}</p>
@@ -141,7 +141,7 @@ const ModeratorDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.comments')}</p>
@@ -155,7 +155,7 @@ const ModeratorDashboardPage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm">{t('admin.pending')}</p>
@@ -172,7 +172,7 @@ const ModeratorDashboardPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Foros Recientes */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">{t('admin.recentForums')}</h2>
           <div className="space-y-4">
             {recentForums.map((forum) => (
@@ -211,7 +211,7 @@ const ModeratorDashboardPage = () => {
         </div>
 
         {/* Posts Recientes */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-earth-50 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">{t('admin.recentPosts')}</h2>
           <div className="space-y-4">
             {recentPosts.map((post) => (
