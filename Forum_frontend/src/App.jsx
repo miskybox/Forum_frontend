@@ -22,7 +22,7 @@ import ForumCreatePage from './pages/ForumCreatePage';
 import ForumEditPage from './pages/ForumEditPage';
 import PostCreatePage from './pages/PostCreatePage';
 import PostEditPage from './pages/PostEditPage';
-import PostDetailPage from './pages/PostDeatilsPage';
+import PostDetailPage from './pages/PostDetailsPage';
 
 // Páginas de Mapa de Viajes
 import TravelMapPage from './pages/travel/TravelMapPage';

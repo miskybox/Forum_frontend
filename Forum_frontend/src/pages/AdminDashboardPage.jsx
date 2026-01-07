@@ -114,63 +114,63 @@ const AdminDashboardPage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Panel de Administración</h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-600">
           Bienvenido, {currentUser?.username || 'Administrador'}
         </p>
       </div>
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Total Usuarios</p>
+              <p className="text-gray-600 text-sm">Total Usuarios</p>
               <p className="text-3xl font-bold mt-2">{stats.totalUsers}</p>
             </div>
-            <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-3">
-              <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-blue-100 rounded-full p-3">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Total Foros</p>
+              <p className="text-gray-600 text-sm">Total Foros</p>
               <p className="text-3xl font-bold mt-2">{stats.totalForums}</p>
             </div>
-            <div className="bg-green-100 dark:bg-green-900 rounded-full p-3">
-              <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-green-100 rounded-full p-3">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Total Posts</p>
+              <p className="text-gray-600 text-sm">Total Posts</p>
               <p className="text-3xl font-bold mt-2">{stats.totalPosts}</p>
             </div>
-            <div className="bg-purple-100 dark:bg-purple-900 rounded-full p-3">
-              <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-purple-100 rounded-full p-3">
+              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Categorías</p>
+              <p className="text-gray-600 text-sm">Categorías</p>
               <p className="text-3xl font-bold mt-2">{stats.totalCategories}</p>
             </div>
-            <div className="bg-orange-100 dark:bg-orange-900 rounded-full p-3">
-              <svg className="w-8 h-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-orange-100 rounded-full p-3">
+              <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
             </div>
@@ -180,7 +180,7 @@ const AdminDashboardPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Lista de Usuarios */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">Usuarios Recientes</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -202,7 +202,7 @@ const AdminDashboardPage = () => {
                         {user.roles?.map((role) => (
                           <span
                             key={role}
-                            className="px-2 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+                            className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-800"
                           >
                             {role}
                           </span>
@@ -235,17 +235,17 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Foros Recientes */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-4">Foros Recientes</h2>
           <div className="space-y-4">
             {recentForums.map((forum) => (
               <div
                 key={forum.id}
-                className="border-b pb-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded"
+                className="border-b pb-4 cursor-pointer hover:bg-gray-50 p-2 rounded"
                 onClick={() => navigate(`/forums/${forum.id}`)}
               >
                 <h3 className="font-semibold">{forum.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                <p className="text-sm text-gray-600 truncate">
                   {forum.description}
                 </p>
               </div>
@@ -257,7 +257,7 @@ const AdminDashboardPage = () => {
       {/* Modal de Edición de Roles */}
       {showRoleModal && editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-xl font-bold mb-4">Editar Roles de {editingUser.username}</h3>
             <div className="space-y-2 mb-4">
               {roles.map((role) => (
@@ -283,7 +283,7 @@ const AdminDashboardPage = () => {
                   setShowRoleModal(false)
                   setEditingUser(null)
                 }}
-                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
               >
                 Cancelar
               </button>
