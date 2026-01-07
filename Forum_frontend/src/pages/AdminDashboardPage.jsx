@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { useLanguage } from '../contexts/LanguageContext'
 import userService from '../services/userService'
 import forumService from '../services/forumService'
 import postService from '../services/postService'
@@ -11,6 +12,7 @@ import { toast } from 'react-hot-toast'
 
 const AdminDashboardPage = () => {
   const { currentUser, hasRole } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
@@ -113,9 +115,9 @@ const AdminDashboardPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Panel de Administración</h1>
+        <h1 className="text-4xl font-bold mb-2">{t('admin.adminPanel')}</h1>
         <p className="text-gray-600">
-          Bienvenido, {currentUser?.username || 'Administrador'}
+          {t('admin.welcome')}, {currentUser?.username || t('admin.adminPanel').split(' ')[0]}
         </p>
       </div>
 
@@ -124,7 +126,7 @@ const AdminDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Usuarios</p>
+              <p className="text-gray-600 text-sm">{t('admin.totalUsers')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalUsers}</p>
             </div>
             <div className="bg-blue-100 rounded-full p-3">
@@ -138,7 +140,7 @@ const AdminDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Foros</p>
+              <p className="text-gray-600 text-sm">{t('admin.totalForums')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalForums}</p>
             </div>
             <div className="bg-green-100 rounded-full p-3">
@@ -152,7 +154,7 @@ const AdminDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Posts</p>
+              <p className="text-gray-600 text-sm">{t('admin.totalPosts')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalPosts}</p>
             </div>
             <div className="bg-purple-100 rounded-full p-3">
@@ -166,7 +168,7 @@ const AdminDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Categorías</p>
+              <p className="text-gray-600 text-sm">{t('admin.categories')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalCategories}</p>
             </div>
             <div className="bg-orange-100 rounded-full p-3">
@@ -181,15 +183,15 @@ const AdminDashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Lista de Usuarios */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Usuarios Recientes</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('admin.recentUsers')}</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-2">Usuario</th>
-                  <th className="text-left py-2">Email</th>
-                  <th className="text-left py-2">Roles</th>
-                  <th className="text-left py-2">Acciones</th>
+                  <th className="text-left py-2">{t('admin.username')}</th>
+                  <th className="text-left py-2">{t('admin.email')}</th>
+                  <th className="text-left py-2">{t('admin.roles')}</th>
+                  <th className="text-left py-2">{t('admin.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -214,16 +216,16 @@ const AdminDashboardPage = () => {
                         <button
                           onClick={() => handleEditUserRoles(user)}
                           className="text-blue-600 hover:text-blue-800 text-sm"
-                          title="Editar roles"
+                          title={t('admin.editRoles')}
                         >
-                          Editar Roles
+                          {t('admin.editRoles')}
                         </button>
                         <button
                           onClick={() => handleDeleteUser(user.id)}
                           className="text-red-600 hover:text-red-800 text-sm"
-                          title="Eliminar usuario"
+                          title={t('admin.delete')}
                         >
-                          Eliminar
+                          {t('admin.delete')}
                         </button>
                       </div>
                     </td>
@@ -236,7 +238,7 @@ const AdminDashboardPage = () => {
 
         {/* Foros Recientes */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Foros Recientes</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('admin.recentForums')}</h2>
           <div className="space-y-4">
             {recentForums.map((forum) => (
               <div
@@ -258,7 +260,7 @@ const AdminDashboardPage = () => {
       {showRoleModal && editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold mb-4">Editar Roles de {editingUser.username}</h3>
+            <h3 className="text-xl font-bold mb-4">{t('admin.editRolesOf')} {editingUser.username}</h3>
             <div className="space-y-2 mb-4">
               {roles.map((role) => (
                 <label key={role.id} className="flex items-center space-x-2">
@@ -285,13 +287,13 @@ const AdminDashboardPage = () => {
                 }}
                 className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
               >
-                Cancelar
+                {t('common.cancel')}
               </button>
               <button
                 onClick={() => handleUpdateUserRoles(editingUser.id, editingUser.roles)}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
-                Guardar
+                {t('common.save')}
               </button>
             </div>
           </div>

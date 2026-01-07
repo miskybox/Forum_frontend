@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { useLanguage } from '../contexts/LanguageContext'
 import forumService from '../services/forumService'
 import postService from '../services/postService'
 import LoadingSpinner from '../components/common/LoadingSpinner'
@@ -8,6 +9,7 @@ import { toast } from 'react-hot-toast'
 
 const ModeratorDashboardPage = () => {
   const { currentUser, hasRole } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
@@ -103,9 +105,9 @@ const ModeratorDashboardPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Panel de Moderación</h1>
+        <h1 className="text-4xl font-bold mb-2">{t('admin.moderatorPanel')}</h1>
         <p className="text-gray-600">
-          Bienvenido, {currentUser?.username || 'Moderador'}
+          {t('admin.welcome')}, {currentUser?.username || t('admin.moderatorPanel').split(' ')[0]}
         </p>
       </div>
 
@@ -114,7 +116,7 @@ const ModeratorDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Foros</p>
+              <p className="text-gray-600 text-sm">{t('admin.totalForums')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalForums}</p>
             </div>
             <div className="bg-green-100 rounded-full p-3">
@@ -128,7 +130,7 @@ const ModeratorDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Total Posts</p>
+              <p className="text-gray-600 text-sm">{t('admin.totalPosts')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalPosts}</p>
             </div>
             <div className="bg-purple-100 rounded-full p-3">
@@ -142,7 +144,7 @@ const ModeratorDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Comentarios</p>
+              <p className="text-gray-600 text-sm">{t('admin.comments')}</p>
               <p className="text-3xl font-bold mt-2">{stats.totalComments}</p>
             </div>
             <div className="bg-blue-100 rounded-full p-3">
@@ -156,7 +158,7 @@ const ModeratorDashboardPage = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm">Pendientes</p>
+              <p className="text-gray-600 text-sm">{t('admin.pending')}</p>
               <p className="text-3xl font-bold mt-2">{stats.pendingModeration}</p>
             </div>
             <div className="bg-orange-100 rounded-full p-3">
@@ -171,7 +173,7 @@ const ModeratorDashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Foros Recientes */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Foros Recientes</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('admin.recentForums')}</h2>
           <div className="space-y-4">
             {recentForums.map((forum) => (
               <div
@@ -193,13 +195,13 @@ const ModeratorDashboardPage = () => {
                       onClick={() => handleEditForum(forum.id)}
                       className="text-blue-600 hover:text-blue-800 text-sm"
                     >
-                      Editar
+                      {t('admin.edit')}
                     </button>
                     <button
                       onClick={() => handleDeleteForum(forum.id)}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
-                      Eliminar
+                      {t('admin.delete')}
                     </button>
                   </div>
                 </div>
@@ -210,7 +212,7 @@ const ModeratorDashboardPage = () => {
 
         {/* Posts Recientes */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">Posts Recientes</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('admin.recentPosts')}</h2>
           <div className="space-y-4">
             {recentPosts.map((post) => (
               <div
@@ -232,13 +234,13 @@ const ModeratorDashboardPage = () => {
                       onClick={() => handleEditPost(post.id)}
                       className="text-blue-600 hover:text-blue-800 text-sm"
                     >
-                      Editar
+                      {t('admin.edit')}
                     </button>
                     <button
                       onClick={() => handleDeletePost(post.id)}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
-                      Eliminar
+                      {t('admin.delete')}
                     </button>
                   </div>
                 </div>
