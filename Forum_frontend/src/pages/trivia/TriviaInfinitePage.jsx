@@ -132,7 +132,7 @@ const TriviaInfinitePage = () => {
 
   const getOptionStyle = (option) => {
     if (!answered) {
-      return 'bg-white/20 hover:bg-white/30 border-white/30'
+      return 'bg-earth-50/20 hover:bg-earth-50/30 border-white/30'
     }
     if (option === currentQuestion?.correctAnswer) {
       return 'bg-success border-success-light text-white'
@@ -140,7 +140,7 @@ const TriviaInfinitePage = () => {
     if (option === selectedAnswer && option !== currentQuestion?.correctAnswer) {
       return 'bg-error border-error-light text-white'
     }
-    return 'bg-white/10 border-white/20 opacity-50'
+    return 'bg-earth-50/10 border-white/20 opacity-50'
   }
 
   if (loading && questions.length === 0) {
@@ -158,25 +158,25 @@ const TriviaInfinitePage = () => {
   if (gameOver) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 flex items-center justify-center p-4">
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 max-w-md w-full text-center">
+        <div className="bg-earth-50/10 backdrop-blur-lg rounded-3xl p-8 max-w-md w-full text-center">
           <span className="text-6xl mb-4 block">🏁</span>
           <h2 className="text-3xl font-black text-white mb-2">{t('trivia.infinite.gameOver')}</h2>
           <p className="text-ocean-200 mb-6 font-semibold">{t('trivia.infinite.infiniteMode')}</p>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-white/10 rounded-xl p-4">
+            <div className="bg-earth-50/10 rounded-xl p-4">
               <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.scoreLabel')}</p>
               <p className="text-3xl font-bold text-white">{score}</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-4">
+            <div className="bg-earth-50/10 rounded-xl p-4">
               <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.bestStreakLabel')}</p>
               <p className="text-3xl font-bold text-white">🔥 {bestStreak}</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-4">
+            <div className="bg-earth-50/10 rounded-xl p-4">
               <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
               <p className="text-3xl font-bold text-white">{totalAnswered}</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-4">
+            <div className="bg-earth-50/10 rounded-xl p-4">
               <p className="text-ocean-300 text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>
               <p className="text-3xl font-bold text-white">
                 {totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0}%
@@ -193,7 +193,7 @@ const TriviaInfinitePage = () => {
             </button>
             <button
               onClick={() => navigate('/trivia')}
-              className="w-full py-4 bg-white/20 text-white rounded-xl font-bold hover:bg-white/30 transition-all"
+              className="w-full py-4 bg-earth-50/20 text-white rounded-xl font-bold hover:bg-earth-50/30 transition-all"
             >
               ← {t('trivia.infinite.backToMenu')}
             </button>
@@ -229,7 +229,7 @@ const TriviaInfinitePage = () => {
               </div>
               <button
                 onClick={() => navigate('/trivia')}
-                className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 text-sm font-bold"
+                className="px-4 py-2 bg-earth-50/10 text-white rounded-lg hover:bg-earth-50/20 text-sm font-bold"
               >
                 {t('trivia.infinite.exit')}
               </button>
@@ -241,7 +241,7 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 md:p-8">
+          <div className="bg-earth-50/10 backdrop-blur-lg rounded-3xl p-6 md:p-8">
             {/* Tipo de pregunta */}
             <div className="flex items-center justify-between mb-6">
               <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm">

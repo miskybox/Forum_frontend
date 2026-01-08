@@ -30,7 +30,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       </div>
 
       {/* Puntos ganados */}
-      <div className="bg-white/20 rounded-xl p-4 mb-6">
+      <div className="bg-earth-50/20 rounded-xl p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <p className="text-white/70 text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
@@ -49,7 +49,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
 
       {/* Explicación */}
       {result.explanation && (
-        <div className="bg-white/10 rounded-xl p-4 mb-6">
+        <div className="bg-earth-50/10 rounded-xl p-4 mb-6">
           <p className="text-sm font-medium">
             <span className="font-bold">{t('trivia.result.funFact')}</span> {result.explanation}
           </p>
@@ -59,7 +59,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       {/* Botón continuar */}
       <button
         onClick={onNext}
-        className="w-full py-4 bg-white text-text rounded-xl font-bold text-lg hover:bg-primary-light transition-colors"
+        className="w-full py-4 bg-earth-50 text-text rounded-xl font-bold text-lg hover:bg-primary-light transition-colors"
       >
         {isLastQuestion ? `🏆 ${t('trivia.result.viewResults')}` : `➡️ ${t('trivia.nextQuestion')}`}
       </button>

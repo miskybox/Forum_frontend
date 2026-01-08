@@ -61,7 +61,9 @@
       "Bash(./mvnw.cmd:*)",
       "Bash(git rm:*)",
       "Bash(git reset:*)",
-      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-flow.ps1)"
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-flow.ps1)",
+      "Bash(for file in BlogHomePage.jsx BlogPostPage.jsx BlogCategoryPage.jsx BlogSearchPage.jsx)",
+      "Bash(do sed -i 's/bg-white/bg-earth-50/g' \"$file\")"
     ],
     "deny": [],
     "ask": []

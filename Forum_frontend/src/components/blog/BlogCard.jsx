@@ -20,7 +20,7 @@ const BlogCard = ({ post }) => {
   }
 
   return (
-    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <article className="bg-earth-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       {/* Imagen */}
       <Link to={`/blog/${post.slug}`} className="block relative h-48 overflow-hidden group">
         {post.featuredImage ? (

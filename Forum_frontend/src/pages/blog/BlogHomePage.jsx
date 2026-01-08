@@ -72,7 +72,7 @@ const BlogHomePage = () => {
                 <Link
                   key={category.id}
                   to={`/blog/category/${category.slug}`}
-                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center group"
+                  className="bg-earth-50 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center group"
                   style={{
                     borderTop: `4px solid ${category.color || '#059669'}`
                   }}
@@ -107,7 +107,7 @@ const BlogHomePage = () => {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Anterior
               </button>
@@ -117,7 +117,7 @@ const BlogHomePage = () => {
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Siguiente
               </button>

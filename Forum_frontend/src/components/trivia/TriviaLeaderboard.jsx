@@ -64,8 +64,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
               onClick={() => setType(tab.value)}
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
                 type === tab.value
-                  ? 'bg-white text-text'
-                  : 'bg-white/20 text-white/80 hover:bg-white/30'
+                  ? 'bg-earth-50 text-text'
+                  : 'bg-earth-50/20 text-white/80 hover:bg-earth-50/30'
               }`}
             >
               {tab.label}
