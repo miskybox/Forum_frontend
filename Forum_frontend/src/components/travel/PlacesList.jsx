@@ -174,7 +174,7 @@ const FilterButton = ({ active, onClick, children }) => (
     className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
       active
         ? 'bg-primary-light text-text'
-        : 'bg-white/40 text-text-light hover:bg-white/60'
+        : 'bg-earth-50/40 text-text-light hover:bg-earth-50/60'
     }`}
   >
     {children}

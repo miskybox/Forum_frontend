@@ -71,7 +71,7 @@ const Navbar = () => {
                   <div className="h-1/4 bg-red-600"></div>
                 </div>
               ) : (
-                <div className="flex items-center justify-center w-6 h-4 bg-white rounded overflow-hidden border border-accent relative" aria-hidden="true">
+                <div className="flex items-center justify-center w-6 h-4 bg-earth-50 rounded overflow-hidden border border-accent relative" aria-hidden="true">
                   <div className="absolute w-full h-1 bg-red-600"></div>
                   <div className="absolute h-full w-1 bg-red-600"></div>
                 </div>

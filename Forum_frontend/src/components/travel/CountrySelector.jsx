@@ -71,9 +71,9 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   return (
     <div className="relative">
       {/* Input de búsqueda */}
-      <button 
+      <button
         type="button"
-        className="flex items-center gap-2 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-success transition-colors w-full text-left"
+        className="flex items-center gap-2 bg-earth-50 border-2 border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-success transition-colors w-full text-left"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -95,7 +95,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 max-h-96 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-earth-50 rounded-xl shadow-2xl border border-slate-200 z-50 max-h-96 overflow-hidden">
           {/* Barra de búsqueda */}
           <div className="p-3 border-b border-slate-100">
             <input

@@ -54,7 +54,7 @@ const PostEditPage = () => {
     return (
       <div className="bg-earth-50 py-10">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="text-center py-10 bg-white rounded-lg shadow-sm p-6">
+          <div className="text-center py-10 bg-earth-50 rounded-lg shadow-sm p-6">
             <div className="text-red-600 mb-4">{error || 'Publicación no encontrada'}</div>
             <p className="mb-4 text-earth-600">Serás redirigido en unos segundos...</p>
             <Link to={`/posts/${id}`} className="btn btn-primary">
@@ -86,8 +86,8 @@ const PostEditPage = () => {
             Actualiza la información de tu publicación "{post.title}".
           </p>
         </div>
-        
-        <div className="bg-white rounded-lg shadow-sm p-6">
+
+        <div className="bg-earth-50 rounded-lg shadow-sm p-6">
           <PostForm initialData={post} isEdit={true} />
         </div>
       </div>
