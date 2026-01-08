@@ -156,7 +156,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
       {/* Leyenda */}
       <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary text-white">
-        <h4 className="text-cream-100 font-semibold mb-3 text-sm flex items-center gap-2 drop-shadow-sm">
+        <h4 className="text-cream-100 font-semibold mb-3 text-sm flex items-center gap-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
           <span className="text-lg">🗺️</span> Leyenda
         </h4>
         <div className="space-y-2">
