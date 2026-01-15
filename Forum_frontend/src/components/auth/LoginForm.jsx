@@ -6,6 +6,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
  * LoginForm con estilo Adventure Explorer Retro
+ * Utiliza traducciones i18n para todos los mensajes de error
  */
 const LoginForm = () => {
   const location = useLocation()
@@ -44,18 +45,18 @@ const LoginForm = () => {
 
     // Validar username
     if (!formData.username.trim()) {
-      newErrors.username = '⚠️ El nombre de usuario es obligatorio'
+      newErrors.username = `⚠️ ${t('auth.errors.usernameRequired')}`
     } else if (formData.username.length < 3) {
-      newErrors.username = '⚠️ El nombre de usuario debe tener al menos 3 caracteres'
+      newErrors.username = `⚠️ ${t('auth.errors.usernameMinLength')}`
     } else if (/[^a-zA-Z0-9._-]/.test(formData.username)) {
-      newErrors.username = '⚠️ Caracteres inválidos'
+      newErrors.username = `⚠️ ${t('auth.errors.usernameInvalidChars')}`
     }
 
     // Validar password
     if (!formData.password) {
-      newErrors.password = '⚠️ La contraseña es obligatoria'
+      newErrors.password = `⚠️ ${t('auth.errors.passwordRequired')}`
     } else if (formData.password.length < 8) {
-      newErrors.password = '⚠️ La contraseña debe tener al menos 8 caracteres'
+      newErrors.password = `⚠️ ${t('auth.errors.passwordMinLength')}`
     }
 
     setErrors(newErrors)
@@ -65,11 +66,11 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     e.stopPropagation()
-    
+
     // Validar formulario
     const isValid = validateForm()
     if (!isValid) {
-      toast.error('Por favor, completa todos los campos correctamente')
+      toast.error(t('auth.errors.completeAllFields'))
       return
     }
 
@@ -78,7 +79,7 @@ const LoginForm = () => {
 
     try {
       await login(formData)
-      toast.success(t('auth.loginSuccess') || 'Inicio de sesión exitoso')
+      toast.success(t('auth.loginSuccess'))
       navigate('/')
     } catch (error) {
       console.error('Error de login:', error)
@@ -88,9 +89,9 @@ const LoginForm = () => {
         request: error.request,
         data: error.response?.data
       })
-      
+
       let errorData = {}
-      
+
       // Intentar parsear el error de diferentes formas
       if (error.response?.data) {
         if (typeof error.response.data === 'string') {
@@ -103,26 +104,26 @@ const LoginForm = () => {
           errorData = error.response.data
         }
       }
-      
-      let message = '⚠️ Error al iniciar sesión'
+
+      let message = `⚠️ ${t('auth.errors.genericError')}`
 
       if (error.response) {
         // Error del servidor
         const status = error.response.status
         if (status === 401) {
-          message = '⚠️ Usuario o contraseña incorrectos. Por favor, verifica tus credenciales.'
+          message = `⚠️ ${t('auth.errors.invalidCredentials')}`
         } else if (status === 403) {
-          message = '⚠️ Tu cuenta ha sido suspendida. Contacta al administrador.'
+          message = `⚠️ ${t('auth.errors.accountSuspended')}`
         } else if (status === 404) {
-          message = '⚠️ Usuario no encontrado. Verifica el nombre de usuario.'
+          message = `⚠️ ${t('auth.errors.userNotFound')}`
         } else {
           message = errorData?.message ||
                     errorData?.error ||
-                    `⚠️ Error ${status}: ${error.response.statusText || 'Error del servidor'}`
+                    `⚠️ ${t('auth.errors.serverError')}`
         }
       } else if (error.request) {
         // Error de red
-        message = '⚠️ No se pudo conectar con el servidor. Verifica tu conexión a internet.'
+        message = `⚠️ ${t('auth.errors.networkError')}`
       } else if (error.message) {
         message = '⚠️ ' + error.message
       }
@@ -138,7 +139,7 @@ const LoginForm = () => {
     <div className="p-6">
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
         {errors.auth && (
-          <div 
+          <div
             className="p-4 border-2 border-error bg-primary-light text-error font-bold text-xs uppercase tracking-normal"
             role="alert"
             aria-live="assertive"
@@ -193,7 +194,7 @@ const LoginForm = () => {
                 value={formData.password}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                placeholder={typeof t === 'function' ? t('auth.passwordLoginPlaceholder') : 'Mínimo 8 caracteres'}
+                placeholder={t('auth.passwordLoginPlaceholder')}
               />
             <button
               type="button"
@@ -203,7 +204,7 @@ const LoginForm = () => {
                 setShowPassword(!showPassword)
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
-              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showPassword}
               tabIndex={-1}
             >
@@ -227,13 +228,13 @@ const LoginForm = () => {
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
               <span className="animate-spin" aria-hidden="true">⏳</span>
-              <span>Procesando...</span>
+              <span>{t('auth.errors.processing')}</span>
               <span id="login-status" className="sr-only">Iniciando sesión, por favor espera</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">
               <span aria-hidden="true">🗺️</span>
-              <span>Acceder</span>
+              <span>{t('auth.errors.access')}</span>
             </span>
           )}
         </button>

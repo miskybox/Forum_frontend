@@ -68,6 +68,23 @@ const translations = {
       loginSuccess: '¡Bienvenido de nuevo!',
       registerSuccess: '¡Cuenta creada exitosamente!',
       loginError: 'Usuario o contraseña incorrectos',
+      // Error messages
+      errors: {
+        usernameRequired: 'El nombre de usuario es obligatorio',
+        usernameMinLength: 'El nombre de usuario debe tener al menos 3 caracteres',
+        usernameInvalidChars: 'Caracteres inválidos en el nombre de usuario',
+        passwordRequired: 'La contraseña es obligatoria',
+        passwordMinLength: 'La contraseña debe tener al menos 8 caracteres',
+        invalidCredentials: 'Usuario o contraseña incorrectos. Por favor, verifica tus credenciales.',
+        accountSuspended: 'Tu cuenta ha sido suspendida. Contacta al administrador.',
+        userNotFound: 'Usuario no encontrado. Verifica el nombre de usuario.',
+        networkError: 'No se pudo conectar con el servidor. Verifica tu conexión a internet.',
+        serverError: 'Error del servidor. Por favor, intenta más tarde.',
+        genericError: 'Error al iniciar sesión',
+        completeAllFields: 'Por favor, completa todos los campos correctamente',
+        processing: 'Procesando...',
+        access: 'Acceder',
+      },
     },
     // Forums
     forums: {
@@ -529,6 +546,23 @@ const translations = {
       loginSuccess: 'Welcome back!',
       registerSuccess: 'Account created successfully!',
       loginError: 'Invalid username or password',
+      // Error messages
+      errors: {
+        usernameRequired: 'Username is required',
+        usernameMinLength: 'Username must be at least 3 characters',
+        usernameInvalidChars: 'Invalid characters in username',
+        passwordRequired: 'Password is required',
+        passwordMinLength: 'Password must be at least 8 characters',
+        invalidCredentials: 'Invalid username or password. Please verify your credentials.',
+        accountSuspended: 'Your account has been suspended. Contact the administrator.',
+        userNotFound: 'User not found. Please verify the username.',
+        networkError: 'Could not connect to the server. Check your internet connection.',
+        serverError: 'Server error. Please try again later.',
+        genericError: 'Login error',
+        completeAllFields: 'Please complete all fields correctly',
+        processing: 'Processing...',
+        access: 'Login',
+      },
     },
     // Forums
     forums: {

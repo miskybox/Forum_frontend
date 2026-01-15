@@ -5,57 +5,46 @@ import authService from '../services/authService'
 
 export const AuthContext = createContext()
 
+/**
+ * AuthProvider using HttpOnly cookie authentication.
+ * Tokens are stored in secure HttpOnly cookies by the backend,
+ * not accessible via JavaScript for enhanced XSS protection.
+ */
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
-  const [token, setToken] = useState(localStorage.getItem('token') || null)
-  const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken') || null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   const logout = useCallback(async () => {
     setLoading(true)
     try {
-      if (token) {
-        await authService.logout()
-      }
+      await authService.logout()
     } catch (err) {
       console.error('Error durante el cierre de sesión:', err)
       setError(err.response?.data?.message || 'No se pudo cerrar la sesión correctamente')
     } finally {
-      setToken(null)
-      setRefreshToken(null)
       setCurrentUser(null)
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
       setLoading(false)
     }
-  }, [token])
+  }, [])
 
   useEffect(() => {
     const initAuth = async () => {
-      if (token) {
+      // Check if user was previously authenticated
+      if (authService.isAuthenticated()) {
         try {
           const userInfo = await authService.getCurrentUser()
           setCurrentUser(userInfo)
         } catch (err) {
-          setError(err.response?.data?.message || 'Error al obtener usuario actual')
-
-          if (refreshToken) {
-            try {
-              const response = await authService.refreshToken(refreshToken)
-              setToken(response.accessToken)
-              setRefreshToken(response.refreshToken)
-              localStorage.setItem('token', response.accessToken)
-              localStorage.setItem('refreshToken', response.refreshToken)
-
-              const userInfo = await authService.getCurrentUser()
-              setCurrentUser(userInfo)
-            } catch (error_) {
-              setError(error_.response?.data?.message || 'Error al refrescar el token')
-              logout()
-            }
-          } else {
-            logout()
+          // If getting user fails, try to refresh token
+          try {
+            await authService.refreshToken()
+            const userInfo = await authService.getCurrentUser()
+            setCurrentUser(userInfo)
+          } catch (refreshErr) {
+            // Refresh failed, clear auth state
+            setError(refreshErr.response?.data?.message || 'Sesión expirada')
+            await logout()
           }
         } finally {
           setLoading(false)
@@ -66,18 +55,15 @@ export const AuthProvider = ({ children }) => {
     }
 
     initAuth()
-  }, [token, refreshToken, logout])
+  }, [logout])
 
   const login = useCallback(async (credentials) => {
     try {
       setError(null)
       setLoading(true)
-      const response = await authService.login(credentials)
-      setToken(response.accessToken)
-      setRefreshToken(response.refreshToken)
-      localStorage.setItem('token', response.accessToken)
-      localStorage.setItem('refreshToken', response.refreshToken)
+      await authService.login(credentials)
 
+      // Get user info after successful login
       const userInfo = await authService.getCurrentUser()
       setCurrentUser(userInfo)
       return userInfo
@@ -105,7 +91,6 @@ export const AuthProvider = ({ children }) => {
 
   const value = useMemo(() => ({
     currentUser,
-    token,
     loading,
     error,
     login,
@@ -113,7 +98,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAuthenticated: !!currentUser,
     hasRole: (role) => currentUser?.roles?.includes(role) || false,
-  }), [currentUser, token, loading, error, login, register, logout])
+  }), [currentUser, loading, error, login, register, logout])
 
   return (
     <AuthContext.Provider value={value}>

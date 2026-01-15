@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import LoginForm from './LoginForm'
 import { AuthContext } from '../../contexts/AuthContext'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 
 vi.mock('react-hot-toast', () => ({
   default: {
@@ -41,9 +42,11 @@ describe('LoginForm', () => {
   const renderLoginForm = () => {
     return render(
       <MemoryRouter>
-        <AuthContext.Provider value={mockAuthContext}>
-          <LoginForm />
-        </AuthContext.Provider>
+        <LanguageProvider>
+          <AuthContext.Provider value={mockAuthContext}>
+            <LoginForm />
+          </AuthContext.Provider>
+        </LanguageProvider>
       </MemoryRouter>
     )
   }
@@ -186,7 +189,7 @@ describe('LoginForm', () => {
 
   it('tiene formulario con action correcto', () => {
     renderLoginForm()
-    
+
     const form = screen.getByRole('textbox', { name: /usuario/i }).closest('form')
     expect(form).toBeInTheDocument()
   })
