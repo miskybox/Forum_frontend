@@ -61,14 +61,28 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null)
       setLoading(true)
+      console.log('🔐 [AuthContext] Iniciando login para:', credentials.username)
+      
       await authService.login(credentials)
+      console.log('✅ [AuthContext] Login exitoso, obteniendo info de usuario...')
 
       // Get user info after successful login
       const userInfo = await authService.getCurrentUser()
+      console.log('👤 [AuthContext] Usuario obtenido:', userInfo?.username)
+      
       setCurrentUser(userInfo)
       return userInfo
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al iniciar sesión')
+      console.error('❌ [AuthContext] Error en login:', {
+        message: err.message,
+        status: err.response?.status,
+        data: err.response?.data
+      })
+      
+      const errorMessage = err.response?.data?.message || 'Error al iniciar sesión'
+      setError(errorMessage)
+      
+      // Re-throw para que el componente pueda manejar el error
       throw err
     } finally {
       setLoading(false)
@@ -79,10 +93,21 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null)
       setLoading(true)
+      console.log('📝 [AuthContext] Iniciando registro para:', userData.username)
+      
       const response = await authService.register(userData)
+      console.log('✅ [AuthContext] Registro exitoso')
+      
       return response
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al registrar')
+      console.error('❌ [AuthContext] Error en registro:', {
+        message: err.message,
+        status: err.response?.status,
+        data: err.response?.data
+      })
+      
+      const errorMessage = err.response?.data?.message || 'Error al registrar'
+      setError(errorMessage)
       throw err
     } finally {
       setLoading(false)

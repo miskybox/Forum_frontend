@@ -60,19 +60,43 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
       onSuccess()
       onClose()
     } catch (error) {
-      console.error('Error al guardar lugar:', error)
-      console.error('Detalles del error:', {
+      console.error('❌ Error al guardar lugar:', error)
+      console.error('📋 Detalles del error:', {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status
       })
 
-      const errorMessage = error.response?.data?.message ||
-                          error.response?.data?.error ||
-                          error.message ||
-                          t('travel.errorSaving')
+      let errorMessage = t('travel.errorSaving')
+      
+      if (error.response) {
+        const status = error.response.status
+        
+        if (status === 401) {
+          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+        } else if (status === 403) {
+          errorMessage = '🚫 No tienes permisos para agregar lugares.'
+        } else if (status === 400) {
+          errorMessage = error.response.data?.message || 'Los datos no son válidos.'
+        } else if (status === 409) {
+          errorMessage = '⚠️ Ya has agregado este país anteriormente.'
+        } else if (status === 500) {
+          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
+        } else {
+          errorMessage = error.response.data?.message || error.response.data?.error || errorMessage
+        }
+      } else if (error.request) {
+        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+      }
 
-      toast.error(`⚠️ ${errorMessage}`, { duration: 6000 })
+      toast.error(`⚠️ ${errorMessage}`, { 
+        duration: 6000,
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
     } finally {
       setLoading(false)
     }

@@ -30,6 +30,22 @@ const triviaService = {
   },
 
   /**
+   * Obtiene la partida activa del usuario (si existe)
+   * @returns {Object|null} Partida activa o null si no hay ninguna
+   */
+  getActiveGame: async () => {
+    try {
+      const response = await api.get('/trivia/games/active')
+      return response.data
+    } catch (error) {
+      if (error.response?.status === 204) {
+        return null
+      }
+      throw error
+    }
+  },
+
+  /**
    * Obtiene la siguiente pregunta
    */
   getNextQuestion: async (gameId) => {

@@ -25,21 +25,28 @@ const TriviaHomePage = () => {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [starting, setStarting] = useState(false)
+  const [activeGame, setActiveGame] = useState(null)
+  const [showActiveGameModal, setShowActiveGameModal] = useState(false)
+  const [pendingGameConfig, setPendingGameConfig] = useState(null)
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadStats()
+      loadData()
     } else {
       setLoading(false)
     }
   }, [isAuthenticated])
 
-  const loadStats = async () => {
+  const loadData = async () => {
     try {
-      const data = await triviaService.getMyScore()
-      setStats(data)
+      const [statsData, activeGameData] = await Promise.all([
+        triviaService.getMyScore(),
+        triviaService.getActiveGame()
+      ])
+      setStats(statsData)
+      setActiveGame(activeGameData)
     } catch (error) {
-      console.error('Error cargando stats:', error)
+      console.error('Error cargando datos:', error)
     } finally {
       setLoading(false)
     }
@@ -47,8 +54,14 @@ const TriviaHomePage = () => {
 
   const startGame = async (mode, options = {}) => {
     if (!isAuthenticated) {
-      toast.error('Inicia sesión para jugar')
-      navigate('/login')
+      toast.error('🔐 Inicia sesión para jugar', {
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
+      navigate('/login?redirect=/trivia')
       return
     }
 
@@ -57,19 +70,91 @@ const TriviaHomePage = () => {
       return
     }
 
+    // Verificar si hay partida activa
+    if (activeGame) {
+      setPendingGameConfig({ mode, options })
+      setShowActiveGameModal(true)
+      return
+    }
+
+    await createNewGame(mode, options)
+  }
+
+  const createNewGame = async (mode, options) => {
     setStarting(true)
     try {
+      console.log('🎮 Iniciando partida:', { mode, options })
       const game = await triviaService.startGame({
         gameMode: mode,
         totalQuestions: options.questions || 10,
         difficulty: options.difficulty,
         continent: options.continent
       })
+      console.log('✅ Partida creada:', game.id)
       navigate(`/trivia/play/${game.id}`)
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error al iniciar partida')
+      console.error('❌ Error al iniciar partida:', error)
+
+      let errorMessage = 'Error al iniciar partida'
+
+      if (error.response) {
+        const status = error.response.status
+
+        if (status === 401) {
+          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
+        } else if (status === 403) {
+          errorMessage = '🚫 No tienes permisos para iniciar partidas.'
+        } else if (status === 400) {
+          errorMessage = error.response.data?.message || 'Configuración de partida inválida.'
+        } else if (status === 500) {
+          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
+        } else {
+          errorMessage = error.response.data?.message || errorMessage
+        }
+      } else if (error.request) {
+        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+      }
+
+      toast.error(errorMessage, {
+        duration: 5000,
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
     } finally {
       setStarting(false)
+    }
+  }
+
+  const handleContinueActiveGame = () => {
+    setShowActiveGameModal(false)
+    navigate(`/trivia/play/${activeGame.id}`)
+  }
+
+  const handleAbandonAndStartNew = async () => {
+    setShowActiveGameModal(false)
+    setStarting(true)
+    try {
+      await triviaService.abandonGame(activeGame.id)
+      setActiveGame(null)
+      if (pendingGameConfig) {
+        await createNewGame(pendingGameConfig.mode, pendingGameConfig.options)
+      }
+    } catch (error) {
+      console.error('Error abandonando partida:', error)
+      toast.error('Error al abandonar la partida', {
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
+    } finally {
+      setStarting(false)
+      setPendingGameConfig(null)
     }
   }
 
@@ -303,6 +388,60 @@ const TriviaHomePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de partida activa */}
+      {showActiveGameModal && activeGame && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="card max-w-md w-full p-6 animate-fadeIn">
+            <div className="text-center">
+              <div className="text-5xl mb-4">🎮</div>
+              <h3 className="text-xl font-bold text-text mb-2 tracking-normal uppercase">
+                {t('trivia.activeGame.title')}
+              </h3>
+              <p className="text-text-light mb-4">
+                {t('trivia.activeGame.message')}
+              </p>
+
+              {/* Info de la partida activa */}
+              <div className="bg-primary/20 rounded-lg p-4 mb-6">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-light">{t('trivia.activeGame.progress')}</span>
+                  <span className="text-accent font-bold">
+                    {activeGame.currentQuestionIndex}/{activeGame.totalQuestions}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-sm mt-2">
+                  <span className="text-text-light">{t('trivia.score')}</span>
+                  <span className="text-accent font-bold">{activeGame.score} pts</span>
+                </div>
+              </div>
+
+              {/* Botones */}
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleContinueActiveGame}
+                  className="btn btn-primary w-full"
+                >
+                  ▶️ {t('trivia.activeGame.continueGame')}
+                </button>
+                <button
+                  onClick={handleAbandonAndStartNew}
+                  disabled={starting}
+                  className="btn btn-outline w-full text-sm"
+                >
+                  {starting ? '...' : `🗑️ ${t('trivia.activeGame.abandonAndNew')}`}
+                </button>
+                <button
+                  onClick={() => setShowActiveGameModal(false)}
+                  className="text-text-light text-sm hover:text-text transition-colors"
+                >
+                  {t('common.cancel')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

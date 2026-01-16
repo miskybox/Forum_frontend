@@ -179,22 +179,57 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
 
       navigate(`/forums/${response.id}`)
     } catch (error) {
-      console.error('Error al guardar el foro:', error)
-      toast.error(error.response?.data?.message || 'Error al guardar el foro. Por favor, inténtalo de nuevo.')
+      console.error('❌ Error al guardar el foro:', error)
+      console.error('📋 Detalles:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      })
 
-      if (error.response?.status === 400 && error.response?.data?.errors) {
-        const backendErrors = error.response.data.errors
-        const formattedErrors = {}
-
-        Object.keys(backendErrors).forEach(key => {
-          formattedErrors[key] = backendErrors[key]
-        })
-
-        setErrors({
-          ...errors,
-          ...formattedErrors
-        })
+      let errorMessage = 'Error al guardar el foro. Por favor, inténtalo de nuevo.'
+      
+      if (error.response) {
+        const status = error.response.status
+        
+        if (status === 401) {
+          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          // Redirigir al login después de mostrar el mensaje
+          setTimeout(() => {
+            navigate('/login?redirect=/forums/create')
+          }, 2000)
+        } else if (status === 403) {
+          errorMessage = '🚫 No tienes permisos para crear foros.'
+        } else if (status === 400) {
+          errorMessage = error.response.data?.message || 'Los datos del foro no son válidos.'
+          
+          // Manejar errores de validación del backend
+          if (error.response.data?.errors) {
+            const backendErrors = error.response.data.errors
+            const formattedErrors = {}
+            Object.keys(backendErrors).forEach(key => {
+              formattedErrors[key] = backendErrors[key]
+            })
+            setErrors(prev => ({ ...prev, ...formattedErrors }))
+          }
+        } else if (status === 500) {
+          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
+        } else {
+          errorMessage = error.response.data?.message || errorMessage
+        }
+      } else if (error.request) {
+        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
       }
+
+      toast.error(errorMessage, { 
+        duration: 6000,
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
+      
+      setErrors(prev => ({ ...prev, submit: errorMessage }))
     } finally {
       setIsSubmitting(false)
     }

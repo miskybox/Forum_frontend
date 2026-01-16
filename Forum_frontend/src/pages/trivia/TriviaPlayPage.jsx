@@ -50,13 +50,13 @@ const TriviaPlayPage = () => {
 
   const handleAnswer = async (answerData) => {
     try {
-      console.log('Enviando respuesta:', answerData)
+      console.log('🎮 Enviando respuesta:', answerData)
       const response = await triviaService.answerQuestion({
         gameId: parseInt(gameId),
         ...answerData
       })
 
-      console.log('Respuesta del servidor:', response)
+      console.log('✅ Respuesta del servidor:', response)
 
       setResult(response)
 
@@ -77,22 +77,46 @@ const TriviaPlayPage = () => {
         }, 100)
       }
     } catch (error) {
-      console.error('Error enviando respuesta:', error)
-      console.error('Detalles del error:', {
+      console.error('❌ Error enviando respuesta:', error)
+      console.error('📋 Detalles del error:', {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status
       })
 
-      // Mostrar mensaje de error específico
-      const errorMessage = error.response?.data?.message ||
-                          error.response?.data?.error ||
-                          'Error al enviar respuesta. Por favor, intenta de nuevo.'
+      let errorMessage = 'Error al enviar respuesta. Por favor, intenta de nuevo.'
+      
+      if (error.response) {
+        const status = error.response.status
+        
+        if (status === 401) {
+          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
+        } else if (status === 403) {
+          errorMessage = '🚫 No tienes permisos para esta partida.'
+        } else if (status === 404) {
+          errorMessage = '⚠️ La pregunta o partida no existe.'
+        } else if (status === 400) {
+          errorMessage = error.response.data?.message || 'Respuesta inválida.'
+        } else if (status === 500) {
+          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
+        } else {
+          errorMessage = error.response.data?.message || error.response.data?.error || errorMessage
+        }
+      } else if (error.request) {
+        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+      }
 
-      toast.error(errorMessage, { duration: 5000 })
+      toast.error(errorMessage, { 
+        duration: 5000,
+        style: {
+          background: '#1a1a2e',
+          color: '#ff6b6b',
+          border: '2px solid #ff6b6b'
+        }
+      })
 
-      // Permitir continuar a pesar del error
-      // Si hay siguiente pregunta, cargarla
+      // Permitir continuar a pesar del error si hay siguiente pregunta
       if (result?.hasNextQuestion) {
         toast.info('Continuando con la siguiente pregunta...', { duration: 3000 })
         handleNext()
@@ -122,8 +146,21 @@ const TriviaPlayPage = () => {
       setResult(null)
       setCurrentQuestion(newGame.firstQuestion)
       setGame(newGame)
-    } catch (_error) {
-      toast.error('Error al iniciar nueva partida')
+    } catch (error) {
+      console.error('❌ Error iniciando nueva partida:', error)
+      
+      let errorMessage = 'Error al iniciar nueva partida'
+      
+      if (error.response?.status === 401) {
+        errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+        setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
+      } else if (error.response) {
+        errorMessage = error.response.data?.message || errorMessage
+      } else if (error.request) {
+        errorMessage = '🔌 No se pudo conectar con el servidor.'
+      }
+      
+      toast.error(errorMessage, { duration: 5000 })
     }
   }
 
