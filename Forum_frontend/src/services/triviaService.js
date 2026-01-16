@@ -36,12 +36,18 @@ const triviaService = {
   getActiveGame: async () => {
     try {
       const response = await api.get('/trivia/games/active')
-      return response.data
-    } catch (error) {
-      if (error.response?.status === 204) {
+      // 204 No Content devuelve data vacío, no es un error
+      if (response.status === 204 || !response.data) {
         return null
       }
-      throw error
+      return response.data
+    } catch (error) {
+      // Si hay error 404 o similar, no hay partida activa
+      if (error.response?.status === 404 || error.response?.status === 204) {
+        return null
+      }
+      console.error('Error obteniendo partida activa:', error)
+      return null // En caso de error, asumimos que no hay partida activa
     }
   },
 

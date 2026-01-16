@@ -64,8 +64,8 @@ const ForumList = ({ categoryId: propCategoryId }) => {
       <div className="flex justify-center items-center py-20">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🏺</div>
-          <p className="text-accent font-display text-sm uppercase tracking-wide">
-            {t('forumList.loadingForums').toUpperCase()}
+          <p className="text-accent font-display text-sm">
+            {t('forumList.loadingForums')}
           </p>
         </div>
       </div>
@@ -83,10 +83,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           onClick={() => globalThis?.window?.location?.reload?.()}
           className="btn btn-primary"
         >
-          <span className="flex items-center gap-2">
-            <span>🔄</span>
-            <span>{t('forumList.retry').toUpperCase()}</span>
-          </span>
+          {t('forumList.retry')}
         </button>
       </div>
     )
@@ -96,19 +93,19 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   if (category) {
     heading = (
       <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
-        {t('forumList.forumsOf').toUpperCase()} {category.name.toUpperCase()}
+        {t('forumList.forumsOf')} {category.name}
       </h2>
     );
   } else if (searchTerm) {
     heading = (
       <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
-        {t('forumList.searchResults').toUpperCase()}: "{searchTerm.toUpperCase()}"
+        {t('forumList.searchResults')}: "{searchTerm}"
       </h2>
     );
   } else {
     heading = (
       <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
-        {t('forumList.allForums').toUpperCase()}
+        {t('forumList.allForums')}
       </h2>
     );
   }
@@ -124,11 +121,8 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
 
           {isAuthenticated && (
-            <Link to="/forums/create" className="btn btn-primary whitespace-nowrap">
-              <span className="flex items-center gap-2">
-                <span>➕</span>
-                <span>{t('forumList.createForum').toUpperCase()}</span>
-              </span>
+            <Link to="/forums/create" className="btn btn-primary whitespace-nowrap text-center">
+              {t('forumList.createForum')}
             </Link>
           )}
         </div>
@@ -140,8 +134,8 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🔍</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2 uppercase">
-                {t('forumList.noResults').toUpperCase()}
+              <h3 className="text-xl font-bold text-accent-dark mb-2">
+                {t('forumList.noResults')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">
                 {t('forumList.noResultsFor')} "{searchTerm}"
@@ -150,10 +144,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
                 onClick={() => setSearchTerm('')}
                 className="btn btn-outline"
               >
-                <span className="flex items-center gap-2">
-                  <span>🏺</span>
-                  <span>{t('forumList.viewAll').toUpperCase()}</span>
-                </span>
+                {t('forumList.viewAll')}
               </button>
             </>
           );
@@ -161,25 +152,19 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🗺️</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2 uppercase">
-                {t('forumList.noCategoryForums').toUpperCase()}
+              <h3 className="text-xl font-bold text-accent-dark mb-2">
+                {t('forumList.noCategoryForums')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">
                 {t('forumList.beFirstCategory')} {category.name}
               </p>
               {isAuthenticated ? (
                 <Link to="/forums/create" className="btn btn-primary">
-                  <span className="flex items-center gap-2">
-                    <span>⚱️</span>
-                    <span>{t('forumList.createFirstForum').toUpperCase()}</span>
-                  </span>
+                  {t('forumList.createFirstForum')}
                 </Link>
               ) : (
                 <Link to="/login" className="btn btn-outline">
-                  <span className="flex items-center gap-2">
-                    <span>🔐</span>
-                    <span>{t('forumList.login').toUpperCase()}</span>
-                  </span>
+                  {t('forumList.login')}
                 </Link>
               )}
             </>
@@ -188,25 +173,19 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🏺</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2 uppercase">
-                {t('forumList.noForums').toUpperCase()}
+              <h3 className="text-xl font-bold text-accent-dark mb-2">
+                {t('forumList.noForums')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">
                 {t('forumList.beFirst')}
               </p>
               {isAuthenticated ? (
                 <Link to="/forums/create" className="btn btn-primary">
-                  <span className="flex items-center gap-2">
-                    <span>⚱️</span>
-                    <span>{t('forumList.createFirstForum').toUpperCase()}</span>
-                  </span>
+                  {t('forumList.createFirstForum')}
                 </Link>
               ) : (
                 <Link to="/login" className="btn btn-outline">
-                  <span className="flex items-center gap-2">
-                    <span>🔐</span>
-                    <span>{t('forumList.login').toUpperCase()}</span>
-                  </span>
+                  {t('forumList.login')}
                 </Link>
               )}
             </>

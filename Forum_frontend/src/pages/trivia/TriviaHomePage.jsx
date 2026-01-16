@@ -44,7 +44,12 @@ const TriviaHomePage = () => {
         triviaService.getActiveGame()
       ])
       setStats(statsData)
-      setActiveGame(activeGameData)
+      if (activeGameData && activeGameData.id) {
+        console.log('🎮 Partida activa encontrada:', activeGameData)
+        setActiveGame(activeGameData)
+        // Mostrar modal automáticamente si hay partida activa
+        setShowActiveGameModal(true)
+      }
     } catch (error) {
       console.error('Error cargando datos:', error)
     } finally {

@@ -69,11 +69,20 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
+      {/* Overlay para cerrar - debe ir primero para estar debajo del dropdown */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Input de búsqueda */}
       <button
         type="button"
-        className="flex items-center gap-2 bg-earth-50 border-2 border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-success transition-colors w-full text-left"
+        className="flex items-center gap-2 bg-primary-light border-2 border-accent rounded-lg px-4 py-3 cursor-pointer hover:border-secondary transition-colors w-full text-left relative z-10"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -81,53 +90,55 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
         {selectedCountry ? (
           <>
             <span className="text-2xl">{selectedCountry.flagEmoji}</span>
-            <span className="font-medium text-slate-800">{selectedCountry.name}</span>
-            <span className="text-slate-400 text-sm">({selectedCountry.capital})</span>
+            <span className="font-medium text-text">{selectedCountry.name}</span>
+            <span className="text-text-light text-sm">({selectedCountry.capital})</span>
           </>
         ) : (
           <>
-            <span className="text-slate-400">🔍</span>
-            <span className="text-slate-400">Selecciona un país...</span>
+            <span className="text-text-light">🔍</span>
+            <span className="text-text-light">Selecciona un país...</span>
           </>
         )}
-        <span className="ml-auto text-slate-400">▼</span>
+        <span className="ml-auto text-text-light">{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-earth-50 rounded-xl shadow-2xl border border-slate-200 z-50 max-h-96 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-primary-light rounded-lg shadow-2xl border-2 border-accent z-50 max-h-96 overflow-hidden">
           {/* Barra de búsqueda */}
-          <div className="p-3 border-b border-slate-100">
+          <div className="p-3 border-b border-primary-dark">
             <input
               type="text"
               placeholder="Buscar país o capital..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-slate-50 rounded-lg border-0 focus:ring-2 focus:ring-success"
+              className="input w-full"
               autoFocus
             />
           </div>
 
           {/* Filtro por continente */}
-          <div className="p-3 border-b border-slate-100 flex flex-wrap gap-2">
+          <div className="p-3 border-b border-primary-dark flex flex-wrap gap-2 bg-primary">
             <button
+              type="button"
               onClick={() => setSelectedContinent('all')}
-              className={`px-3 py-1 rounded-full text-sm transition-colors ${
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 selectedContinent === 'all'
-                  ? 'bg-success text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-secondary text-text border border-secondary-dark'
+                  : 'bg-primary-light text-text-light border border-accent hover:bg-primary-dark'
               }`}
             >
               Todos
             </button>
             {continents.map(continent => (
               <button
+                type="button"
                 key={continent}
                 onClick={() => setSelectedContinent(continent)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   selectedContinent === continent
-                    ? 'bg-success text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-secondary text-text border border-secondary-dark'
+                    : 'bg-primary-light text-text-light border border-accent hover:bg-primary-dark'
                 }`}
               >
                 {continent}
@@ -136,15 +147,15 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
           </div>
 
           {/* Lista de países */}
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-56 overflow-y-auto">
             {loading && (
-              <div className="p-8 text-center text-slate-400">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-success border-t-transparent mx-auto mb-2" />
+              <div className="p-8 text-center text-text-light">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-secondary border-t-transparent mx-auto mb-2" />
                 Cargando países...
               </div>
             )}
             {!loading && filteredCountries.length === 0 && (
-              <div className="p-8 text-center text-slate-400">
+              <div className="p-8 text-center text-text-light">
                 No se encontraron países
               </div>
             )}
@@ -154,29 +165,20 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                   type="button"
                   key={country.id}
                   onClick={() => handleSelect(country)}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-success-light/20 cursor-pointer transition-colors border-b border-slate-50 last:border-0 w-full text-left"
-                  data-selected={selectedCountry?.id === country.id}
+                  className={`flex items-center gap-3 px-4 py-3 hover:bg-secondary/20 cursor-pointer transition-colors border-b border-primary-dark last:border-0 w-full text-left ${
+                    selectedCountry?.id === country.id ? 'bg-secondary/30' : ''
+                  }`}
                 >
                   <span className="text-2xl">{country.flagEmoji}</span>
                   <div>
-                    <p className="font-medium text-slate-800">{country.name}</p>
-                    <p className="text-sm text-slate-400">{country.capital} • {country.continent}</p>
+                    <p className="font-medium text-text">{country.name}</p>
+                    <p className="text-sm text-text-light">{country.capital} • {country.continent}</p>
                   </div>
                 </button>
               ))
             )}
           </div>
         </div>
-      )}
-
-      {/* Overlay para cerrar */}
-      {isOpen && (
-        <button 
-          type="button"
-          className="fixed inset-0 z-40 bg-transparent border-0 cursor-default" 
-          onClick={() => setIsOpen(false)}
-          aria-label="Cerrar selector"
-        />
       )}
     </div>
   )
