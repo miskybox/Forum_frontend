@@ -19,8 +19,10 @@ const CategoryCard = ({ category }) => {
               className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300"
             />
           ) : (
-            <div className="flex items-center justify-center h-full bg-adventure-dark text-adventure-gold">
-              <div className="text-6xl opacity-50">🌍</div>
+            <div className="flex items-center justify-center h-full bg-adventure-dark">
+              <div className="w-20 h-20 rounded-full bg-golden/30 flex items-center justify-center">
+                <svg className="w-10 h-10 text-golden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-adventure-dark via-adventure-dark/50 to-transparent"></div>

@@ -52,7 +52,7 @@ const TriviaPlayPage = () => {
     try {
       console.log('🎮 Enviando respuesta:', answerData)
       const response = await triviaService.answerQuestion({
-        gameId: parseInt(gameId),
+        gameId: Number.parseInt(gameId),
         ...answerData
       })
 
@@ -90,21 +90,21 @@ const TriviaPlayPage = () => {
         const status = error.response.status
         
         if (status === 401) {
-          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
           setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
         } else if (status === 403) {
-          errorMessage = '🚫 No tienes permisos para esta partida.'
+          errorMessage = 'No tienes permisos para esta partida.'
         } else if (status === 404) {
-          errorMessage = '⚠️ La pregunta o partida no existe.'
+          errorMessage = 'La pregunta o partida no existe.'
         } else if (status === 400) {
           errorMessage = error.response.data?.message || 'Respuesta inválida.'
         } else if (status === 500) {
-          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
+          errorMessage = 'Error del servidor. Por favor, intenta más tarde.'
         } else {
           errorMessage = error.response.data?.message || error.response.data?.error || errorMessage
         }
       } else if (error.request) {
-        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+        errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión.'
       }
 
       toast.error(errorMessage, { 
@@ -152,12 +152,12 @@ const TriviaPlayPage = () => {
       let errorMessage = 'Error al iniciar nueva partida'
       
       if (error.response?.status === 401) {
-        errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+        errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
         setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
       } else if (error.response) {
         errorMessage = error.response.data?.message || errorMessage
       } else if (error.request) {
-        errorMessage = '🔌 No se pudo conectar con el servidor.'
+        errorMessage = 'No se pudo conectar con el servidor.'
       }
       
       toast.error(errorMessage, { duration: 5000 })

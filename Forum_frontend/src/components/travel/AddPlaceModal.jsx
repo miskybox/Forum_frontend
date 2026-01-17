@@ -22,17 +22,17 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
   const [loading, setLoading] = useState(false)
 
   const statusOptions = [
-    { value: 'VISITED', label: `✅ ${t('travel.visited').toUpperCase()}`, icon: '✅' },
-    { value: 'WISHLIST', label: `⭐ ${t('travel.wantToGo').toUpperCase()}`, icon: '⭐' },
-    { value: 'LIVED', label: `🏠 ${t('travel.lived').toUpperCase()}`, icon: '🏠' },
-    { value: 'LIVING', label: `📍 ${t('travel.living').toUpperCase()}`, icon: '📍' }
+    { value: 'VISITED', label: t('travel.visited').toUpperCase(), color: 'bg-success' },
+    { value: 'WISHLIST', label: t('travel.wantToGo').toUpperCase(), color: 'bg-golden' },
+    { value: 'LIVED', label: t('travel.lived').toUpperCase(), color: 'bg-info' },
+    { value: 'LIVING', label: t('travel.living').toUpperCase(), color: 'bg-midnight' }
   ]
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!selectedCountry) {
-      toast.error(`⚠️ ${t('travel.selectCountry')}`)
+      toast.error(t('travel.selectCountry'))
       return
     }
 
@@ -51,10 +51,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
 
       if (editPlace) {
         await travelService.updatePlace(editPlace.id, placeData)
-        toast.success(`✅ ${t('travel.placeUpdated')}`)
+        toast.success(t('travel.placeUpdated'))
       } else {
         await travelService.addPlace(placeData)
-        toast.success(`✅ ${selectedCountry.flagEmoji} ${selectedCountry.name} ${t('travel.placeAdded')}`)
+        toast.success(`${selectedCountry.flagEmoji} ${selectedCountry.name} ${t('travel.placeAdded')}`)
       }
 
       onSuccess()
@@ -114,22 +114,22 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
       {/* Modal */}
       <div className="relative card w-full max-w-lg max-h-[90vh] overflow-y-auto bg-primary-light border-2 border-secondary">
         {/* Header */}
-        <div className="sticky top-0 bg-primary-dark border-b-2 border-secondary px-6 py-4">
+        <div className="sticky top-0 bg-midnight border-b-2 border-golden px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-text tracking-normal uppercase">
-                {editPlace ? `✏️ ${t('travel.editingPlace')}` : `🌍 ${t('travel.addingPlace')}`}
+              <h2 className="text-xl md:text-2xl font-bold text-golden tracking-normal uppercase">
+                {editPlace ? t('travel.editingPlace') : t('travel.addingPlace')}
               </h2>
-              <p className="text-text-light text-sm mt-1">
+              <p className="text-aqua text-sm mt-1">
                 {editPlace ? t('travel.modifyDetails') : t('travel.addNewDestination')}
               </p>
             </div>
             <button
               onClick={onClose}
-              className="text-text-lighter hover:text-accent text-2xl transition-colors"
+              className="text-aqua hover:text-golden text-2xl transition-colors w-8 h-8 flex items-center justify-center"
               aria-label={t('common.close')}
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   className="btn btn-outline px-4"
                   title={t('travel.remove')}
                 >
-                  ✕
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               )}
             </div>
@@ -229,10 +229,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: star })}
                   className={`text-3xl transition-transform hover:scale-110 ${
-                    star <= formData.rating ? 'grayscale-0' : 'grayscale opacity-30'
+                    star <= formData.rating ? 'text-golden' : 'text-gray-300'
                   }`}
                 >
-                  ⭐
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                 </button>
               ))}
               {formData.rating > 0 && (
@@ -269,8 +269,9 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
               className="w-5 h-5 rounded border-accent text-accent focus:ring-accent"
             />
-            <span className="text-text text-sm">
-              ❤️ {t('travel.markAsFavorite')}
+            <span className="text-text text-sm flex items-center gap-2">
+              <svg className="w-5 h-5 text-rose-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg>
+              {t('travel.markAsFavorite')}
             </span>
           </label>
 
@@ -282,7 +283,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
               className="flex-1 px-6 py-4 border-2 border-[#A0937D] text-[#5C4A3A] rounded-lg font-bold uppercase tracking-wide hover:bg-[#E7D4B5] hover:border-[#8B7E6A] transition-all cursor-pointer"
             >
               <span className="flex items-center justify-center gap-2">
-                <span>✕</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 <span>{t('common.cancel')}</span>
               </span>
             </button>
@@ -297,12 +298,12 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="animate-spin text-xl">🧭</span>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-midnight border-t-transparent" />
                   <span>{t('travel.saving')}</span>
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="text-xl">{editPlace ? '✏️' : '➕'}</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                   <span>{editPlace ? t('travel.update') : t('travel.add')}</span>
                 </span>
               )}

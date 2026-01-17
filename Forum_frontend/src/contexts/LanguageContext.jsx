@@ -242,7 +242,7 @@ const translations = {
         noMoreQuestions: 'No hay más preguntas disponibles',
         gameOverNoLives: '¡Game Over! Sin vidas restantes',
         incorrectLives: 'Incorrecto. Vidas:',
-        pointsEarned: 'puntos! 🔥 Racha:',
+        pointsEarned: 'puntos! Racha:',
       },
       result: {
         correct: '¡Correcto!',
@@ -250,7 +250,7 @@ const translations = {
         correctAnswerWas: 'La respuesta correcta era:',
         pointsLabel: 'Puntos',
         streakLabel: 'Racha',
-        funFact: '💡 Dato curioso:',
+        funFact: 'Dato curioso:',
         viewResults: 'Ver resultados',
       },
       summary: {
@@ -727,7 +727,7 @@ const translations = {
         noMoreQuestions: 'No more questions available',
         gameOverNoLives: 'Game Over! No lives remaining',
         incorrectLives: 'Incorrect. Lives:',
-        pointsEarned: 'points! 🔥 Streak:',
+        pointsEarned: 'points! Streak:',
       },
       result: {
         correct: 'Correct!',
@@ -735,7 +735,7 @@ const translations = {
         correctAnswerWas: 'The correct answer was:',
         pointsLabel: 'Points',
         streakLabel: 'Streak',
-        funFact: '💡 Fun fact:',
+        funFact: 'Fun fact:',
         viewResults: 'View results',
       },
       summary: {

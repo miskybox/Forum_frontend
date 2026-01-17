@@ -9,6 +9,11 @@
    Terracota: #a56732, #a66936
    Verde oscuro: #2c4a33, #37553b
    Beige oscuro: #e4ddce
+
+   NUEVOS COLORES VIBRANTES:
+   Golden: #E5A13E (amarillo/dorado)
+   Aqua: #CFE7E5 (azul verdoso claro)
+   Midnight: #213638 (azul oscuro profundo)
    ============================================ */
 
 :root {
@@ -21,6 +26,10 @@
   --forest: #37553b;
   --forest-dark: #2c4a33;
   --white: #FFFFFF;
+  /* Nuevos colores */
+  --golden: #E5A13E;
+  --aqua: #CFE7E5;
+  --midnight: #213638;
 }
 
 html {
@@ -343,21 +352,39 @@ button:focus {
 }
 
 .badge-teal {
-  background: rgba(76, 126, 117, 0.15);
-  color: #37553b;
+  background: rgba(76, 126, 117, 0.2);
+  color: #213638;
   border: 1px solid #4c7e75;
 }
 
 .badge-terracota {
-  background: rgba(165, 103, 50, 0.15);
-  color: #8B5A2B;
+  background: rgba(165, 103, 50, 0.2);
+  color: #6B4520;
   border: 1px solid #a56732;
 }
 
 .badge-green {
-  background: rgba(151, 179, 149, 0.3);
-  color: #2c4a33;
+  background: rgba(151, 179, 149, 0.35);
+  color: #1a3620;
   border: 1px solid #97b395;
+}
+
+.badge-golden {
+  background: rgba(229, 161, 62, 0.2);
+  color: #8B6914;
+  border: 1px solid #E5A13E;
+}
+
+.badge-aqua {
+  background: #CFE7E5;
+  color: #213638;
+  border: 1px solid #4c7e75;
+}
+
+.badge-midnight {
+  background: #213638;
+  color: #FFFFFF;
+  border: 1px solid #213638;
 }
 
 /* ============================================
@@ -432,3 +459,10 @@ button:focus {
 .bg-terracota { background-color: #a56732; }
 .bg-forest { background-color: #37553b; }
 .bg-green-light { background-color: #97b395; }
+.bg-golden { background-color: #E5A13E; }
+.bg-aqua { background-color: #CFE7E5; }
+.bg-midnight { background-color: #213638; }
+
+.text-golden { color: #E5A13E; }
+.text-aqua { color: #CFE7E5; }
+.text-midnight { color: #213638; }

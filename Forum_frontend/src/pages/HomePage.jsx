@@ -4,6 +4,7 @@ import CategoryList from '../components/categories/CategoryList'
 import ForumList from '../components/forums/ForumList'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
+import logo from '../assets/logoFV.png'
 
 /**
  * HomePage - Paleta del logo
@@ -70,19 +71,16 @@ const HomePage = () => {
       </div>
 
       {/* Hero Section - Adventure Explorer */}
-      <section className="relative py-20 md:py-32 px-4" aria-labelledby="hero-title">
+      <section className="relative py-10 md:py-16 px-4" aria-labelledby="hero-title">
         <div className="container mx-auto text-center relative z-10">
-          {/* Título principal estilo póster retro */}
+          {/* Logo y Subtítulo */}
           <div className="mb-8 animate-fade-in">
-            <div className="text-6xl md:text-7xl mb-6" aria-hidden="true">🗺️</div>
-            <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-2 text-text tracking-wide">
-              <span>Forum</span>
-              <span className="sr-only"> - </span>
-            </h1>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-4 text-accent tracking-wide">
-              <span className="sr-only">Comunidad de </span>Viajeros
-            </h1>
-            <p className="text-lg md:text-xl font-bold text-text tracking-wide mb-6">
+            <img
+              src={logo}
+              alt="Forum Viajeros"
+              className="h-40 md:h-56 lg:h-72 w-auto mx-auto mb-2"
+            />
+            <p className="text-base md:text-lg font-medium text-text-light tracking-wide mb-4">
               {t('home.demo')}
             </p>
             <div className="h-1 w-64 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-6"></div>
@@ -99,57 +97,24 @@ const HomePage = () => {
           <div className="flex flex-wrap justify-center gap-6 mb-16">
             <Link
               to="/forums"
-              className="bg-secondary text-white border-2 border-secondary-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-secondary-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-midnight text-golden border-2 border-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
-              <span className="flex items-center space-x-2">
-                <span className="text-2xl" aria-hidden="true">🏺</span>
-                <span>{t('home.exploreForum') || 'EXPLORAR FOROS'}</span>
-              </span>
+              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.exploreForum') || 'EXPLORAR FOROS'}</span>
             </Link>
 
             <Link
               to="/trivia"
-              className="bg-accent text-white border-2 border-accent-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-accent-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-golden text-midnight border-2 border-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:border-midnight hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
-              <span className="flex items-center space-x-2">
-                <span className="text-2xl" aria-hidden="true">🎯</span>
-                <span>{t('home.playTrivia') || 'JUGAR TRIVIA'}</span>
-              </span>
+              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.playTrivia') || 'JUGAR TRIVIA'}</span>
             </Link>
 
             <Link
               to="/travel"
-              className="bg-white text-text border-2 border-accent px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-aqua text-midnight border-2 border-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:border-midnight hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
-              <span className="flex items-center space-x-2">
-                <span className="text-2xl" aria-hidden="true">🗺️</span>
-                <span>{t('home.myMap') || 'MI MAPA'}</span>
-              </span>
+              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.myMap') || 'MI MAPA'}</span>
             </Link>
-          </div>
-
-          {/* Grid de secciones - Estilo mapa del tesoro */}
-          <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-xl mx-auto mb-6">
-            {[
-              { to: '/profile', icon: '👤', title: t('home.profile'), color: 'text-accent' },
-              { to: '/trivia', icon: '⚡', title: t('home.trivia'), color: 'text-secondary' },
-            ].map((world, index) => (
-              <Link
-                key={world.to}
-                to={world.to}
-                className="card group hover:scale-105 hover:border-secondary transition-all duration-300"
-              >
-                <div className="text-center p-4 md:p-6">
-                  <div className="text-4xl md:text-5xl mb-3 md:mb-4 transform group-hover:scale-110 transition-transform duration-300"
-                       style={{ animationDelay: `${index * 0.2}s` }}>
-                    {world.icon}
-                  </div>
-                  <h3 className={`text-xs md:text-sm lg:text-base ${world.color} font-bold tracking-normal uppercase`}>
-                    {world.title}
-                  </h3>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -157,16 +122,15 @@ const HomePage = () => {
       {/* Sección de Foros Recientes */}
       <section className="container mx-auto px-4 py-6 relative z-10">
         <div className="text-center mb-6">
-          <div className="text-4xl mb-2">📜</div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-2 tracking-normal uppercase">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-midnight mb-2 tracking-normal uppercase">
             {t('home.latestAdventures')}
           </h2>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-golden to-transparent"></div>
         </div>
 
         {loading ? (
           <div className="text-center py-20" role="status" aria-live="polite">
-            <div className="inline-block animate-spin text-6xl" aria-hidden="true">⏳</div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-golden border-t-transparent" aria-hidden="true"></div>
             <p className="mt-4 text-text font-bold text-lg tracking-normal">
               <span className="sr-only">Estado: </span>{t('home.loading')}
             </p>
@@ -203,7 +167,7 @@ const HomePage = () => {
           </div>
         )}
 
-        <div className="text-center mt-6">
+        <div className="text-center mt-6 mb-12">
           <Link
             to="/forums"
             className="inline-block bg-secondary border-2 border-secondary-dark text-white px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-secondary-dark transition-all duration-300 shadow-lg min-h-[44px] text-sm"
@@ -216,7 +180,6 @@ const HomePage = () => {
       {/* Sección de Categorías */}
       <section className="container mx-auto px-4 py-6 pb-24 relative z-10">
         <div className="text-center mb-6">
-          <div className="text-4xl mb-2">🌍</div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
             {t('home.continents')}
           </h2>

@@ -12,7 +12,7 @@ const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
   left: Math.random() * 100,
   top: Math.random() * 100,
   delay: Math.random() * 3,
-  icon: ['🧭', '✈️', '🗺️', '🌍'][Math.floor(Math.random() * 4)],
+  color: ['#E5A13E', '#CFE7E5', '#213638'][Math.floor(Math.random() * 3)],
 }))
 
 /**
@@ -271,7 +271,7 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-spin">🧭</div>
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-golden border-t-transparent rounded-full animate-spin"></div>
           <p className="text-light-muted">
             {t('profile.loading')}
           </p>
@@ -285,13 +285,15 @@ const ProfilePage = () => {
       <div className="min-h-screen py-10">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
           <div className="card text-center py-12 max-w-md mx-auto">
-            <div className="text-5xl mb-4">🔒</div>
+            <div className="w-16 h-16 mx-auto mb-4 bg-midnight/20 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
             <p className="text-light-muted mb-6">
               {t('profile.mustLogin')}
             </p>
-            <a href="/login" className="btn btn-primary">
+            <a href="/login" className="btn btn-primary bg-golden hover:bg-golden/90">
               <span className="flex items-center space-x-2">
-                <span>🚀</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
                 <span>{t('auth.loginButton')}</span>
               </span>
             </a>
@@ -362,22 +364,21 @@ const ProfilePage = () => {
             <div className="border-b-2 border-ocean-500/30">
               <nav className="flex -mb-px">
                 {[
-                  { id: 'profile', label: t('profile.tabs.profile'), icon: '👤' },
-                  { id: 'password', label: t('profile.tabs.password'), icon: '🔒' },
-                  { id: 'forums', label: t('profile.tabs.forums'), icon: '💬' },
-                  { id: 'posts', label: t('profile.tabs.posts'), icon: '📝' },
+                  { id: 'profile', label: t('profile.tabs.profile'), icon: null },
+                  { id: 'password', label: t('profile.tabs.password'), icon: null },
+                  { id: 'forums', label: t('profile.tabs.forums'), icon: null },
+                  { id: 'posts', label: t('profile.tabs.posts'), icon: null },
                 ].map(tab => (
                   <button
                     key={tab.id}
                     className={`py-4 px-6 text-sm font-medium transition-colors ${
                       activeTab === tab.id
-                        ? 'border-b-4 border-ocean-500 text-ocean-500'
-                        : 'text-light-muted hover:text-ocean-400'
+                        ? 'border-b-4 border-golden text-golden'
+                        : 'text-light-muted hover:text-golden'
                     }`}
                     onClick={() => setActiveTab(tab.id)}
                   >
                     <span className="flex items-center space-x-2">
-                      <span>{tab.icon}</span>
                       <span>{tab.label}</span>
                     </span>
                   </button>
@@ -489,19 +490,16 @@ const ProfilePage = () => {
                   <div className="flex justify-end pt-2">
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className="btn bg-golden hover:bg-golden-dark text-midnight"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center space-x-2">
-                          <span className="animate-spin">🧭</span>
+                          <span className="w-4 h-4 border-2 border-midnight border-t-transparent rounded-full animate-spin"></span>
                           <span>{t('profile.updating')}</span>
                         </span>
                       ) : (
-                        <span className="flex items-center space-x-2">
-                          <span>💾</span>
-                          <span>{t('profile.updateProfile')}</span>
-                        </span>
+                        <span>{t('profile.updateProfile')}</span>
                       )}
                     </button>
                   </div>
@@ -550,19 +548,16 @@ const ProfilePage = () => {
                   <div className="flex justify-end pt-2">
                     <button
                       type="submit"
-                      className="btn btn-primary"
+                      className="btn bg-midnight hover:bg-teal-dark text-white"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <span className="flex items-center space-x-2">
-                          <span className="animate-spin">🧭</span>
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                           <span>{t('profile.updating')}</span>
                         </span>
                       ) : (
-                        <span className="flex items-center space-x-2">
-                          <span>🔐</span>
-                          <span>{t('profile.updatePassword')}</span>
-                        </span>
+                        <span>{t('profile.updatePassword')}</span>
                       )}
                     </button>
                   </div>

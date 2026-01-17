@@ -16,9 +16,8 @@ const normalizeText = (value) => {
 }
 
 const isoToEmoji = (code) => {
-  if (!code || code.length !== 2) return '🌐'
-  const chars = code.toUpperCase().split('').map((char) => 0x1f1e6 + (char.charCodeAt(0) - 65))
-  return String.fromCodePoint(...chars)
+  if (!code || code.length !== 2) return '--'
+  return code.toUpperCase()
 }
 
 const getCountryName = (country) => {
@@ -64,43 +63,43 @@ const getCountryContinent = (country) => {
   )
 }
 
-const getContinentEmoji = (continent) => {
-  if (!continent) return '🌐'
+const getContinentLabel = (continent) => {
+  if (!continent) return 'GL'
   const normalized = normalizeText(continent)
   const cleaned = normalized.replace(/\b(del?|de|the|of)\b/g, ' ')
   const collapsed = cleaned.replace(/[^a-z0-9]/g, '')
 
-  const emojiMap = {
-    africa: '🌍',
-    americas: '🌎',
-    america: '🌎',
-    europa: '🏰',
-    europe: '🏰',
-    asia: '🌏',
-    oceania: '🏝️',
-    australia: '🏝️',
-    pacifico: '🏝️',
-    pacific: '🏝️',
-    antarctica: '🧊',
-    antartida: '🧊',
-    middleeast: '🕌',
-    mediooriente: '🕌',
-    mideast: '🕌',
-    oriente: '🕌',
-    westasia: '🕌',
-    otros: '🌐'
+  const labelMap = {
+    africa: 'AF',
+    americas: 'AM',
+    america: 'AM',
+    europa: 'EU',
+    europe: 'EU',
+    asia: 'AS',
+    oceania: 'OC',
+    australia: 'OC',
+    pacifico: 'OC',
+    pacific: 'OC',
+    antarctica: 'AN',
+    antartida: 'AN',
+    middleeast: 'ME',
+    mediooriente: 'ME',
+    mideast: 'ME',
+    oriente: 'ME',
+    westasia: 'ME',
+    otros: 'GL'
   }
 
-  if (emojiMap[collapsed]) {
-    return emojiMap[collapsed]
+  if (labelMap[collapsed]) {
+    return labelMap[collapsed]
   }
 
   const simplified = collapsed.replace(/(north|south|central|west|east|northern|southern|western|eastern|northwest|northeast|southwest|southeast|noroeste|noreste|suroeste|sureste|norte|sur|centro|occidental|oriental)/g, '')
-  if (simplified && emojiMap[simplified]) {
-    return emojiMap[simplified]
+  if (simplified && labelMap[simplified]) {
+    return labelMap[simplified]
   }
 
-  return '🌐'
+  return 'GL'
 }
 
 const getCountryIdentifier = (country, fallbackIndex) => {
@@ -117,11 +116,9 @@ const getCountryIdentifier = (country, fallbackIndex) => {
 }
 
 const getCountryEmoji = (country) => {
-  if (!country) return '🌐'
-  if (country.flagEmoji) return country.flagEmoji
-  if (country.emoji) return country.emoji
+  if (!country) return '--'
   const code = country.isoCode || country.code || country.alpha2Code || country.cca2
-  return isoToEmoji(code || '')
+  return code ? code.toUpperCase() : '--'
 }
 
 const buildCountry = (country, index) => {
@@ -218,7 +215,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
     map.set(ALL_CONTINENTS_KEY, {
       value: ALL_CONTINENTS_KEY,
       label: 'Todos los continentes',
-      emoji: '🌐',
+      abbr: 'GL',
       count: countries.length
     })
 
@@ -228,7 +225,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
       map.set(key, {
         value: key,
         label,
-        emoji: getContinentEmoji(label),
+        abbr: getContinentLabel(label),
         count: 0
       })
     })
@@ -238,7 +235,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
       const existing = map.get(key) || {
         value: key,
         label: country.continent || 'Otros',
-        emoji: getContinentEmoji(country.continent || 'Otros'),
+        abbr: getContinentLabel(country.continent || 'Otros'),
         count: 0
       }
       existing.label = existing.label || country.continent || 'Otros'
@@ -308,7 +305,9 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
           </>
         ) : (
           <>
-            <span className="text-xl text-secondary">🌍</span>
+            <span className="w-6 h-6 bg-golden rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </span>
             <span className="text-text-light text-sm">Selecciona un país...</span>
           </>
         )}
@@ -332,11 +331,11 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                         aria-pressed={isActive}
                         className={`flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
                           isActive
-                            ? 'bg-secondary/15 border-secondary text-text shadow-sm'
-                            : 'border-primary-dark text-text-light hover:border-secondary hover:text-secondary'
+                            ? 'bg-golden/20 border-golden text-midnight shadow-sm'
+                            : 'border-primary-dark text-text-light hover:border-golden hover:text-golden'
                         }`}
                       >
-                        <span>{option.emoji}</span>
+                        <span className="font-bold">{option.abbr}</span>
                         <span>{option.label}</span>
                         <span className="text-[10px] uppercase tracking-wide text-text-lighter">{option.count}</span>
                       </button>
@@ -350,7 +349,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                   Busca tu destino
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-light text-sm">🔍</span>
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                   <input
                     id="country-search"
                     type="text"
@@ -364,7 +363,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
 
               <div className="flex items-center justify-between text-[11px] text-text-light">
                 <span className="flex items-center gap-1">
-                  <span>{activeContinent?.emoji}</span>
+                  <span className="font-bold text-golden">{activeContinent?.abbr}</span>
                   <span>{activeContinent?.label}</span>
                 </span>
                 <span>
@@ -379,7 +378,9 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                 </div>
               ) : filteredCountries.length === 0 ? (
                 <div className="py-8 text-center text-text-light">
-                  <div className="text-3xl mb-2">🧭</div>
+                  <div className="w-10 h-10 mx-auto mb-3 bg-aqua rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  </div>
                   <p className="text-sm">No encontramos resultados. Prueba con otro nombre.</p>
                   {selectedContinent !== ALL_CONTINENTS_KEY && (
                     <button
@@ -416,14 +417,16 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                               : 'border-primary-dark bg-white hover:border-secondary hover:bg-secondary/5'
                           }`}
                         >
-                          <span className="text-2xl shrink-0">{country.emoji}</span>
+                          <span className="w-10 h-10 rounded-lg bg-midnight/10 flex items-center justify-center text-sm font-bold text-midnight shrink-0">{country.emoji}</span>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-text truncate">{country.name}</p>
                             <p className="text-xs text-text-light truncate">
                               {country.capital ? `${country.capital} • ${country.continent}` : country.continent}
                             </p>
                           </div>
-                          {isActive && <span className="text-secondary text-base">✓</span>}
+                          {isActive && (
+                            <svg className="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                          )}
                         </button>
                       )
                     })}

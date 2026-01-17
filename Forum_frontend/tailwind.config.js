@@ -49,14 +49,30 @@ export default {
 
         teal: {
           DEFAULT: '#4c7e75',
-          light: '#97b395',
-          dark: '#2c4a33',
+          light: '#CFE7E5',    // Nuevo - Azul verdoso claro
+          dark: '#213638',     // Nuevo - Azul oscuro profundo
         },
 
         forest: {
           DEFAULT: '#37553b',
           light: '#4c7e75',
           dark: '#2c4a33',
+        },
+
+        // NUEVOS COLORES VIBRANTES
+        golden: {
+          DEFAULT: '#E5A13E',  // Amarillo/Dorado vibrante
+          light: '#F0C060',
+          dark: '#C8891F',
+        },
+
+        aqua: {
+          DEFAULT: '#CFE7E5',  // Azul verdoso muy claro
+          dark: '#213638',     // Azul oscuro profundo
+        },
+
+        midnight: {
+          DEFAULT: '#213638',  // Azul muy oscuro
         },
 
         // Colores semánticos

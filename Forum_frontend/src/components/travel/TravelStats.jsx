@@ -56,26 +56,30 @@ const TravelStats = ({ stats }) => {
       {/* Grid de estadísticas */}
       <div className="grid grid-cols-2 gap-3 mb-5">
         <StatCard
-          icon="🌍"
+          icon={null}
           value={stats.countriesVisited || 0}
           label={t('travel.countriesVisited')}
           subLabel="/195"
+          bgColor="bg-golden/20"
         />
         <StatCard
-          icon="🏙️"
+          icon={null}
           value={stats.citiesVisited || 0}
           label={t('travel.cities')}
+          bgColor="bg-aqua/30"
         />
         <StatCard
-          icon="🌎"
+          icon={null}
           value={stats.continentsVisited || 0}
           label={t('travel.continents')}
           subLabel="/7"
+          bgColor="bg-midnight/20"
         />
         <StatCard
-          icon="📍"
+          icon={null}
           value={stats.countriesWishlist || 0}
           label={t('travel.inWishlist')}
+          bgColor="bg-golden/20"
         />
       </div>
 
@@ -87,9 +91,9 @@ const TravelStats = ({ stats }) => {
             {stats.continentsList.map(continent => (
               <span
                 key={continent}
-                className="px-3 py-1 bg-secondary rounded-full text-sm text-text font-medium"
+                className="px-3 py-1 bg-golden/30 rounded-full text-sm text-text font-medium border border-golden"
               >
-                {getContinentEmoji(continent)} {continent}
+                {continent}
               </span>
             ))}
           </div>
@@ -121,9 +125,9 @@ const TravelStats = ({ stats }) => {
 
       {/* Lugar favorito */}
       {stats.favoritePlace && (
-        <div className="mt-4 pt-4 border-t border-accent">
+        <div className="mt-4 pt-4 border-t border-accent flex items-center gap-2">
           <span className="text-text-light text-sm font-semibold">{t('travel.favoritePlace')}</span>
-          <span className="font-bold text-text">❤️ {stats.favoritePlace}</span>
+          <span className="font-bold text-accent">{stats.favoritePlace}</span>
         </div>
       )}
     </div>
@@ -133,9 +137,9 @@ const TravelStats = ({ stats }) => {
 /**
  * Tarjeta individual de estadística
  */
-const StatCard = ({ icon, value, label, subLabel }) => (
-  <div className="bg-primary-light rounded-xl p-3 text-center backdrop-blur-sm border border-accent overflow-hidden">
-    <span className="text-xl" aria-hidden="true">{icon}</span>
+const StatCard = ({ icon, value, label, subLabel, bgColor = 'bg-primary-light' }) => (
+  <div className={`${bgColor} rounded-xl p-3 text-center backdrop-blur-sm border border-accent overflow-hidden`}>
+    {icon && <span className="text-xl" aria-hidden="true">{icon}</span>}
     <div className="text-xl font-bold mt-1 text-text">
       {value}
       {subLabel && <span className="text-xs font-normal text-text-light">{subLabel}</span>}
@@ -145,25 +149,26 @@ const StatCard = ({ icon, value, label, subLabel }) => (
 )
 
 StatCard.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   value: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
-  subLabel: PropTypes.string
+  subLabel: PropTypes.string,
+  bgColor: PropTypes.string
 }
 
 /**
- * Obtiene emoji según continente
+ * Obtiene abreviatura según continente
  */
-const getContinentEmoji = (continent) => {
-  const emojis = {
-    'Europa': '🇪🇺',
-    'América': '🌎',
-    'Asia': '🌏',
-    'África': '🌍',
-    'Oceanía': '🏝️',
-    'Antártida': '🧊'
+const getContinentLabel = (continent) => {
+  const labels = {
+    'Europa': 'EU',
+    'América': 'AM',
+    'Asia': 'AS',
+    'África': 'AF',
+    'Oceanía': 'OC',
+    'Antártida': 'AN'
   }
-  return emojis[continent] || '🌐'
+  return labels[continent] || continent.slice(0, 2).toUpperCase()
 }
 
 TravelStats.propTypes = {

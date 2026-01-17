@@ -40,17 +40,16 @@ const Footer = () => {
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/categories', label: t('footer.continents'), icon: '🌍' },
-                { to: '/forums', label: t('footer.forums'), icon: '💬' },
-                { to: '/travel', label: t('footer.myMap'), icon: '🗺️' },
-                { to: '/trivia', label: 'Trivia', icon: '🎯' },
+                { to: '/categories', label: t('footer.continents') },
+                { to: '/forums', label: t('footer.forums') },
+                { to: '/travel', label: t('footer.myMap') },
+                { to: '/trivia', label: 'Trivia' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center group min-h-[36px] font-medium"
                   >
-                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
@@ -65,16 +64,15 @@ const Footer = () => {
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/about', label: t('footer.about'), icon: 'ℹ️' },
-                { to: '/contact', label: t('footer.contact'), icon: '📧' },
-                { to: '/help', label: t('footer.help'), icon: '❓' },
+                { to: '/about', label: t('footer.about') },
+                { to: '/contact', label: t('footer.contact') },
+                { to: '/help', label: t('footer.help') },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center group min-h-[36px] font-medium"
                   >
-                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
