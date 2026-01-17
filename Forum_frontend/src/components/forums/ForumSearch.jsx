@@ -15,10 +15,11 @@ const ForumSearch = ({ onSearch, initialValue = '' }) => {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md">
       <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-golden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         <input
           type="text"
-          className="input pr-12 w-full border-adventure-gold"
-          placeholder="🔍 BUSCAR FOROS..."
+          className="input pl-10 pr-12 w-full border-adventure-gold"
+          placeholder="BUSCAR FOROS..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           aria-label="Buscar foros"
@@ -28,7 +29,7 @@ const ForumSearch = ({ onSearch, initialValue = '' }) => {
           className="absolute inset-y-0 right-0 pr-3 flex items-center hover:scale-110 transition-transform z-10"
           aria-label="Buscar"
         >
-          <span className="text-adventure-gold text-xl">🔍</span>
+          <svg className="w-5 h-5 text-golden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         </button>
       </div>
     </form>

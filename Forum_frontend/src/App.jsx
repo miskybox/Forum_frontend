@@ -7,6 +7,7 @@ import Footer from './components/common/Footer';
 import { useTheme } from './contexts/ThemeContext';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
+// LocalStorageDebug removed - was only for development debugging
 import "./index.css";
 
 // Páginas principales
@@ -21,7 +22,7 @@ import ForumCreatePage from './pages/ForumCreatePage';
 import ForumEditPage from './pages/ForumEditPage';
 import PostCreatePage from './pages/PostCreatePage';
 import PostEditPage from './pages/PostEditPage';
-import PostDetailPage from './pages/PostDeatilsPage';
+import PostDetailPage from './pages/PostDetailsPage';
 
 // Páginas de Mapa de Viajes
 import TravelMapPage from './pages/travel/TravelMapPage';
@@ -159,6 +160,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+
       {/* Toaster con accesibilidad mejorada */}
       <Toaster 
         position="top-center"

@@ -60,7 +60,19 @@
       "Bash(xargs:*)",
       "Bash(./mvnw.cmd:*)",
       "Bash(git rm:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-flow.ps1)",
+      "Bash(for file in BlogHomePage.jsx BlogPostPage.jsx BlogCategoryPage.jsx BlogSearchPage.jsx)",
+      "Bash(do sed -i 's/bg-white/bg-earth-50/g' \"$file\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-flow-auto.ps1)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File test-forum-crud-complete.ps1)",
+      "Bash(./mvnw clean:*)",
+      "Bash(./mvnw test:*)",
+      "Bash(./mvnw compile:*)",
+      "Bash(git -C d:/forum-viajeros_fs status)",
+      "Bash(git -C d:/forum-viajeros_fs/Forum_backend status)",
+      "Bash(git -C d:/forum-viajeros_fs/Forum_backend push origin feature/fix)",
+      "Bash(git -C d:/forum-viajeros_fs push origin feature/fix)"
     ],
     "deny": [],
     "ask": []

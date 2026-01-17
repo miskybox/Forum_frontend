@@ -72,7 +72,7 @@ const CommentItem = ({ comment, onUpdate, onDelete }) => {
   }
   
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm border border-earth-100">
+    <div className="bg-earth-50 p-4 rounded-lg shadow-sm border border-earth-100">
       <div className="flex items-start space-x-3">
         {/* Avatar del autor */}
         <div className="flex-shrink-0">

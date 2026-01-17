@@ -33,3 +33,7 @@ target/
 uploads/
 test-results/
 nul
+
+# Archivos temporales Claude
+tmpclaude-*
+cookies.txt

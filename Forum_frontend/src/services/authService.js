@@ -1,21 +1,28 @@
 import api from '../utils/api'
 
+/**
+ * Authentication service using HttpOnly cookies.
+ * Tokens are stored in secure HttpOnly cookies by the backend,
+ * not accessible via JavaScript for XSS protection.
+ */
 const authService = {
+  // Track authentication state (since we can't read HttpOnly cookies)
+  _isAuthenticated: false,
 
   async register(userData) {
     try {
-      console.log('Enviando datos de registro:', userData)
       const response = await api.post('/auth/register', userData)
-      console.log('Respuesta del registro:', response.data)
       return response.data
     } catch (error) {
-      console.error('Error en registro - Detalles completos:', {
-        message: error.message,
-        response: error.response,
-        status: error.response?.status,
-        data: error.response?.data,
-        request: error.request
-      })
+      if (import.meta.env.DEV) {
+        console.error('Error en registro - Detalles completos:', {
+          message: error.message,
+          response: error.response,
+          status: error.response?.status,
+          data: error.response?.data,
+          request: error.request
+        })
+      }
       // Asegurar que el error se propague con toda la información
       if (error.response) {
         // Error del servidor - mantener el error original
@@ -32,77 +39,118 @@ const authService = {
     }
   },
 
-
   async login(credentials) {
     try {
-      console.log('Enviando solicitud de login:', credentials)
+      console.log('🔐 [authService] Enviando petición de login...')
+      
+      // Cookies are automatically set by the browser from Set-Cookie headers
       const response = await api.post('/auth/login', credentials)
       
-      const { accessToken, refreshToken } = response.data
-      
-      console.log('Login exitoso, recibidos tokens')
-      
-      localStorage.setItem('token', accessToken)
-      localStorage.setItem('refreshToken', refreshToken)
-      
+      console.log('📦 [authService] Respuesta de login:', {
+        status: response.status,
+        authenticated: response.data.authenticated,
+        message: response.data.message
+      })
+
+      // Store auth state locally (tokens are in HttpOnly cookies)
+      if (response.data.authenticated) {
+        this._isAuthenticated = true
+        localStorage.setItem('isAuthenticated', 'true')
+        console.log('✅ [authService] Estado de autenticación guardado')
+      } else {
+        console.warn('⚠️ [authService] La respuesta no indica autenticación exitosa')
+      }
+
       return response.data
     } catch (error) {
-      console.error('Error en login:', error.response?.data || error.message)
+      console.error('❌ [authService] Error en login:', {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        hasResponse: !!error.response,
+        hasRequest: !!error.request
+      })
+      
+      // Si es error de red (no hay respuesta), agregar info útil
+      if (!error.response && error.request) {
+        console.error('🔌 [authService] Error de red - el servidor no respondió')
+        console.error('📍 URL intentada:', error.config?.url)
+        console.error('📍 Base URL:', error.config?.baseURL)
+      }
+      
       throw error
     }
   },
 
   async getCurrentUser() {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No hay token disponible');
-      }
-      
-      console.log('Obteniendo usuario actual con token disponible');
+      // Token is automatically sent via cookie
       const response = await api.get('/users/me')
+      this._isAuthenticated = true
+      localStorage.setItem('isAuthenticated', 'true')
       return response.data
     } catch (error) {
-      console.error('Error al obtener usuario actual:', error.response?.data || error.message)
+      if (import.meta.env.DEV) {
+        console.error('Error al obtener usuario actual:', error.response?.data || error.message)
+      }
+      // If we get 401, clear auth state
+      if (error.response?.status === 401) {
+        this._isAuthenticated = false
+        localStorage.removeItem('isAuthenticated')
+      }
       throw error
     }
   },
 
   async logout() {
     try {
+      // Backend will clear HttpOnly cookies
       await api.post('/auth/logout')
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
     } catch (error) {
-      console.error('Error en logout:', error.response?.data || error.message)
-
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
-      throw error
+      if (import.meta.env.DEV) {
+        console.error('Error en logout:', error.response?.data || error.message)
+      }
+    } finally {
+      // Always clear local auth state
+      this._isAuthenticated = false
+      localStorage.removeItem('isAuthenticated')
     }
   },
 
-  async refreshToken(refreshToken) {
+  async refreshToken() {
     try {
-      const response = await api.post('/auth/refresh', { refreshToken })
-      
-      const { accessToken, refreshToken: newRefreshToken } = response.data
-      
-  
-      localStorage.setItem('token', accessToken)
-      localStorage.setItem('refreshToken', newRefreshToken)
-      
+      // Refresh token is sent automatically via cookie
+      const response = await api.post('/auth/refresh', {})
+
+      if (response.data.authenticated) {
+        this._isAuthenticated = true
+        localStorage.setItem('isAuthenticated', 'true')
+      }
+
       return response.data
     } catch (error) {
-      console.error('Error al renovar token:', error.response?.data || error.message)
+      if (import.meta.env.DEV) {
+        console.error('Error al renovar token:', error.response?.data || error.message)
+      }
+      this._isAuthenticated = false
+      localStorage.removeItem('isAuthenticated')
       throw error
     }
   },
 
-
   isAuthenticated() {
-    return !!localStorage.getItem('token')
+    // Check local state (actual auth is verified by cookies sent to backend)
+    return this._isAuthenticated || localStorage.getItem('isAuthenticated') === 'true'
+  },
+
+  // Initialize auth state from localStorage on app load
+  initAuthState() {
+    this._isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
   }
 }
+
+// Initialize on module load
+authService.initAuthState()
 
 export default authService

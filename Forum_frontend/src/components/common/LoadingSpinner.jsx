@@ -2,39 +2,35 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 /**
- * LoadingSpinner con estilo retro
+ * LoadingSpinner con estilo moderno sin emojis
  */
 const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
   let dimensions
-  let icon
   
   switch (size) {
     case 'small':
-      dimensions = 'h-6 w-6'
-      icon = '🏺'
+      dimensions = 'h-6 w-6 border-2'
       break
     case 'large':
-      dimensions = 'h-16 w-16'
-      icon = '🏺'
+      dimensions = 'h-16 w-16 border-4'
       break
     case 'medium':
     default:
-      dimensions = 'h-10 w-10'
-      icon = '🏺'
+      dimensions = 'h-10 w-10 border-3'
       break
   }
 
-  // Iconos por tema
-  const themeIcons = {
-    adventure: '🏺',
-    future: '⚡',
-    jungle: '🌴',
-    tech: '🤖',
-    space: '👽',
-    default: '⚡'
+  // Colores por tema
+  const themeColors = {
+    adventure: 'border-golden',
+    future: 'border-aqua',
+    jungle: 'border-green-500',
+    tech: 'border-midnight',
+    space: 'border-purple-500',
+    default: 'border-golden'
   }
 
-  const displayIcon = themeIcons[theme] || icon
+  const colorClass = themeColors[theme] || themeColors.default
 
   return (
     <output 
@@ -43,11 +39,9 @@ const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
       aria-busy="true"
     >
       <div 
-        className={`${dimensions} text-4xl md:text-6xl animate-spin`}
+        className={`${dimensions} ${colorClass} border-t-transparent rounded-full animate-spin`}
         aria-hidden="true"
-      >
-        {displayIcon}
-      </div>
+      />
       <p className="mt-4 text-adventure-gold font-retro text-xs uppercase tracking-normal opacity-70">
         <span className="sr-only">Estado: </span>CARGANDO...
       </p>

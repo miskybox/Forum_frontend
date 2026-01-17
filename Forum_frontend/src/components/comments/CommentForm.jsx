@@ -64,7 +64,7 @@ const CommentForm = ({ postId, onCommentAdded }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-white rounded-lg p-4 shadow mb-4">
+      <div className="bg-earth-50 rounded-lg p-4 shadow mb-4">
         <p className="text-center text-gray-600">
           Debes{' '}
           <a href="/login" className="text-ocean-600 hover:underline">
@@ -77,7 +77,7 @@ const CommentForm = ({ postId, onCommentAdded }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow mb-6">
+    <div className="bg-earth-50 rounded-lg p-4 shadow mb-6">
       <h3 className="text-lg font-semibold mb-3">Deja un comentario</h3>
       <form onSubmit={handleSubmit}>
         <textarea

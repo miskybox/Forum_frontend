@@ -197,7 +197,7 @@ const PostForm = ({ postId = null, forumId = null }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-earth-50 rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold mb-6">
         {postId ? 'Editar publicación' : 'Crear nueva publicación'}
       </h2>

@@ -3,22 +3,116 @@
  * https://restcountries.com/
  * 
  * Esta API proporciona información detallada sobre todos los países del mundo
+ * Incluye fallback offline cuando la API no está disponible
  */
+
+import { fallbackCountries } from '../data/fallbackCountries'
 
 const API_BASE_URL = 'https://restcountries.com/v3.1'
 
+// URLs alternativas de la API (mirrors y versiones alternativas)
+const FALLBACK_URLS = [
+  'https://restcountries.com/v3.1',
+  'https://restcountries.eu/rest/v2' // Versión anterior que podría estar disponible
+]
+
+// Cache para almacenar los países y evitar múltiples llamadas
+let countriesCache = null
+let cacheTimestamp = null
+const CACHE_DURATION = 10 * 60 * 1000 // 10 minutos (aumentado)
+
+// Flag para evitar múltiples intentos simultáneos
+let isFetching = false
+let fetchPromise = null
+
 /**
  * Obtener todos los países con información básica
+ * Incluye fallback offline si la API falla
+ * Con reintentos automáticos y mejor manejo de errores
  */
 export const getAllCountries = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/all?fields=name,capital,flags,currencies,languages,population,area,region,subregion,cca2,cca3,borders,timezones,latlng`)
-    if (!response.ok) throw new Error('Error fetching countries')
-    return await response.json()
-  } catch (error) {
-    console.error('RestCountries API error:', error)
-    return []
+  // Verificar si tenemos cache válido
+  if (countriesCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
+    console.log('📦 Usando países del cache')
+    return countriesCache
   }
+
+  // Si ya estamos haciendo fetch, esperar a que termine
+  if (isFetching && fetchPromise) {
+    console.log('⏳ Esperando fetch en progreso...')
+    return fetchPromise
+  }
+
+  isFetching = true
+  
+  fetchPromise = (async () => {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout (reducido)
+
+      const response = await fetch(
+        `${API_BASE_URL}/all?fields=name,capital,flags,currencies,languages,population,area,region,subregion,cca2,cca3,borders,timezones,latlng`,
+        { 
+          signal: controller.signal,
+          mode: 'cors',
+          cache: 'default'
+        }
+      )
+      clearTimeout(timeoutId)
+
+      if (!response.ok) throw new Error('Error fetching countries')
+      
+      const data = await response.json()
+      
+      // Guardar en cache
+      countriesCache = data
+      cacheTimestamp = Date.now()
+      
+      console.log('✅ Países cargados desde API:', data.length)
+      return data
+    } catch (error) {
+      console.warn('⚠️ RestCountries API no disponible:', error.message)
+      
+      // Si tenemos cache aunque esté expirado, usarlo
+      if (countriesCache && countriesCache.length > 0) {
+        console.log('📦 Usando cache expirado como fallback')
+        return countriesCache
+      }
+      
+      // Usar datos offline de fallback - transformados al formato de la API
+      console.log('🔌 Usando datos offline de fallback (40+ países)')
+      const transformedFallback = transformFallbackData(fallbackCountries)
+      countriesCache = transformedFallback
+      cacheTimestamp = Date.now()
+      return transformedFallback
+    } finally {
+      isFetching = false
+      fetchPromise = null
+    }
+  })()
+
+  return fetchPromise
+}
+
+/**
+ * Transforma los datos de fallback al formato esperado por la API
+ */
+const transformFallbackData = (fallbackData) => {
+  return fallbackData.map(country => ({
+    ...country,
+    // Asegurar que los campos críticos existen
+    name: country.name || { common: 'Unknown', official: 'Unknown' },
+    capital: country.capital || [],
+    flags: country.flags || { svg: '', png: '' },
+    currencies: country.currencies || {},
+    languages: country.languages || {},
+    population: country.population || 0,
+    area: country.area || 0,
+    region: country.region || 'Unknown',
+    subregion: country.subregion || '',
+    cca2: country.cca2 || 'XX',
+    cca3: country.cca3 || 'XXX'
+  }))
 }
 
 /**
@@ -66,22 +160,27 @@ export const searchCountries = async (name) => {
 
 /**
  * Generar preguntas de trivia dinámicamente usando la API
+ * Con mejor manejo de errores y fallback
  */
 export const generateTriviaQuestions = async (count = 10, usedQuestionIds = []) => {
   try {
     const countries = await getAllCountries()
-    if (countries.length === 0) return []
+    
+    if (!countries || countries.length === 0) {
+      console.warn('⚠️ No se pudieron cargar países para trivia')
+      return []
+    }
 
+    console.log(`🎮 Generando ${count} preguntas de trivia con ${countries.length} países`)
+    
     const questions = []
     const questionTypes = ['capital', 'flag', 'currency', 'language', 'population', 'region', 'area']
     const usedCombinations = new Set(usedQuestionIds)
 
-    // Filtrar países con datos completos
+    // Filtrar países con datos completos (más permisivo para fallback)
     const validCountries = countries.filter(c => 
-      c.capital?.length > 0 && 
-      c.currencies && 
-      c.languages &&
-      c.name?.common
+      c.name?.common && 
+      (c.capital?.length > 0 || c.flags?.svg || c.region)
     )
 
     let attempts = 0

@@ -12,29 +12,67 @@ export default {
         retro: ['Montserrat', 'Arial Black', 'sans-serif'],
       },
       colors: {
-        // PALETA ÚNICA PARA TODA LA WEB - Sin modo oscuro
+        // PALETA EXACTA DEL LOGO - Forum Viajeros
         primary: {
-          DEFAULT: '#F6E6CB',  // Crema claro - Fondo principal
-          light: '#FEFDFB',    // Casi blanco
-          dark: '#E7D4B5',     // Beige claro - Fondos secundarios
+          DEFAULT: '#ece4d8',  // Beige claro - Fondo principal (exacto del logo)
+          light: '#FFFFFF',    // Blanco puro - Tarjetas
+          dark: '#e4ddce',     // Beige más oscuro - Fondos secundarios
         },
 
         secondary: {
-          DEFAULT: '#B6C7AA',  // Verde suave - Acentos
-          light: '#C5D4BA',    // Verde más claro
-          dark: '#A0B596',     // Verde más oscuro
+          DEFAULT: '#4c7e75',  // Teal oscuro - Botones principales
+          light: '#97b395',    // Verde suave - Acentos claros
+          dark: '#2c4a33',     // Verde muy oscuro
         },
 
         accent: {
-          DEFAULT: '#A0937D',  // Marrón tierra - Textos y bordes
-          light: '#B5A992',    // Marrón claro
-          dark: '#8B7E6A',     // Marrón oscuro
+          DEFAULT: '#a56732',  // Terracota oscuro - Acentos principales
+          light: '#a66936',    // Terracota medio
+          dark: '#8B5A2B',     // Terracota más oscuro
         },
 
         text: {
-          DEFAULT: '#2D2A26',  // Texto principal oscuro
-          light: '#5C4A3A',    // Texto secundario
-          lighter: '#8B7E6A',  // Texto terciario
+          darkest: '#2c4a33',  // Verde muy oscuro - Textos importantes
+          darker: '#37553b',   // Verde oscuro
+          dark: '#37553b',     // Verde oscuro
+          DEFAULT: '#37553b',  // Texto principal - Verde oscuro del logo
+          light: '#4c7e75',    // Texto secundario - Teal
+          lighter: '#6B8E6B',  // Texto terciario
+        },
+
+        // Alias para facilidad de uso
+        terracota: {
+          DEFAULT: '#a56732',
+          light: '#a66936',
+          dark: '#8B5A2B',
+        },
+
+        teal: {
+          DEFAULT: '#4c7e75',
+          light: '#CFE7E5',    // Nuevo - Azul verdoso claro
+          dark: '#213638',     // Nuevo - Azul oscuro profundo
+        },
+
+        forest: {
+          DEFAULT: '#37553b',
+          light: '#4c7e75',
+          dark: '#2c4a33',
+        },
+
+        // NUEVOS COLORES VIBRANTES
+        golden: {
+          DEFAULT: '#E5A13E',  // Amarillo/Dorado vibrante
+          light: '#F0C060',
+          dark: '#C8891F',
+        },
+
+        aqua: {
+          DEFAULT: '#CFE7E5',  // Azul verdoso muy claro
+          dark: '#213638',     // Azul oscuro profundo
+        },
+
+        midnight: {
+          DEFAULT: '#213638',  // Azul muy oscuro
         },
 
         // Colores semánticos

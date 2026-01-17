@@ -9,7 +9,7 @@ const TriviaLeaderboardPage = () => {
   const { user } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-midnight via-teal-dark to-midnight">
       {/* Header */}
       <div className="bg-black/20 py-6">
         <div className="container mx-auto px-4">
@@ -17,17 +17,17 @@ const TriviaLeaderboardPage = () => {
             <div>
               <Link 
                 to="/trivia"
-                className="text-ocean-300 hover:text-light transition-colors text-sm mb-2 inline-block"
+                className="text-aqua hover:text-white transition-colors text-sm mb-2 inline-block"
               >
                 ← Volver al menú
               </Link>
-              <h1 className="text-2xl font-bold text-light">🏆 Ranking de Trivia</h1>
+              <h1 className="text-2xl font-bold text-white">Ranking de Trivia</h1>
             </div>
             <Link
               to="/trivia"
-              className="px-6 py-3 bg-ocean-600 text-white rounded-xl font-bold hover:bg-ocean-700 transition-colors"
+              className="px-6 py-3 bg-golden text-midnight rounded-xl font-bold hover:bg-golden-dark transition-colors"
             >
-              🎮 Jugar ahora
+              Jugar ahora
             </Link>
           </div>
         </div>

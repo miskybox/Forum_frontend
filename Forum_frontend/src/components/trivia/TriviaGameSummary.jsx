@@ -35,16 +35,14 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
             {[...Array(20)].map((_, i) => (
               <span
                 key={i}
-                className="absolute animate-bounce text-2xl"
+                className="absolute animate-bounce w-3 h-3 rounded-full bg-golden/60"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 2}s`,
                   animationDuration: `${2 + Math.random() * 2}s`
                 }}
-              >
-                ✨
-              </span>
+              />
             ))}
           </div>
         )}
@@ -54,8 +52,8 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
           <p className="text-white text-xl mt-2 font-bold">{message}</p>
 
           {game.perfectGame && (
-            <div className="mt-4 bg-white/20 rounded-full px-4 py-2 inline-block">
-              <span className="text-white font-bold">🏆 {t('trivia.summary.perfectGame')}</span>
+            <div className="mt-4 bg-golden/30 rounded-full px-4 py-2 inline-block border border-golden">
+              <span className="text-white font-bold">{t('trivia.summary.perfectGame')}</span>
             </div>
           )}
         </div>
@@ -65,24 +63,28 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
       <div className="p-6">
         <div className="grid grid-cols-2 gap-4 mb-6">
           <StatBox
-            icon="🎯"
+            icon={null}
             value={game.score}
             label={t('trivia.score')}
+            bgColor="bg-golden/20"
           />
           <StatBox
-            icon="✅"
+            icon={null}
             value={`${game.correctAnswers}/${game.totalQuestions}`}
             label={t('trivia.summary.correct')}
+            bgColor="bg-aqua/30"
           />
           <StatBox
-            icon="📊"
+            icon={null}
             value={`${accuracy.toFixed(0)}%`}
             label={t('trivia.precision')}
+            bgColor="bg-midnight/30"
           />
           <StatBox
-            icon="⏱️"
+            icon={null}
             value={formatTime(game.totalTimeSeconds)}
             label={t('trivia.summary.time')}
+            bgColor="bg-golden/20"
           />
         </div>
 
@@ -108,16 +110,18 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
         <div className="flex flex-col gap-3">
           <button
             onClick={onPlayAgain}
-            className="w-full py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-xl font-bold hover:from-secondary-dark hover:to-accent-dark transition-colors"
+            className="w-full py-3 bg-gradient-to-r from-secondary to-accent text-white rounded-xl font-bold hover:from-secondary-dark hover:to-accent-dark transition-colors flex items-center justify-center gap-2"
           >
-            🎮 {t('trivia.summary.playAgainButton')}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            {t('trivia.summary.playAgainButton')}
           </button>
 
           <Link
             to="/trivia/leaderboard"
-            className="w-full py-3 border-2 border-secondary rounded-xl font-bold text-text hover:bg-secondary-light transition-colors text-center"
+            className="w-full py-3 border-2 border-secondary rounded-xl font-bold text-text hover:bg-secondary-light transition-colors text-center flex items-center justify-center gap-2"
           >
-            🏆 {t('trivia.summary.viewRanking')}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+            {t('trivia.summary.viewRanking')}
           </Link>
 
           <Link
@@ -132,18 +136,19 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
   )
 }
 
-const StatBox = ({ icon, value, label }) => (
-  <div className="bg-secondary-light rounded-xl p-4 text-center">
-    <span className="text-2xl">{icon}</span>
+const StatBox = ({ icon, value, label, bgColor = 'bg-secondary-light' }) => (
+  <div className={`${bgColor} rounded-xl p-4 text-center`}>
+    {icon && <span className="text-2xl">{icon}</span>}
     <p className="text-2xl font-bold text-text mt-1">{value}</p>
     <p className="text-text-light text-sm font-semibold">{label}</p>
   </div>
 )
 
 StatBox.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  bgColor: PropTypes.string
 }
 
 const formatTime = (seconds) => {
