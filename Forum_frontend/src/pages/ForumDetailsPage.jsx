@@ -83,7 +83,7 @@ const ForumDetailsPage = () => {
   const canEditForum = isForumAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
 
   const EmptyPostsMessage = () => (
-    <div className="text-center py-12 card border-ocean-600 hover:border-ocean-500 transition-colors">
+    <div className="text-center py-12 px-6 card border-ocean-600 hover:border-ocean-500 transition-colors">
       <div className="text-5xl mb-4">🗺️</div>
       <p className="text-light-soft font-bold text-base uppercase tracking-normal mb-6">
         {t('forums.noPosts')}
@@ -91,21 +91,21 @@ const ForumDetailsPage = () => {
       {isAuthenticated ? (
         <Link
           to={`/forums/${id}/posts/create`}
-          className="btn-primary inline-block"
+          className="btn-primary inline-block px-8 py-4 rounded-lg shadow-md hover:shadow-lg transition-all"
         >
-          <span className="flex items-center space-x-2">
+          <span className="flex items-center justify-center gap-3">
             <span>✍️</span>
-            <span>{t('forums.beFirst')}</span>
+            <span className="whitespace-nowrap">{t('forums.beFirst')}</span>
           </span>
         </Link>
       ) : (
         <Link
           to="/login"
-          className="inline-block bg-dark border-2 border-terracotta-600 text-terracotta-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-terracotta-600 hover:text-dark transition-all duration-300"
+          className="inline-block bg-dark border-2 border-terracotta-600 text-terracotta-500 px-8 py-4 rounded-lg font-bold uppercase tracking-normal hover:bg-terracotta-600 hover:text-dark transition-all duration-300 shadow-md"
         >
-          <span className="flex items-center space-x-2">
+          <span className="flex items-center justify-center gap-3">
             <span>🔐</span>
-            <span>{t('nav.login')}</span>
+            <span className="whitespace-nowrap">{t('nav.login')}</span>
           </span>
         </Link>
       )}
@@ -236,11 +236,11 @@ const ForumDetailsPage = () => {
             {isAuthenticated && (
               <Link
                 to={`/forums/${id}/posts/create`}
-                className="btn-primary"
+                className="btn-primary px-8 py-4 rounded-lg shadow-md hover:shadow-lg transition-all"
               >
-                <span className="flex items-center space-x-2">
+                <span className="flex items-center justify-center gap-3">
                   <span>➕</span>
-                  <span>{t('forums.newPost')}</span>
+                  <span className="whitespace-nowrap">{t('forums.newPost')}</span>
                 </span>
               </Link>
             )}

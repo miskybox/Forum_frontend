@@ -12,12 +12,12 @@ const TravelStats = ({ stats }) => {
   const progressPercentage = stats.worldPercentageByCountries || 0
 
   return (
-    <div className="bg-gradient-to-br from-primary-dark to-secondary-light rounded-2xl p-6 text-text shadow-xl border-2 border-accent">
+    <div className="bg-gradient-to-br from-primary-dark to-secondary-light rounded-2xl p-5 text-text shadow-xl border-2 border-accent overflow-hidden">
       {/* Header con nivel */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-2xl font-bold text-text">{stats.username}</h3>
-          <p className="text-text-light font-semibold">{stats.travelerLevel}</p>
+      <div className="flex items-center justify-between mb-5 gap-2">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-xl font-bold text-text truncate">{stats.username}</h3>
+          <p className="text-text-light font-semibold text-sm truncate">{stats.travelerLevel}</p>
         </div>
         {stats.globalRanking && (
           <div className="text-right">
@@ -54,7 +54,7 @@ const TravelStats = ({ stats }) => {
       </div>
 
       {/* Grid de estadísticas */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-5">
         <StatCard
           icon="🌍"
           value={stats.countriesVisited || 0}
@@ -134,13 +134,13 @@ const TravelStats = ({ stats }) => {
  * Tarjeta individual de estadística
  */
 const StatCard = ({ icon, value, label, subLabel }) => (
-  <div className="bg-primary-light rounded-xl p-4 text-center backdrop-blur-sm border border-accent">
-    <span className="text-2xl" aria-hidden="true">{icon}</span>
-    <div className="text-2xl font-bold mt-1 text-text">
+  <div className="bg-primary-light rounded-xl p-3 text-center backdrop-blur-sm border border-accent overflow-hidden">
+    <span className="text-xl" aria-hidden="true">{icon}</span>
+    <div className="text-xl font-bold mt-1 text-text">
       {value}
-      {subLabel && <span className="text-sm font-normal text-text-light">{subLabel}</span>}
+      {subLabel && <span className="text-xs font-normal text-text-light">{subLabel}</span>}
     </div>
-    <p className="text-text-light text-xs font-semibold">{label}</p>
+    <p className="text-text-light text-xs font-semibold truncate">{label}</p>
   </div>
 )
 

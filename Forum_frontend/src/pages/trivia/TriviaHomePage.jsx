@@ -100,34 +100,45 @@ const TriviaHomePage = () => {
     } catch (error) {
       console.error('❌ Error al iniciar partida:', error)
 
-      let errorMessage = 'Error al iniciar partida'
+      // Si el error es porque ya hay partida activa, recargar datos y mostrar modal
+      if (error.response?.status === 400 && 
+          error.response?.data?.message?.includes('partida en progreso')) {
+        toast.error('Ya tienes una partida en curso', {
+          icon: '🎮',
+          style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #A0937D' }
+        })
+        // Recargar para obtener la partida activa
+        await loadData()
+        return
+      }
+
+      let errorMessage = 'No se pudo iniciar la partida'
 
       if (error.response) {
         const status = error.response.status
 
         if (status === 401) {
-          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
           setTimeout(() => navigate('/login?redirect=/trivia'), 2000)
         } else if (status === 403) {
-          errorMessage = '🚫 No tienes permisos para iniciar partidas.'
+          errorMessage = 'No tienes permisos para iniciar partidas.'
         } else if (status === 400) {
-          errorMessage = error.response.data?.message || 'Configuración de partida inválida.'
+          const backendMsg = error.response.data?.message
+          if (backendMsg?.includes('diaria')) {
+            errorMessage = '¡Ya jugaste la trivia diaria! Vuelve mañana.'
+          } else {
+            errorMessage = 'Configuración de partida inválida.'
+          }
         } else if (status === 500) {
-          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
-        } else {
-          errorMessage = error.response.data?.message || errorMessage
+          errorMessage = 'Error del servidor. Por favor, intenta más tarde.'
         }
       } else if (error.request) {
-        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+        errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión.'
       }
 
       toast.error(errorMessage, {
         duration: 5000,
-        style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
-        }
+        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
       })
     } finally {
       setStarting(false)
@@ -250,7 +261,7 @@ const TriviaHomePage = () => {
                   key={mode.mode}
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className="card hover:border-secondary group disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                  className="card hover:border-secondary hover:shadow-xl hover:scale-[1.02] group disabled:opacity-50 disabled:cursor-not-allowed text-left cursor-pointer transition-all duration-200"
                 >
                   <div className="text-center p-4">
                     <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">

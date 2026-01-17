@@ -125,16 +125,16 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
         {/* Opciones */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {question.options.map((option, idx) => {
-            const baseClasses = 'p-4 rounded-xl border-2 text-left font-semibold transition-all'
+            const baseClasses = 'px-6 py-5 rounded-xl border-3 text-left font-bold transition-all min-h-[70px] flex items-center cursor-pointer'
             let stateClasses
             if (answered) {
               if (selectedAnswer === option) {
-                stateClasses = 'border-secondary bg-secondary-light text-text'
+                stateClasses = 'border-[#2D5016] bg-[#2D5016] text-white shadow-lg'
               } else {
-                stateClasses = 'border-accent/30 bg-primary text-text'
+                stateClasses = 'border-[#5C4033] bg-[#5C4033] text-white opacity-70'
               }
             } else {
-              stateClasses = 'border-secondary hover:border-secondary-dark hover:bg-secondary-light text-text'
+              stateClasses = 'border-secondary bg-primary-light text-text hover:border-accent hover:bg-secondary hover:shadow-lg hover:scale-[1.02]'
             }
             const buttonClass = `${baseClasses} ${stateClasses}`
             return (
@@ -144,10 +144,10 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
                 disabled={answered}
                 className={buttonClass}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent text-primary-light mr-3 text-sm font-bold">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent text-primary-dark mr-4 text-base font-bold flex-shrink-0">
                   {String.fromCodePoint(65 + idx)}
                 </span>
-                {option}
+                <span className="text-base">{option}</span>
               </button>
             )
           })}

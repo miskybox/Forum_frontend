@@ -109,59 +109,38 @@ const LoginForm = () => {
       }
 
       let message = ''
-      let detailedMessage = ''
 
       if (error.response) {
         // Error del servidor
         const status = error.response.status
-        console.log('📊 Estado HTTP:', status)
         
         if (status === 401) {
           message = t('auth.errors.invalidCredentials')
-          detailedMessage = 'Usuario o contraseña incorrectos. Verifica tus credenciales e intenta de nuevo.'
         } else if (status === 403) {
           message = t('auth.errors.accountSuspended')
-          detailedMessage = 'Tu cuenta ha sido suspendida. Contacta al administrador.'
         } else if (status === 404) {
           message = t('auth.errors.userNotFound')
-          detailedMessage = 'No se encontró una cuenta con ese nombre de usuario.'
         } else if (status === 500) {
           message = t('auth.errors.serverError')
-          detailedMessage = 'Error interno del servidor. Por favor, intenta más tarde.'
         } else if (status === 0 || !status) {
           message = t('auth.errors.networkError')
-          detailedMessage = 'No se pudo conectar con el servidor. Verifica que el backend esté corriendo.'
         } else {
-          message = errorData?.message || errorData?.error || t('auth.errors.serverError')
-          detailedMessage = `Error ${status}: ${error.response.statusText || 'Error desconocido'}`
+          message = errorData?.message || t('auth.errors.serverError')
         }
       } else if (error.request) {
         // Error de red - el servidor no respondió
         message = t('auth.errors.networkError')
-        detailedMessage = 'No se pudo conectar con el servidor. Verifica:\n• Que el backend esté corriendo en http://localhost:8080\n• Tu conexión a internet'
-        console.error('🔌 Error de red - sin respuesta del servidor')
       } else if (error.message) {
-        message = error.message
-        detailedMessage = 'Error inesperado durante el login'
+        message = t('auth.errors.genericError')
       } else {
         message = t('auth.errors.genericError')
-        detailedMessage = 'Ocurrió un error inesperado'
       }
 
-      const displayMessage = `⚠️ ${message}`
-      setErrors({ auth: displayMessage, details: detailedMessage })
-      toast.error(displayMessage, { 
-        duration: 6000,
-        style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
-        }
+      setErrors({ auth: message })
+      toast.error(message, { 
+        duration: 5000,
+        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
       })
-      
-      // Log adicional para debugging
-      console.log('📝 Mensaje de error mostrado:', displayMessage)
-      console.log('📝 Detalles:', detailedMessage)
     } finally {
       setIsSubmitting(false)
     }
@@ -176,19 +155,12 @@ const LoginForm = () => {
             role="alert"
             aria-live="assertive"
           >
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">🚫</span>
-              <div className="flex-1">
-                <p className="text-error font-bold text-sm uppercase tracking-wide">
-                  <span className="sr-only">Error de autenticación: </span>
-                  {errors.auth}
-                </p>
-                {errors.details && (
-                  <p className="text-error/80 text-xs mt-2 normal-case tracking-normal whitespace-pre-line">
-                    {errors.details}
-                  </p>
-                )}
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">⚠️</span>
+              <p className="text-error font-semibold text-sm">
+                <span className="sr-only">Error: </span>
+                {errors.auth}
+              </p>
             </div>
           </div>
         )}

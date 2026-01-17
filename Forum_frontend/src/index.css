@@ -71,19 +71,21 @@ h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   border-radius: 8px;
   font-family: 'Montserrat', 'Inter', sans-serif;
   font-size: 0.9375rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  min-height: 44px;
-  min-width: 44px;
+  padding: 0.875rem 1.75rem;
+  min-height: 48px;
+  min-width: 48px;
   border: 2px solid;
   position: relative;
   transition: all 0.2s ease;
   text-decoration: none;
   cursor: pointer;
   letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 .btn-primary {
@@ -91,6 +93,11 @@ h4 {
   border-color: #A0B596;
   color: #2D2A26;
   box-shadow: 0 2px 4px rgba(160, 147, 125, 0.25);
+  padding: 0.875rem 1.5rem;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary:hover {

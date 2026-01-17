@@ -39,9 +39,17 @@ const TriviaInfinitePage = () => {
         Array.from(usedQuestionIds)
       )
 
-
       if (newQuestions.length === 0) {
-        toast.error(t('trivia.infinite.noMoreQuestions'))
+        // Si no hay preguntas pero tenemos algunas en memoria, continuar
+        if (questions.length > 0) {
+          toast('🔄 Continuando con preguntas disponibles', { 
+            icon: '⚠️',
+            duration: 2000 
+          })
+          setLoading(false)
+          return
+        }
+        toast.error('No hay preguntas disponibles. Revisa tu conexión a internet.')
         setGameOver(true)
         return
       }
@@ -52,9 +60,26 @@ const TriviaInfinitePage = () => {
       setUsedQuestionIds(newIds)
 
       setQuestions(prev => [...prev, ...newQuestions])
+      
+      // Mostrar mensaje de éxito solo la primera vez
+      if (questions.length === 0) {
+        toast.success(`✅ ${newQuestions.length} preguntas cargadas`, { duration: 1500 })
+      }
     } catch (error) {
       console.error('Error cargando preguntas:', error)
-      toast.error(t('trivia.infinite.errorLoadingQuestions'))
+      
+      // Si ya tenemos preguntas, continuar con ellas
+      if (questions.length > 0) {
+        toast('📡 Modo offline - usando preguntas en memoria', {
+          duration: 2000,
+          icon: '⚠️'
+        })
+      } else {
+        toast.error('Error de conexión. Usando modo offline con preguntas limitadas.', {
+          duration: 3000,
+          icon: '📡'
+        })
+      }
     } finally {
       setLoading(false)
     }

@@ -60,12 +60,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
       onSuccess()
       onClose()
     } catch (error) {
-      console.error('❌ Error al guardar lugar:', error)
-      console.error('📋 Detalles del error:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      })
+      console.error('Error al guardar lugar:', error)
 
       let errorMessage = t('travel.errorSaving')
       
@@ -73,29 +68,23 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
         const status = error.response.status
         
         if (status === 401) {
-          errorMessage = '🔐 Tu sesión ha expirado. Por favor, inicia sesión de nuevo.'
+          errorMessage = t('auth.errors.sessionExpired') || 'Tu sesión ha expirado. Inicia sesión de nuevo.'
         } else if (status === 403) {
-          errorMessage = '🚫 No tienes permisos para agregar lugares.'
+          errorMessage = 'No tienes permisos para realizar esta acción.'
         } else if (status === 400) {
-          errorMessage = error.response.data?.message || 'Los datos no son válidos.'
+          errorMessage = 'Los datos ingresados no son válidos.'
         } else if (status === 409) {
-          errorMessage = '⚠️ Ya has agregado este país anteriormente.'
+          errorMessage = 'Ya has agregado este país anteriormente.'
         } else if (status === 500) {
-          errorMessage = '⚠️ Error del servidor. Por favor, intenta más tarde.'
-        } else {
-          errorMessage = error.response.data?.message || error.response.data?.error || errorMessage
+          errorMessage = 'Error del servidor. Intenta más tarde.'
         }
       } else if (error.request) {
-        errorMessage = '🔌 No se pudo conectar con el servidor. Verifica tu conexión.'
+        errorMessage = 'No se pudo conectar con el servidor.'
       }
 
-      toast.error(`⚠️ ${errorMessage}`, { 
-        duration: 6000,
-        style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
-        }
+      toast.error(errorMessage, { 
+        duration: 5000,
+        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
       })
     } finally {
       setLoading(false)
@@ -177,21 +166,21 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <label className="block text-sm font-medium text-text mb-2">
               {t('travel.status')}
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {statusOptions.map(option => (
                 <button
                   key={option.value}
                   type="button"
                   onClick={() => setFormData({ ...formData, status: option.value })}
-                  className={`px-4 py-3 border-2 transition-all text-sm rounded-lg ${
+                  className={`px-4 py-4 border-2 transition-all text-sm rounded-lg cursor-pointer ${
                     formData.status === option.value
-                      ? 'border-accent bg-accent/20 text-text'
-                      : 'border-secondary text-text-light hover:border-accent'
+                      ? 'border-[#B6C7AA] bg-[#B6C7AA]/30 text-[#2D2A26] shadow-md transform scale-[1.02]'
+                      : 'border-[#A0937D] text-[#5C4A3A] bg-[#FEFDFB] hover:border-[#B6C7AA] hover:bg-[#B6C7AA]/10 hover:shadow-sm hover:scale-[1.01]'
                   }`}
                 >
-                  <span className="flex items-center justify-center space-x-1">
-                    <span>{option.icon}</span>
-                    <span>{option.label}</span>
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="text-lg">{option.icon}</span>
+                    <span className="font-medium">{option.label}</span>
                   </span>
                 </button>
               ))}
@@ -285,14 +274,14 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             </span>
           </label>
 
-          {/* Botones */}
-          <div className="flex gap-3 pt-4">
+          {/* Botones - Siempre visibles con estilo prominente */}
+          <div className="flex gap-3 pt-6 pb-2 sticky bottom-0 bg-primary-light border-t-2 border-secondary mt-6 -mx-6 px-6">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 btn btn-outline"
+              className="flex-1 px-6 py-4 border-2 border-[#A0937D] text-[#5C4A3A] rounded-lg font-bold uppercase tracking-wide hover:bg-[#E7D4B5] hover:border-[#8B7E6A] transition-all cursor-pointer"
             >
-              <span className="flex items-center justify-center space-x-2">
+              <span className="flex items-center justify-center gap-2">
                 <span>✕</span>
                 <span>{t('common.cancel')}</span>
               </span>
@@ -300,16 +289,20 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <button
               type="submit"
               disabled={loading || !selectedCountry}
-              className="flex-1 btn btn-primary disabled:opacity-50"
+              className={`flex-1 px-6 py-4 rounded-lg font-bold uppercase tracking-wide transition-all cursor-pointer ${
+                loading || !selectedCountry
+                  ? 'bg-gray-300 text-gray-500 border-2 border-gray-400 cursor-not-allowed opacity-60'
+                  : 'bg-[#B6C7AA] text-[#2D2A26] border-2 border-[#A0B596] hover:bg-[#A0B596] hover:shadow-lg hover:scale-[1.02] shadow-md'
+              }`}
             >
               {loading ? (
-                <span className="flex items-center justify-center space-x-2">
-                  <span className="animate-spin">🧭</span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin text-xl">🧭</span>
                   <span>{t('travel.saving')}</span>
                 </span>
               ) : (
-                <span className="flex items-center justify-center space-x-2">
-                  <span>{editPlace ? '✏️' : '➕'}</span>
+                <span className="flex items-center justify-center gap-2">
+                  <span className="text-xl">{editPlace ? '✏️' : '➕'}</span>
                   <span>{editPlace ? t('travel.update') : t('travel.add')}</span>
                 </span>
               )}
