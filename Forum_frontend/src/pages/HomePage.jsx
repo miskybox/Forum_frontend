@@ -6,7 +6,11 @@ import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
 
 /**
- * HomePage - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
+ * HomePage - Paleta del logo
+ * --primary-terracota: #A67C52
+ * --accent-teal: #5A8A7A
+ * --dark-green: #3D5F54
+ * --neutral-beige: #F5F0E8
  */
 const HomePage = () => {
   const { t } = useLanguage()
@@ -91,11 +95,11 @@ const HomePage = () => {
             </p>
           </div>
 
-          {/* Botones de acción - Accesibles */}
+          {/* Botones de acción - Nueva paleta */}
           <div className="flex flex-wrap justify-center gap-6 mb-16">
             <Link
               to="/forums"
-              className="bg-secondary text-text border-2 border-secondary-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-secondary-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="bg-secondary text-white border-2 border-secondary-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-secondary-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl" aria-hidden="true">🏺</span>
@@ -105,7 +109,7 @@ const HomePage = () => {
 
             <Link
               to="/trivia"
-              className="bg-accent text-primary-light border-2 border-accent-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-accent-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="bg-accent text-white border-2 border-accent-dark px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-accent-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl" aria-hidden="true">🎯</span>
@@ -115,7 +119,7 @@ const HomePage = () => {
 
             <Link
               to="/travel"
-              className="bg-accent-light text-text border-2 border-accent px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-accent transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="bg-white text-text border-2 border-accent px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
             >
               <span className="flex items-center space-x-2">
                 <span className="text-2xl" aria-hidden="true">🗺️</span>
@@ -128,12 +132,12 @@ const HomePage = () => {
           <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-xl mx-auto mb-6">
             {[
               { to: '/profile', icon: '👤', title: t('home.profile'), color: 'text-accent' },
-              { to: '/trivia', icon: '⚡', title: t('home.trivia'), color: 'text-text' },
+              { to: '/trivia', icon: '⚡', title: t('home.trivia'), color: 'text-secondary' },
             ].map((world, index) => (
               <Link
                 key={world.to}
                 to={world.to}
-                className="card group hover:scale-105 hover:border-accent transition-all duration-300"
+                className="card group hover:scale-105 hover:border-secondary transition-all duration-300"
               >
                 <div className="text-center p-4 md:p-6">
                   <div className="text-4xl md:text-5xl mb-3 md:mb-4 transform group-hover:scale-110 transition-transform duration-300"
@@ -157,7 +161,7 @@ const HomePage = () => {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-2 tracking-normal uppercase">
             {t('home.latestAdventures')}
           </h2>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
         </div>
 
         {loading ? (
@@ -173,7 +177,7 @@ const HomePage = () => {
               recentForums.map((forum) => (
                 <div key={forum.id} className="card group hover:border-secondary">
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-text mb-3 group-hover:text-accent transition-colors tracking-normal uppercase">
+                    <h3 className="text-lg font-bold text-text mb-3 group-hover:text-secondary transition-colors tracking-normal uppercase">
                       {forum.title}
                     </h3>
                     <p className="text-sm text-text-light mb-4 line-clamp-3">
@@ -181,7 +185,7 @@ const HomePage = () => {
                     </p>
                     <Link
                       to={`/forums/${forum.id}`}
-                      className="inline-flex items-center space-x-2 text-accent hover:text-accent-dark transition-colors font-bold text-sm uppercase tracking-normal"
+                      className="inline-flex items-center space-x-2 text-secondary hover:text-secondary-dark transition-colors font-bold text-sm uppercase tracking-normal"
                     >
                       <span>{t('home.explore')}</span>
                       <span>→</span>
@@ -202,7 +206,7 @@ const HomePage = () => {
         <div className="text-center mt-6">
           <Link
             to="/forums"
-            className="inline-block bg-secondary border-2 border-secondary-dark text-text px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-secondary-dark transition-all duration-300 shadow-lg min-h-[44px] text-sm"
+            className="inline-block bg-secondary border-2 border-secondary-dark text-white px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-secondary-dark transition-all duration-300 shadow-lg min-h-[44px] text-sm"
           >
             {t('home.viewAllForums')} →
           </Link>

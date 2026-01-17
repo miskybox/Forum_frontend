@@ -9,7 +9,8 @@ import { useLanguage } from '../../contexts/LanguageContext'
 import PropTypes from 'prop-types'
 
 /**
- * ForumList con estilo retro Adventure
+ * ForumList - Nueva paleta del logo
+ * Teal (#5A8A7A), Terracota (#A67C52), Dark Green (#3D5F54)
  */
 const ForumList = ({ categoryId: propCategoryId }) => {
   const { categoryId: paramCategoryId } = useParams()
@@ -23,14 +24,14 @@ const ForumList = ({ categoryId: propCategoryId }) => {
 
   const { isAuthenticated } = useAuth()
   const { t } = useLanguage()
-  
+
   useEffect(() => {
     const fetchForums = async () => {
       try {
         setLoading(true)
-        
+
         let forumData = []
-        
+
         if (categoryId) {
           forumData = await forumService.getForumsByCategory(categoryId)
           const categoryData = await categoryService.getCategoryById(categoryId)
@@ -41,7 +42,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           const response = await forumService.getAllForums()
           forumData = response.content || response
         }
-        
+
         setForums(forumData)
         setError(null)
       } catch (err) {
@@ -51,20 +52,20 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         setLoading(false)
       }
     }
-    
+
     fetchForums()
   }, [categoryId, searchTerm])
-  
+
   const handleSearch = (term) => {
     setSearchTerm(term)
   }
-  
+
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🏺</div>
-          <p className="text-accent font-display text-sm">
+          <p className="text-secondary font-display text-sm">
             {t('forumList.loadingForums')}
           </p>
         </div>
@@ -92,19 +93,19 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   let heading;
   if (category) {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
+      <h2 className="text-2xl md:text-3xl font-bold text-text">
         {t('forumList.forumsOf')} {category.name}
       </h2>
     );
   } else if (searchTerm) {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
+      <h2 className="text-2xl md:text-3xl font-bold text-text">
         {t('forumList.searchResults')}: "{searchTerm}"
       </h2>
     );
   } else {
     heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-accent-dark">
+      <h2 className="text-2xl md:text-3xl font-bold text-text">
         {t('forumList.allForums')}
       </h2>
     );
@@ -116,7 +117,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         <div>
           {heading}
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
           <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
 
@@ -134,7 +135,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🔍</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2">
+              <h3 className="text-xl font-bold text-text mb-2">
                 {t('forumList.noResults')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">
@@ -152,7 +153,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🗺️</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2">
+              <h3 className="text-xl font-bold text-text mb-2">
                 {t('forumList.noCategoryForums')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">
@@ -173,7 +174,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           emptyStateContent = (
             <>
               <div className="text-5xl mb-4">🏺</div>
-              <h3 className="text-xl font-bold text-accent-dark mb-2">
+              <h3 className="text-xl font-bold text-text mb-2">
                 {t('forumList.noForums')}
               </h3>
               <p className="text-text-light font-display text-sm mb-6">

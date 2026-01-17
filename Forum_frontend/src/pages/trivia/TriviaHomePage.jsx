@@ -16,7 +16,8 @@ const PARTICLES = Array.from({ length: 20 }).map((_, i) => ({
 }))
 
 /**
- * TriviaHomePage - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
+ * TriviaHomePage - Nueva paleta del logo
+ * Teal (#4c7e75), Terracota (#A67C52), Dark Green (#37553b)
  */
 const TriviaHomePage = () => {
   const { isAuthenticated } = useAuth()
@@ -61,9 +62,9 @@ const TriviaHomePage = () => {
     if (!isAuthenticated) {
       toast.error('🔐 Inicia sesión para jugar', {
         style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
+          background: '#ece4d8',
+          color: '#37553b',
+          border: '2px solid #a56732'
         }
       })
       navigate('/login?redirect=/trivia')
@@ -101,11 +102,11 @@ const TriviaHomePage = () => {
       console.error('❌ Error al iniciar partida:', error)
 
       // Si el error es porque ya hay partida activa, recargar datos y mostrar modal
-      if (error.response?.status === 400 && 
+      if (error.response?.status === 400 &&
           error.response?.data?.message?.includes('partida en progreso')) {
         toast.error('Ya tienes una partida en curso', {
           icon: '🎮',
-          style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #A0937D' }
+          style: { background: '#ece4d8', color: '#37553b', border: '2px solid #4c7e75' }
         })
         // Recargar para obtener la partida activa
         await loadData()
@@ -138,7 +139,7 @@ const TriviaHomePage = () => {
 
       toast.error(errorMessage, {
         duration: 5000,
-        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
+        style: { background: '#ece4d8', color: '#37553b', border: '2px solid #b91c1c' }
       })
     } finally {
       setStarting(false)
@@ -163,9 +164,9 @@ const TriviaHomePage = () => {
       console.error('Error abandonando partida:', error)
       toast.error('Error al abandonar la partida', {
         style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
+          background: '#ece4d8',
+          color: '#b91c1c',
+          border: '2px solid #b91c1c'
         }
       })
     } finally {
@@ -224,7 +225,7 @@ const TriviaHomePage = () => {
         {PARTICLES.map((p) => (
           <div
             key={p.id}
-            className="absolute w-2 h-2 bg-accent rounded-full opacity-30 animate-float"
+            className="absolute w-2 h-2 bg-secondary rounded-full opacity-30 animate-float"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
@@ -242,7 +243,7 @@ const TriviaHomePage = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-text mb-4 tracking-normal uppercase">
             {t('trivia.title')}
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-4"></div>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-secondary to-transparent mb-4"></div>
           <p className="text-text text-lg font-semibold tracking-normal">
             {t('trivia.chooseMode')}
           </p>
@@ -275,7 +276,7 @@ const TriviaHomePage = () => {
                     </p>
                     <div className="flex items-center justify-between text-text text-sm font-semibold">
                       <span>{mode.questions} {t('trivia.questions')}</span>
-                      <span className="text-accent group-hover:translate-x-1 transition-transform">→</span>
+                      <span className="text-secondary group-hover:translate-x-1 transition-transform">→</span>
                     </div>
                   </div>
                 </button>
@@ -419,16 +420,16 @@ const TriviaHomePage = () => {
               </p>
 
               {/* Info de la partida activa */}
-              <div className="bg-primary/20 rounded-lg p-4 mb-6">
+              <div className="bg-primary-dark rounded-lg p-4 mb-6">
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-text-light">{t('trivia.activeGame.progress')}</span>
-                  <span className="text-accent font-bold">
+                  <span className="text-secondary font-bold">
                     {activeGame.currentQuestionIndex}/{activeGame.totalQuestions}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-sm mt-2">
                   <span className="text-text-light">{t('trivia.score')}</span>
-                  <span className="text-accent font-bold">{activeGame.score} pts</span>
+                  <span className="text-secondary font-bold">{activeGame.score} pts</span>
                 </div>
               </div>
 

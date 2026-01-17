@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { es, enUS } from 'date-fns/locale'
 import { useLanguage } from '../../contexts/LanguageContext'
+import PropTypes from 'prop-types'
 
 /**
- * ForumCard - Adventure Explorer Retro Theme with WCAG AA Accessibility
+ * ForumCard - Nueva paleta del logo
+ * Teal (#5A8A7A), Terracota (#A67C52), Dark Green (#3D5F54)
  */
 const ForumCard = ({ forum }) => {
   const { t, language } = useLanguage()
@@ -37,8 +39,8 @@ const ForumCard = ({ forum }) => {
 
         <div className="md:w-2/3 p-5 flex flex-col">
           <div className="flex-grow">
-            <h3 className="text-lg md:text-xl font-bold text-accent-dark mb-3 break-words">
-              <Link to={`/forums/${forum.id}`} className="hover:text-accent transition-colors">
+            <h3 className="text-lg md:text-xl font-bold text-text mb-3 break-words">
+              <Link to={`/forums/${forum.id}`} className="hover:text-secondary transition-colors">
                 {forum.title.toUpperCase()}
               </Link>
             </h3>
@@ -50,7 +52,7 @@ const ForumCard = ({ forum }) => {
             {forum.tags && forum.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3">
                 {forum.tags.map(tag => (
-                  <span key={tag.id} className="inline-flex items-center px-3 py-1 bg-secondary/20 border border-secondary text-text font-medium text-xs uppercase tracking-wide rounded">
+                  <span key={tag.id} className="inline-flex items-center px-3 py-1 bg-secondary/15 border border-secondary text-text font-medium text-xs uppercase tracking-wide rounded">
                     {tag.name}
                   </span>
                 ))}
@@ -59,7 +61,7 @@ const ForumCard = ({ forum }) => {
           </div>
 
           <div className="mt-3 pt-3 border-t border-primary-dark flex flex-wrap justify-between items-center gap-2 text-xs">
-            <div className="flex items-center gap-4 text-secondary-dark font-semibold">
+            <div className="flex items-center gap-4 text-secondary font-semibold">
               <div className="flex items-center gap-1">
                 <span>💬</span>
                 <span>{forum.postCount || 0} {(forum.postCount === 1 ? t('common.post') : t('common.posts')).toUpperCase()}</span>
@@ -73,7 +75,7 @@ const ForumCard = ({ forum }) => {
 
             <div className="flex items-center text-text-lighter font-medium text-xs">
               <div className="flex items-center gap-1">
-                <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center text-text text-xs overflow-hidden border border-secondary-dark">
+                <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center text-white text-xs overflow-hidden border border-secondary-dark">
                   {forum.creator?.profileImage ? (
                     <img
                       src={forum.creator.profileImage}
@@ -97,8 +99,6 @@ const ForumCard = ({ forum }) => {
     </div>
   )
 }
-
-import PropTypes from 'prop-types'
 
 ForumCard.propTypes = {
   forum: PropTypes.shape({
