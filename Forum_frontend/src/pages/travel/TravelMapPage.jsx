@@ -28,6 +28,7 @@ const TravelMapPage = () => {
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingPlace, setEditingPlace] = useState(null)
+  const [preselectedCountryCode, setPreselectedCountryCode] = useState(null)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -58,6 +59,9 @@ const TravelMapPage = () => {
     const existingPlace = places.find(p => p.country.isoCode === isoCode)
     if (existingPlace) {
       setEditingPlace(existingPlace)
+      setPreselectedCountryCode(null)
+    } else {
+      setPreselectedCountryCode(isoCode)
     }
     setIsModalOpen(true)
   }
@@ -70,6 +74,7 @@ const TravelMapPage = () => {
   const handleModalClose = () => {
     setIsModalOpen(false)
     setEditingPlace(null)
+    setPreselectedCountryCode(null)
   }
 
   const handleSuccess = () => {
@@ -238,6 +243,7 @@ const TravelMapPage = () => {
         onClose={handleModalClose}
         onSuccess={handleSuccess}
         editPlace={editingPlace}
+        preselectedCountryCode={preselectedCountryCode}
       />
     </div>
   )

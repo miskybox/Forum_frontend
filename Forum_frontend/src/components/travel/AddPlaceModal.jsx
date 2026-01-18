@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 import CountrySelector from './CountrySelector'
 import travelService from '../../services/travelService'
+import countryService from '../../services/countryService'
 import toast from 'react-hot-toast'
 
 /**
  * Modal para agregar/editar un lugar visitado
  */
-const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
+const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselectedCountryCode = null }) => {
   const { t } = useLanguage()
   const [selectedCountry, setSelectedCountry] = useState(editPlace?.country || null)
   const [formData, setFormData] = useState({
@@ -20,6 +21,42 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     favorite: editPlace?.favorite || false
   })
   const [loading, setLoading] = useState(false)
+  const [loadingCountry, setLoadingCountry] = useState(false)
+
+  // Cargar país preseleccionado cuando se abre el modal desde el mapa
+  useEffect(() => {
+    const loadPreselectedCountry = async () => {
+      if (isOpen && preselectedCountryCode && !editPlace) {
+        setLoadingCountry(true)
+        try {
+          const country = await countryService.getCountryByIsoCode(preselectedCountryCode)
+          if (country) {
+            setSelectedCountry(country)
+          }
+        } catch (error) {
+          console.error('Error cargando país preseleccionado:', error)
+        } finally {
+          setLoadingCountry(false)
+        }
+      }
+    }
+    loadPreselectedCountry()
+  }, [isOpen, preselectedCountryCode, editPlace])
+
+  // Resetear formulario cuando se cierra el modal
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedCountry(editPlace?.country || null)
+      setFormData({
+        cityName: editPlace?.cityName || '',
+        status: editPlace?.status || 'VISITED',
+        visitDate: editPlace?.visitDate || '',
+        notes: editPlace?.notes || '',
+        rating: editPlace?.rating || 0,
+        favorite: editPlace?.favorite || false
+      })
+    }
+  }, [isOpen, editPlace])
 
   const statusOptions = [
     { value: 'VISITED', label: t('travel.visited').toUpperCase(), color: 'bg-success' },
@@ -141,10 +178,17 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <label className="block text-sm font-medium text-text mb-2">
               {t('travel.country')} <span className="text-error">*</span>
             </label>
-            <CountrySelector
-              onSelect={setSelectedCountry}
-              selectedCountry={selectedCountry}
-            />
+            {loadingCountry ? (
+              <div className="flex items-center gap-3 p-3 bg-primary-light rounded-lg border border-secondary">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-golden border-t-transparent" />
+                <span className="text-text-light text-sm">Cargando país...</span>
+              </div>
+            ) : (
+              <CountrySelector
+                onSelect={setSelectedCountry}
+                selectedCountry={selectedCountry}
+              />
+            )}
           </div>
 
           {/* Ciudad (opcional) */}
@@ -319,7 +363,8 @@ AddPlaceModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  editPlace: PropTypes.object
+  editPlace: PropTypes.object,
+  preselectedCountryCode: PropTypes.string
 }
 
 export default AddPlaceModal

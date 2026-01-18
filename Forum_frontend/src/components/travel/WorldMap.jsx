@@ -154,9 +154,15 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         ))}
       </div>
 
-      {/* Leyenda */}
-      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary text-white">
-        <h4 className="text-cream-100 font-semibold mb-3 text-sm flex items-center gap-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+      {/* Leyenda con outline blanco para accesibilidad */}
+      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
+        <h4
+          className="font-semibold mb-3 text-sm flex items-center gap-2"
+          style={{
+            color: '#FFFFFF',
+            textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.8)'
+          }}
+        >
           Leyenda
         </h4>
         <div className="space-y-2">
@@ -171,7 +177,15 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
                 className="w-4 h-4 rounded-sm shadow-sm"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-xs drop-shadow-sm">{item.label}</span>
+              <span
+                className="text-xs font-medium"
+                style={{
+                  color: '#FFFFFF',
+                  textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 6px rgba(0,0,0,0.7)'
+                }}
+              >
+                {item.label}
+              </span>
             </div>
           ))}
         </div>
