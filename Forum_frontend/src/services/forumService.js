@@ -101,6 +101,42 @@ const forumService = {
       console.error('Error al obtener foros del usuario actual:', error)
       throw error
     }
+  },
+
+  updateForumStatus: async (id, status) => {
+    try {
+      const response = await api.put(`/forums/${id}/status`, null, {
+        params: { status }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al actualizar estado del foro con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  hideForum: async (id) => {
+    try {
+      const response = await api.put(`/forums/${id}/status`, null, {
+        params: { status: 'HIDDEN' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al ocultar foro con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  showForum: async (id) => {
+    try {
+      const response = await api.put(`/forums/${id}/status`, null, {
+        params: { status: 'ACTIVE' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al mostrar foro con id ${id}:`, error)
+      throw error
+    }
   }
 }
 

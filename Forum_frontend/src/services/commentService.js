@@ -65,6 +65,42 @@ const commentService = {
       console.error(`Error al eliminar comentario con id ${id}:`, error)
       throw error
     }
+  },
+
+  updateCommentStatus: async (id, status) => {
+    try {
+      const response = await api.put(`/comments/${id}/status`, null, {
+        params: { status }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al actualizar estado del comentario con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  hideComment: async (id) => {
+    try {
+      const response = await api.put(`/comments/${id}/status`, null, {
+        params: { status: 'HIDDEN' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al ocultar comentario con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  showComment: async (id) => {
+    try {
+      const response = await api.put(`/comments/${id}/status`, null, {
+        params: { status: 'ACTIVE' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al mostrar comentario con id ${id}:`, error)
+      throw error
+    }
   }
 }
 

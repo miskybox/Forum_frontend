@@ -97,21 +97,21 @@ const HomePage = () => {
           <div className="flex flex-wrap justify-center gap-6 mb-16">
             <Link
               to="/forums"
-              className="group bg-midnight text-golden border-2 border-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-midnight text-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.exploreForum') || 'EXPLORAR FOROS'}</span>
             </Link>
 
             <Link
               to="/trivia"
-              className="group bg-golden text-midnight border-2 border-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:border-midnight hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.playTrivia') || 'JUGAR TRIVIA'}</span>
             </Link>
 
             <Link
               to="/travel"
-              className="group bg-aqua text-midnight border-2 border-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:border-midnight hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center"
+              className="group bg-aqua text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.myMap') || 'MI MAPA'}</span>
             </Link>

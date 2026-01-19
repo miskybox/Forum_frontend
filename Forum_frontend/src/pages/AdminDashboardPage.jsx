@@ -1,29 +1,63 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import userService from '../services/userService'
 import forumService from '../services/forumService'
 import postService from '../services/postService'
+import commentService from '../services/commentService'
 import categoryService from '../services/categoryService'
 import roleService from '../services/roleService'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import { toast } from 'react-hot-toast'
+import PropTypes from 'prop-types'
+
+const StatCard = ({ title, value, icon, color }) => (
+  <div className={`rounded-xl p-5 shadow-lg text-white ${color}`}>
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-sm opacity-80">{title}</p>
+        <p className="text-3xl font-bold">{value}</p>
+      </div>
+      <div className="bg-white/20 p-3 rounded-full">
+        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
+        </svg>
+      </div>
+    </div>
+  </div>
+)
+
+StatCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  icon: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired
+}
 
 const AdminDashboardPage = () => {
   const { currentUser, hasRole } = useAuth()
   const { t } = useLanguage()
   const navigate = useNavigate()
+
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('overview')
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalForums: 0,
     totalPosts: 0,
-    totalCategories: 0
+    totalComments: 0,
+    totalCategories: 0,
+    hiddenContent: 0,
+    bannedUsers: 0
   })
+
   const [users, setUsers] = useState([])
-  const [recentForums, setRecentForums] = useState([])
+  const [forums, setForums] = useState([])
+  const [posts, setPosts] = useState([])
+  const [comments, setComments] = useState([])
   const [roles, setRoles] = useState([])
+
   const [editingUser, setEditingUser] = useState(null)
   const [showRoleModal, setShowRoleModal] = useState(false)
 
@@ -32,276 +66,96 @@ const AdminDashboardPage = () => {
       navigate('/')
       return
     }
-
     loadDashboardData()
   }, [currentUser, hasRole, navigate])
 
   const loadDashboardData = async () => {
     try {
       setLoading(true)
-      
-      // Cargar estadísticas
-      const [usersData, forumsData, postsData, categoriesData] = await Promise.all([
+
+      const [usersData, forumsData, postsData, commentsData, categoriesData, rolesData] = await Promise.all([
         userService.getAllUsers().catch(() => []),
-        forumService.getAllForums(0, 1).catch(() => ({ totalElements: 0, content: [] })),
-        postService.getAllPosts(0, 1).catch(() => ({ totalElements: 0, content: [] })),
-        categoryService.getAllCategories().catch(() => [])
+        forumService.getAllForums(0, 100).catch(() => ({ totalElements: 0, content: [] })),
+        postService.getAllPosts(0, 100).catch(() => ({ totalElements: 0, content: [] })),
+        commentService.getAllComments().catch(() => []),
+        categoryService.getAllCategories().catch(() => []),
+        roleService.getAllRoles().catch(() => [])
       ])
 
+      const usersList = Array.isArray(usersData) ? usersData : usersData.content || []
+      const forumsList = forumsData.content || []
+      const commentsList = Array.isArray(commentsData) ? commentsData : []
+
+      const hiddenForums = forumsList.filter(f => f.status === 'HIDDEN').length
+      const hiddenComments = commentsList.filter(c => c.status === 'HIDDEN').length
+      const bannedUsers = usersList.filter(u => u.status === 'BANNED').length
+
       setStats({
-        totalUsers: Array.isArray(usersData) ? usersData.length : (usersData.content?.length || 0),
-        totalForums: forumsData.totalElements || 0,
-        totalPosts: postsData.totalElements || 0,
-        totalCategories: categoriesData.length || 0
+        totalUsers: usersList.length,
+        totalForums: forumsData.totalElements || forumsList.length,
+        totalPosts: postsData.totalElements || postsData.content?.length || 0,
+        totalComments: commentsList.length,
+        totalCategories: categoriesData.length || 0,
+        hiddenContent: hiddenForums + hiddenComments,
+        bannedUsers
       })
 
-      // Cargar usuarios
-      if (Array.isArray(usersData)) {
-        setUsers(usersData.slice(0, 10))
-      } else if (usersData.content) {
-        setUsers(usersData.content.slice(0, 10))
-      }
-
-      // Cargar foros recientes
-      const forums = await forumService.getAllForums(0, 5).catch(() => ({ content: [] }))
-      setRecentForums(forums.content || [])
-
-      // Cargar roles disponibles
-      const rolesData = await roleService.getAllRoles().catch(() => [])
+      setUsers(usersList)
+      setForums(forumsList)
+      setPosts(postsData.content || [])
+      setComments(commentsList)
       setRoles(rolesData)
     } catch (error) {
-      console.error('Error al cargar datos del dashboard:', error)
-      toast.error('Error al cargar los datos del dashboard')
+      console.error(error)
+      toast.error('Error al cargar el dashboard')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-      return
-    }
+  if (loading) return <LoadingSpinner />
 
-    try {
-      await userService.deleteUser(userId)
-      toast.success('Usuario eliminado correctamente')
-      loadDashboardData()
-    } catch (_error) {
-      toast.error('Error al eliminar el usuario')
-    }
-  }
-
-  const handleEditUserRoles = (user) => {
-    setEditingUser(user)
-    setShowRoleModal(true)
-  }
-
-  const handleUpdateUserRoles = async (userId, newRoles) => {
-    try {
-      await userService.updateUserRoles(userId, newRoles)
-      toast.success('Roles actualizados correctamente')
-      setShowRoleModal(false)
-      setEditingUser(null)
-      loadDashboardData()
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Error al actualizar roles del usuario')
-    }
-  }
-
-  if (loading) {
-    return <LoadingSpinner />
-  }
+  const tabs = [
+    { id: 'overview', label: 'Resumen', icon: 'M3 12l2-2 7-7 7 7' },
+    { id: 'users', label: 'Usuarios', icon: 'M12 4.354a4 4 0 110 5.292' },
+    { id: 'forums', label: 'Foros', icon: 'M8 12h.01M12 12h.01M16 12h.01' },
+    { id: 'comments', label: 'Comentarios', icon: 'M9 16H5' },
+    { id: 'posts', label: 'Posts', icon: 'M9 12h6' }
+  ]
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">{t('admin.adminPanel')}</h1>
-        <p className="text-gray-600">
-          {t('admin.welcome')}, {currentUser?.username || t('admin.adminPanel').split(' ')[0]}
-        </p>
+    <div className="min-h-screen bg-slate-900 text-white">
+      <div className="container mx-auto px-4 py-8">
+
+        <h1 className="text-3xl font-bold mb-6">{t('admin.adminPanel') || 'Panel de Administrador'} 👑</h1>
+
+        <div className="flex gap-2 mb-6">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-2 rounded-lg ${activeTab === tab.id ? 'bg-purple-600' : 'bg-white/10'}`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatCard title="Usuarios" value={stats.totalUsers} icon="M12 4.354a4 4 0 110 5.292" color="bg-blue-600" />
+            <StatCard title="Foros" value={stats.totalForums} icon="M8 12h.01" color="bg-green-600" />
+            <StatCard title="Posts" value={stats.totalPosts} icon="M9 12h6" color="bg-pink-600" />
+            <StatCard title="Comentarios" value={stats.totalComments} icon="M9 16H5" color="bg-purple-600" />
+            <StatCard title="Categorías" value={stats.totalCategories} icon="M7 7h.01" color="bg-yellow-600" />
+            <StatCard title="Contenido oculto" value={stats.hiddenContent} icon="M13.875 18.825" color="bg-orange-600" />
+            <StatCard title="Usuarios bloqueados" value={stats.bannedUsers} icon="M18.364 18.364" color="bg-red-600" />
+          </div>
+        )}
+
       </div>
-
-      {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-600 text-sm">{t('admin.totalUsers')}</p>
-              <p className="text-3xl font-bold mt-2">{stats.totalUsers}</p>
-            </div>
-            <div className="bg-blue-100 rounded-full p-3">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-600 text-sm">{t('admin.totalForums')}</p>
-              <p className="text-3xl font-bold mt-2">{stats.totalForums}</p>
-            </div>
-            <div className="bg-green-100 rounded-full p-3">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-600 text-sm">{t('admin.totalPosts')}</p>
-              <p className="text-3xl font-bold mt-2">{stats.totalPosts}</p>
-            </div>
-            <div className="bg-purple-100 rounded-full p-3">
-              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-600 text-sm">{t('admin.categories')}</p>
-              <p className="text-3xl font-bold mt-2">{stats.totalCategories}</p>
-            </div>
-            <div className="bg-orange-100 rounded-full p-3">
-              <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Lista de Usuarios */}
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">{t('admin.recentUsers')}</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">{t('admin.username')}</th>
-                  <th className="text-left py-2">{t('admin.email')}</th>
-                  <th className="text-left py-2">{t('admin.roles')}</th>
-                  <th className="text-left py-2">{t('admin.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id} className="border-b">
-                    <td className="py-2">{user.username}</td>
-                    <td className="py-2">{user.email}</td>
-                    <td className="py-2">
-                      <div className="flex gap-1">
-                        {user.roles?.map((role) => (
-                          <span
-                            key={role}
-                            className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-800"
-                          >
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="py-2">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditUserRoles(user)}
-                          className="text-blue-600 hover:text-blue-800 text-sm"
-                          title={t('admin.editRoles')}
-                        >
-                          {t('admin.editRoles')}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user.id)}
-                          className="text-red-600 hover:text-red-800 text-sm"
-                          title={t('admin.delete')}
-                        >
-                          {t('admin.delete')}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Foros Recientes */}
-        <div className="bg-earth-50 rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-4">{t('admin.recentForums')}</h2>
-          <div className="space-y-4">
-            {recentForums.map((forum) => (
-              <div
-                key={forum.id}
-                className="border-b pb-4 cursor-pointer hover:bg-gray-50 p-2 rounded"
-                onClick={() => navigate(`/forums/${forum.id}`)}
-              >
-                <h3 className="font-semibold">{forum.title}</h3>
-                <p className="text-sm text-gray-600 truncate">
-                  {forum.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Modal de Edición de Roles */}
-      {showRoleModal && editingUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-earth-50 rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold mb-4">{t('admin.editRolesOf')} {editingUser.username}</h3>
-            <div className="space-y-2 mb-4">
-              {roles.map((role) => (
-                <label key={role.id} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={editingUser.roles?.includes(role.name) || false}
-                    onChange={(e) => {
-                      const newRoles = e.target.checked
-                        ? [...(editingUser.roles || []), role.name]
-                        : editingUser.roles?.filter(r => r !== role.name) || []
-                      setEditingUser({ ...editingUser, roles: newRoles })
-                    }}
-                    className="rounded"
-                  />
-                  <span>{role.name}</span>
-                </label>
-              ))}
-            </div>
-            <div className="flex gap-2 justify-end">
-              <button
-                onClick={() => {
-                  setShowRoleModal(false)
-                  setEditingUser(null)
-                }}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-              >
-                {t('common.cancel')}
-              </button>
-              <button
-                onClick={() => handleUpdateUserRoles(editingUser.id, editingUser.roles)}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                {t('common.save')}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
 
 export default AdminDashboardPage
-

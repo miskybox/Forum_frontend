@@ -251,9 +251,9 @@ const LoginForm = () => {
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
-              <span className="animate-spin" aria-hidden="true">⏳</span>
+              <span className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" aria-hidden="true"></span>
               <span>{t('auth.errors.processing')}</span>
-              <span id="login-status" className="sr-only">Iniciando sesión, por favor espera</span>
+              <span id="login-status" className="sr-only">Iniciando sesion, por favor espera</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">

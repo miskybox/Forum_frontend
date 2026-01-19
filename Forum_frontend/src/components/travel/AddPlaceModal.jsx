@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 import CountrySelector from './CountrySelector'
 import travelService from '../../services/travelService'
+import countryService from '../../services/countryService'
 import toast from 'react-hot-toast'
 
 /**
  * Modal para agregar/editar un lugar visitado
  */
-const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
+const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselectedCountryCode = null }) => {
   const { t } = useLanguage()
   const [selectedCountry, setSelectedCountry] = useState(editPlace?.country || null)
   const [formData, setFormData] = useState({
@@ -20,6 +21,42 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
     favorite: editPlace?.favorite || false
   })
   const [loading, setLoading] = useState(false)
+  const [loadingCountry, setLoadingCountry] = useState(false)
+
+  // Cargar país preseleccionado cuando se abre el modal desde el mapa
+  useEffect(() => {
+    const loadPreselectedCountry = async () => {
+      if (isOpen && preselectedCountryCode && !editPlace) {
+        setLoadingCountry(true)
+        try {
+          const country = await countryService.getCountryByIsoCode(preselectedCountryCode)
+          if (country) {
+            setSelectedCountry(country)
+          }
+        } catch (error) {
+          console.error('Error cargando país preseleccionado:', error)
+        } finally {
+          setLoadingCountry(false)
+        }
+      }
+    }
+    loadPreselectedCountry()
+  }, [isOpen, preselectedCountryCode, editPlace])
+
+  // Resetear formulario cuando se cierra el modal
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedCountry(editPlace?.country || null)
+      setFormData({
+        cityName: editPlace?.cityName || '',
+        status: editPlace?.status || 'VISITED',
+        visitDate: editPlace?.visitDate || '',
+        notes: editPlace?.notes || '',
+        rating: editPlace?.rating || 0,
+        favorite: editPlace?.favorite || false
+      })
+    }
+  }, [isOpen, editPlace])
 
   const statusOptions = [
     { value: 'VISITED', label: t('travel.visited').toUpperCase(), color: 'bg-success' },
@@ -141,10 +178,17 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             <label className="block text-sm font-medium text-text mb-2">
               {t('travel.country')} <span className="text-error">*</span>
             </label>
-            <CountrySelector
-              onSelect={setSelectedCountry}
-              selectedCountry={selectedCountry}
-            />
+            {loadingCountry ? (
+              <div className="flex items-center gap-3 p-3 bg-primary-light rounded-lg border border-secondary">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-golden border-t-transparent" />
+                <span className="text-text-light text-sm">Cargando país...</span>
+              </div>
+            ) : (
+              <CountrySelector
+                onSelect={setSelectedCountry}
+                selectedCountry={selectedCountry}
+              />
+            )}
           </div>
 
           {/* Ciudad (opcional) */}
@@ -161,27 +205,24 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             />
           </div>
 
-          {/* Estado */}
+          {/* Estado - Compacto */}
           <div>
             <label className="block text-sm font-medium text-text mb-2">
               {t('travel.status')}
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               {statusOptions.map(option => (
                 <button
                   key={option.value}
                   type="button"
                   onClick={() => setFormData({ ...formData, status: option.value })}
-                  className={`px-4 py-4 border-2 transition-all text-sm rounded-lg cursor-pointer ${
+                  className={`px-3 py-2 border transition-all text-xs rounded-lg cursor-pointer ${
                     formData.status === option.value
-                      ? 'border-[#B6C7AA] bg-[#B6C7AA]/30 text-[#2D2A26] shadow-md transform scale-[1.02]'
-                      : 'border-[#A0937D] text-[#5C4A3A] bg-[#FEFDFB] hover:border-[#B6C7AA] hover:bg-[#B6C7AA]/10 hover:shadow-sm hover:scale-[1.01]'
+                      ? 'border-[#B6C7AA] bg-[#B6C7AA]/30 text-[#2D2A26] shadow-sm'
+                      : 'border-[#A0937D] text-[#5C4A3A] bg-[#FEFDFB] hover:border-[#B6C7AA] hover:bg-[#B6C7AA]/10'
                   }`}
                 >
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="text-lg">{option.icon}</span>
-                    <span className="font-medium">{option.label}</span>
-                  </span>
+                  <span className="font-semibold">{option.label}</span>
                 </button>
               ))}
             </div>
@@ -217,29 +258,29 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             </p>
           </div>
 
-          {/* Rating */}
+          {/* Rating - Compacto */}
           <div>
             <label className="block text-sm font-medium text-text mb-2">
               {t('travel.rating')}
             </label>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-1 items-center">
               {[1, 2, 3, 4, 5].map(star => (
                 <button
                   key={star}
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: star })}
-                  className={`text-3xl transition-transform hover:scale-110 ${
+                  className={`transition-transform hover:scale-110 ${
                     star <= formData.rating ? 'text-golden' : 'text-gray-300'
                   }`}
                 >
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                 </button>
               ))}
               {formData.rating > 0 && (
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: 0 })}
-                  className="text-sm text-text-light hover:text-accent ml-2"
+                  className="text-xs text-text-light hover:text-accent ml-2"
                 >
                   {t('travel.remove')}
                 </button>
@@ -247,17 +288,17 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             </div>
           </div>
 
-          {/* Notas */}
+          {/* Notas - Compacto */}
           <div>
-            <label className="block text-sm font-medium text-text mb-2">
+            <label className="block text-sm font-medium text-text mb-1">
               {t('travel.notes')}
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder={t('travel.notesPlaceholder')}
-              rows={3}
-              className="input w-full resize-none"
+              rows={2}
+              className="input w-full resize-none text-sm"
             />
           </div>
 
@@ -275,35 +316,43 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null }) => {
             </span>
           </label>
 
-          {/* Botones - Siempre visibles con estilo prominente */}
-          <div className="flex gap-3 pt-6 pb-2 sticky bottom-0 bg-primary-light border-t-2 border-secondary mt-6 -mx-6 px-6">
+          {/* Botones - Compactos y accesibles */}
+          <div className="flex gap-2 pt-4 pb-2 sticky bottom-0 bg-primary-light border-t border-secondary mt-4 -mx-6 px-6">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-4 border-2 border-[#A0937D] text-[#5C4A3A] rounded-lg font-bold uppercase tracking-wide hover:bg-[#E7D4B5] hover:border-[#8B7E6A] transition-all cursor-pointer"
+              className="flex-1 px-3 py-2.5 border border-[#A0937D] rounded-lg text-sm font-semibold hover:bg-[#E7D4B5] transition-all"
+              style={{
+                color: '#5C4A3A',
+                textShadow: '0 0 2px rgba(255,255,255,0.8)'
+              }}
             >
-              <span className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              <span className="flex items-center justify-center gap-1.5">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 <span>{t('common.cancel')}</span>
               </span>
             </button>
             <button
               type="submit"
               disabled={loading || !selectedCountry}
-              className={`flex-1 px-6 py-4 rounded-lg font-bold uppercase tracking-wide transition-all cursor-pointer ${
+              className={`flex-1 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                 loading || !selectedCountry
-                  ? 'bg-gray-300 text-gray-500 border-2 border-gray-400 cursor-not-allowed opacity-60'
-                  : 'bg-[#B6C7AA] text-[#2D2A26] border-2 border-[#A0B596] hover:bg-[#A0B596] hover:shadow-lg hover:scale-[1.02] shadow-md'
+                  ? 'bg-gray-300 text-gray-500 border border-gray-400 cursor-not-allowed opacity-60'
+                  : 'bg-[#B6C7AA] border border-[#A0B596] hover:bg-[#A0B596] shadow-sm'
               }`}
+              style={{
+                color: loading || !selectedCountry ? undefined : '#2D2A26',
+                textShadow: loading || !selectedCountry ? undefined : '0 0 2px rgba(255,255,255,0.8)'
+              }}
             >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-midnight border-t-transparent" />
+                <span className="flex items-center justify-center gap-1.5">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-midnight border-t-transparent" />
                   <span>{t('travel.saving')}</span>
                 </span>
               ) : (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                <span className="flex items-center justify-center gap-1.5">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                   <span>{editPlace ? t('travel.update') : t('travel.add')}</span>
                 </span>
               )}
@@ -319,7 +368,8 @@ AddPlaceModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  editPlace: PropTypes.object
+  editPlace: PropTypes.object,
+  preselectedCountryCode: PropTypes.string
 }
 
 export default AddPlaceModal
