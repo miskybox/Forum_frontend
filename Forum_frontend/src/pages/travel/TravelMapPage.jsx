@@ -116,35 +116,37 @@ const TravelMapPage = () => {
       <div className="bg-transparent border-b-2 border-secondary py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-text flex items-center gap-3 mb-2">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl md:text-2xl font-bold text-text flex items-center gap-3 mb-1 truncate">
                 {t('travel.title')}
               </h1>
-              <p className="text-text-light">
+              <p className="text-text-light text-xs md:text-sm leading-tight max-w-xs md:max-w-md truncate">
                 {t('travel.addNewDestination')}
               </p>
             </div>
 
-            {isAuthenticated ? (
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="btn bg-golden hover:bg-golden-dark text-midnight px-6 py-3 self-start font-bold"
-              >
-                <span className="flex items-center space-x-2">
-                  <span>+</span>
-                  <span>{t('travel.addPlace')}</span>
-                </span>
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-6 py-3"
-              >
-                <span className="flex items-center space-x-2">
-                  <span>{t('auth.loginButton')}</span>
-                </span>
-              </Link>
-            )}
+            <div className="flex flex-row gap-2 w-full md:w-auto mt-2 md:mt-0">
+              {isAuthenticated ? (
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="btn bg-golden hover:bg-golden-dark text-midnight px-4 py-2 w-full md:w-auto font-bold"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>+</span>
+                    <span>{t('travel.addPlace')}</span>
+                  </span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-4 py-2 w-full md:w-auto"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>{t('auth.loginButton')}</span>
+                  </span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>
