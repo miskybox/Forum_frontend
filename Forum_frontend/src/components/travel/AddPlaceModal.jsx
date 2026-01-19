@@ -117,7 +117,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
         <div className="bg-[#213638] px-4 py-3 rounded-t-lg flex-shrink-0">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-[#E5A13E] truncate" id="add-place-modal-title">
-              <span className="outline outline-2 outline-white rounded px-2 py-1">
+              <span className="text-[#fffbe6]">
                 {editPlace ? 'Editar lugar' : 'Agregar lugar'}
               </span>
             </h2>
