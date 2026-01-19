@@ -100,16 +100,18 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4" aria-modal="true" role="dialog">
+    <dialog open className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/60"
-        onClick={onClose}
-        role="button"
-        tabIndex={0}
         aria-label="Cerrar"
-        onKeyUp={(e) => e.key === 'Escape' && onClose()}
-      />
+      >
+        <button
+          onClick={onClose}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          tabIndex={0}
+        />
+      </div>
 
       {/* Modal Container */}
       <div className="relative w-full max-w-md bg-white rounded-lg shadow-2xl flex flex-col max-h-[95vh]">
@@ -193,10 +195,11 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
             {/* Fecha */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Fecha (opcional)
+                <span>Fecha (opcional)</span>
               </label>
               <input
                 type="date"
+                id="visitDate"
                 value={formData.visitDate}
                 onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
                 max={new Date().toISOString().split('T')[0]}
@@ -207,7 +210,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
             {/* Rating */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Valoracion
+                <span>Valoración</span>
               </label>
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map(star => (
@@ -232,9 +235,10 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
             {/* Notas */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Notas (opcional)
+                <span>Notas (opcional)</span>
               </label>
               <textarea
+                id="notes"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 placeholder="Tus recuerdos de este lugar..."
@@ -247,6 +251,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
+                id="favorite"
                 checked={formData.favorite}
                 onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
                 className="w-4 h-4 rounded border-gray-300 text-[#E5A13E] focus:ring-[#E5A13E]"
@@ -279,9 +284,8 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                     <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
                     Guardando...
                   </span>
-                ) : (
-                  editPlace ? 'Actualizar' : 'Agregar'
-                )}
+                ) : null}
+                {!loading && (editPlace ? 'Actualizar' : 'Agregar')}
               </button>
             </div>
           </div>
