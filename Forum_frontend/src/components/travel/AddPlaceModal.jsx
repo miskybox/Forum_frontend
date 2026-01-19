@@ -117,7 +117,9 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
         <div className="bg-[#213638] px-4 py-3 rounded-t-lg flex-shrink-0">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-[#E5A13E] truncate" id="add-place-modal-title">
-              {editPlace ? 'Editar lugar' : 'Agregar lugar'}
+              <span className="outline outline-2 outline-white rounded px-2 py-1">
+                {editPlace ? 'Editar lugar' : 'Agregar lugar'}
+              </span>
             </h2>
             <button
               onClick={onClose}
@@ -171,18 +173,19 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
               </label>
               <div className="grid grid-cols-2 gap-1.5">
                 {statusOptions.map(opt => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => setFormData({ ...formData, status: opt.value })}
-                    className={`px-2 py-1.5 text-xs font-medium rounded border transition-all ${
-                      formData.status === opt.value
-                        ? 'bg-[#213638] text-white border-[#213638]'
-                        : 'bg-white text-gray-700 border-gray-300 hover:border-[#E5A13E]'
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, status: opt.value })}
+                      className={`px-2 py-1.5 text-xs font-medium rounded border transition-all duration-200 ${
+                        formData.status === opt.value
+                          ? 'bg-[#213638] text-white border-[#213638] shadow-lg scale-105'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-[#E5A13E] hover:text-[#213638] hover:border-[#E5A13E] hover:scale-105'
+                      }`}
+                      style={{ boxShadow: formData.status === opt.value ? '0 0 0 2px #fff' : undefined }}
+                    >
+                      {opt.label}
+                    </button>
                 ))}
               </div>
             </div>
