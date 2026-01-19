@@ -25,7 +25,7 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className="bg-aqua border-b-2 border-midnight sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
+    <nav className="bg-aqua sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
 

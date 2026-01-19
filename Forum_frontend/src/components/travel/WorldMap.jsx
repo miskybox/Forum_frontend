@@ -217,13 +217,29 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         </div>
       )}
 
-      {/* Estadísticas rápidas */}
-      <div className="absolute top-4 left-4 bg-golden/90 backdrop-blur-md rounded-xl p-4 z-20 border border-midnight text-midnight">
-        <div className="text-sm drop-shadow-sm">
+      {/* Estadísticas rápidas con outline para accesibilidad */}
+      <div className="absolute top-4 left-4 bg-golden/90 backdrop-blur-md rounded-xl p-4 z-20 border border-midnight">
+        <div className="text-sm">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-bold text-lg">{Object.keys(visitedMap).length}</span>
+            <span
+              className="font-bold text-lg"
+              style={{
+                color: '#213638',
+                textShadow: '-1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF'
+              }}
+            >
+              {Object.keys(visitedMap).length}
+            </span>
           </div>
-          <span className="text-midnight/80 text-xs">países marcados</span>
+          <span
+            className="text-xs font-semibold"
+            style={{
+              color: '#213638',
+              textShadow: '-1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF'
+            }}
+          >
+            países marcados
+          </span>
         </div>
       </div>
 

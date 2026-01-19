@@ -72,7 +72,8 @@
       "Bash(git -C d:/forum-viajeros_fs status)",
       "Bash(git -C d:/forum-viajeros_fs/Forum_backend status)",
       "Bash(git -C d:/forum-viajeros_fs/Forum_backend push origin feature/fix)",
-      "Bash(git -C d:/forum-viajeros_fs push origin feature/fix)"
+      "Bash(git -C d:/forum-viajeros_fs push origin feature/fix)",
+      "Bash(set SPRING_PROFILES_ACTIVE=local)"
     ],
     "deny": [],
     "ask": []

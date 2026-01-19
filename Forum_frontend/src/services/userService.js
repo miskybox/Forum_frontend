@@ -78,6 +78,42 @@ const userService = {
       console.error(`Error al actualizar roles del usuario con id ${id}:`, error)
       throw error
     }
+  },
+
+  updateUserStatus: async (id, status) => {
+    try {
+      const response = await api.put(`/users/${id}/status`, null, {
+        params: { status }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al actualizar estado del usuario con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  blockUser: async (id) => {
+    try {
+      const response = await api.put(`/users/${id}/status`, null, {
+        params: { status: 'BANNED' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al bloquear usuario con id ${id}:`, error)
+      throw error
+    }
+  },
+
+  unblockUser: async (id) => {
+    try {
+      const response = await api.put(`/users/${id}/status`, null, {
+        params: { status: 'ACTIVE' }
+      })
+      return response.data
+    } catch (error) {
+      console.error(`Error al desbloquear usuario con id ${id}:`, error)
+      throw error
+    }
   }
 }
 
