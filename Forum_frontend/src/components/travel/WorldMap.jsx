@@ -74,7 +74,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
   // Crear mapa de países visitados para búsqueda rápida
   const visitedMap = useMemo(() => {
     return visitedPlaces.reduce((acc, place) => {
-      const code = place.country?.code || place.countryCode
+      const code = place.country?.isoCode || place.countryCode
       if (code) {
         acc[code] = place.status
       }
