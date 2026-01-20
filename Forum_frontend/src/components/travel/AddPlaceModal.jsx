@@ -291,7 +291,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
           </div>
         </form>
       </div>
-    </div>
+    </dialog>
   )
 }
 
