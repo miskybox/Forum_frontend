@@ -13,10 +13,10 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
   const [deletingId, setDeletingId] = useState(null)
 
   const statusLabels = {
-    VISITED: { label: 'Visitado', color: 'bg-success-light text-success-dark', icon: '✅' },
-    WISHLIST: { label: 'Quiero ir', color: 'bg-warning-light text-warning-dark', icon: '⭐' },
-    LIVED: { label: 'He vivido', color: 'bg-info-light text-info-dark', icon: '🏠' },
-    LIVING: { label: 'Vivo aquí', color: 'bg-info-light text-info-dark', icon: '📍' }
+    VISITED: { label: 'Visitado', color: 'bg-success-light text-success-dark' },
+    WISHLIST: { label: 'Quiero ir', color: 'bg-warning-light text-warning-dark' },
+    LIVED: { label: 'He vivido', color: 'bg-info-light text-info-dark' },
+    LIVING: { label: 'Vivo aquí', color: 'bg-info-light text-info-dark' }
   }
 
   const filteredPlaces = filter === 'all'
@@ -52,10 +52,10 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
   return (
     <div className="bg-primary-light rounded-2xl shadow-lg overflow-hidden border border-secondary">
       {/* Header con filtros */}
-      <div className="bg-gradient-to-r from-secondary to-secondary-light px-6 py-4">
+      <div className="bg-gradient-to-r from-midnight to-teal-dark px-6 py-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-text">
-            📍 Mis lugares ({filteredPlaces.length})
+          <h3 className="text-lg font-bold text-golden">
+            Mis lugares ({filteredPlaces.length})
           </h3>
         </div>
 
@@ -66,13 +66,13 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
           >
             Todos
           </FilterButton>
-          {Object.entries(statusLabels).map(([status, { label, icon }]) => (
+          {Object.entries(statusLabels).map(([status, { label }]) => (
             <FilterButton
               key={status}
               active={filter === status}
               onClick={() => setFilter(status)}
             >
-              {icon} {label}
+              {label}
             </FilterButton>
           ))}
         </div>
@@ -82,9 +82,11 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
       <div className="divide-y divide-secondary max-h-[500px] overflow-y-auto">
         {filteredPlaces.length === 0 ? (
           <div className="p-12 text-center">
-            <span className="text-6xl mb-4 block">🗺️</span>
+            <div className="w-16 h-16 mx-auto mb-4 bg-aqua rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+            </div>
             <p className="text-text-light">No hay lugares en esta categoría</p>
-            <p className="text-text-lighter text-sm">¡Empieza a agregar tus viajes!</p>
+            <p className="text-text-lighter text-sm">Empieza a agregar tus viajes</p>
           </div>
         ) : (
           filteredPlaces.map(place => (
@@ -102,23 +104,23 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                     <h4 className="font-semibold text-text truncate">
                       {place.cityName ? `${place.cityName}, ` : ''}{place.country.name}
                     </h4>
-                    {place.favorite && <span title="Favorito">❤️</span>}
+                    {place.favorite && <span className="w-3 h-3 bg-error rounded-full" title="Favorito"></span>}
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2 text-sm">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${statusLabels[place.status].color}`}>
-                      {statusLabels[place.status].icon} {statusLabels[place.status].label}
+                      {statusLabels[place.status].label}
                     </span>
 
                     {place.visitDate && (
                       <span className="text-text-light">
-                        📅 {format(new Date(place.visitDate), "MMM yyyy", { locale: es })}
+                        {format(new Date(place.visitDate), "MMM yyyy", { locale: es })}
                       </span>
                     )}
 
                     {place.rating > 0 && (
-                      <span className="text-warning-dark">
-                        {'⭐'.repeat(place.rating)}
+                      <span className="text-golden font-bold">
+                        {place.rating}/5
                       </span>
                     )}
                   </div>
@@ -141,14 +143,14 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                     }`}
                     title={place.favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                   >
-                    ❤️
+                    <svg className="w-5 h-5" fill={place.favorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                   </button>
                   <button
                     onClick={() => onEdit(place)}
                     className="p-2 rounded-lg text-accent hover:bg-primary hover:text-accent-dark transition-colors"
                     title="Editar"
                   >
-                    ✏️
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                   </button>
                   <button
                     onClick={() => handleDelete(place.id)}
@@ -156,7 +158,11 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                     className="p-2 rounded-lg text-accent hover:bg-error-light hover:text-error-dark transition-colors disabled:opacity-50"
                     title="Eliminar"
                   >
-                    {deletingId === place.id ? '⏳' : '🗑️'}
+                    {deletingId === place.id ? (
+                      <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    )}
                   </button>
                 </div>
               </div>
@@ -174,7 +180,7 @@ const FilterButton = ({ active, onClick, children }) => (
     className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
       active
         ? 'bg-primary-light text-text'
-        : 'bg-white/40 text-text-light hover:bg-white/60'
+        : 'bg-earth-50/40 text-text-light hover:bg-earth-50/60'
     }`}
   >
     {children}

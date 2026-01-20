@@ -35,7 +35,7 @@ const BlogSearchPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-earth-50 border-b">
         <div className="container mx-auto px-4 py-8">
           <Link to="/blog" className="inline-flex items-center text-ocean-600 hover:text-ocean-700 mb-4">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +88,7 @@ const BlogSearchPage = () => {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -98,7 +98,7 @@ const BlogSearchPage = () => {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

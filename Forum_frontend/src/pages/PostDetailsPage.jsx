@@ -91,8 +91,8 @@ const PostDetailsPage = () => {
           Volver al foro
         </Link>
       </div>
-      
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+
+      <div className="bg-earth-50 rounded-lg shadow-md overflow-hidden">
         {/* Contenido del post */}
         <PostContent post={post} />
         

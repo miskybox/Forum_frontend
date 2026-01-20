@@ -63,7 +63,12 @@ const BlogCategoryPage = () => {
 
           {category && (
             <div className="flex items-center gap-4">
-              <span className="text-6xl">{category.icon || '📁'}</span>
+              <div 
+                className="w-16 h-16 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: category.color || '#059669' }}
+              >
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
+              </div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-2">
                   {category.name}
@@ -89,7 +94,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -99,7 +104,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

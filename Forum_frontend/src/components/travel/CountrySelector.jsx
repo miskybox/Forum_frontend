@@ -1,182 +1,454 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import countryService from '../../services/countryService'
 
+const ALL_CONTINENTS_KEY = '__all__'
+const COLLATOR = new Intl.Collator('es-ES', { sensitivity: 'base', usage: 'sort' })
+
+const normalizeText = (value) => {
+  if (!value) return ''
+  return value
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
+
+const isoToEmoji = (code) => {
+  if (!code || code.length !== 2) return '--'
+  return code.toUpperCase()
+}
+
+const getCountryName = (country) => {
+  if (!country) return ''
+  if (typeof country.name === 'string') return country.name
+  return (
+    country.name?.common ||
+    country.name?.official ||
+    country.name?.es ||
+    country.translation?.es ||
+    country.translation?.esES ||
+    country.countryName ||
+    ''
+  )
+}
+
+const getCountryCapital = (country) => {
+  if (!country) return ''
+  if (Array.isArray(country.capital)) return country.capital[0] || ''
+  if (typeof country.capital === 'string') return country.capital
+  return ''
+}
+
+const getCountryId = (country, fallbackIndex) => {
+  return (
+    country.id ||
+    country.countryId ||
+    country.isoCode ||
+    country.code ||
+    country.alpha2Code ||
+    country.cca2 ||
+    `country-${fallbackIndex}`
+  )
+}
+
+const getCountryContinent = (country) => {
+  return (
+    country.continent ||
+    country.continentName ||
+    country.region ||
+    country.subregion ||
+    'Otros'
+  )
+}
+
+const getContinentLabel = (continent) => {
+  if (!continent) return 'GL'
+  const normalized = normalizeText(continent)
+  const cleaned = normalized.replace(/\b(del?|de|the|of)\b/g, ' ')
+  const collapsed = cleaned.replace(/[^a-z0-9]/g, '')
+
+  const labelMap = {
+    africa: 'AF',
+    americas: 'AM',
+    america: 'AM',
+    europa: 'EU',
+    europe: 'EU',
+    asia: 'AS',
+    oceania: 'OC',
+    australia: 'OC',
+    pacifico: 'OC',
+    pacific: 'OC',
+    antarctica: 'AN',
+    antartida: 'AN',
+    middleeast: 'ME',
+    mediooriente: 'ME',
+    mideast: 'ME',
+    oriente: 'ME',
+    westasia: 'ME',
+    otros: 'GL'
+  }
+
+  if (labelMap[collapsed]) {
+    return labelMap[collapsed]
+  }
+
+  const simplified = collapsed.replace(/(north|south|central|west|east|northern|southern|western|eastern|northwest|northeast|southwest|southeast|noroeste|noreste|suroeste|sureste|norte|sur|centro|occidental|oriental)/g, '')
+  if (simplified && labelMap[simplified]) {
+    return labelMap[simplified]
+  }
+
+  return 'GL'
+}
+
+const getCountryIdentifier = (country, fallbackIndex) => {
+  if (!country) return fallbackIndex != null ? `country-${fallbackIndex}` : null
+  return (
+    country.id ||
+    country.countryId ||
+    country.isoCode ||
+    country.code ||
+    country.alpha2Code ||
+    country.cca2 ||
+    (fallbackIndex != null ? `country-${fallbackIndex}` : null)
+  )
+}
+
+const getCountryEmoji = (country) => {
+  if (!country) return '--'
+  const code = country.isoCode || country.code || country.alpha2Code || country.cca2
+  return code ? code.toUpperCase() : '--'
+}
+
+const buildCountry = (country, index) => {
+  const name = getCountryName(country)
+  const capital = getCountryCapital(country)
+  const continent = getCountryContinent(country)
+  const normalizedContinent = normalizeText(continent)
+  const iso = (country.isoCode || country.code || country.alpha2Code || country.cca2 || '').toUpperCase()
+  const displayName = name || iso || `País ${index + 1}`
+  const emoji = getCountryEmoji({ ...country, isoCode: iso })
+  const identifier = getCountryId(country, index)
+  const original = {
+    ...country,
+    flagEmoji: country.flagEmoji || emoji,
+    isoCode: country.isoCode || iso,
+    displayName,
+    displayCapital: capital,
+    continent: country.continent || continent,
+    id: country.id || identifier
+  }
+
+  return {
+    id: identifier,
+    name: displayName,
+    capital,
+    emoji,
+    continent,
+    normalizedContinent,
+    searchIndex: normalizeText(`${displayName} ${capital} ${continent}`),
+    original
+  }
+}
+
 /**
- * Componente selector de país con búsqueda
+ * CountrySelector - Nueva paleta del logo
+ * Teal (#5A8A7A), Terracota (#A67C52), Dark Green (#3D5F54)
  */
 const CountrySelector = ({ onSelect, selectedCountry }) => {
   const [countries, setCountries] = useState([])
+  const [rawContinents, setRawContinents] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [filteredCountries, setFilteredCountries] = useState([])
-  const [selectedContinent, setSelectedContinent] = useState('all')
-  const [continents, setContinents] = useState([])
+  const [selectedContinent, setSelectedContinent] = useState(ALL_CONTINENTS_KEY)
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(true)
+  const dropdownRef = useRef(null)
 
   useEffect(() => {
-    loadCountries()
-    loadContinents()
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        await Promise.all([loadCountries(), loadContinents()])
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
   }, [])
 
   useEffect(() => {
-    filterCountries()
-  }, [searchQuery, selectedContinent, countries])
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const loadCountries = async () => {
     try {
       const data = await countryService.getAllCountries()
-      setCountries(data)
-      setFilteredCountries(data)
+      const processed = data.map((country, index) => buildCountry(country, index))
+      const sorted = processed.sort((a, b) => COLLATOR.compare(a.name, b.name))
+      setCountries(sorted)
     } catch (error) {
       console.error('Error cargando países:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
   const loadContinents = async () => {
     try {
       const data = await countryService.getAllContinents()
-      setContinents(data)
+      if (Array.isArray(data)) {
+        setRawContinents(data)
+      }
     } catch (error) {
       console.error('Error cargando continentes:', error)
     }
   }
 
-  const filterCountries = () => {
-    let filtered = [...countries]
+  const continentOptions = useMemo(() => {
+    const map = new Map()
 
-    if (selectedContinent !== 'all') {
-      filtered = filtered.filter(c => c.continent === selectedContinent)
-    }
+    map.set(ALL_CONTINENTS_KEY, {
+      value: ALL_CONTINENTS_KEY,
+      label: 'Todos los continentes',
+      abbr: 'GL',
+      count: countries.length
+    })
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(c => 
-        c.name.toLowerCase().includes(query) ||
-        c.capital?.toLowerCase().includes(query)
-      )
-    }
+    rawContinents.forEach((item) => {
+      const label = item || 'Otros'
+      const key = normalizeText(label)
+      map.set(key, {
+        value: key,
+        label,
+        abbr: getContinentLabel(label),
+        count: 0
+      })
+    })
 
-    setFilteredCountries(filtered)
-  }
+    countries.forEach((country) => {
+      const key = country.normalizedContinent || 'otros'
+      const existing = map.get(key) || {
+        value: key,
+        label: country.continent || 'Otros',
+        abbr: getContinentLabel(country.continent || 'Otros'),
+        count: 0
+      }
+      existing.label = existing.label || country.continent || 'Otros'
+      existing.count += 1
+      map.set(key, existing)
+    })
 
-  const handleSelect = (country) => {
-    onSelect(country)
-    setIsOpen(false)
+    return Array.from(map.values())
+      .filter((option) => option.value === ALL_CONTINENTS_KEY || option.count > 0)
+      .sort((a, b) => {
+        if (a.value === ALL_CONTINENTS_KEY) return -1
+        if (b.value === ALL_CONTINENTS_KEY) return 1
+        return COLLATOR.compare(a.label, b.label)
+      })
+  }, [countries, rawContinents])
+
+  const filteredCountries = useMemo(() => {
+    const query = normalizeText(searchQuery)
+    return countries
+      .filter((country) => {
+        const matchesContinent =
+          selectedContinent === ALL_CONTINENTS_KEY ||
+          country.normalizedContinent === selectedContinent
+        if (!matchesContinent) return false
+        if (!query) return true
+        return country.searchIndex.includes(query)
+      })
+      .sort((a, b) => COLLATOR.compare(a.name, b.name))
+  }, [countries, selectedContinent, searchQuery])
+
+  const activeContinent = useMemo(() => {
+    return continentOptions.find((option) => option.value === selectedContinent) || continentOptions[0]
+  }, [continentOptions, selectedContinent])
+
+  const handleContinentSelect = (value) => {
+    setSelectedContinent(value)
     setSearchQuery('')
   }
 
+  const handleCountrySelect = (country) => {
+    onSelect(country.original)
+    setIsOpen(false)
+  }
+
+  const selectedCountryId = getCountryIdentifier(selectedCountry)
+  const normalizedSelectedId = selectedCountryId != null ? selectedCountryId.toString() : null
+  const selectedCountryName = getCountryName(selectedCountry) || selectedCountry?.displayName || ''
+  const selectedCountryCapital = getCountryCapital(selectedCountry) || selectedCountry?.displayCapital || ''
+  const selectedEmoji = getCountryEmoji(selectedCountry)
+
   return (
-    <div className="relative">
-      {/* Input de búsqueda */}
-      <button 
+    <div className="relative" ref={dropdownRef}>
+      <button
         type="button"
-        className="flex items-center gap-2 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-success transition-colors w-full text-left"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="w-full flex items-center gap-3 px-4 py-3 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-md transition-all text-left"
       >
         {selectedCountry ? (
           <>
-            <span className="text-2xl">{selectedCountry.flagEmoji}</span>
-            <span className="font-medium text-slate-800">{selectedCountry.name}</span>
-            <span className="text-slate-400 text-sm">({selectedCountry.capital})</span>
+            <span className="text-2xl shrink-0">{selectedEmoji}</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-text truncate text-sm">{selectedCountryName || 'País seleccionado'}</p>
+              {selectedCountryCapital && (
+                <p className="text-xs text-text-light truncate">{selectedCountryCapital}</p>
+              )}
+            </div>
           </>
         ) : (
           <>
-            <span className="text-slate-400">🔍</span>
-            <span className="text-slate-400">Selecciona un país...</span>
+            <span className="w-6 h-6 bg-golden rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </span>
+            <span className="text-text-light text-sm">Selecciona un país...</span>
           </>
         )}
-        <span className="ml-auto text-slate-400">▼</span>
+        <span className="ml-auto text-text-light text-xs">{isOpen ? '▲' : '▼'}</span>
       </button>
 
-      {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 max-h-96 overflow-hidden">
-          {/* Barra de búsqueda */}
-          <div className="p-3 border-b border-slate-100">
-            <input
-              type="text"
-              placeholder="Buscar país o capital..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-slate-50 rounded-lg border-0 focus:ring-2 focus:ring-success"
-              autoFocus
-            />
-          </div>
-
-          {/* Filtro por continente */}
-          <div className="p-3 border-b border-slate-100 flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedContinent('all')}
-              className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                selectedContinent === 'all'
-                  ? 'bg-success text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
-            >
-              Todos
-            </button>
-            {continents.map(continent => (
-              <button
-                key={continent}
-                onClick={() => setSelectedContinent(continent)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                  selectedContinent === continent
-                    ? 'bg-success text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                {continent}
-              </button>
-            ))}
-          </div>
-
-          {/* Lista de países */}
-          <div className="max-h-64 overflow-y-auto">
-            {loading && (
-              <div className="p-8 text-center text-slate-400">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-success border-t-transparent mx-auto mb-2" />
-                Cargando países...
+        <div className="absolute top-full left-0 right-0 mt-2 z-50">
+          <div className="bg-white border-2 border-accent rounded-2xl shadow-xl overflow-hidden">
+            <div className="p-4 sm:p-5 space-y-4">
+              <div className="space-y-2">
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-secondary">Filtra por continente</span>
+                <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                  {continentOptions.map((option) => {
+                    const isActive = option.value === selectedContinent
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => handleContinentSelect(option.value)}
+                        aria-pressed={isActive}
+                        className={`flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
+                          isActive
+                            ? 'bg-golden/20 border-golden text-midnight shadow-sm'
+                            : 'border-primary-dark text-text-light hover:border-golden hover:text-golden'
+                        }`}
+                      >
+                        <span className="font-bold">{option.abbr}</span>
+                        <span>{option.label}</span>
+                        <span className="text-[10px] uppercase tracking-wide text-text-lighter">{option.count}</span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-            )}
-            {!loading && filteredCountries.length === 0 && (
-              <div className="p-8 text-center text-slate-400">
-                No se encontraron países
+
+              <div className="space-y-2">
+                <label htmlFor="country-search" className="block text-xs font-semibold text-text uppercase tracking-wide">
+                  Busca tu destino
+                </label>
+                <div className="relative">
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  <input
+                    id="country-search"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Escribe el nombre del país o su capital"
+                    className="w-full pl-9 pr-3 py-2.5 border-2 border-accent rounded-xl text-sm text-text placeholder-text-lighter focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition"
+                  />
+                </div>
               </div>
-            )}
-            {!loading && filteredCountries.length > 0 && (
-              filteredCountries.map(country => (
+
+              <div className="flex items-center justify-between text-[11px] text-text-light">
+                <span className="flex items-center gap-1">
+                  <span className="font-bold text-golden">{activeContinent?.abbr}</span>
+                  <span>{activeContinent?.label}</span>
+                </span>
+                <span>
+                  {filteredCountries.length} de {countries.length} países
+                </span>
+              </div>
+
+              {loading ? (
+                <div className="py-8 text-center text-text-light">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-secondary border-t-transparent mx-auto mb-3" />
+                  <p className="text-sm">Cargando destinos...</p>
+                </div>
+              ) : filteredCountries.length === 0 ? (
+                <div className="py-8 text-center text-text-light">
+                  <div className="w-10 h-10 mx-auto mb-3 bg-aqua rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  </div>
+                  <p className="text-sm">No encontramos resultados. Prueba con otro nombre.</p>
+                  {selectedContinent !== ALL_CONTINENTS_KEY && (
+                    <button
+                      type="button"
+                      onClick={() => handleContinentSelect(ALL_CONTINENTS_KEY)}
+                      className="mt-4 inline-flex items-center gap-2 text-secondary text-sm font-semibold hover:text-secondary-dark"
+                    >
+                      Mostrar todos los continentes
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div
+                  role="listbox"
+                  aria-label="Países disponibles"
+                  className="max-h-72 overflow-y-auto pr-1"
+                >
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {filteredCountries.map((country) => {
+                      const candidateId = getCountryIdentifier(country.original)
+                      const baseId = candidateId != null ? candidateId : country.id
+                      const comparisonId = baseId != null ? baseId.toString() : null
+                      const isActive = Boolean(normalizedSelectedId && comparisonId === normalizedSelectedId)
+                      return (
+                        <button
+                          key={country.id}
+                          type="button"
+                          role="option"
+                          aria-selected={isActive}
+                          onClick={() => handleCountrySelect(country)}
+                          className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl border text-left transition-all ${
+                            isActive
+                              ? 'border-secondary bg-secondary/10 text-text shadow-sm'
+                              : 'border-primary-dark bg-white hover:border-secondary hover:bg-secondary/5'
+                          }`}
+                        >
+                          <span className="w-10 h-10 rounded-lg bg-midnight/10 flex items-center justify-center text-sm font-bold text-midnight shrink-0">{country.emoji}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-text truncate">{country.name}</p>
+                            <p className="text-xs text-text-light truncate">
+                              {country.capital ? `${country.capital} • ${country.continent}` : country.continent}
+                            </p>
+                          </div>
+                          {isActive && (
+                            <svg className="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-primary-dark pt-4 mt-2">
+                <p className="text-xs text-text-light">
+                  Selecciona un país para continuar y guarda tu experiencia.
+                </p>
                 <button
                   type="button"
-                  key={country.id}
-                  onClick={() => handleSelect(country)}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-success-light/20 cursor-pointer transition-colors border-b border-slate-50 last:border-0 w-full text-left"
-                  data-selected={selectedCountry?.id === country.id}
+                  onClick={() => setIsOpen(false)}
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary hover:text-secondary-dark hover:bg-secondary/10 transition"
                 >
-                  <span className="text-2xl">{country.flagEmoji}</span>
-                  <div>
-                    <p className="font-medium text-slate-800">{country.name}</p>
-                    <p className="text-sm text-slate-400">{country.capital} • {country.continent}</p>
-                  </div>
+                  Cerrar
                 </button>
-              ))
-            )}
+              </div>
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Overlay para cerrar */}
-      {isOpen && (
-        <button 
-          type="button"
-          className="fixed inset-0 z-40 bg-transparent border-0 cursor-default" 
-          onClick={() => setIsOpen(false)}
-          aria-label="Cerrar selector"
-        />
       )}
     </div>
   )
@@ -188,4 +460,3 @@ CountrySelector.propTypes = {
 }
 
 export default CountrySelector
-

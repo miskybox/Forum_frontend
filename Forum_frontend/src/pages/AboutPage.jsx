@@ -1,22 +1,23 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const AboutPage = () => {
+  const { t } = useLanguage()
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Acerca de Forum Viajeros</h1>
+        <h1 className="text-4xl font-bold mb-6">{t('about.title')}</h1>
         <div className="prose prose-lg">
           <p className="text-lg mb-4">
-            Forum Viajeros es una plataforma dedicada a conectar viajeros de todo el mundo,
-            permitiéndoles compartir experiencias, consejos y descubrir nuevos destinos.
+            {t('about.description1')}
           </p>
           <p className="mb-4">
-            Nuestra misión es crear una comunidad global de viajeros que se ayuden mutuamente
-            a explorar el mundo de manera más enriquecedora y segura.
+            {t('about.description2')}
           </p>
           <div className="mt-8">
             <Link to="/" className="btn btn-primary">
-              Volver al inicio
+              {t('help.backHome')}
             </Link>
           </div>
         </div>

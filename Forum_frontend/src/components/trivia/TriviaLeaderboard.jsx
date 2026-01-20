@@ -39,9 +39,9 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
   const getRankIcon = (rank) => {
     switch (rank) {
-      case 1: return '🥇'
-      case 2: return '🥈'
-      case 3: return '🥉'
+      case 1: return '1º'
+      case 2: return '2º'
+      case 3: return '3º'
       default: return rank
     }
   }
@@ -49,23 +49,23 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   return (
     <div className="card overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-secondary to-accent px-6 py-6">
-        <h2 className="text-2xl font-bold text-white mb-4">🏆 {t('trivia.globalRanking')}</h2>
+      <div className="bg-gradient-to-r from-midnight to-teal-dark px-6 py-6">
+        <h2 className="text-2xl font-bold text-white mb-4">{t('trivia.globalRanking')}</h2>
 
         {/* Tabs */}
         <div className="flex gap-2">
           {[
-            { value: 'score', label: `⭐ ${t('trivia.score')}` },
-            { value: 'accuracy', label: `🎯 ${t('trivia.precision')}` },
-            { value: 'streak', label: `🔥 ${t('trivia.streaks')}` }
+            { value: 'score', label: t('trivia.score') },
+            { value: 'accuracy', label: t('trivia.precision') },
+            { value: 'streak', label: t('trivia.streaks') }
           ].map(tab => (
             <button
               key={tab.value}
               onClick={() => setType(tab.value)}
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
                 type === tab.value
-                  ? 'bg-white text-text'
-                  : 'bg-white/20 text-white/80 hover:bg-white/30'
+                  ? 'bg-golden text-midnight'
+                  : 'bg-aqua/20 text-white/80 hover:bg-aqua/30'
               }`}
             >
               {tab.label}
@@ -84,7 +84,9 @@ const TriviaLeaderboard = ({ currentUserId }) => {
         )}
         {!loading && leaderboard?.entries?.length === 0 && (
           <div className="p-12 text-center">
-            <span className="text-6xl">🏜️</span>
+            <div className="w-20 h-20 mx-auto bg-midnight/20 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-10 h-10 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            </div>
             <p className="text-text-light mt-4 font-semibold">{t('trivia.noPlayersYet')}</p>
           </div>
         )}
@@ -111,7 +113,11 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                         alt={entry.username}
                         className="w-8 h-8 rounded-full"
                       />
-                    ) : '👤'}
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-aqua/30 flex items-center justify-center">
+                        <svg className="w-5 h-5 text-midnight" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
+                      </div>
+                    )}
                   </span>
                   <div>
                     <p className="font-bold text-text truncate">
@@ -132,7 +138,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                 <p className="text-xl font-bold text-text">
                   {type === 'score' && entry.score?.toLocaleString()}
                   {type === 'accuracy' && `${entry.accuracyPercentage?.toFixed(1)}%`}
-                  {type === 'streak' && `🔥 ${entry.bestStreak}`}
+                  {type === 'streak' && `${entry.bestStreak}`}
                 </p>
                 <p className="text-xs text-text-light font-semibold">
                   {t('trivia.level')} {entry.level} • {entry.totalGames} {t('trivia.games')}

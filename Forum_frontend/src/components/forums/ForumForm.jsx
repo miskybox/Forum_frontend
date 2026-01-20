@@ -180,21 +180,42 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       navigate(`/forums/${response.id}`)
     } catch (error) {
       console.error('Error al guardar el foro:', error)
-      toast.error(error.response?.data?.message || 'Error al guardar el foro. Por favor, inténtalo de nuevo.')
 
-      if (error.response?.status === 400 && error.response?.data?.errors) {
-        const backendErrors = error.response.data.errors
-        const formattedErrors = {}
-
-        Object.keys(backendErrors).forEach(key => {
-          formattedErrors[key] = backendErrors[key]
-        })
-
-        setErrors({
-          ...errors,
-          ...formattedErrors
-        })
+      let errorMessage = 'Error al guardar el foro. Inténtalo de nuevo.'
+      
+      if (error.response) {
+        const status = error.response.status
+        
+        if (status === 401) {
+          errorMessage = 'Tu sesión ha expirado. Inicia sesión de nuevo.'
+          setTimeout(() => navigate('/login?redirect=/forums/create'), 2000)
+        } else if (status === 403) {
+          errorMessage = 'No tienes permisos para crear foros.'
+        } else if (status === 400) {
+          errorMessage = 'Los datos del foro no son válidos. Revisa los campos.'
+          
+          // Manejar errores de validación del backend
+          if (error.response.data?.errors) {
+            const backendErrors = error.response.data.errors
+            const formattedErrors = {}
+            Object.keys(backendErrors).forEach(key => {
+              formattedErrors[key] = backendErrors[key]
+            })
+            setErrors(prev => ({ ...prev, ...formattedErrors }))
+          }
+        } else if (status === 500) {
+          errorMessage = 'Error del servidor. Intenta más tarde.'
+        }
+      } else if (error.request) {
+        errorMessage = 'No se pudo conectar con el servidor.'
       }
+
+      toast.error(errorMessage, { 
+        duration: 5000,
+        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
+      })
+      
+      setErrors(prev => ({ ...prev, submit: errorMessage }))
     } finally {
       setIsSubmitting(false)
     }

@@ -37,33 +37,33 @@ const ForumCreatePage = () => {
         </div>
 
         {/* Tips Card */}
-        <div className="card max-w-4xl mt-6 border-terracotta-600">
-          <h3 className="text-xl font-bold text-terracotta-500 mb-4 tracking-normal uppercase">
-            💡 {t('forums.tipsTitle')}
+        <div className="card max-w-4xl mt-6 border-golden">
+          <h3 className="text-xl font-bold text-golden mb-4 tracking-normal uppercase">
+            {t('forums.tipsTitle')}
           </h3>
           <ul className="space-y-3 text-light-soft">
             <li className="flex items-start gap-3">
-              <span className="text-ocean-500 text-xl">✓</span>
+              <svg className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               <span>
-                <strong className="text-ocean-400">{t('forums.tipDescriptiveTitle')}</strong> {t('forums.tipDescriptiveTitleText')}
+                <strong className="text-golden">{t('forums.tipDescriptiveTitle')}</strong> {t('forums.tipDescriptiveTitleText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-ocean-500 text-xl">✓</span>
+              <svg className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               <span>
-                <strong className="text-ocean-400">{t('forums.tipFullDescription')}</strong> {t('forums.tipFullDescriptionText')}
+                <strong className="text-golden">{t('forums.tipFullDescription')}</strong> {t('forums.tipFullDescriptionText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-ocean-500 text-xl">✓</span>
+              <svg className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               <span>
-                <strong className="text-ocean-400">{t('forums.tipAppropriateCategory')}</strong> {t('forums.tipAppropriateCategoryText')}
+                <strong className="text-golden">{t('forums.tipAppropriateCategory')}</strong> {t('forums.tipAppropriateCategoryText')}
               </span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-ocean-500 text-xl">✓</span>
+              <svg className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
               <span>
-                <strong className="text-ocean-400">{t('forums.tipBeSpecific')}</strong> {t('forums.tipBeSpecificText')}
+                <strong className="text-golden">{t('forums.tipBeSpecific')}</strong> {t('forums.tipBeSpecificText')}
               </span>
             </li>
           </ul>

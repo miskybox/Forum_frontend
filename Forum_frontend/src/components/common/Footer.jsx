@@ -4,14 +4,18 @@ import { useLanguage } from '../../contexts/LanguageContext'
 import logo from '../../assets/logoFV.png'
 
 /**
- * Footer - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
+ * Footer - Paleta del logo
+ * --primary-terracota: #A67C52
+ * --accent-teal: #5A8A7A
+ * --dark-green: #3D5F54
+ * --neutral-beige: #F5F0E8
  */
 const Footer = () => {
   const { t } = useLanguage()
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-transparent border-t-2 border-accent py-6 relative" role="contentinfo">
+    <footer className="bg-primary border-t-2 border-accent py-6 relative" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Logo y descripción centrados */}
         <div className="text-center mb-6">
@@ -22,7 +26,7 @@ const Footer = () => {
               className="h-12 w-auto transition-transform duration-200"
             />
           </Link>
-          <p className="text-sm text-text-light font-sans leading-relaxed max-w-2xl mx-auto font-medium">
+          <p className="text-sm text-text font-sans leading-relaxed max-w-2xl mx-auto font-medium">
             {t('footer.description')}
           </p>
         </div>
@@ -31,22 +35,21 @@ const Footer = () => {
 
           {/* Enlaces útiles */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-bold text-text uppercase tracking-wide mb-2">
               {t('footer.navigation')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/categories', label: t('footer.continents'), icon: '🌍' },
-                { to: '/forums', label: t('footer.forums'), icon: '💬' },
-                { to: '/travel', label: t('footer.myMap'), icon: '🗺️' },
-                { to: '/trivia', label: 'Trivia', icon: '🎯' },
+                { to: '/categories', label: t('footer.continents') },
+                { to: '/forums', label: t('footer.forums') },
+                { to: '/travel', label: t('footer.myMap') },
+                { to: '/trivia', label: 'Trivia' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center group min-h-[36px] font-medium"
                   >
-                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
@@ -56,21 +59,20 @@ const Footer = () => {
 
           {/* Legal */}
           <div className="text-center md:text-left">
-            <h3 className="text-xs font-bold text-text-lighter uppercase tracking-wide mb-2">
+            <h3 className="text-xs font-bold text-text uppercase tracking-wide mb-2">
               {t('footer.legal')}
             </h3>
             <ul className="space-y-1 inline-block text-left">
               {[
-                { to: '/about', label: t('footer.about'), icon: 'ℹ️' },
-                { to: '/contact', label: t('footer.contact'), icon: '📧' },
-                { to: '/help', label: t('footer.help'), icon: '❓' },
+                { to: '/about', label: t('footer.about') },
+                { to: '/contact', label: t('footer.contact') },
+                { to: '/help', label: t('footer.help') },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-text hover:text-accent-dark transition-colors duration-200 flex items-center space-x-2 group min-h-[36px] font-medium"
+                    className="text-text hover:text-secondary transition-colors duration-200 flex items-center group min-h-[36px] font-medium"
                   >
-                    <span className="text-sm" aria-hidden="true">{link.icon}</span>
                     <span className="font-semibold text-xs uppercase tracking-wide">{link.label}</span>
                   </Link>
                 </li>
@@ -84,7 +86,7 @@ const Footer = () => {
 
         {/* Copyright y redes */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-          <div className="text-text-light font-sans text-xs font-medium">
+          <div className="text-text font-sans text-xs font-medium">
             <span className="sr-only">Copyright </span>
             <span aria-hidden="true">©</span> {currentYear} <span className="font-bold" style={{ textTransform: 'none' }}>Forum Viajeros</span>
             <span className="mx-2" aria-hidden="true">·</span>
@@ -96,7 +98,7 @@ const Footer = () => {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-text hover:text-secondary transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitFacebook')}
             >
               <FaFacebook className="text-lg" aria-hidden="true" />
@@ -105,7 +107,7 @@ const Footer = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-text hover:text-secondary transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitInstagram')}
             >
               <FaInstagram className="text-lg" aria-hidden="true" />
@@ -114,7 +116,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text hover:text-accent-dark transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
+              className="text-text hover:text-secondary transition-colors duration-200 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={t('footer.visitTwitter')}
             >
               <FaTwitter className="text-lg" aria-hidden="true" />

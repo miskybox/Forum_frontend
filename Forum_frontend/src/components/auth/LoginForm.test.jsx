@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import LoginForm from './LoginForm'
 import { AuthContext } from '../../contexts/AuthContext'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 
 vi.mock('react-hot-toast', () => ({
   default: {
@@ -41,9 +42,11 @@ describe('LoginForm', () => {
   const renderLoginForm = () => {
     return render(
       <MemoryRouter>
-        <AuthContext.Provider value={mockAuthContext}>
-          <LoginForm />
-        </AuthContext.Provider>
+        <LanguageProvider>
+          <AuthContext.Provider value={mockAuthContext}>
+            <LoginForm />
+          </AuthContext.Provider>
+        </LanguageProvider>
       </MemoryRouter>
     )
   }
@@ -52,7 +55,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     expect(screen.getByRole('textbox', { name: /usuario/i })).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/ingresa tu contraseña/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/mínimo 8 caracteres/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /acceder/i })).toBeInTheDocument()
   })
 
@@ -61,7 +64,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     const usernameInput = screen.getByRole('textbox', { name: /usuario/i })
-    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
+    const passwordInput = screen.getByPlaceholderText(/mínimo 8 caracteres/i)
 
     await user.type(usernameInput, 'testuser')
     await user.type(passwordInput, 'password123')
@@ -76,7 +79,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
-    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.type(screen.getByPlaceholderText(/mínimo 8 caracteres/i), 'password123')
     await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
@@ -88,7 +91,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     const usernameInput = screen.getByRole('textbox', { name: /usuario/i })
-    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
+    const passwordInput = screen.getByPlaceholderText(/mínimo 8 caracteres/i)
 
     expect(usernameInput).toBeRequired()
     expect(passwordInput).toBeRequired()
@@ -99,7 +102,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'user@invalid')
-    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.type(screen.getByPlaceholderText(/mínimo 8 caracteres/i), 'password123')
     await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
@@ -119,7 +122,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'wronguser')
-    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'wrongpass')
+    await user.type(screen.getByPlaceholderText(/mínimo 8 caracteres/i), 'wrongpass')
     await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
@@ -133,7 +136,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
-    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.type(screen.getByPlaceholderText(/mínimo 8 caracteres/i), 'password123')
     await user.click(screen.getByRole('button', { name: /acceder/i }))
 
     await waitFor(() => {
@@ -151,7 +154,7 @@ describe('LoginForm', () => {
     renderLoginForm()
 
     await user.type(screen.getByRole('textbox', { name: /usuario/i }), 'testuser')
-    await user.type(screen.getByPlaceholderText(/ingresa tu contraseña/i), 'password123')
+    await user.type(screen.getByPlaceholderText(/mínimo 8 caracteres/i), 'password123')
 
     const submitButton = screen.getByRole('button', { name: /acceder/i })
     await user.click(submitButton)
@@ -164,7 +167,7 @@ describe('LoginForm', () => {
     const user = userEvent.setup()
     renderLoginForm()
 
-    const passwordInput = screen.getByPlaceholderText(/ingresa tu contraseña/i)
+    const passwordInput = screen.getByPlaceholderText(/mínimo 8 caracteres/i)
     await user.type(passwordInput, 'password123')
 
     // Buscar botón de mostrar contraseña
@@ -186,7 +189,7 @@ describe('LoginForm', () => {
 
   it('tiene formulario con action correcto', () => {
     renderLoginForm()
-    
+
     const form = screen.getByRole('textbox', { name: /usuario/i }).closest('form')
     expect(form).toBeInTheDocument()
   })

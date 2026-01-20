@@ -39,46 +39,52 @@ const RegisterForm = () => {
 
     // Validar nombre de usuario
     if (!formData.username.trim()) {
-      newErrors.username = '⚠️ El nombre de usuario es obligatorio'
+      newErrors.username = 'El nombre de usuario es obligatorio'
     } else if (formData.username.length < 3) {
-      newErrors.username = '⚠️ El nombre de usuario debe tener al menos 3 caracteres'
+      newErrors.username = 'El nombre de usuario debe tener al menos 3 caracteres'
     } else if (/[^a-zA-Z0-9._-]/.test(formData.username)) {
-      newErrors.username = '⚠️ Solo se permiten letras, números, punto (.), guión (-) y guión bajo (_)'
+      newErrors.username = 'Solo se permiten letras, números, punto (.), guión (-) y guión bajo (_)'
     }
 
     // Validar email
     if (!formData.email.trim()) {
-      newErrors.email = '⚠️ El correo electrónico es obligatorio'
+      newErrors.email = 'El correo electrónico es obligatorio'
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = '⚠️ Ingresa un correo electrónico válido (ejemplo@correo.com)'
+      newErrors.email = 'Ingresa un correo electrónico válido (ejemplo@correo.com)'
     }
 
     // Validar contraseña
     if (!formData.password) {
-      newErrors.password = '⚠️ La contraseña es obligatoria'
-    } else if (formData.password.length < 6) {
-      newErrors.password = '⚠️ La contraseña debe tener: mínimo 6 caracteres'
+      newErrors.password = 'La contraseña es obligatoria'
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Mínimo 8 caracteres, una mayúscula, una minúscula y un carácter especial'
+    } else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password = 'Debe contener al menos una letra mayúscula'
+    } else if (!/[a-z]/.test(formData.password)) {
+      newErrors.password = 'Debe contener al menos una letra minúscula'
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      newErrors.password = 'Debe contener al menos un carácter especial (!@#$%^&*...)'
     }
 
     // Validar confirmación de contraseña
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = '⚠️ Debes confirmar tu contraseña'
+      newErrors.confirmPassword = 'Debes confirmar tu contraseña'
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = '⚠️ Las contraseñas no coinciden'
+      newErrors.confirmPassword = 'Las contraseñas no coinciden'
     }
 
     // Validar nombre
     if (!formData.firstName.trim()) {
-      newErrors.firstName = '⚠️ El nombre es obligatorio'
+      newErrors.firstName = 'El nombre es obligatorio'
     } else if (formData.firstName.length < 2) {
-      newErrors.firstName = '⚠️ El nombre debe tener al menos 2 caracteres'
+      newErrors.firstName = 'El nombre debe tener al menos 2 caracteres'
     }
 
     // Validar apellido
     if (!formData.lastName.trim()) {
-      newErrors.lastName = '⚠️ El apellido es obligatorio'
+      newErrors.lastName = 'El apellido es obligatorio'
     } else if (formData.lastName.length < 2) {
-      newErrors.lastName = '⚠️ El apellido debe tener al menos 2 caracteres'
+      newErrors.lastName = 'El apellido debe tener al menos 2 caracteres'
     }
 
     setErrors(newErrors)
@@ -109,8 +115,8 @@ const RegisterForm = () => {
 
     try {
       await register(userData)
-      toast.success('Registro exitoso')
-      navigate('/')
+      toast.success('Registro exitoso. Por favor inicia sesión')
+      navigate('/login')
     } catch (error) {
       console.error('Error al registrar usuario', {
         data: error.response?.data
@@ -169,19 +175,19 @@ const RegisterForm = () => {
 
       // Mapear errores de campos del backend
       if (status === 409 || allBackendErrors.username) {
-        formattedErrors.username = '⚠️ ' + (allBackendErrors.username || 'Este nombre de usuario ya está registrado')
+        formattedErrors.username = allBackendErrors.username || 'Este nombre de usuario ya está registrado'
         // Mensaje global simple esperado por tests
         formattedErrors.auth = 'Ya registrado'
         if (!errorData?.message) message = formattedErrors.username
       }
       if (allBackendErrors.email) {
-        formattedErrors.email = '⚠️ ' + (allBackendErrors.email || 'Este correo electrónico ya está registrado')
+        formattedErrors.email = allBackendErrors.email || 'Este correo electrónico ya está registrado'
         if (!formattedErrors.username && !errorData?.message) {
           message = formattedErrors.email
         }
       }
       if (allBackendErrors.password) {
-        formattedErrors.password = '⚠️ ' + allBackendErrors.password
+        formattedErrors.password = allBackendErrors.password
       }
 
       setErrors(formattedErrors)
@@ -206,12 +212,15 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         {errors.auth && (
           <div 
-            className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal"
+            className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal flex items-center gap-2"
             role="alert"
             aria-live="assertive"
           >
-            <span className="sr-only">Error de registro: </span>
-            ⚠️ {errors.auth}
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>
+              <span className="sr-only">Error de registro: </span>
+              {errors.auth}
+            </span>
           </div>
         )}
 
@@ -268,8 +277,9 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="username" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-            👤 {t('auth.username')}
+          <label htmlFor="username" className="text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
+            {t('auth.username')}
           </label>
           <input
             id="username"
@@ -294,8 +304,9 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-            📧 {t('auth.email')}
+          <label htmlFor="email" className="text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+            {t('auth.email')}
           </label>
           <input
             id="email"
@@ -320,7 +331,13 @@ const RegisterForm = () => {
 
         <div className="relative">
           <label htmlFor="password" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-            🔒 {t('auth.password')}
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+              {t('auth.password')}
+            </span>
+            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+              {t('auth.passwordHint')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -345,11 +362,17 @@ const RegisterForm = () => {
                 setShowPassword(!showPassword)
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
-              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showPassword}
               tabIndex={-1}
             >
-              <span aria-hidden="true">{showPassword ? '🙈' : '👁️'}</span>
+              <span aria-hidden="true">
+                {showPassword ? (
+                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                ) : (
+                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                )}
+              </span>
             </button>
           </div>
           {errors.password && (
@@ -361,7 +384,13 @@ const RegisterForm = () => {
 
         <div className="relative">
           <label htmlFor="confirmPassword" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-            🔒 {t('auth.confirmPassword')}
+            <span className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
+              {t('auth.confirmPassword')}
+            </span>
+            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+              {t('auth.confirmPasswordHint')}
+            </span>
           </label>
           <div className="relative">
             <input
@@ -376,7 +405,7 @@ const RegisterForm = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               disabled={isSubmitting}
-              placeholder={'Repite la contraseña'}
+              placeholder={t('auth.confirmPasswordPlaceholder')}
             />
             <button
               type="button"
@@ -386,11 +415,17 @@ const RegisterForm = () => {
                 setShowConfirmPassword(!showConfirmPassword)
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
-              aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showConfirmPassword}
               tabIndex={-1}
             >
-              <span aria-hidden="true">{showConfirmPassword ? '🙈' : '👁️'}</span>
+              <span aria-hidden="true">
+                {showConfirmPassword ? (
+                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                ) : (
+                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                )}
+              </span>
             </button>
           </div>
           {errors.confirmPassword && (
@@ -409,13 +444,13 @@ const RegisterForm = () => {
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center space-x-2">
-              <span className="animate-spin" aria-hidden="true">⏳</span>
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" aria-hidden="true" />
               <span>{t('common.registering') || 'Registrando...'}</span>
               <span id="register-status" className="sr-only">Creando tu cuenta, por favor espera</span>
             </span>
           ) : (
             <span className="flex items-center justify-center space-x-2">
-              <span aria-hidden="true">🗺️</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
               <span>Crear cuenta</span>
             </span>
           )}

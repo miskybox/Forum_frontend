@@ -17,15 +17,15 @@ const Navbar = () => {
   }
 
   const navLinks = [
-    { to: '/', label: t('nav.home'), icon: '🏠' },
-    { to: '/forums', label: t('nav.forums'), icon: '💬' },
-    { to: '/trivia', label: t('nav.trivia'), icon: '🎯' },
-    { to: '/travel', label: t('nav.map'), icon: '🗺️' },
-    { to: '/profile', label: t('nav.profile'), icon: '👤', protected: true },
+    { to: '/', label: t('nav.home') },
+    { to: '/forums', label: t('nav.forums') },
+    { to: '/trivia', label: t('nav.trivia') },
+    { to: '/travel', label: t('nav.map') },
+    { to: '/profile', label: t('nav.profile'), protected: true },
   ]
 
   return (
-    <nav className="bg-transparent border-b-2 border-accent sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
+    <nav className="bg-aqua sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
 
@@ -34,7 +34,7 @@ const Navbar = () => {
             <img
               src={logo}
               alt="Forum Viajeros"
-              className="h-10 sm:h-12 lg:h-14 w-auto transition-transform duration-200"
+              className="h-12 sm:h-16 lg:h-20 w-auto transition-transform duration-200"
             />
           </Link>
 
@@ -46,10 +46,9 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-text-light hover:text-accent-dark hover:bg-primary-dark flex items-center space-x-2 px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 tracking-wide min-h-[44px]"
+                  className="group text-midnight hover:bg-golden px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 tracking-wide min-h-[44px] flex items-center hover:scale-105"
                 >
-                  <span className="text-xl" aria-hidden="true">{link.icon}</span>
-                  <span>{link.label}</span>
+                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{link.label}</span>
                 </Link>
               ))}
           </div>
@@ -60,23 +59,23 @@ const Navbar = () => {
             {/* Selector de idioma */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-text hover:bg-primary-dark transition-all duration-200 min-h-[44px] cursor-pointer hover:scale-110"
+              className="group flex items-center gap-2 px-3 py-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] cursor-pointer hover:scale-110"
               title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
               aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
             >
               {language === 'es' ? (
-                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-accent" aria-hidden="true">
+                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-midnight" aria-hidden="true">
                   <div className="h-1/4 bg-red-600"></div>
                   <div className="h-2/4 bg-yellow-400"></div>
                   <div className="h-1/4 bg-red-600"></div>
                 </div>
               ) : (
-                <div className="flex items-center justify-center w-6 h-4 bg-white rounded overflow-hidden border border-accent relative" aria-hidden="true">
+                <div className="flex items-center justify-center w-6 h-4 bg-white rounded overflow-hidden border border-midnight relative" aria-hidden="true">
                   <div className="absolute w-full h-1 bg-red-600"></div>
                   <div className="absolute h-full w-1 bg-red-600"></div>
                 </div>
               )}
-              <span className="text-sm font-bold uppercase">
+              <span className="text-sm font-bold uppercase group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">
                 {language === 'es' ? 'ES' : 'EN'}
               </span>
             </button>
@@ -85,53 +84,52 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="text-text border-accent border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-primary-dark transition-all duration-200 flex items-center space-x-2 min-h-[44px]"
+                  className="text-text border-text border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-primary-dark transition-all duration-200 flex items-center space-x-2 min-h-[44px]"
                   aria-expanded={isProfileMenuOpen}
                   aria-haspopup="true"
                   aria-label="User menu"
                 >
-                  <span className="text-lg" aria-hidden="true">👤</span>
                   <span className="hidden sm:inline">{currentUser?.username || t('nav.user')}</span>
                   <span className="text-xs" aria-hidden="true">▼</span>
                 </button>
 
                 {/* Menú desplegable */}
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-primary-light border-accent border-2 rounded-lg p-2 space-y-1 shadow-xl" role="menu">
+                  <div className="absolute right-0 mt-2 w-52 bg-white border-accent border-2 rounded-lg p-2 space-y-1 shadow-xl" role="menu">
                     <Link
                       to="/profile"
-                      className="block text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
+                      className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
                       onClick={() => setIsProfileMenuOpen(false)}
                       role="menuitem"
                     >
-                      <span aria-hidden="true">👤</span> <span className="ml-2">{t('nav.myProfile')}</span>
+                      {t('nav.myProfile')}
                     </Link>
                     <Link
                       to="/forums/create"
-                      className="block text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
+                      className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
                       onClick={() => setIsProfileMenuOpen(false)}
                       role="menuitem"
                     >
-                      <span aria-hidden="true">✍️</span> <span className="ml-2">{t('nav.createForum')}</span>
+                      {t('nav.createForum')}
                     </Link>
                     {currentUser?.roles?.includes('ROLE_MODERATOR') && (
                       <Link
                         to="/moderator/dashboard"
-                        className="block text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
+                        className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
                         onClick={() => setIsProfileMenuOpen(false)}
                         role="menuitem"
                       >
-                        <span aria-hidden="true">🛡️</span> <span className="ml-2">{t('nav.moderator') || 'Panel Moderador'}</span>
+                        {t('nav.moderator') || 'Panel Moderador'}
                       </Link>
                     )}
                     {currentUser?.roles?.includes('ROLE_ADMIN') && (
                       <Link
                         to="/admin/dashboard"
-                        className="block text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
+                        className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
                         onClick={() => setIsProfileMenuOpen(false)}
                         role="menuitem"
                       >
-                        <span aria-hidden="true">⚙️</span> <span className="ml-2">{t('nav.admin') || 'Panel Admin'}</span>
+                        {t('nav.admin') || 'Panel Admin'}
                       </Link>
                     )}
                     <div className="border-t border-accent opacity-30 my-1"></div>
@@ -140,10 +138,10 @@ const Navbar = () => {
                         setIsProfileMenuOpen(false)
                         handleLogout()
                       }}
-                      className="block w-full text-left text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
+                      className="w-full text-left text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
                       role="menuitem"
                     >
-                      <span aria-hidden="true">🚪</span> <span className="ml-2">{t('nav.logout')}</span>
+                      {t('nav.logout')}
                     </button>
                   </div>
                 )}
@@ -152,15 +150,15 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="text-text border-accent border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-primary-dark transition-all duration-200 min-h-[44px] flex items-center"
+                  className="group text-midnight border-midnight border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-golden hover:border-golden hover:scale-105 transition-all duration-200 min-h-[44px] flex items-center"
                 >
-                  {t('nav.login')}
+                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('nav.login')}</span>
                 </Link>
                 <Link
                   to="/register"
-                  className="btn-primary text-sm sm:text-base px-3 sm:px-4 py-2"
+                  className="group bg-golden text-midnight border-2 border-midnight px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-aqua hover:scale-105 transition-all duration-200 min-h-[44px] flex items-center"
                 >
-                  {t('nav.register')}
+                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('nav.register')}</span>
                 </Link>
               </div>
             )}
@@ -168,12 +166,18 @@ const Navbar = () => {
             {/* Botón menú móvil */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden text-text p-2 rounded-lg hover:bg-primary-dark transition-all duration-200 min-h-[44px] min-w-[44px]"
+              className="lg:hidden text-text p-2 rounded-lg hover:bg-primary-dark transition-all duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label={isMenuOpen ? 'Cerrar menú principal' : 'Abrir menú principal'}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
             >
-              <span className="text-2xl" aria-hidden="true">{isMenuOpen ? '✕' : '☰'}</span>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
             </button>
           </div>
         </div>
@@ -183,7 +187,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden bg-transparent border-t border-accent py-4 shadow-lg"
+          className="lg:hidden bg-primary border-t border-accent py-4 shadow-lg"
           role="menu"
           aria-label="Menú de navegación móvil"
         >
@@ -194,14 +198,11 @@ const Navbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="block text-text hover:text-accent-dark px-4 py-3 rounded-lg font-bold text-base border-l-4 border-accent hover:bg-primary-dark transition-all duration-200 min-h-[44px]"
+                  className="group block text-midnight hover:bg-golden px-4 py-3 rounded-lg font-bold text-base border-l-4 border-golden transition-all duration-200 min-h-[44px]"
                   onClick={() => setIsMenuOpen(false)}
                   role="menuitem"
                 >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-xl" aria-hidden="true">{link.icon}</span>
-                    <span>{link.label}</span>
-                  </div>
+                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{link.label}</span>
                 </Link>
               ))}
           </div>

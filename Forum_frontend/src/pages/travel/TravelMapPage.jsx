@@ -14,7 +14,7 @@ const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
   left: Math.random() * 100,
   top: Math.random() * 100,
   delay: Math.random() * 3,
-  icon: ['🌴', '🌿', '✈️', '🧭', '🗺️'][Math.floor(Math.random() * 5)],
+  color: ['#E5A13E', '#CFE7E5', '#213638'][Math.floor(Math.random() * 3)],
 }))
 
 /**
@@ -28,6 +28,7 @@ const TravelMapPage = () => {
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingPlace, setEditingPlace] = useState(null)
+  const [preselectedCountryCode, setPreselectedCountryCode] = useState(null)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -58,6 +59,9 @@ const TravelMapPage = () => {
     const existingPlace = places.find(p => p.country.isoCode === isoCode)
     if (existingPlace) {
       setEditingPlace(existingPlace)
+      setPreselectedCountryCode(null)
+    } else {
+      setPreselectedCountryCode(isoCode)
     }
     setIsModalOpen(true)
   }
@@ -70,6 +74,7 @@ const TravelMapPage = () => {
   const handleModalClose = () => {
     setIsModalOpen(false)
     setEditingPlace(null)
+    setPreselectedCountryCode(null)
   }
 
   const handleSuccess = () => {
@@ -80,7 +85,7 @@ const TravelMapPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-spin">🧭</div>
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-golden border-t-transparent rounded-full animate-spin"></div>
           <p className="text-text-light">
             {t('common.loading')}
           </p>
@@ -96,15 +101,14 @@ const TravelMapPage = () => {
         {PARTICLES.map((p) => (
           <div
             key={p.id}
-            className="absolute text-3xl animate-float"
+            className="absolute w-3 h-3 rounded-full animate-float"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
               animationDelay: `${p.delay}s`,
+              backgroundColor: p.color,
             }}
-          >
-            {p.icon}
-          </div>
+          />
         ))}
       </div>
 
@@ -112,36 +116,37 @@ const TravelMapPage = () => {
       <div className="bg-transparent border-b-2 border-secondary py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-text flex items-center gap-3 mb-2">
-                🗺️ {t('travel.title')}
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl md:text-2xl font-bold text-text flex items-center gap-3 mb-1 truncate">
+                {t('travel.title')}
               </h1>
-              <p className="text-text-light">
+              <p className="text-text-light text-xs md:text-sm leading-tight max-w-xs md:max-w-md truncate">
                 {t('travel.addNewDestination')}
               </p>
             </div>
 
-            {isAuthenticated ? (
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="btn btn-secondary px-6 py-3 self-start"
-              >
-                <span className="flex items-center space-x-2">
-                  <span>➕</span>
-                  <span>{t('travel.addPlace')}</span>
-                </span>
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                className="btn btn-outline px-6 py-3"
-              >
-                <span className="flex items-center space-x-2">
-                  <span>🔐</span>
-                  <span>{t('auth.loginButton')}</span>
-                </span>
-              </Link>
-            )}
+            <div className="flex flex-row gap-2 w-full md:w-auto mt-2 md:mt-0">
+              {isAuthenticated ? (
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="btn bg-golden hover:bg-golden-dark text-midnight px-4 py-2 w-full md:w-auto font-bold"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>+</span>
+                    <span>{t('travel.addPlace')}</span>
+                  </span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-4 py-2 w-full md:w-auto"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>{t('auth.loginButton')}</span>
+                  </span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -172,26 +177,26 @@ const TravelMapPage = () => {
               <TravelStats stats={stats} />
 
               {/* Acciones rápidas */}
-              <div className="card">
+              <div className="card border-golden">
                 <div className="p-4">
                   <h3 className="font-bold text-text mb-4 text-sm uppercase">
                     {t('common.showMore')}
                   </h3>
                   <div className="space-y-3">
                     <QuickAction
-                      icon="🌍"
                       label={t('trivia.ranking')}
                       href="/travel/ranking"
+                      bgColor="bg-golden/20"
                     />
                     <QuickAction
-                      icon="📊"
                       label={t('travel.statistics')}
                       href="/profile"
+                      bgColor="bg-aqua/30"
                     />
                     <QuickAction
-                      icon="🎮"
                       label={t('nav.trivia')}
                       href="/trivia"
+                      bgColor="bg-midnight/20"
                     />
                   </div>
                 </div>
@@ -205,8 +210,10 @@ const TravelMapPage = () => {
               <WorldMap visitedPlaces={[]} />
             </div>
 
-            <div className="card text-center p-8">
-              <span className="text-6xl mb-4 block">🌎</span>
+            <div className="card text-center p-8 border-2 border-golden">
+              <div className="w-20 h-20 mx-auto mb-4 bg-aqua rounded-full flex items-center justify-center">
+                <svg className="w-10 h-10 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
               <h2 className="text-2xl font-bold text-text mb-4">
                 {t('home.adventureAwaits')}
               </h2>
@@ -216,21 +223,15 @@ const TravelMapPage = () => {
               <div className="flex justify-center gap-4">
                 <Link
                   to="/register"
-                  className="btn btn-primary px-6 py-3"
+                  className="btn bg-golden hover:bg-golden-dark text-midnight px-6 py-3 font-bold"
                 >
-                  <span className="flex items-center space-x-2">
-                    <span>🚀</span>
-                    <span>{t('auth.registerButton')}</span>
-                  </span>
+                  <span>{t('auth.registerButton')}</span>
                 </Link>
                 <Link
                   to="/login"
-                  className="btn btn-outline px-6 py-3"
+                  className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-6 py-3"
                 >
-                  <span className="flex items-center space-x-2">
-                    <span>🔐</span>
-                    <span>{t('auth.loginButton')}</span>
-                  </span>
+                  <span>{t('auth.loginButton')}</span>
                 </Link>
               </div>
             </div>
@@ -244,30 +245,30 @@ const TravelMapPage = () => {
         onClose={handleModalClose}
         onSuccess={handleSuccess}
         editPlace={editingPlace}
+        preselectedCountryCode={preselectedCountryCode}
       />
     </div>
   )
 }
 
-const QuickAction = ({ icon, label, href }) => (
+const QuickAction = ({ label, href, bgColor = 'bg-primary-light' }) => (
   <Link
     to={href}
-    className="flex items-center gap-3 p-3 border-2 border-secondary hover:border-secondary-dark transition-colors group rounded-lg bg-primary-light"
+    className={`flex items-center gap-3 p-3 border-2 border-golden hover:border-golden-dark transition-colors group rounded-lg ${bgColor}`}
   >
-    <span className="text-2xl group-hover:scale-125 transition-transform">{icon}</span>
-    <span className="text-text text-sm font-semibold group-hover:text-accent">
+    <span className="text-text text-sm font-semibold group-hover:text-accent flex-1">
       {label}
     </span>
-    <span className="ml-auto text-text-light group-hover:text-accent">→</span>
+    <span className="text-golden group-hover:text-accent font-bold">→</span>
   </Link>
 )
 
 import PropTypes from 'prop-types'
 
 QuickAction.propTypes = {
-  icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired
+  href: PropTypes.string.isRequired,
+  bgColor: PropTypes.string
 }
 
 export default TravelMapPage

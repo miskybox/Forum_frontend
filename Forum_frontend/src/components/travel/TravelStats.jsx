@@ -12,12 +12,12 @@ const TravelStats = ({ stats }) => {
   const progressPercentage = stats.worldPercentageByCountries || 0
 
   return (
-    <div className="bg-gradient-to-br from-primary-dark to-secondary-light rounded-2xl p-6 text-text shadow-xl border-2 border-accent">
+    <div className="bg-gradient-to-br from-primary-dark to-secondary-light rounded-2xl p-5 text-text shadow-xl border-2 border-accent overflow-hidden">
       {/* Header con nivel */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-2xl font-bold text-text">{stats.username}</h3>
-          <p className="text-text-light font-semibold">{stats.travelerLevel}</p>
+      <div className="flex items-center justify-between mb-5 gap-2">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-xl font-bold text-text truncate">{stats.username}</h3>
+          <p className="text-text-light font-semibold text-sm truncate">{stats.travelerLevel}</p>
         </div>
         {stats.globalRanking && (
           <div className="text-right">
@@ -49,33 +49,37 @@ const TravelStats = ({ stats }) => {
           />
         </div>
         <p className="text-text-light text-xs mt-1 font-semibold">
-          {stats.totalAreaVisitedSqKm?.toLocaleString()} km² explorados
+          {stats.totalAreaVisitedSqKm?.toLocaleString()} {t('travel.kmExplored')}
         </p>
       </div>
 
       {/* Grid de estadísticas */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-5">
         <StatCard
-          icon="🌍"
+          icon={null}
           value={stats.countriesVisited || 0}
-          label="Países visitados"
+          label={t('travel.countriesVisited')}
           subLabel="/195"
+          bgColor="bg-golden/20"
         />
         <StatCard
-          icon="🏙️"
+          icon={null}
           value={stats.citiesVisited || 0}
-          label="Ciudades"
+          label={t('travel.cities')}
+          bgColor="bg-aqua/30"
         />
         <StatCard
-          icon="🌎"
+          icon={null}
           value={stats.continentsVisited || 0}
-          label="Continentes"
+          label={t('travel.continents')}
           subLabel="/7"
+          bgColor="bg-midnight/20"
         />
         <StatCard
-          icon="📍"
+          icon={null}
           value={stats.countriesWishlist || 0}
-          label="En wishlist"
+          label={t('travel.inWishlist')}
+          bgColor="bg-golden/20"
         />
       </div>
 
@@ -87,9 +91,9 @@ const TravelStats = ({ stats }) => {
             {stats.continentsList.map(continent => (
               <span
                 key={continent}
-                className="px-3 py-1 bg-secondary rounded-full text-sm text-text font-medium"
+                className="px-3 py-1 bg-golden/30 rounded-full text-sm text-text font-medium border border-golden"
               >
-                {getContinentEmoji(continent)} {continent}
+                {continent}
               </span>
             ))}
           </div>
@@ -99,7 +103,7 @@ const TravelStats = ({ stats }) => {
       {/* Badges */}
       {stats.badges && stats.badges.length > 0 && (
         <div>
-          <h4 className="text-sm font-bold text-text mb-2">Logros desbloqueados</h4>
+          <h4 className="text-sm font-bold text-text mb-2">{t('travel.achievementsUnlocked')}</h4>
           <div className="flex flex-wrap gap-2">
             {stats.badges.slice(0, 6).map((badge) => (
               <span
@@ -112,7 +116,7 @@ const TravelStats = ({ stats }) => {
             ))}
             {stats.badges.length > 6 && (
               <span className="px-3 py-1 bg-secondary rounded-full text-sm text-text font-medium">
-                +{stats.badges.length - 6} más
+                +{stats.badges.length - 6} {t('travel.more')}
               </span>
             )}
           </div>
@@ -121,9 +125,9 @@ const TravelStats = ({ stats }) => {
 
       {/* Lugar favorito */}
       {stats.favoritePlace && (
-        <div className="mt-4 pt-4 border-t border-accent">
-          <span className="text-text-light text-sm font-semibold">Lugar favorito: </span>
-          <span className="font-bold text-text">❤️ {stats.favoritePlace}</span>
+        <div className="mt-4 pt-4 border-t border-accent flex items-center gap-2">
+          <span className="text-text-light text-sm font-semibold">{t('travel.favoritePlace')}</span>
+          <span className="font-bold text-accent">{stats.favoritePlace}</span>
         </div>
       )}
     </div>
@@ -133,37 +137,38 @@ const TravelStats = ({ stats }) => {
 /**
  * Tarjeta individual de estadística
  */
-const StatCard = ({ icon, value, label, subLabel }) => (
-  <div className="bg-primary-light rounded-xl p-4 text-center backdrop-blur-sm border border-accent">
-    <span className="text-2xl" aria-hidden="true">{icon}</span>
-    <div className="text-2xl font-bold mt-1 text-text">
+const StatCard = ({ icon, value, label, subLabel, bgColor = 'bg-primary-light' }) => (
+  <div className={`${bgColor} rounded-xl p-3 text-center backdrop-blur-sm border border-accent overflow-hidden`}>
+    {icon && <span className="text-xl" aria-hidden="true">{icon}</span>}
+    <div className="text-xl font-bold mt-1 text-text">
       {value}
-      {subLabel && <span className="text-sm font-normal text-text-light">{subLabel}</span>}
+      {subLabel && <span className="text-xs font-normal text-text-light">{subLabel}</span>}
     </div>
-    <p className="text-text-light text-xs font-semibold">{label}</p>
+    <p className="text-text-light text-xs font-semibold truncate">{label}</p>
   </div>
 )
 
 StatCard.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   value: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
-  subLabel: PropTypes.string
+  subLabel: PropTypes.string,
+  bgColor: PropTypes.string
 }
 
 /**
- * Obtiene emoji según continente
+ * Obtiene abreviatura según continente
  */
-const getContinentEmoji = (continent) => {
-  const emojis = {
-    'Europa': '🇪🇺',
-    'América': '🌎',
-    'Asia': '🌏',
-    'África': '🌍',
-    'Oceanía': '🏝️',
-    'Antártida': '🧊'
+const getContinentLabel = (continent) => {
+  const labels = {
+    'Europa': 'EU',
+    'América': 'AM',
+    'Asia': 'AS',
+    'África': 'AF',
+    'Oceanía': 'OC',
+    'Antártida': 'AN'
   }
-  return emojis[continent] || '🌐'
+  return labels[continent] || continent.slice(0, 2).toUpperCase()
 }
 
 TravelStats.propTypes = {
