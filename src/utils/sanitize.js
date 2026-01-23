@@ -158,11 +158,78 @@ export const LENGTH_LIMITS = {
   TAG_MAX_COUNT: 10
 }
 
+/**
+ * Security: Lista de rutas permitidas para redirección
+ * Previene ataques de open redirect
+ */
+const ALLOWED_REDIRECT_PATHS = [
+  '/',
+  '/forums',
+  '/trivia',
+  '/travel',
+  '/profile',
+  '/feed',
+  '/contenido',
+  '/blog',
+  '/notifications',
+  '/messages',
+  '/login',
+  '/register'
+]
+
+/**
+ * Security: Valida y sanitiza una ruta de redirección
+ * Previene ataques de open redirect permitiendo solo rutas locales válidas
+ * @param {string} path - Ruta a validar
+ * @param {string} fallback - Ruta por defecto si la validación falla
+ * @returns {string} - Ruta segura
+ */
+export const getSafeRedirectPath = (path, fallback = '/') => {
+  // Si no hay ruta o no es string, devolver fallback
+  if (!path || typeof path !== 'string') {
+    return fallback
+  }
+
+  // Eliminar espacios y normalizar
+  const cleanPath = path.trim()
+
+  // Debe empezar con / (ruta relativa local)
+  if (!cleanPath.startsWith('/')) {
+    return fallback
+  }
+
+  // No permitir protocolo (previene //evil.com)
+  if (cleanPath.startsWith('//')) {
+    return fallback
+  }
+
+  // No permitir path traversal
+  if (cleanPath.includes('..') || cleanPath.includes('\\')) {
+    return fallback
+  }
+
+  // Obtener la ruta base (sin query params o hash)
+  const basePath = cleanPath.split('?')[0].split('#')[0]
+
+  // Verificar si la ruta base está en la lista permitida
+  const isAllowed = ALLOWED_REDIRECT_PATHS.some(allowed => {
+    // Coincidencia exacta o ruta que empieza con el path permitido seguido de /
+    return basePath === allowed || basePath.startsWith(allowed + '/')
+  })
+
+  if (isAllowed) {
+    return cleanPath
+  }
+
+  return fallback
+}
+
 export default {
   sanitizeInput,
   sanitizeArray,
   sanitizeObject,
   validateLength,
   validateTag,
+  getSafeRedirectPath,
   LENGTH_LIMITS
 }

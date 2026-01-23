@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import LoginForm from '../components/auth/LoginForm'
 import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
+import { getSafeRedirectPath } from '../utils/sanitize'
 
 // Generar estrellas una sola vez fuera del componente
 const generateStars = () => 
@@ -27,7 +28,8 @@ const LoginPage = () => {
   
   useEffect(() => {
     if (isAuthenticated) {
-      const from = location.state?.from?.pathname || '/'
+      // Security: Validate redirect path to prevent open redirect attacks
+      const from = getSafeRedirectPath(location.state?.from?.pathname, '/')
       navigate(from, { replace: true })
     }
   }, [isAuthenticated, navigate, location])

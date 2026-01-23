@@ -78,20 +78,21 @@ const LoginForm = () => {
     setErrors({}) // Limpiar errores anteriores
 
     try {
-      console.log('🔐 Intentando login con:', { username: formData.username })
+      // Security: Don't log username in production
+      if (import.meta.env.DEV) {
+        console.log('🔐 Login attempt initiated')
+      }
       await login(formData)
-      console.log('✅ Login exitoso')
+      if (import.meta.env.DEV) {
+        console.log('✅ Login successful')
+      }
       toast.success(t('auth.loginSuccess'))
       navigate('/')
     } catch (error) {
-      console.error('❌ Error de login:', error)
-      console.error('📋 Detalles del error:', {
-        message: error.message,
-        response: error.response,
-        request: error.request,
-        data: error.response?.data,
-        status: error.response?.status
-      })
+      // Security: Only log safe error info, never credentials or full error objects
+      if (import.meta.env.DEV) {
+        console.error('❌ Login failed:', error.response?.status || 'Network error')
+      }
 
       let errorData = {}
 

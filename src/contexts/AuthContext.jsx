@@ -61,27 +61,33 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null)
       setLoading(true)
-      console.log('🔐 [AuthContext] Iniciando login para:', credentials.username)
-      
+      // Security: Don't log usernames - only log generic messages in dev
+      if (import.meta.env.DEV) {
+        console.log('🔐 [AuthContext] Login initiated')
+      }
+
       await authService.login(credentials)
-      console.log('✅ [AuthContext] Login exitoso, obteniendo info de usuario...')
+      if (import.meta.env.DEV) {
+        console.log('✅ [AuthContext] Login successful, fetching user info...')
+      }
 
       // Get user info after successful login
       const userInfo = await authService.getCurrentUser()
-      console.log('👤 [AuthContext] Usuario obtenido:', userInfo?.username)
-      
+      if (import.meta.env.DEV) {
+        console.log('👤 [AuthContext] User info retrieved')
+      }
+
       setCurrentUser(userInfo)
       return userInfo
     } catch (err) {
-      console.error('❌ [AuthContext] Error en login:', {
-        message: err.message,
-        status: err.response?.status,
-        data: err.response?.data
-      })
-      
+      // Security: Only log status code, not full error objects
+      if (import.meta.env.DEV) {
+        console.error('❌ [AuthContext] Login failed:', err.response?.status || 'Network error')
+      }
+
       const errorMessage = err.response?.data?.message || 'Error al iniciar sesión'
       setError(errorMessage)
-      
+
       // Re-throw para que el componente pueda manejar el error
       throw err
     } finally {
@@ -93,19 +99,23 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null)
       setLoading(true)
-      console.log('📝 [AuthContext] Iniciando registro para:', userData.username)
-      
+      // Security: Don't log usernames in production
+      if (import.meta.env.DEV) {
+        console.log('📝 [AuthContext] Registration initiated')
+      }
+
       const response = await authService.register(userData)
-      console.log('✅ [AuthContext] Registro exitoso')
-      
+      if (import.meta.env.DEV) {
+        console.log('✅ [AuthContext] Registration successful')
+      }
+
       return response
     } catch (err) {
-      console.error('❌ [AuthContext] Error en registro:', {
-        message: err.message,
-        status: err.response?.status,
-        data: err.response?.data
-      })
-      
+      // Security: Only log status code, not full error objects
+      if (import.meta.env.DEV) {
+        console.error('❌ [AuthContext] Registration failed:', err.response?.status || 'Network error')
+      }
+
       const errorMessage = err.response?.data?.message || 'Error al registrar'
       setError(errorMessage)
       throw err
