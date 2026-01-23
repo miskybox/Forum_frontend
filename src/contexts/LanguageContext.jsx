@@ -6,6 +6,7 @@ const translations = {
     // Navbar
     nav: {
       home: 'Inicio',
+      feed: 'Contenido',
       forums: 'Foros',
       trivia: 'Trivia',
       map: 'Mi Mapa',
@@ -15,6 +16,9 @@ const translations = {
       logout: 'Salir',
       createForum: 'Crear Foro',
       myProfile: 'Mi Perfil',
+      user: 'Usuario',
+      admin: 'Panel Admin',
+      moderator: 'Panel Moderador',
     },
     // Home
     home: {
@@ -491,6 +495,7 @@ const translations = {
     // Navbar
     nav: {
       home: 'Home',
+      feed: 'Feed',
       forums: 'Forums',
       trivia: 'Trivia',
       map: 'My Map',
@@ -500,6 +505,9 @@ const translations = {
       logout: 'Logout',
       createForum: 'Create Forum',
       myProfile: 'My Profile',
+      user: 'User',
+      admin: 'Admin Panel',
+      moderator: 'Moderator Panel',
     },
     // Home
     home: {

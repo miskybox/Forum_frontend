@@ -48,6 +48,18 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import HelpPage from './pages/HelpPage';
 
+// Páginas de Mensajes
+import MessagesPage from './pages/messages/MessagesPage'
+
+// Páginas de Notificaciones
+import NotificationsPage from './pages/notifications/NotificationsPage';
+
+// Páginas de Contenido/Feed
+import FeedPage from './pages/feed/FeedPage';
+
+// Página de Usuarios
+import UsersPage from './pages/users/UsersPage';
+
 
 function App() {
   const { theme } = useTheme();
@@ -115,7 +127,42 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/help" element={<HelpPage />} />
-          
+
+          {/* Rutas de Feed (solo usuarios logueados - estilo Instagram) */}
+          <Route path="/feed" element={
+            <ProtectedRoute>
+              <FeedPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/contenido" element={
+            <ProtectedRoute>
+              <FeedPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Rutas de Usuarios */}
+          <Route path="/usuarios" element={<UsersPage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
+
+          {/* Rutas de Mensajes */}
+          <Route path="/messages" element={
+            <ProtectedRoute>
+              <MessagesPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/messages/:userId" element={
+            <ProtectedRoute>
+              <MessagesPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Rutas de Notificaciones */}
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <NotificationsPage />
+            </ProtectedRoute>
+          } />
+
           {/* Rutas protegidas (requieren autenticación) */}
           <Route path="/profile" element={
             <ProtectedRoute>

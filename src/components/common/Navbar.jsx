@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
+import messageService from '../../services/messageService'
+import notificationService from '../../services/notificationService'
 import logo from '../../assets/logoFV.png'
 
 const Navbar = () => {
@@ -10,19 +12,61 @@ const Navbar = () => {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const [unreadMessages, setUnreadMessages] = useState(0)
+  const [unreadNotifications, setUnreadNotifications] = useState(0)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadUnreadCount()
+      loadNotificationsCount()
+      const interval = setInterval(() => {
+        loadUnreadCount()
+        loadNotificationsCount()
+      }, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [isAuthenticated])
+
+  const loadUnreadCount = async () => {
+    try {
+      const count = await messageService.getUnreadCount()
+      setUnreadMessages(count)
+    } catch (err) {
+      console.error('Error loading unread count:', err)
+    }
+  }
+
+  const loadNotificationsCount = async () => {
+    try {
+      const count = await notificationService.getUnreadCount()
+      setUnreadNotifications(count)
+    } catch (err) {
+      console.error('Error loading notifications count:', err)
+    }
+  }
 
   const handleLogout = async () => {
     await logout()
     navigate('/')
   }
 
-  const navLinks = [
+  // Links públicos (visibles para todos)
+  const publicLinks = [
     { to: '/', label: t('nav.home') },
     { to: '/forums', label: t('nav.forums') },
     { to: '/trivia', label: t('nav.trivia') },
     { to: '/travel', label: t('nav.map') },
-    { to: '/profile', label: t('nav.profile'), protected: true },
   ]
+
+  // Links solo para usuarios logueados (estilo Instagram)
+  const privateLinks = [
+    { to: '/feed', label: t('nav.feed') },
+  ]
+
+  // Combinar links según autenticación
+  const navLinks = isAuthenticated
+    ? [...publicLinks.slice(0, 1), ...privateLinks, ...publicLinks.slice(1)]
+    : publicLinks
 
   return (
     <nav className="bg-aqua sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
@@ -40,9 +84,7 @@ const Navbar = () => {
 
           {/* Menú desktop */}
           <div className="hidden lg:flex items-center space-x-2">
-            {navLinks
-              .filter(link => !link.protected || isAuthenticated)
-              .map((link) => (
+            {navLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -81,7 +123,40 @@ const Navbar = () => {
             </button>
 
             {isAuthenticated ? (
-              <div className="relative">
+              <div className="flex items-center gap-2">
+                {/* Notifications icon */}
+                <Link
+                  to="/notifications"
+                  className="relative p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] flex items-center justify-center"
+                  aria-label={`Notificaciones${unreadNotifications > 0 ? ` (${unreadNotifications} sin leer)` : ''}`}
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  {unreadNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-terracota text-white text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
+                      {unreadNotifications > 9 ? '9+' : unreadNotifications}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Messages icon */}
+                <Link
+                  to="/messages"
+                  className="relative p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] flex items-center justify-center"
+                  aria-label={`Mensajes${unreadMessages > 0 ? ` (${unreadMessages} sin leer)` : ''}`}
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                  {unreadMessages > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-terracota text-white text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
+                      {unreadMessages > 9 ? '9+' : unreadMessages}
+                    </span>
+                  )}
+                </Link>
+
+                <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   className="text-text border-text border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-primary-dark transition-all duration-200 flex items-center space-x-2 min-h-[44px]"
@@ -146,6 +221,7 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
+              </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <Link
@@ -192,9 +268,7 @@ const Navbar = () => {
           aria-label="Menú de navegación móvil"
         >
           <div className="container mx-auto px-4 space-y-2">
-            {navLinks
-              .filter(link => !link.protected || isAuthenticated)
-              .map((link) => (
+            {navLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
