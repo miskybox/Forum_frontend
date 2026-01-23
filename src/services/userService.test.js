@@ -32,7 +32,7 @@ describe('userService', () => {
 
       const result = await userService.getAllUsers()
 
-      expect(api.get).toHaveBeenCalledWith('/users')
+      expect(api.get).toHaveBeenCalledWith('/users', { params: { page: 0, size: 20 } })
       expect(result).toEqual(mockUsers)
     })
 

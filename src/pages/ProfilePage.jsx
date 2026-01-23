@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
+import FollowButton from '../components/common/FollowButton'
+import SendPrivateMessageForm from '../components/common/SendPrivateMessageForm'
+import PrivateMessagesInbox from '../components/common/PrivateMessagesInbox'
 import { toast } from 'react-hot-toast'
 import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
@@ -23,12 +26,14 @@ const ProfilePage = () => {
   const { t } = useLanguage()
   
   const [profileData, setProfileData] = useState({
+    id: null,
     username: '',
     firstName: '',
     lastName: '',
     email: '',
     bio: ''
   })
+  const [isFollowing, setIsFollowing] = useState(false)
   
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -45,23 +50,34 @@ const ProfilePage = () => {
   
   const imageInputRef = useRef(null)
   
+  // Cargar datos del perfil (puede ser el propio usuario o de otro)
   useEffect(() => {
+    // Obtener el id del usuario a mostrar (de la URL, por ejemplo)
+    // Aquí se asume que el perfil mostrado es el del usuario autenticado
+    // Para redes accesibles, normalmente se usaría un parámetro de ruta (ej: /profile/:id)
+    // Aquí solo se muestra el botón si el perfil no es el propio
     if (currentUser) {
       setProfileData({
+        id: currentUser.id,
         username: currentUser.username || '',
         firstName: currentUser.firstName || '',
         lastName: currentUser.lastName || '',
         email: currentUser.email || '',
         bio: currentUser.bio || ''
       })
-      
       if (currentUser.profileImage) {
         setImagePreview(currentUser.profileImage)
       }
-      
       setLoading(false)
     }
   }, [currentUser])
+
+  // Si se implementa navegación a otros perfiles, aquí se consultaría si el usuario autenticado sigue al perfil mostrado
+  useEffect(() => {
+    // Ejemplo: si profileData.id !== currentUser.id, consultar si lo sigue
+    // Aquí, como solo se muestra el propio perfil, no se sigue a uno mismo
+    setIsFollowing(false)
+  }, [profileData, currentUser])
   
   const handleProfileChange = (e) => {
     const { name, value } = e.target
@@ -354,6 +370,15 @@ const ProfilePage = () => {
                       {profileData.bio}
                     </p>
                   )}
+                  {/* Botón seguir y formulario de mensaje privado solo si no es tu propio perfil */}
+                  {currentUser && profileData.id && currentUser.id !== profileData.id && (
+                    <>
+                      <FollowButton userId={profileData.id} isFollowing={isFollowing} onChange={setIsFollowing} />
+                      <div className="mt-4">
+                        <SendPrivateMessageForm toId={profileData.id} />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -368,6 +393,7 @@ const ProfilePage = () => {
                   { id: 'password', label: t('profile.tabs.password'), icon: null },
                   { id: 'forums', label: t('profile.tabs.forums'), icon: null },
                   { id: 'posts', label: t('profile.tabs.posts'), icon: null },
+                  { id: 'messages', label: 'Mensajes', icon: null },
                 ].map(tab => (
                   <button
                     key={tab.id}
@@ -564,6 +590,9 @@ const ProfilePage = () => {
                 </form>
               )}
               
+              {activeTab === 'messages' && (
+                <PrivateMessagesInbox />
+              )}
               {activeTab === 'forums' && (
                 <div>
                   <h2 className="text-xl font-bold text-ocean-500 mb-4">

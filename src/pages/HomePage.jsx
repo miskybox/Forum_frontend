@@ -106,7 +106,7 @@ const HomePage = () => {
               to="/trivia"
               className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
             >
-              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.playTrivia') || 'JUGAR TRIVIA'}</span>
+              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">Jugar trivia</span>
             </Link>
 
             <Link

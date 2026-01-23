@@ -8,6 +8,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner'
 import PostContent from '../components/post/PostContent'
 import CommentList from '../components/comments/CommentList'
 import CommentForm from '../components/comments/CommentForm'
+import LikeButton from '../components/social/LikeButton'
+import ShareButton from '../components/social/ShareButton'
 
 const PostDetailsPage = () => {
   const { id } = useParams()
@@ -95,8 +97,25 @@ const PostDetailsPage = () => {
       <div className="bg-earth-50 rounded-lg shadow-md overflow-hidden">
         {/* Contenido del post */}
         <PostContent post={post} />
-        
-        {/* Acciones */}
+
+        {/* Barra de interacciones sociales */}
+        <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-beige/30">
+          <div className="flex items-center gap-6">
+            <LikeButton postId={post.id} size="md" />
+            <Link
+              to={`/posts/${id}#comments`}
+              className="flex items-center gap-2 text-forest/70 hover:text-teal transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              <span className="font-medium">{comments.length}</span>
+            </Link>
+            <ShareButton postId={post.id} title={post.title} size="md" />
+          </div>
+        </div>
+
+        {/* Acciones de edicion */}
         {canEditPost && (
           <div className="px-6 py-4 flex space-x-2 border-t border-gray-200">
             <Link
@@ -105,7 +124,7 @@ const PostDetailsPage = () => {
             >
               Editar publicación
             </Link>
-            
+
             {(isPostAuthor || hasRole('ADMIN')) && (
               <button
                 onClick={handleDeletePost}

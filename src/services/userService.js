@@ -1,12 +1,26 @@
 import api from '../utils/api'
 
 const userService = {
-  getAllUsers: async () => {
+  getAllUsers: async (page = 0, size = 20) => {
     try {
-      const response = await api.get('/users')
+      const response = await api.get('/users', {
+        params: { page, size }
+      })
       return response.data
     } catch (error) {
       console.error('Error al obtener usuarios:', error)
+      throw error
+    }
+  },
+
+  searchUsers: async (query, page = 0, size = 20) => {
+    try {
+      const response = await api.get('/users/search', {
+        params: { q: query, page, size }
+      })
+      return response.data
+    } catch (error) {
+      console.error('Error al buscar usuarios:', error)
       throw error
     }
   },
