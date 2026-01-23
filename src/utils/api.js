@@ -55,12 +55,13 @@ api.interceptors.request.use(
       }
     }
     
-    // Log requests in development
+    // Security: Log requests in development without sensitive data
     if (import.meta.env.DEV) {
-      console.log(`🌐 [API] ${config.method?.toUpperCase()} ${config.url}`, {
-        data: config.data,
-        withCredentials: config.withCredentials
-      });
+      // Don't log auth endpoint data (may contain passwords)
+      const isAuthRequest = config.url?.includes('/auth/');
+      console.log(`🌐 [API] ${config.method?.toUpperCase()} ${config.url}`,
+        isAuthRequest ? '(auth data hidden)' : ''
+      );
     }
     
     return config;
@@ -78,28 +79,18 @@ api.interceptors.request.use(
  */
 api.interceptors.response.use(
   (response) => {
-    // Log successful responses in development
+    // Security: Log responses in development without sensitive data
     if (import.meta.env.DEV) {
-      console.log(`✅ [API] ${response.config.method?.toUpperCase()} ${response.config.url}`, {
-        status: response.status,
-        data: response.data
-      });
+      console.log(`✅ [API] ${response.config.method?.toUpperCase()} ${response.config.url} - ${response.status}`);
     }
     return response;
   },
   async (error) => {
     const originalRequest = error.config;
 
-    // Log errors in development with detailed info
+    // Security: Log errors in development without sensitive data
     if (import.meta.env.DEV) {
-      console.error(`❌ [API] Error ${error.response?.status || 'NETWORK'}:`, {
-        url: originalRequest?.url,
-        method: originalRequest?.method,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
+      console.error(`❌ [API] Error ${error.response?.status || 'NETWORK'}: ${originalRequest?.method?.toUpperCase()} ${originalRequest?.url}`);
     }
 
     // Don't retry for login/register/refresh endpoints

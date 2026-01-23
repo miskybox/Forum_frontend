@@ -118,9 +118,10 @@ const RegisterForm = () => {
       toast.success('Registro exitoso. Por favor inicia sesión')
       navigate('/login')
     } catch (error) {
-      console.error('Error al registrar usuario', {
-        data: error.response?.data
-      })
+      // Security: Only log status code in development, not full error data
+      if (import.meta.env.DEV) {
+        console.error('Registration failed:', error.response?.status || 'Network error')
+      }
       
       const status = error.response?.status
       let errorData = {}
