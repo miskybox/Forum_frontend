@@ -73,6 +73,7 @@ const HomePage = () => {
       {/* Hero Section - Adventure Explorer */}
       <section className="relative py-10 md:py-16 px-4" aria-labelledby="hero-title">
         <div className="container mx-auto text-center relative z-10">
+          <h1 id="hero-title" className="sr-only">Forum Viajeros - Comunidad de Viajeros</h1>
           {/* Logo y Subtítulo */}
           <div className="mb-8 animate-fade-in">
             <img

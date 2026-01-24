@@ -78,9 +78,12 @@ const CommentForm = ({ postId, onCommentAdded }) => {
 
   return (
     <div className="bg-earth-50 rounded-lg p-4 shadow mb-6">
-      <h3 className="text-lg font-semibold mb-3">Deja un comentario</h3>
+      <h3 id="comment-form-title" className="text-lg font-semibold mb-3">Deja un comentario</h3>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="comment-content" className="sr-only">Escribe tu comentario</label>
         <textarea
+          id="comment-content"
+          aria-labelledby="comment-form-title"
           className="w-full border border-gray-300 rounded-lg p-3 min-h-[100px] focus:ring-2 focus:ring-ocean-500 focus:border-transparent"
           placeholder="Escribe tu comentario aquí..."
           value={content}

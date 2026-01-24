@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
+import { useParams } from 'react-router-dom'
 import FollowButton from '../components/common/FollowButton'
 import SendPrivateMessageForm from '../components/common/SendPrivateMessageForm'
 import PrivateMessagesInbox from '../components/common/PrivateMessagesInbox'
 import { toast } from 'react-hot-toast'
 import useAuth from '../hooks/useAuth'
 import userService from '../services/userService'
+import followService from '../services/followService'
 import ForumList from '../components/forums/ForumList'
 import PostList from '../components/post/PostList'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -22,16 +24,21 @@ const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
  * ProfilePage con tema Adventure
  */
 const ProfilePage = () => {
+  const { userId } = useParams()
   const { currentUser, isAuthenticated } = useAuth()
   const { t } = useLanguage()
-  
+
+  // Determinar si estamos viendo nuestro propio perfil o el de otro usuario
+  const isOwnProfile = !userId || (currentUser && userId === String(currentUser.id))
+
   const [profileData, setProfileData] = useState({
     id: null,
     username: '',
     firstName: '',
     lastName: '',
     email: '',
-    bio: ''
+    bio: '',
+    profileImageUrl: ''
   })
   const [isFollowing, setIsFollowing] = useState(false)
   
@@ -50,34 +57,61 @@ const ProfilePage = () => {
   
   const imageInputRef = useRef(null)
   
-  // Cargar datos del perfil (puede ser el propio usuario o de otro)
+  // Cargar datos del perfil (propio o de otro usuario)
   useEffect(() => {
-    // Obtener el id del usuario a mostrar (de la URL, por ejemplo)
-    // Aquí se asume que el perfil mostrado es el del usuario autenticado
-    // Para redes accesibles, normalmente se usaría un parámetro de ruta (ej: /profile/:id)
-    // Aquí solo se muestra el botón si el perfil no es el propio
-    if (currentUser) {
-      setProfileData({
-        id: currentUser.id,
-        username: currentUser.username || '',
-        firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || '',
-        email: currentUser.email || '',
-        bio: currentUser.bio || ''
-      })
-      if (currentUser.profileImage) {
-        setImagePreview(currentUser.profileImage)
+    const loadProfile = async () => {
+      setLoading(true)
+      try {
+        if (isOwnProfile && currentUser) {
+          // Cargar perfil propio desde el contexto
+          setProfileData({
+            id: currentUser.id,
+            username: currentUser.username || '',
+            firstName: currentUser.firstName || '',
+            lastName: currentUser.lastName || '',
+            email: currentUser.email || '',
+            bio: currentUser.bio || '',
+            profileImageUrl: currentUser.profileImageUrl || ''
+          })
+          if (currentUser.profileImageUrl) {
+            setImagePreview(currentUser.profileImageUrl)
+          }
+        } else if (userId) {
+          // Cargar perfil de otro usuario desde la API
+          const response = await userService.getUserById(userId)
+          const userData = response.data || response
+          setProfileData({
+            id: userData.id,
+            username: userData.username || '',
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            email: '', // No mostrar email de otros usuarios
+            bio: userData.bio || '',
+            profileImageUrl: userData.profileImageUrl || ''
+          })
+          if (userData.profileImageUrl) {
+            setImagePreview(userData.profileImageUrl)
+          }
+          // Verificar si seguimos a este usuario
+          if (isAuthenticated && currentUser) {
+            try {
+              const followStatus = await followService.isFollowing(userId)
+              setIsFollowing(followStatus === true || followStatus?.following === true)
+            } catch {
+              setIsFollowing(false)
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error)
+        toast.error(t('profile.loadError') || 'Error al cargar el perfil')
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
-  }, [currentUser])
 
-  // Si se implementa navegación a otros perfiles, aquí se consultaría si el usuario autenticado sigue al perfil mostrado
-  useEffect(() => {
-    // Ejemplo: si profileData.id !== currentUser.id, consultar si lo sigue
-    // Aquí, como solo se muestra el propio perfil, no se sigue a uno mismo
-    setIsFollowing(false)
-  }, [profileData, currentUser])
+    loadProfile()
+  }, [userId, currentUser, isOwnProfile, isAuthenticated, t])
   
   const handleProfileChange = (e) => {
     const { name, value } = e.target
@@ -504,12 +538,16 @@ const ProfilePage = () => {
                         id="bio"
                         name="bio"
                         rows={4}
+                        maxLength={500}
                         className="input w-full"
                         value={profileData.bio}
                         onChange={handleProfileChange}
                         placeholder={t('profile.bioPlaceholder')}
                         disabled={isSubmitting}
                       />
+                      <div className="text-xs text-gray-500 mt-1 text-right">
+                        {profileData.bio?.length || 0}/500
+                      </div>
                     </div>
                   </div>
                   
