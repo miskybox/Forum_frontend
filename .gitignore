@@ -37,3 +37,4 @@ nul
 # Archivos temporales Claude
 tmpclaude-*
 cookies.txt
+.claude/
