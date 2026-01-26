@@ -287,11 +287,13 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   const selectedEmoji = getCountryEmoji(selectedCountry)
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative w-full min-w-[360px] sm:min-w-[480px] max-w-lg" ref={dropdownRef} role="combobox" aria-expanded={isOpen} aria-haspopup="listbox" aria-label="Selector de país">
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center gap-3 px-4 py-3 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-md transition-all text-left"
+        className="w-full flex items-center gap-3 px-5 py-4 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-lg transition-all text-left min-h-[60px]"
+        aria-controls="country-selector-listbox"
+        aria-label={selectedCountryName ? `País seleccionado: ${selectedCountryName}` : 'Abrir selector de país'}
       >
         {selectedCountry ? (
           <>
@@ -316,11 +318,11 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 z-50">
-          <div className="bg-white border-2 border-accent rounded-2xl shadow-xl overflow-hidden">
-            <div className="p-4 sm:p-5 space-y-4">
-              <div className="space-y-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wide text-secondary">Filtra por continente</span>
-                <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+          <div className="bg-white border-2 border-accent rounded-2xl shadow-xl overflow-hidden w-full" id="country-selector-listbox">
+            <div className="p-5 sm:p-6 space-y-5">
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-wide text-secondary block">Selecciona un continente</span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {continentOptions.map((option) => {
                     const isActive = option.value === selectedContinent
                     return (
@@ -329,15 +331,15 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                         type="button"
                         onClick={() => handleContinentSelect(option.value)}
                         aria-pressed={isActive}
-                        className={`flex items-center gap-2 whitespace-nowrap px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
+                        className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all min-h-[48px] ${
                           isActive
-                            ? 'bg-golden/20 border-golden text-midnight shadow-sm'
-                            : 'border-primary-dark text-text-light hover:border-golden hover:text-golden'
+                            ? 'bg-golden border-midnight text-midnight shadow-md'
+                            : 'border-accent text-text hover:border-teal hover:bg-teal/10 hover:text-teal'
                         }`}
                       >
                         <span className="font-bold">{option.abbr}</span>
-                        <span>{option.label}</span>
-                        <span className="text-[10px] uppercase tracking-wide text-text-lighter">{option.count}</span>
+                        <span className="hidden sm:inline">{option.label}</span>
+                        <span className="text-xs opacity-70">({option.count})</span>
                       </button>
                     )
                   })}
@@ -345,19 +347,19 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="country-search" className="block text-xs font-semibold text-text uppercase tracking-wide">
-                  Busca tu destino
+                <label htmlFor="country-search" className="block text-xs font-bold text-text uppercase tracking-wide">
+                  O busca por nombre
                 </label>
-                <div className="relative">
-                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <div className="relative flex items-center">
                   <input
                     id="country-search"
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Escribe el nombre del país o su capital"
-                    className="w-full pl-9 pr-3 py-2.5 border-2 border-accent rounded-xl text-sm text-text placeholder-text-lighter focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition"
+                    placeholder="Nombre del país o capital..."
+                    className="w-full pl-4 pr-10 py-3 border-2 border-accent rounded-xl text-sm text-text placeholder-text-light focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition min-h-[48px]"
                   />
+                  <svg className="absolute right-3 w-5 h-5 text-text-light pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 </div>
               </div>
 

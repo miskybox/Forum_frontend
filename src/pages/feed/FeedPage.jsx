@@ -73,10 +73,10 @@ const FeedPage = () => {
             className={`group flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-200 min-h-[44px] border-2 ${
               activeTab === 'following'
                 ? 'bg-golden text-midnight border-midnight shadow-md'
-                : 'bg-white text-midnight border-midnight hover:bg-golden hover:scale-105'
+                : 'bg-white text-midnight border-midnight hover:bg-teal hover:text-white hover:scale-105'
             }`}
           >
-            <span className={activeTab === 'following' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : 'group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200'}>Siguiendo</span>
+            <span className={activeTab === 'following' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>Siguiendo</span>
           </button>
         )}
         <button
@@ -84,10 +84,10 @@ const FeedPage = () => {
           className={`group flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-200 min-h-[44px] border-2 ${
             activeTab === 'explore'
               ? 'bg-golden text-midnight border-midnight shadow-md'
-              : 'bg-aqua text-midnight border-midnight hover:bg-golden hover:scale-105'
+              : 'bg-teal text-white border-midnight hover:bg-golden hover:text-midnight hover:scale-105'
           }`}
         >
-          <span className={activeTab === 'explore' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : 'group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200'}>Explorar</span>
+          <span className={activeTab === 'explore' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>Explorar</span>
         </button>
       </div>
 
@@ -124,9 +124,9 @@ const FeedPage = () => {
           {activeTab === 'following' && (
             <Link
               to="/forums"
-              className="group inline-block bg-teal text-white border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-aqua hover:scale-105 transition-all duration-200 min-h-[44px]"
+              className="inline-block bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-teal hover:text-white hover:scale-105 transition-all duration-200 min-h-[44px]"
             >
-              <span className="group-hover:text-midnight group-hover:[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff] transition-all duration-200">Explorar foros</span>
+              Explorar foros
             </Link>
           )}
         </div>
