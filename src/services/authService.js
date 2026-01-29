@@ -147,6 +147,43 @@ const authService = {
   // Initialize auth state from localStorage on app load
   initAuthState() {
     this._isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+  },
+
+  // Password Reset Methods
+  async forgotPassword(email) {
+    try {
+      const response = await api.post('/auth/forgot-password', { email })
+      return response.data
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error en forgot-password:', error.response?.data || error.message)
+      }
+      throw error
+    }
+  },
+
+  async resetPassword(token, newPassword) {
+    try {
+      const response = await api.post('/auth/reset-password', { token, newPassword })
+      return response.data
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error en reset-password:', error.response?.data || error.message)
+      }
+      throw error
+    }
+  },
+
+  async validateResetToken(token) {
+    try {
+      const response = await api.post('/auth/validate-reset-token', { token })
+      return response.data
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error validando token:', error.response?.data || error.message)
+      }
+      throw error
+    }
   }
 }
 

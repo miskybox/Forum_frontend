@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -263,6 +263,16 @@ const LoginForm = () => {
             </span>
           )}
         </button>
+
+        {/* Enlace de recuperar contraseña */}
+        <div className="text-center pt-4">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-ocean-400 hover:text-ocean-300 hover:underline transition-colors"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
       </form>
     </div>
   )
