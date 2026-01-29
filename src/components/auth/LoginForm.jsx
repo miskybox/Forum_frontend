@@ -270,7 +270,7 @@ const LoginForm = () => {
             to="/forgot-password"
             className="text-sm text-ocean-400 hover:text-ocean-300 hover:underline transition-colors"
           >
-            ¿Olvidaste tu contraseña?
+            {t('auth.forgotPassword')}
           </Link>
         </div>
       </form>
