@@ -27,7 +27,8 @@ const ProfilePage = () => {
     firstName: '',
     lastName: '',
     email: '',
-    bio: ''
+    bio: '',
+    location: ''
   })
   
   const [passwordData, setPasswordData] = useState({
@@ -47,18 +48,24 @@ const ProfilePage = () => {
   
   useEffect(() => {
     if (currentUser) {
+      // El backend devuelve fullName, lo separamos en firstName y lastName
+      const nameParts = (currentUser.fullName || '').split(' ')
+      const firstName = nameParts[0] || ''
+      const lastName = nameParts.slice(1).join(' ') || ''
+
       setProfileData({
         username: currentUser.username || '',
-        firstName: currentUser.firstName || '',
-        lastName: currentUser.lastName || '',
+        firstName: firstName,
+        lastName: lastName,
         email: currentUser.email || '',
-        bio: currentUser.bio || ''
+        bio: currentUser.biography || currentUser.bio || '',
+        location: currentUser.location || ''
       })
-      
-      if (currentUser.profileImage) {
-        setImagePreview(currentUser.profileImage)
+
+      if (currentUser.profileImageUrl || currentUser.profileImage) {
+        setImagePreview(currentUser.profileImageUrl || currentUser.profileImage)
       }
-      
+
       setLoading(false)
     }
   }, [currentUser])
@@ -192,14 +199,23 @@ const ProfilePage = () => {
     }
     
     setIsSubmitting(true)
-    
+
     try {
-      await userService.updateUser(currentUser.id, profileData)
-      
+      // Mapear campos del frontend al formato esperado por el backend
+      const backendData = {
+        username: profileData.username,
+        email: profileData.email,
+        fullName: `${profileData.firstName} ${profileData.lastName}`.trim(),
+        biography: profileData.bio || null,
+        location: profileData.location || null
+      }
+
+      await userService.updateUser(currentUser.id, backendData)
+
       if (profileImage) {
         // Lógica para actualizar imagen de perfil
       }
-      
+
       toast.success('Perfil actualizado con éxito')
     } catch (error) {
       console.error('Error al actualizar el perfil:', error)
