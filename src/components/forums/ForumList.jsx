@@ -120,7 +120,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           {heading}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
           <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
 
           {isAuthenticated && (

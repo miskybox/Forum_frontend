@@ -55,7 +55,7 @@ const Footer = () => {
               <FaFacebook className="text-lg" aria-hidden="true" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/forumviajeros/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-midnight hover:text-golden transition-colors duration-200"
