@@ -40,7 +40,7 @@ const TriviaPlayPage = () => {
         setCurrentQuestion(question)
       }
     } catch (error) {
-      console.error('Error cargando partida:', error)
+      if (import.meta.env.DEV) console.error('Error cargando partida:', error)
       toast.error('Error al cargar la partida')
       navigate('/trivia')
     } finally {
@@ -50,13 +50,13 @@ const TriviaPlayPage = () => {
 
   const handleAnswer = async (answerData) => {
     try {
-      console.log('🎮 Enviando respuesta:', answerData)
+      if (import.meta.env.DEV) console.log('🎮 Enviando respuesta:', answerData)
       const response = await triviaService.answerQuestion({
         gameId: Number.parseInt(gameId),
         ...answerData
       })
 
-      console.log('✅ Respuesta del servidor:', response)
+      if (import.meta.env.DEV) console.log('✅ Respuesta del servidor:', response)
 
       setResult(response)
 

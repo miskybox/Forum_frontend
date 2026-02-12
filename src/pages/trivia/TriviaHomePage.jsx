@@ -46,13 +46,13 @@ const TriviaHomePage = () => {
       ])
       setStats(statsData)
       if (activeGameData && activeGameData.id) {
-        console.log('Partida activa encontrada:', activeGameData)
+        if (import.meta.env.DEV) console.log('Partida activa encontrada:', activeGameData)
         setActiveGame(activeGameData)
         // Mostrar modal automáticamente si hay partida activa
         setShowActiveGameModal(true)
       }
     } catch (error) {
-      console.error('Error cargando datos:', error)
+      if (import.meta.env.DEV) console.error('Error cargando datos:', error)
     } finally {
       setLoading(false)
     }
@@ -89,17 +89,17 @@ const TriviaHomePage = () => {
   const createNewGame = async (mode, options) => {
     setStarting(true)
     try {
-      console.log('Iniciando partida:', { mode, options })
+      if (import.meta.env.DEV) console.log('Iniciando partida:', { mode, options })
       const game = await triviaService.startGame({
         gameMode: mode,
         totalQuestions: options.questions || 10,
         difficulty: options.difficulty,
         continent: options.continent
       })
-      console.log('Partida creada:', game.id)
+      if (import.meta.env.DEV) console.log('Partida creada:', game.id)
       navigate(`/trivia/play/${game.id}`)
     } catch (error) {
-      console.error('Error al iniciar partida:', error)
+      if (import.meta.env.DEV) console.error('Error al iniciar partida:', error)
 
       // Si el error es porque ya hay partida activa, recargar datos y mostrar modal
       if (error.response?.status === 400 &&

@@ -33,13 +33,13 @@ let fetchPromise = null
 export const getAllCountries = async () => {
   // Verificar si tenemos cache válido
   if (countriesCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
-    console.log('📦 Usando países del cache')
+    if (import.meta.env.DEV) console.log('📦 Usando países del cache')
     return countriesCache
   }
 
   // Si ya estamos haciendo fetch, esperar a que termine
   if (isFetching && fetchPromise) {
-    console.log('⏳ Esperando fetch en progreso...')
+    if (import.meta.env.DEV) console.log('⏳ Esperando fetch en progreso...')
     return fetchPromise
   }
 
@@ -68,19 +68,19 @@ export const getAllCountries = async () => {
       countriesCache = data
       cacheTimestamp = Date.now()
       
-      console.log('✅ Países cargados desde API:', data.length)
+      if (import.meta.env.DEV) console.log('✅ Países cargados desde API:', data.length)
       return data
     } catch (error) {
-      console.warn('⚠️ RestCountries API no disponible:', error.message)
+      if (import.meta.env.DEV) console.warn('⚠️ RestCountries API no disponible:', error.message)
       
       // Si tenemos cache aunque esté expirado, usarlo
       if (countriesCache && countriesCache.length > 0) {
-        console.log('📦 Usando cache expirado como fallback')
+        if (import.meta.env.DEV) console.log('📦 Usando cache expirado como fallback')
         return countriesCache
       }
       
       // Usar datos offline de fallback - transformados al formato de la API
-      console.log('🔌 Usando datos offline de fallback (40+ países)')
+      if (import.meta.env.DEV) console.log('🔌 Usando datos offline de fallback (40+ países)')
       const transformedFallback = transformFallbackData(fallbackCountries)
       countriesCache = transformedFallback
       cacheTimestamp = Date.now()
@@ -125,7 +125,7 @@ export const getCountryByCode = async (code) => {
     const data = await response.json()
     return data[0]
   } catch (error) {
-    console.error('RestCountries API error:', error)
+    if (import.meta.env.DEV) console.error('RestCountries API error:', error)
     return null
   }
 }
@@ -139,7 +139,7 @@ export const getCountriesByRegion = async (region) => {
     if (!response.ok) throw new Error('Region not found')
     return await response.json()
   } catch (error) {
-    console.error('RestCountries API error:', error)
+    if (import.meta.env.DEV) console.error('RestCountries API error:', error)
     return []
   }
 }
@@ -153,7 +153,7 @@ export const searchCountries = async (name) => {
     if (!response.ok) throw new Error('No countries found')
     return await response.json()
   } catch (error) {
-    console.error('RestCountries API error:', error)
+    if (import.meta.env.DEV) console.error('RestCountries API error:', error)
     return []
   }
 }
@@ -167,11 +167,11 @@ export const generateTriviaQuestions = async (count = 10, usedQuestionIds = []) 
     const countries = await getAllCountries()
     
     if (!countries || countries.length === 0) {
-      console.warn('⚠️ No se pudieron cargar países para trivia')
+      if (import.meta.env.DEV) console.warn('⚠️ No se pudieron cargar países para trivia')
       return []
     }
 
-    console.log(`🎮 Generando ${count} preguntas de trivia con ${countries.length} países`)
+    if (import.meta.env.DEV) console.log(`🎮 Generando ${count} preguntas de trivia con ${countries.length} países`)
     
     const questions = []
     const questionTypes = ['capital', 'flag', 'currency', 'language', 'population', 'region', 'area']
@@ -205,7 +205,7 @@ export const generateTriviaQuestions = async (count = 10, usedQuestionIds = []) 
 
     return questions
   } catch (error) {
-    console.error('Error generating trivia questions:', error)
+    if (import.meta.env.DEV) console.error('Error generating trivia questions:', error)
     return []
   }
 }

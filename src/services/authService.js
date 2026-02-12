@@ -41,42 +41,52 @@ const authService = {
 
   async login(credentials) {
     try {
-      console.log('🔐 [authService] Enviando petición de login...')
+      if (import.meta.env.DEV) {
+        console.log('🔐 [authService] Enviando petición de login...')
+      }
       
       // Cookies are automatically set by the browser from Set-Cookie headers
       const response = await api.post('/auth/login', credentials)
       
-      console.log('📦 [authService] Respuesta de login:', {
-        status: response.status,
-        authenticated: response.data.authenticated,
-        message: response.data.message
-      })
+      if (import.meta.env.DEV) {
+        console.log('📦 [authService] Respuesta de login:', {
+          status: response.status,
+          authenticated: response.data.authenticated,
+          message: response.data.message
+        })
+      }
 
       // Store auth state locally (tokens are in HttpOnly cookies)
       if (response.data.authenticated) {
         this._isAuthenticated = true
         localStorage.setItem('isAuthenticated', 'true')
-        console.log('✅ [authService] Estado de autenticación guardado')
+        if (import.meta.env.DEV) {
+          console.log('✅ [authService] Estado de autenticación guardado')
+        }
       } else {
-        console.warn('⚠️ [authService] La respuesta no indica autenticación exitosa')
+        if (import.meta.env.DEV) {
+          console.warn('⚠️ [authService] La respuesta no indica autenticación exitosa')
+        }
       }
 
       return response.data
     } catch (error) {
-      console.error('❌ [authService] Error en login:', {
-        message: error.message,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        hasResponse: !!error.response,
-        hasRequest: !!error.request
-      })
-      
-      // Si es error de red (no hay respuesta), agregar info útil
-      if (!error.response && error.request) {
-        console.error('🔌 [authService] Error de red - el servidor no respondió')
-        console.error('📍 URL intentada:', error.config?.url)
-        console.error('📍 Base URL:', error.config?.baseURL)
+      if (import.meta.env.DEV) {
+        console.error('❌ [authService] Error en login:', {
+          message: error.message,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          hasResponse: !!error.response,
+          hasRequest: !!error.request
+        })
+        
+        // Si es error de red (no hay respuesta), agregar info útil
+        if (!error.response && error.request) {
+          console.error('🔌 [authService] Error de red - el servidor no respondió')
+          console.error('📍 URL intentada:', error.config?.url)
+          console.error('📍 Base URL:', error.config?.baseURL)
+        }
       }
       
       throw error
