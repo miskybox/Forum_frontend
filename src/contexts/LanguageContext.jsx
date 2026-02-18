@@ -119,6 +119,18 @@ const translations = {
         access: 'Acceder',
       },
     },
+    // Demo
+    demo: {
+      title: 'Modo Demo',
+      description: 'Esta es una página de demostración. Puedes iniciar sesión con las siguientes credenciales o registrar tu propia cuenta.',
+      roleUser: 'Usuario',
+      roleMod: 'Moderador',
+      roleAdmin: 'Admin',
+      disclaimer: 'No utilices datos personales reales. Los datos pueden ser eliminados periódicamente.',
+      disclaimerTitle: 'Sitio Demo',
+      disclaimerRegister: 'Esta es una página de demostración. No utilices contraseñas reales ni datos personales. Los datos pueden ser eliminados periódicamente.',
+      existingAccounts: 'Si solo quieres probar, puedes usar las cuentas demo desde la página de login.',
+    },
     // Forums
     forums: {
       title: 'Foros de Viajeros',
@@ -751,6 +763,18 @@ const translations = {
         access: 'Login',
       },
     },
+    // Demo
+    demo: {
+      title: 'Demo Mode',
+      description: 'This is a demo site. You can log in with the credentials below or register your own account.',
+      roleUser: 'User',
+      roleMod: 'Moderator',
+      roleAdmin: 'Admin',
+      disclaimer: 'Do not use real personal data. Data may be periodically deleted.',
+      disclaimerTitle: 'Demo Site',
+      disclaimerRegister: 'This is a demo site. Do not use real passwords or personal data. Data may be periodically deleted.',
+      existingAccounts: 'If you just want to try it out, you can use the demo accounts from the login page.',
+    },
     // Forums
     forums: {
       title: 'Travelers Forums',
@@ -1286,7 +1310,7 @@ export const LanguageProvider = ({ children }) => {
     let value = translations[language]
     
     for (const k of keys) {
-      if (value && value[k]) {
+      if (value?.[k]) {
         value = value[k]
       } else {
         // Fallback amigable para claves frecuentes usadas en tests
@@ -1313,6 +1337,15 @@ export const LanguageProvider = ({ children }) => {
           'auth.registerButton': 'Registrarse',
           'auth.loginButton': 'Acceder',
           'common.registering': 'Registrando...',
+          'demo.title': 'Modo Demo',
+          'demo.description': 'Esta es una página de demostración. Puedes iniciar sesión con las siguientes credenciales o registrar tu propia cuenta.',
+          'demo.roleUser': 'Usuario',
+          'demo.roleMod': 'Moderador',
+          'demo.roleAdmin': 'Admin',
+          'demo.disclaimer': 'No utilices datos personales reales. Los datos pueden ser eliminados periódicamente.',
+          'demo.disclaimerTitle': 'Sitio Demo',
+          'demo.disclaimerRegister': 'Esta es una página de demostración. No utilices contraseñas reales ni datos personales.',
+          'demo.existingAccounts': 'Si solo quieres probar, puedes usar las cuentas demo desde la página de login.',
         }
         return fallbacks[key] || key
       }
@@ -1368,6 +1401,15 @@ export const useLanguage = () => {
           'auth.registerButton': 'Registrarse',
           'auth.loginButton': 'Acceder',
           'common.registering': 'Registrando...',
+          'demo.title': 'Modo Demo',
+          'demo.description': 'Esta es una página de demostración. Puedes iniciar sesión con las siguientes credenciales o registrar tu propia cuenta.',
+          'demo.roleUser': 'Usuario',
+          'demo.roleMod': 'Moderador',
+          'demo.roleAdmin': 'Admin',
+          'demo.disclaimer': 'No utilices datos personales reales. Los datos pueden ser eliminados periódicamente.',
+          'demo.disclaimerTitle': 'Sitio Demo',
+          'demo.disclaimerRegister': 'Esta es una página de demostración. No utilices contraseñas reales ni datos personales.',
+          'demo.existingAccounts': 'Si solo quieres probar, puedes usar las cuentas demo desde la página de login.',
         }
         return fallbacks[key] || key
       },
