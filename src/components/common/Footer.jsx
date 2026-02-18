@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa'
+import { FaFacebook, FaInstagram } from 'react-icons/fa'
+import { FaXTwitter, FaTiktok } from 'react-icons/fa6'
 import { useLanguage } from '../../contexts/LanguageContext'
 import logo from '../../assets/logoFV.png'
 
@@ -64,13 +65,22 @@ const Footer = () => {
               <FaInstagram className="text-lg" aria-hidden="true" />
             </a>
             <a
-              href="https://twitter.com"
+              href="https://x.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-midnight hover:text-golden transition-colors duration-200"
-              aria-label={t('footer.visitTwitter')}
+              aria-label={t('footer.visitX')}
             >
-              <FaTwitter className="text-lg" aria-hidden="true" />
+              <FaXTwitter className="text-lg" aria-hidden="true" />
+            </a>
+            <a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-midnight hover:text-golden transition-colors duration-200"
+              aria-label={t('footer.visitTikTok')}
+            >
+              <FaTiktok className="text-lg" aria-hidden="true" />
             </a>
           </nav>
         </div>

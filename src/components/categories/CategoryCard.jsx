@@ -1,21 +1,55 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import imgEuropa    from '../../assets/paris-moulin-europa.JPG'
+import imgAmerica   from '../../assets/patagonia-américa.jpg'
+import imgAsia      from '../../assets/tailandia-asia.jpg'
+import imgAfrica    from '../../assets/egipto-áfrica.jpg'
+import imgGeneral   from '../../assets/mapa-amstedman.jpg'
+import imgAntartida from '../../assets/antártida.JPG'
+
+// Mapa de imágenes por nombre exacto de categoría (según la DB)
+const CATEGORY_IMAGES = {
+  'General':           imgGeneral,
+  'Europa':            imgEuropa,
+  'Asia':              imgAsia,
+  'América del Norte': imgAmerica,
+  'América del Sur':   imgAmerica,
+  'América':           imgAmerica,
+  'África':            imgAfrica,
+  'Oceanía':           'https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=800&auto=format&fit=crop&q=80',
+  'Antártida':         imgAntartida,
+}
+
+// Alt text descriptivo por categoría
+const CATEGORY_ALT = {
+  'General':           'Photo by sigu / Amsterdam, Países Bajos',
+  'Europa':            'Photo by sigu / París, Francia',
+  'Asia':              'Photo by sigu / Tailandia',
+  'América del Norte': 'Photo by sigu / Patagonia, Argentina',
+  'América del Sur':   'Photo by sigu / Patagonia, Argentina',
+  'América':           'Photo by sigu / Patagonia, Argentina',
+  'África':            'Photo by sigu / Egipto',
+  'Oceanía':           'Photo by sigu / Sídney, Australia',
+  'Antártida':         'Photo by sigu / Antártida',
+}
 
 /**
  * CategoryCard con estilo retro Adventure
  */
 const CategoryCard = ({ category }) => {
+  const imageUrl = category.imageUrl || CATEGORY_IMAGES[category.name]
+
   return (
-    <Link 
+    <Link
       to={`/forums/category/${category.id}`}
       className="group"
     >
       <div className="card border-adventure-gold overflow-hidden transition-all group-hover:border-adventure-gold/80">
         <div className="aspect-video relative bg-adventure-dark overflow-hidden">
-          {category.imageUrl ? (
-            <img 
-              src={category.imageUrl} 
-              alt={category.name} 
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={CATEGORY_ALT[category.name] || category.name}
               className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300"
             />
           ) : (
@@ -25,9 +59,8 @@ const CategoryCard = ({ category }) => {
               </div>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-adventure-dark via-adventure-dark/50 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h3 className="text-white text-lg md:text-xl font-bold neon-text uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+          <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
+            <h3 className="text-lg md:text-xl font-extrabold uppercase tracking-wider truncate [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]" style={{ color: '#ffffff' }}>
               {category.name}
             </h3>
           </div>

@@ -178,7 +178,18 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Sección de Categorías */}
+      {/* Foro General */}
+      <section className="container mx-auto px-4 py-6 relative z-10">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
+            Foro General
+          </h2>
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+        </div>
+        <CategoryList typeFilter="GENERAL" />
+      </section>
+
+      {/* Continentes */}
       <section className="container mx-auto px-4 py-6 pb-24 relative z-10">
         <div className="text-center mb-6">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
@@ -186,7 +197,7 @@ const HomePage = () => {
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
         </div>
-        <CategoryList />
+        <CategoryList typeFilter="CONTINENT" />
       </section>
     </div>
   )

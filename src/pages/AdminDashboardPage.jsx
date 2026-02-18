@@ -282,9 +282,9 @@ const AdminDashboardPage = () => {
             <svg className="w-6 h-6 text-[#E5A13E] mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <div className="text-[#CFE7E5]">
-              <h3 className="font-semibold">Permisos de Administrador</h3>
-              <ul className="text-sm mt-1 list-disc list-inside opacity-80">
+            <div>
+              <h3 className="font-semibold text-white">Permisos de Administrador</h3>
+              <ul className="text-sm mt-1 list-disc list-inside text-[#CFE7E5]">
                 <li>Gestionar usuarios: bloquear, desbloquear, eliminar y asignar roles</li>
                 <li>Moderar contenido: ocultar y eliminar foros, posts y comentarios</li>
                 <li>Acceso completo a todas las funciones del sistema</li>

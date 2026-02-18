@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import CategoryCard from './CategoryCard'
 import categoryService from '../../services/categoryService'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -6,7 +7,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 /**
  * CategoryList - Paleta única #A0937D #E7D4B5 #F6E6CB #B6C7AA
  */
-const CategoryList = () => {
+const CategoryList = ({ typeFilter = null }) => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -29,6 +30,11 @@ const CategoryList = () => {
 
     fetchCategories()
   }, [t])
+
+  const displayCategories = (typeFilter
+    ? categories.filter(c => c.type === typeFilter)
+    : categories
+  ).slice().sort((a, b) => a.name.localeCompare(b.name, 'es'))
 
   if (loading) {
     return (
@@ -63,7 +69,7 @@ const CategoryList = () => {
     )
   }
 
-  if (categories.length === 0) {
+  if (displayCategories.length === 0) {
     return (
       <div className="text-center py-12 card border-secondary">
         <div className="w-16 h-16 mx-auto mb-4 bg-golden/30 rounded-full flex items-center justify-center">
@@ -81,13 +87,17 @@ const CategoryList = () => {
 
   return (
     <div className="mb-12">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
-        {categories.map((category) => (
+      <div className={`grid gap-4 ${displayCategories.length === 1 ? 'grid-cols-1 max-w-sm mx-auto' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-3'}`}>
+        {displayCategories.map((category) => (
           <CategoryCard key={category.id} category={category} />
         ))}
       </div>
     </div>
   )
+}
+
+CategoryList.propTypes = {
+  typeFilter: PropTypes.string,
 }
 
 export default CategoryList

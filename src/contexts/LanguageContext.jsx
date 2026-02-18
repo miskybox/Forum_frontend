@@ -487,7 +487,8 @@ const translations = {
       socialNetworks: 'Redes sociales',
       visitFacebook: 'Visitar nuestra página de Facebook (se abre en nueva ventana)',
       visitInstagram: 'Visitar nuestro Instagram (se abre en nueva ventana)',
-      visitTwitter: 'Visitar nuestro Twitter (se abre en nueva ventana)',
+      visitX: 'Visitar nuestro X (se abre en nueva ventana)',
+      visitTikTok: 'Visitar nuestro TikTok (se abre en nueva ventana)',
       madeWith: 'Hecho con pasión para viajeros de todo el mundo',
     },
     // Continentes
@@ -1131,7 +1132,8 @@ const translations = {
       socialNetworks: 'Social networks',
       visitFacebook: 'Visit our Facebook page (opens in new window)',
       visitInstagram: 'Visit our Instagram (opens in new window)',
-      visitTwitter: 'Visit our Twitter (opens in new window)',
+      visitX: 'Visit our X (opens in new window)',
+      visitTikTok: 'Visit our TikTok (opens in new window)',
       madeWith: 'Made with passion for travelers around the world',
     },
     // Continentes

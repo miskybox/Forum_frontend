@@ -52,20 +52,10 @@ const LoginPage = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-dark/40 rounded-lg p-3 space-y-2 border border-ocean-600/30">
+              <div className="bg-dark/40 rounded-lg p-3 border border-ocean-600/30">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-ocean-200/70 font-medium">{t('demo.roleUser')}</span>
                   <code className="text-ocean-300 font-mono bg-ocean-900/50 px-2 py-0.5 rounded">viajero_demo / Demo1234!</code>
-                </div>
-                <div className="border-t border-ocean-700/30"></div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-ocean-200/70 font-medium">{t('demo.roleMod')}</span>
-                  <code className="text-ocean-300 font-mono bg-ocean-900/50 px-2 py-0.5 rounded">moderador_demo / Demo1234!</code>
-                </div>
-                <div className="border-t border-ocean-700/30"></div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-ocean-200/70 font-medium">{t('demo.roleAdmin')}</span>
-                  <code className="text-ocean-300 font-mono bg-ocean-900/50 px-2 py-0.5 rounded">admin_demo / Demo1234!</code>
                 </div>
               </div>
               <p className="text-xs text-ocean-200/50 mt-3 text-center italic">
