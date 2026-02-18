@@ -18,7 +18,7 @@ const vitestGlobals = {
 }
 
 export default [
-  { ignores: ['dist', 'node_modules', 'coverage'] },
+  { ignores: ['dist', 'node_modules', 'coverage', '.vite'] },
   // Configuración para archivos de test
   {
     files: ['**/*.test.{js,jsx}', '**/*.spec.{js,jsx}', '**/test/**/*.{js,jsx}', '**/__tests__/**/*.{js,jsx}'],

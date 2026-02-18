@@ -42,10 +42,10 @@ const TriviaHomePage = () => {
     try {
       const [statsData, activeGameData] = await Promise.all([
         triviaService.getMyScore(),
-        triviaService.getActiveGame()
+        Promise.resolve(triviaService.getActiveGame())
       ])
       setStats(statsData)
-      if (activeGameData && activeGameData.id) {
+      if (activeGameData?.id) {
         if (import.meta.env.DEV) console.log('Partida activa encontrada:', activeGameData)
         setActiveGame(activeGameData)
         // Mostrar modal automáticamente si hay partida activa
@@ -174,6 +174,13 @@ const TriviaHomePage = () => {
     }
   }
 
+  const getTextColorClass = (modeColor) => {
+    if (modeColor === 'bg-midnight') {
+      return 'text-golden'
+    }
+    return 'text-midnight'
+  }
+
   const gameModes = [
     {
       mode: 'QUICK',
@@ -252,9 +259,9 @@ const TriviaHomePage = () => {
                   className={`card hover:shadow-xl hover:scale-[1.02] group disabled:opacity-50 disabled:cursor-not-allowed text-left cursor-pointer transition-all duration-200 ${mode.color} ${mode.color === 'bg-midnight' ? 'border-midnight' : ''}`}
                 >
                   <div className="text-center p-4">
-                    <h3 className={`text-xl font-bold mb-2 tracking-normal uppercase ${mode.color === 'bg-midnight' ? 'text-golden' : mode.color === 'bg-golden' ? 'text-midnight' : 'text-midnight'}`}>
-                      {mode.title}
-                    </h3>
+                    <h3 className={`text-xl font-bold mb-2 tracking-normal uppercase ${getTextColorClass(mode.color)}`}>
+                        {mode.title}
+                      </h3>
                     <p className={`text-sm mb-4 ${mode.color === 'bg-midnight' ? 'text-aqua' : 'text-text'}`}>
                       {mode.description}
                     </p>

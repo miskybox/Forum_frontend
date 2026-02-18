@@ -11,7 +11,8 @@ const PrivateMessagesInbox = () => {
       try {
         const data = await messageService.getInbox()
         setInbox(data)
-      } catch (e) {
+      } catch (error) {
+        console.error('Error al cargar mensajes:', error)
         toast.error('Error al cargar mensajes')
       } finally {
         setLoading(false)

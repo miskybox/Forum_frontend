@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import messageService from '../../services/messageService'
 import { toast } from 'react-hot-toast'
 
@@ -19,7 +20,8 @@ const SendPrivateMessageForm = ({ toId }) => {
       await messageService.sendMessage(toId, content)
       toast.success('Mensaje enviado')
       setContent('')
-    } catch (e) {
+    } catch (error) {
+      console.error('Error al enviar mensaje:', error)
       toast.error('Error al enviar el mensaje')
     } finally {
       setLoading(false)
@@ -45,6 +47,10 @@ const SendPrivateMessageForm = ({ toId }) => {
       </button>
     </form>
   )
+}
+
+SendPrivateMessageForm.propTypes = {
+  toId: PropTypes.number.isRequired
 }
 
 export default SendPrivateMessageForm

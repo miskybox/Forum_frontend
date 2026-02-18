@@ -35,15 +35,16 @@ export const AuthProvider = ({ children }) => {
         try {
           const userInfo = await authService.getCurrentUser()
           setCurrentUser(userInfo)
-        } catch (err) {
+        } catch (error) {
+          console.error('Error getting user:', error)
           // If getting user fails, try to refresh token
           try {
             await authService.refreshToken()
             const userInfo = await authService.getCurrentUser()
             setCurrentUser(userInfo)
-          } catch (refreshErr) {
+          } catch (refreshError) {
             // Refresh failed, clear auth state
-            setError(refreshErr.response?.data?.message || 'Sesión expirada')
+            setError(refreshError.response?.data?.message || 'Sesión expirada')
             await logout()
           }
         } finally {

@@ -24,6 +24,7 @@ const ForgotPasswordPage = () => {
       setEmailSent(true)
       toast.success(t('auth.passwordReset.checkEmailDescription'))
     } catch (error) {
+      console.error('Error en forgot password:', error)
       // Por seguridad, mostramos el mismo mensaje aunque falle
       // para no revelar si el email existe o no
       setEmailSent(true)

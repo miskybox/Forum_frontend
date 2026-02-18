@@ -175,6 +175,33 @@ const TriviaPlayPage = () => {
     }
   }
 
+  const renderMainContent = () => {
+    if (result) {
+      return (
+        <TriviaResult
+          result={result}
+          onNext={handleNext}
+          isLastQuestion={!result.hasNextQuestion}
+        />
+      )
+    }
+    
+    if (currentQuestion) {
+      return (
+        <TriviaQuestion
+          question={currentQuestion}
+          onAnswer={handleAnswer}
+        />
+      )
+    }
+    
+    return (
+      <div className="text-center text-light py-12">
+        <p>{t('trivia.loadingQuestion')}</p>
+      </div>
+    )
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -222,22 +249,7 @@ const TriviaPlayPage = () => {
 
       {/* Contenido principal */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        {result ? (
-          <TriviaResult
-            result={result}
-            onNext={handleNext}
-            isLastQuestion={!result.hasNextQuestion}
-          />
-        ) : currentQuestion ? (
-          <TriviaQuestion
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-          />
-        ) : (
-          <div className="text-center text-light py-12">
-            <p>{t('trivia.loadingQuestion')}</p>
-          </div>
-        )}
+        {renderMainContent()}
       </div>
     </div>
   )

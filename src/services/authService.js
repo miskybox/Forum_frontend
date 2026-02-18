@@ -63,10 +63,8 @@ const authService = {
         if (import.meta.env.DEV) {
           console.log('✅ [authService] Estado de autenticación guardado')
         }
-      } else {
-        if (import.meta.env.DEV) {
-          console.warn('⚠️ [authService] La respuesta no indica autenticación exitosa')
-        }
+      } else if (import.meta.env.DEV) {
+        console.warn('⚠️ [authService] La respuesta no indica autenticación exitosa')
       }
 
       return response.data

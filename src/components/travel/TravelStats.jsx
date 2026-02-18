@@ -156,21 +156,6 @@ StatCard.propTypes = {
   bgColor: PropTypes.string
 }
 
-/**
- * Obtiene abreviatura según continente
- */
-const getContinentLabel = (continent) => {
-  const labels = {
-    'Europa': 'EU',
-    'América': 'AM',
-    'Asia': 'AS',
-    'África': 'AF',
-    'Oceanía': 'OC',
-    'Antártida': 'AN'
-  }
-  return labels[continent] || continent.slice(0, 2).toUpperCase()
-}
-
 TravelStats.propTypes = {
   stats: PropTypes.shape({
     username: PropTypes.string,

@@ -12,12 +12,7 @@ const normalizeText = (value) => {
     .trim()
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-}
-
-const isoToEmoji = (code) => {
-  if (!code || code.length !== 2) return '--'
-  return code.toUpperCase()
+    .replaceAll(/[\u0300-\u036f]/g, '')
 }
 
 const getCountryName = (country) => {
@@ -66,8 +61,8 @@ const getCountryContinent = (country) => {
 const getContinentLabel = (continent) => {
   if (!continent) return 'GL'
   const normalized = normalizeText(continent)
-  const cleaned = normalized.replace(/\b(del?|de|the|of)\b/g, ' ')
-  const collapsed = cleaned.replace(/[^a-z0-9]/g, '')
+  const cleaned = normalized.replaceAll(/\b(del?|de|the|of)\b/g, ' ')
+  const collapsed = cleaned.replaceAll(/[^a-z0-9]/g, '')
 
   const labelMap = {
     africa: 'AF',
@@ -94,7 +89,7 @@ const getContinentLabel = (continent) => {
     return labelMap[collapsed]
   }
 
-  const simplified = collapsed.replace(/(north|south|central|west|east|northern|southern|western|eastern|northwest|northeast|southwest|southeast|noroeste|noreste|suroeste|sureste|norte|sur|centro|occidental|oriental)/g, '')
+  const simplified = collapsed.replaceAll(/(north|south|central|west|east)/g, '')
   if (simplified && labelMap[simplified]) {
     return labelMap[simplified]
   }
@@ -103,7 +98,7 @@ const getContinentLabel = (continent) => {
 }
 
 const getCountryIdentifier = (country, fallbackIndex) => {
-  if (!country) return fallbackIndex != null ? `country-${fallbackIndex}` : null
+  if (!country) return fallbackIndex !== null && fallbackIndex !== undefined ? `country-${fallbackIndex}` : null
   return (
     country.id ||
     country.countryId ||
@@ -111,7 +106,7 @@ const getCountryIdentifier = (country, fallbackIndex) => {
     country.code ||
     country.alpha2Code ||
     country.cca2 ||
-    (fallbackIndex != null ? `country-${fallbackIndex}` : null)
+    (fallbackIndex !== null && fallbackIndex !== undefined ? `country-${fallbackIndex}` : null)
   )
 }
 
@@ -219,8 +214,8 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
       count: countries.length
     })
 
-    rawContinents.forEach((item) => {
-      const label = item || 'Otros'
+    rawContinents.forEach((item = 'Otros') => {
+      const label = item
       const key = normalizeText(label)
       map.set(key, {
         value: key,
@@ -281,20 +276,32 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   }
 
   const selectedCountryId = getCountryIdentifier(selectedCountry)
-  const normalizedSelectedId = selectedCountryId != null ? selectedCountryId.toString() : null
+  const normalizedSelectedId = selectedCountryId !== null && selectedCountryId !== undefined ? selectedCountryId.toString() : null
   const selectedCountryName = getCountryName(selectedCountry) || selectedCountry?.displayName || ''
   const selectedCountryCapital = getCountryCapital(selectedCountry) || selectedCountry?.displayCapital || ''
   const selectedEmoji = getCountryEmoji(selectedCountry)
 
   return (
-    <div className="relative w-full min-w-[360px] sm:min-w-[480px] max-w-lg" ref={dropdownRef} role="combobox" aria-expanded={isOpen} aria-haspopup="listbox" aria-label="Selector de país">
-      <button
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center gap-3 px-5 py-4 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-lg transition-all text-left min-h-[60px]"
-        aria-controls="country-selector-listbox"
-        aria-label={selectedCountryName ? `País seleccionado: ${selectedCountryName}` : 'Abrir selector de país'}
-      >
+    <div className="relative w-full min-w-[360px] sm:min-w-[480px] max-w-lg" ref={dropdownRef}>
+      <div className="w-full flex items-center gap-3 px-5 py-4 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-lg transition-all text-left min-h-[60px] relative">
+        <select
+          onChange={(e) => {
+            const country = countries.find(c => getCountryIdentifier(c.original)?.toString() === e.target.value)
+            if (country) {
+              handleCountrySelect(country)
+            }
+          }}
+          value={normalizedSelectedId || ''}
+          aria-label={selectedCountryName ? `País seleccionado: ${selectedCountryName}` : 'Selecciona un país'}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        >
+          <option value="">Selecciona un país...</option>
+          {filteredCountries.map((country) => (
+            <option key={country.id} value={getCountryIdentifier(country.original)?.toString() || country.id}>
+              {country.name}
+            </option>
+          ))}
+        </select>
         {selectedCountry ? (
           <>
             <span className="text-2xl shrink-0">{selectedEmoji}</span>
@@ -314,7 +321,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
           </>
         )}
         <span className="ml-auto text-text-light text-xs">{isOpen ? '▲' : '▼'}</span>
-      </button>
+      </div>
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 z-50">
@@ -373,12 +380,14 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                 </span>
               </div>
 
-              {loading ? (
+              {loading && (
                 <div className="py-8 text-center text-text-light">
                   <div className="animate-spin rounded-full h-8 w-8 border-2 border-secondary border-t-transparent mx-auto mb-3" />
                   <p className="text-sm">Cargando destinos...</p>
                 </div>
-              ) : filteredCountries.length === 0 ? (
+              )}
+
+              {!loading && filteredCountries.length === 0 && (
                 <div className="py-8 text-center text-text-light">
                   <div className="w-10 h-10 mx-auto mb-3 bg-aqua rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
@@ -394,46 +403,28 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                     </button>
                   )}
                 </div>
-              ) : (
-                <div
-                  role="listbox"
+              )}
+
+              {!loading && filteredCountries.length > 0 && (
+                <select
+                  size={Math.min(filteredCountries.length + 1, 10)}
+                  onChange={(e) => {
+                    const country = filteredCountries.find(c => getCountryIdentifier(c.original)?.toString() === e.target.value)
+                    if (country) {
+                      handleCountrySelect(country)
+                    }
+                  }}
+                  value={normalizedSelectedId || ''}
                   aria-label="Países disponibles"
-                  className="max-h-72 overflow-y-auto pr-1"
+                  className="w-full max-h-72 p-2 border-2 border-accent rounded-xl text-sm text-text focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20"
                 >
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    {filteredCountries.map((country) => {
-                      const candidateId = getCountryIdentifier(country.original)
-                      const baseId = candidateId != null ? candidateId : country.id
-                      const comparisonId = baseId != null ? baseId.toString() : null
-                      const isActive = Boolean(normalizedSelectedId && comparisonId === normalizedSelectedId)
-                      return (
-                        <button
-                          key={country.id}
-                          type="button"
-                          role="option"
-                          aria-selected={isActive}
-                          onClick={() => handleCountrySelect(country)}
-                          className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl border text-left transition-all ${
-                            isActive
-                              ? 'border-secondary bg-secondary/10 text-text shadow-sm'
-                              : 'border-primary-dark bg-white hover:border-secondary hover:bg-secondary/5'
-                          }`}
-                        >
-                          <span className="w-10 h-10 rounded-lg bg-midnight/10 flex items-center justify-center text-sm font-bold text-midnight shrink-0">{country.emoji}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-text truncate">{country.name}</p>
-                            <p className="text-xs text-text-light truncate">
-                              {country.capital ? `${country.capital} • ${country.continent}` : country.continent}
-                            </p>
-                          </div>
-                          {isActive && (
-                            <svg className="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
+                  <option value="">Selecciona un país...</option>
+                  {filteredCountries.map((country) => (
+                    <option key={country.id} value={getCountryIdentifier(country.original)?.toString() || country.id}>
+                      {country.emoji} {country.name} {country.capital ? `(${country.capital})` : ''}
+                    </option>
+                  ))}
+                </select>
               )}
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-primary-dark pt-4 mt-2">

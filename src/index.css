@@ -181,9 +181,9 @@ h4 {
 }
 
 .btn-outline:hover {
-  background: rgba(76, 126, 117, 0.1);
+  background: rgba(76, 126, 117, 0.85);
   border-color: #2c4a33;
-  color: #2c4a33 !important;
+  color: #FFFFFF !important;
 }
 
 .btn-outline:focus-visible {
@@ -199,9 +199,9 @@ h4 {
 }
 
 .btn-outline-terracota:hover {
-  background: rgba(165, 103, 50, 0.1);
-  border-color: #8B5A2B;
-  color: #8B5A2B !important;
+  background: rgba(165, 103, 50, 0.85);
+  border-color: #6B4423;
+  color: #FFFFFF !important;
 }
 
 .btn-outline-terracota:focus-visible {
@@ -386,14 +386,14 @@ button:focus {
 }
 
 .badge-teal {
-  background: rgba(76, 126, 117, 0.2);
-  color: #213638;
+  background: rgba(76, 126, 117, 0.85);
+  color: #FFFFFF;
   border: 1px solid #4c7e75;
 }
 
 .badge-terracota {
   background: rgba(165, 103, 50, 0.2);
-  color: #6B4520;
+  color: #FFFFFF;
   border: 1px solid #a56732;
 }
 
@@ -405,13 +405,13 @@ button:focus {
 
 .badge-golden {
   background: rgba(229, 161, 62, 0.2);
-  color: #8B6914;
+  color: #3D2605;
   border: 1px solid #E5A13E;
 }
 
 .badge-aqua {
   background: #CFE7E5;
-  color: #213638;
+  color: #0d1f1d;
   border: 1px solid #4c7e75;
 }
 

@@ -30,6 +30,7 @@ const ResetPasswordPage = () => {
         await authService.validateResetToken(token)
         setIsValidToken(true)
       } catch (error) {
+        console.error('Error validating reset token:', error)
         setIsValidToken(false)
         toast.error(t('auth.passwordReset.invalidLinkExpired'))
       } finally {

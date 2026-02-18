@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import followService from '../../services/followService'
 import { toast } from 'react-hot-toast'
+
+const getButtonText = (loading, isFollowing) => {
+  if (loading) return '...'
+  return isFollowing ? 'Siguiendo' : 'Seguir'
+}
 
 /**
  * Botón de seguir/dejar de seguir reutilizable para cualquier usuario
@@ -30,7 +36,8 @@ const FollowButton = ({ userId, isFollowing: initialIsFollowing, onChange }) => 
         toast('Ahora sigues al usuario')
       }
       if (onChange) onChange(!isFollowing)
-    } catch (e) {
+    } catch (error) {
+      console.error('Error al cambiar seguimiento:', error)
       toast.error('Error al cambiar seguimiento')
     } finally {
       setLoading(false)
@@ -43,9 +50,15 @@ const FollowButton = ({ userId, isFollowing: initialIsFollowing, onChange }) => 
       onClick={handleClick}
       disabled={loading}
     >
-      {loading ? '...' : isFollowing ? 'Siguiendo' : 'Seguir'}
+      {getButtonText(loading, isFollowing)}
     </button>
   )
+}
+
+FollowButton.propTypes = {
+  userId: PropTypes.number.isRequired,
+  isFollowing: PropTypes.bool,
+  onChange: PropTypes.func
 }
 
 export default FollowButton
