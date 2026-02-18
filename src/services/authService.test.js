@@ -39,9 +39,7 @@ describe('authService (HttpOnly Cookies)', () => {
       const userData = {
         username: 'newuser',
         email: 'newuser@example.com',
-        password: 'password123',
-        firstName: 'New',
-        lastName: 'User'
+        password: 'password123'
       }
       const mockResponse = { data: { id: 1, username: 'newuser', email: 'newuser@example.com' } }
 

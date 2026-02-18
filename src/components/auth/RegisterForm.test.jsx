@@ -45,10 +45,8 @@ describe('RegisterForm', () => {
     })
   }
 
-  // Helper para obtener campos - ACTUALIZADO con nuevo placeholder
+  // Helper para obtener campos
   const getFields = () => ({
-    firstName: screen.getByPlaceholderText('Nombre'),
-    lastName: screen.getByPlaceholderText('Apellido'),
     username: screen.getByPlaceholderText('Nombre de usuario'),
     email: screen.getByPlaceholderText('tu@email.com'),
     password: screen.getByPlaceholderText(/mínimo 8 caracteres/i),
@@ -60,8 +58,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    expect(fields.firstName).toBeInTheDocument()
-    expect(fields.lastName).toBeInTheDocument()
     expect(fields.username).toBeInTheDocument()
     expect(fields.email).toBeInTheDocument()
     expect(fields.password).toBeInTheDocument()
@@ -74,8 +70,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123!')
@@ -94,8 +88,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123!')
@@ -106,9 +98,7 @@ describe('RegisterForm', () => {
       expect(mockRegister).toHaveBeenCalledWith({
         username: 'johndoe',
         email: 'john@example.com',
-        password: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe'
+        password: 'Password123!'
       })
     })
   })
@@ -119,8 +109,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123!')
@@ -136,8 +124,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    expect(fields.firstName).toBeRequired()
-    expect(fields.lastName).toBeRequired()
     expect(fields.username).toBeRequired()
     expect(fields.email).toBeRequired()
     expect(fields.password).toBeRequired()
@@ -149,8 +135,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Short1!')
@@ -168,8 +152,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'password123!')
@@ -186,8 +168,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'PASSWORD123!')
@@ -204,8 +184,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123')
@@ -228,8 +206,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'existinguser')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123!')
@@ -247,8 +223,6 @@ describe('RegisterForm', () => {
     renderRegisterForm()
 
     const fields = getFields()
-    await user.type(fields.firstName, 'John')
-    await user.type(fields.lastName, 'Doe')
     await user.type(fields.username, 'johndoe')
     await user.type(fields.email, 'john@example.com')
     await user.type(fields.password, 'Password123!')
@@ -265,8 +239,8 @@ describe('RegisterForm', () => {
     const inputs = screen.getAllByRole('textbox')
     const passwordInputs = document.querySelectorAll('input[type="password"]')
 
-    // 4 campos de texto + 2 de contraseña
-    expect(inputs.length + passwordInputs.length).toBe(6)
+    // 2 campos de texto (username, email) + 2 de contraseña
+    expect(inputs.length + passwordInputs.length).toBe(4)
   })
 
   it('campo de email tiene tipo email', () => {

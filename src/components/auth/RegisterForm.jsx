@@ -12,9 +12,7 @@ const RegisterForm = () => {
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: ''
+    confirmPassword: ''
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -73,20 +71,6 @@ const RegisterForm = () => {
       newErrors.confirmPassword = 'Las contraseñas no coinciden'
     }
 
-    // Validar nombre
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'El nombre es obligatorio'
-    } else if (formData.firstName.length < 2) {
-      newErrors.firstName = 'El nombre debe tener al menos 2 caracteres'
-    }
-
-    // Validar apellido
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'El apellido es obligatorio'
-    } else if (formData.lastName.length < 2) {
-      newErrors.lastName = 'El apellido debe tener al menos 2 caracteres'
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -108,9 +92,7 @@ const RegisterForm = () => {
     const userData = {
       username: formData.username,
       email: formData.email,
-      password: formData.password,
-      firstName: formData.firstName,
-      lastName: formData.lastName
+      password: formData.password
     }
 
     try {
@@ -224,58 +206,6 @@ const RegisterForm = () => {
             </span>
           </div>
         )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="firstName" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-              Nombre
-            </label>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              required
-              aria-required="true"
-              aria-invalid={errors.firstName ? 'true' : 'false'}
-              aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-              className={`input w-full ${errors.firstName ? 'border-error' : 'border-ocean-600'}`}
-              value={formData.firstName}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              placeholder="Nombre"
-            />
-            {errors.firstName && (
-              <p id="firstName-error" className="mt-2 text-sm font-bold text-error" role="alert">
-                <span className="sr-only">Error: </span>{errors.firstName}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="lastName" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
-              Apellido
-            </label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              required
-              aria-required="true"
-              aria-invalid={errors.lastName ? 'true' : 'false'}
-              aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-              className={`input w-full ${errors.lastName ? 'border-error' : 'border-ocean-600'}`}
-              value={formData.lastName}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              placeholder="Apellido"
-            />
-            {errors.lastName && (
-              <p id="lastName-error" className="mt-2 text-sm font-bold text-error" role="alert">
-                <span className="sr-only">Error: </span>{errors.lastName}
-              </p>
-            )}
-          </div>
-        </div>
 
         <div>
           <label htmlFor="username" className="text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2 flex items-center gap-2">
