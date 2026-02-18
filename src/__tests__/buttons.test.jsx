@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import ForumDetailsPage from '../pages/ForumDetailsPage'
 import LoginForm from '../components/auth/LoginForm'
 import RegisterForm from '../components/auth/RegisterForm'
@@ -94,8 +93,8 @@ describe('Botones y Acciones - Verificación Completa', () => {
     })
 
     it('tiene botón para eliminar foro cuando es el autor', async () => {
-      // Mock window.confirm
-      window.confirm = vi.fn(() => true)
+      // Mock globalThis.confirm
+      globalThis.confirm = vi.fn(() => true)
       forumService.deleteForum.mockResolvedValue({})
 
       renderWithProviders(<ForumDetailsPage />, {

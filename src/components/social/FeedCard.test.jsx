@@ -5,19 +5,19 @@ import FeedCard from './FeedCard'
 
 // Mock de los componentes hijos
 vi.mock('./FollowButton', () => ({
-  default: function MockFollowButton({ userId, size }) {
+  default: function MockFollowButton({ userId }) {
     return <button data-testid="follow-button">Seguir {userId}</button>
   }
 }))
 
 vi.mock('./ShareButton', () => ({
-  default: function MockShareButton({ postId, title, size }) {
+  default: function MockShareButton({ postId }) {
     return <button data-testid="share-button" aria-label="Compartir">Compartir {postId}</button>
   }
 }))
 
 vi.mock('./LikeButton', () => ({
-  default: function MockLikeButton({ postId, initialLiked, initialCount, size }) {
+  default: function MockLikeButton({ initialCount }) {
     return <button data-testid="like-button" aria-label="Me gusta">Like {initialCount || 0}</button>
   }
 }))

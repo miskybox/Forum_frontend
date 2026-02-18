@@ -49,18 +49,6 @@ vi.mock('../../components/messages/ConversationList', () => ({
   }
 }))
 
-const mockConversations = [
-  {
-    participantId: 2,
-    participantUsername: 'usuario2',
-    participantAvatarUrl: '',
-    unreadCount: 1,
-    lastMessage: 'Hola',
-    isLastMessageMine: false,
-    lastMessageAt: new Date().toISOString()
-  }
-]
-
 describe('MessagesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
