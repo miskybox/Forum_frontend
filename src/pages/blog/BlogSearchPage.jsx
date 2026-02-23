@@ -16,6 +16,7 @@ const BlogSearchPage = () => {
     if (query) {
       loadPosts()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, page])
 
   const loadPosts = async () => {

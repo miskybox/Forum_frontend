@@ -14,6 +14,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
   useEffect(() => {
     loadLeaderboard()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type])
 
   const loadLeaderboard = async () => {

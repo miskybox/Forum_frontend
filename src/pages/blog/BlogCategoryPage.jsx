@@ -14,10 +14,12 @@ const BlogCategoryPage = () => {
 
   useEffect(() => {
     loadCategory()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug])
 
   useEffect(() => {
     loadPosts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, page])
 
   const loadCategory = async () => {

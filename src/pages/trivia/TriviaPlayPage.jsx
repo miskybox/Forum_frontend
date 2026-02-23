@@ -23,6 +23,7 @@ const TriviaPlayPage = () => {
 
   useEffect(() => {
     loadGame()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId])
 
   const loadGame = async () => {

@@ -12,6 +12,7 @@ const ProfileStats = ({ userId }) => {
     if (userId) {
       loadStats()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   const loadStats = async () => {

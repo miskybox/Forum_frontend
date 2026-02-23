@@ -1371,6 +1371,7 @@ LanguageProvider.propTypes = {
   children: PropTypes.node.isRequired
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLanguage = () => {
   const context = useContext(LanguageContext)
   if (!context) {

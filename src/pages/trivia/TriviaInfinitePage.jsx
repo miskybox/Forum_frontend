@@ -29,6 +29,7 @@ const TriviaInfinitePage = () => {
   // Cargar preguntas iniciales
   useEffect(() => {
     loadQuestions()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadQuestions = async () => {
@@ -87,6 +88,7 @@ const TriviaInfinitePage = () => {
     if (questions.length - currentIndex <= 3 && !loading && !gameOver) {
       loadQuestions()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, questions.length, loading, gameOver])
 
   const currentQuestion = questions[currentIndex]

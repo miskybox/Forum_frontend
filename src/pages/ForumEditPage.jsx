@@ -23,7 +23,7 @@ const ForumEditPage = () => {
         setLoading(true)
         const data = await forumService.getForumById(id)
         setForum(data)
-        
+
         // Verificar si el usuario tiene permiso para editar este foro
         if (currentUser && (data.creator?.id === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
           setError(null)
@@ -40,8 +40,9 @@ const ForumEditPage = () => {
         setLoading(false)
       }
     }
-    
+
     fetchForum()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, currentUser, hasRole, navigate])
   
   if (loading) {

@@ -18,6 +18,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     loadUsers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, isAuthenticated])
 
   const loadUsers = async () => {

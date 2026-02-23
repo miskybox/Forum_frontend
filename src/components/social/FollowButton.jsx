@@ -13,6 +13,7 @@ const FollowButton = ({ userId, initialIsFollowing = false, onFollowChange, size
     if (user && userId && user.id !== userId) {
       checkFollowStatus()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, user])
 
   const checkFollowStatus = async () => {

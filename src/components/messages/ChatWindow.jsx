@@ -18,6 +18,7 @@ const ChatWindow = ({ userId, onBack }) => {
       loadMessages()
       markAsRead()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   useEffect(() => {

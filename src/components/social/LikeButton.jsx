@@ -16,6 +16,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
     if (!initialized && postId) {
       loadLikeStatus()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId])
 
   const loadLikeStatus = async () => {

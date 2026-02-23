@@ -27,6 +27,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
     }, 1000)
 
     return () => clearInterval(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answered])
 
   // Reset cuando cambia la pregunta
@@ -34,6 +35,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
     setSelectedAnswer(null)
     setAnswered(false)
     setTimeLeft(question.timeLimitSeconds || timeLimit)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.id])
 
   const handleTimeout = useCallback(() => {

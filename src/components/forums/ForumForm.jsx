@@ -29,7 +29,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       try {
         const data = await categoryService.getAllCategories()
         setCategories(data)
-  
+
         if (!formData.categoryId && data.length > 0) {
           setFormData(prevData => ({
             ...prevData,
@@ -43,8 +43,9 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
         setIsLoading(false)
       }
     }
-    
+
     fetchCategories()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.categoryId])
   
   const handleChange = (e) => {

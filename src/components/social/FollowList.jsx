@@ -11,6 +11,7 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
 
   useEffect(() => {
     loadUsers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, type])
 
   const loadUsers = async () => {

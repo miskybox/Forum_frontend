@@ -17,6 +17,7 @@ const FeedPage = () => {
 
   useEffect(() => {
     loadFeed(true)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab])
 
   const loadFeed = async (reset = false) => {

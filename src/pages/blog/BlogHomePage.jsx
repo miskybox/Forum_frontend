@@ -16,6 +16,7 @@ const BlogHomePage = () => {
 
   useEffect(() => {
     loadData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   const loadData = async () => {
