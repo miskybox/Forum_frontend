@@ -73,7 +73,7 @@ const PostDetailsPage = () => {
     setComments(comments.filter(comment => comment.id !== commentId))
   }
 
-  if (loading) {
+  if (loading || !post) {
     return <LoadingSpinner />
   }
 

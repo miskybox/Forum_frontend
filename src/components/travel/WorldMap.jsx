@@ -46,7 +46,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
   useEffect(() => {
     const loadGeoData = async () => {
       try {
-        const response = await fetch('/src/data/countries.geojson')
+        const response = await fetch('/data/countries.geojson')
         if (response.ok) {
           const data = await response.json()
           setGeoData(data)
