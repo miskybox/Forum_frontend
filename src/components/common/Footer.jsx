@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { FaFacebook, FaInstagram } from 'react-icons/fa'
 import { FaXTwitter, FaTiktok } from 'react-icons/fa6'
 import { useLanguage } from '../../contexts/LanguageContext'
-import logo from '../../assets/logoFV.png'
 
 const Footer = () => {
   const { t } = useLanguage()
@@ -11,17 +10,10 @@ const Footer = () => {
   return (
     <footer className="bg-aqua py-4" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-        {/* Fila principal: Logo + Enlaces + Redes */}
+        {/* Fila principal: Enlaces + Redes */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          {/* Logo y enlaces */}
+          {/* Enlaces */}
           <div className="flex items-center gap-6">
-            <Link to="/" className="flex-shrink-0">
-              <img
-                src={logo}
-                alt="Forum Viajeros"
-                className="h-14 w-auto"
-              />
-            </Link>
             <nav className="flex items-center gap-4">
               <Link
                 to="/about"
