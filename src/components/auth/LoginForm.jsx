@@ -121,6 +121,8 @@ const LoginForm = () => {
           message = t('auth.errors.accountSuspended')
         } else if (status === 404) {
           message = t('auth.errors.userNotFound')
+        } else if (status === 429) {
+          message = errorData?.message || t('auth.errors.tooManyAttempts')
         } else if (status === 500) {
           message = t('auth.errors.serverError')
         } else if (status === 0 || !status) {
