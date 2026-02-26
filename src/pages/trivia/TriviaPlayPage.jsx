@@ -231,9 +231,18 @@ const TriviaPlayPage = () => {
       {/* Header con progreso */}
       <div className="bg-dark-lighter py-4 border-b border-ocean-500">
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="text-light">
-            <span className="text-ocean-400 text-sm">{t('trivia.score')}</span>
-            <p className="text-2xl font-bold">{game?.score || 0}</p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate('/trivia')}
+              className="p-2 rounded-lg text-ocean-400 hover:bg-ocean-500/20 transition-colors"
+              title={t('common.back')}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            </button>
+            <div className="text-light">
+              <span className="text-ocean-400 text-sm">{t('trivia.score')}</span>
+              <p className="text-2xl font-bold">{game?.score || 0}</p>
+            </div>
           </div>
           
           <div className="flex items-center gap-4">

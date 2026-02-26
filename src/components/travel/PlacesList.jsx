@@ -94,12 +94,12 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
               key={place.id}
               className="p-4 hover:bg-primary transition-colors"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3">
                 {/* Bandera */}
-                <span className="text-4xl">{place.country.flagEmoji}</span>
+                <span className="text-3xl shrink-0">{place.country.flagEmoji}</span>
 
                 {/* Info */}
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center gap-2 mb-1">
                     <h4 className="font-semibold text-text truncate">
                       {place.cityName ? `${place.cityName}, ` : ''}{place.country.name}
@@ -133,7 +133,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                 </div>
 
                 {/* Acciones */}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => handleToggleFavorite(place.id)}
                     className={`p-2 rounded-lg transition-colors ${

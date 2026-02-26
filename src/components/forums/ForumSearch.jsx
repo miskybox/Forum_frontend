@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 
@@ -8,6 +8,11 @@ import { useLanguage } from '../../contexts/LanguageContext'
 const ForumSearch = ({ onSearch, initialValue = '' }) => {
   const [searchTerm, setSearchTerm] = useState(initialValue)
   const { t } = useLanguage()
+
+  // Sincronizar input cuando el padre limpia la búsqueda
+  useEffect(() => {
+    setSearchTerm(initialValue)
+  }, [initialValue])
 
   const handleSubmit = (e) => {
     e.preventDefault()

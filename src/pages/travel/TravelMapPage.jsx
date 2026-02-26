@@ -151,9 +151,9 @@ const TravelMapPage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className="container mx-auto px-4 py-8 relative z-10 overflow-x-hidden">
         {isAuthenticated ? (
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Columna principal - Mapa */}
             <div className="lg:col-span-2 space-y-8">
               {/* Mapa */}

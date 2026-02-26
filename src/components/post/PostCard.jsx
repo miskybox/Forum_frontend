@@ -35,14 +35,14 @@ const PostCard = ({ post }) => {
                   {post.author?.profileImage ? (
                     <img
                       src={post.author.profileImage}
-                      alt={post.author.username}
+                      alt={post.author.username || post.username}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    post.author?.username?.charAt(0)?.toUpperCase() || 'U'
+                    (post.author?.username || post.username)?.charAt(0)?.toUpperCase() || 'U'
                   )}
                 </div>
-                <span className="uppercase">{post.author?.username || t('common.user').toUpperCase()}</span>
+                <span className="uppercase">{post.author?.username || post.username || t('common.user').toUpperCase()}</span>
               </div>
               <span className="mx-2 text-ocean-400">•</span>
               <time dateTime={post.createdAt} className="uppercase">
