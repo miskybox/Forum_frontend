@@ -235,6 +235,7 @@ const translations = {
         perfectGames: 'Partidas perfectas suben nivel',
       },
       abandon: 'Abandonar',
+      abandonConfirm: '¿Seguro que quieres abandonar?',
       activeGame: {
         title: 'Partida en progreso',
         message: 'Tienes una partida sin terminar',
@@ -457,6 +458,8 @@ const translations = {
       showLess: 'Ver menos',
       back: 'Volver',
       backToForum: 'Volver al foro',
+      yes: 'Sí',
+      no: 'No',
       next: 'Siguiente',
       previous: 'Anterior',
       optional: 'Opcional',
@@ -880,6 +883,7 @@ const translations = {
         perfectGames: 'Perfect games level up',
       },
       abandon: 'Abandon',
+      abandonConfirm: 'Are you sure you want to abandon?',
       activeGame: {
         title: 'Game in progress',
         message: 'You have an unfinished game',
@@ -1102,6 +1106,8 @@ const translations = {
       showLess: 'Show less',
       back: 'Back',
       backToForum: 'Back to forum',
+      yes: 'Yes',
+      no: 'No',
       next: 'Next',
       previous: 'Previous',
       optional: 'Optional',

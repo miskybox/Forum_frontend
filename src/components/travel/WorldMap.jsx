@@ -154,10 +154,10 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         ))}
       </div>
 
-      {/* Leyenda con outline blanco para accesibilidad */}
-      <div className="absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-4 z-20 border border-secondary">
+      {/* Leyenda — oculta en móvil, visible en sm+ */}
+      <div className="hidden sm:block absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-2 md:p-4 z-20 border border-secondary">
         <h4
-          className="font-semibold mb-3 text-sm flex items-center gap-2"
+          className="font-semibold mb-2 text-xs md:text-sm flex items-center gap-2"
           style={{
             color: '#FFFFFF',
             textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.8)'
@@ -165,16 +165,16 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         >
           Leyenda
         </h4>
-        <div className="space-y-2">
+        <div className="space-y-1 md:space-y-2">
           {[
             { status: 'VISITED', label: 'Visitado', color: statusColors.VISITED },
             { status: 'WISHLIST', label: 'Quiero ir', color: statusColors.WISHLIST },
             { status: 'LIVED', label: 'He vivido', color: statusColors.LIVED },
             { status: 'LIVING', label: 'Vivo aquí', color: statusColors.LIVING },
           ].map(item => (
-            <div key={item.status} className="flex items-center gap-2">
+            <div key={item.status} className="flex items-center gap-1.5">
               <div
-                className="w-4 h-4 rounded-sm shadow-sm"
+                className="w-3 h-3 md:w-4 md:h-4 rounded-sm shadow-sm flex-shrink-0"
                 style={{ backgroundColor: item.color }}
               />
               <span

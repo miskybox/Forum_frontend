@@ -99,9 +99,9 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
           />
         </div>
 
-        {/* Puntos */}
+        {/* Puntos — countryFlag/Name solo tras responder para no revelar la respuesta */}
         <div className="flex items-center justify-between mt-3 text-text text-sm font-semibold">
-          <span>{question.countryFlag} {question.countryName}</span>
+          <span>{answered ? `${question.countryFlag ?? ''} ${question.countryName ?? ''}`.trim() : ''}</span>
           <span>+{question.points} {t('trivia.points')}</span>
         </div>
       </div>

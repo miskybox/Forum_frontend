@@ -185,12 +185,12 @@ const TravelMapPage = () => {
                   <div className="space-y-3">
                     <QuickAction
                       label={t('trivia.ranking')}
-                      href="/travel/ranking"
+                      href="/trivia/leaderboard"
                       bgColor="bg-golden/20"
                     />
                     <QuickAction
                       label={t('travel.statistics')}
-                      href="/profile"
+                      href="/trivia"
                       bgColor="bg-aqua/30"
                     />
                     <QuickAction

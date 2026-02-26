@@ -20,6 +20,7 @@ const TriviaPlayPage = () => {
   const [result, setResult] = useState(null)
   const [gameFinished, setGameFinished] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [showAbandonConfirm, setShowAbandonConfirm] = useState(false)
 
   useEffect(() => {
     loadGame()
@@ -165,9 +166,12 @@ const TriviaPlayPage = () => {
     }
   }
 
-  const handleAbandon = async () => {
-    if (!confirm('¿Seguro que quieres abandonar la partida?')) return
-    
+  const handleAbandon = () => {
+    setShowAbandonConfirm(true)
+  }
+
+  const handleAbandonConfirmed = async () => {
+    setShowAbandonConfirm(false)
     try {
       await triviaService.abandonGame(gameId)
       navigate('/trivia')
@@ -238,12 +242,32 @@ const TriviaPlayPage = () => {
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             
-            <button
-              onClick={handleAbandon}
-              className="px-4 py-2 bg-error/20 text-error-light border border-error rounded-lg hover:bg-error/30 transition-colors text-sm"
-            >
-              {t('trivia.abandon')}
-            </button>
+            {showAbandonConfirm ? (
+              <div className="flex items-center gap-2">
+                <span className="text-error-light text-sm font-semibold">
+                  {t('trivia.abandonConfirm')}
+                </span>
+                <button
+                  onClick={handleAbandonConfirmed}
+                  className="px-3 py-1.5 bg-error text-white rounded-lg hover:bg-error/80 transition-colors text-sm font-bold"
+                >
+                  {t('common.yes')}
+                </button>
+                <button
+                  onClick={() => setShowAbandonConfirm(false)}
+                  className="px-3 py-1.5 bg-primary-light border border-secondary text-text rounded-lg hover:bg-secondary/30 transition-colors text-sm"
+                >
+                  {t('common.no')}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleAbandon}
+                className="px-4 py-2 bg-error/20 text-error-light border border-error rounded-lg hover:bg-error/30 transition-colors text-sm"
+              >
+                {t('trivia.abandon')}
+              </button>
+            )}
           </div>
         </div>
       </div>
