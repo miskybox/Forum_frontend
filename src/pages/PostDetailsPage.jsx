@@ -10,6 +10,7 @@ import CommentList from '../components/comments/CommentList'
 import CommentForm from '../components/comments/CommentForm'
 import LikeButton from '../components/social/LikeButton'
 import ShareButton from '../components/social/ShareButton'
+import SEO from '../components/common/SEO'
 
 const PostDetailsPage = () => {
   const { id } = useParams()
@@ -80,10 +81,28 @@ const PostDetailsPage = () => {
   const isPostAuthor = currentUser && post.createdBy === currentUser.id
   const canEditPost = isPostAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
 
+  const postDescription = post.content
+    ? post.content.replace(/<[^>]+>/g, '').slice(0, 160)
+    : `Post en ForumViajeros por ${post.author?.username || post.username}`
+
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO
+        title={post.title}
+        description={postDescription}
+        url={`/posts/${post.id}`}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'DiscussionForumPosting',
+          headline: post.title,
+          text: postDescription,
+          author: { '@type': 'Person', name: post.author?.username || post.username },
+          url: `https://forumviajeros.com/posts/${post.id}`,
+        }}
+      />
       <div className="mb-4">
-        <Link 
+        <Link
           to={`/forums/${post.forumId}`}
           className="text-ocean-600 hover:text-ocean-800 flex items-center"
         >

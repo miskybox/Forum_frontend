@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Rutas privadas - no indexar
+Disallow: /admin/
+Disallow: /moderator/
+Disallow: /messages/
+Disallow: /notifications/
+Disallow: /feed/
+Disallow: /contenido/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /trivia/play/
+Disallow: /trivia/infinite/
+Disallow: /forums/create
+Disallow: /forums/*/edit
+Disallow: /posts/*/edit
+
+Sitemap: https://forumviajeros.com/sitemap.xml

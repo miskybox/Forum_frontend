@@ -5,6 +5,7 @@ import BlogGrid from '../../components/blog/BlogGrid'
 import BlogCard from '../../components/blog/BlogCard'
 import blogService from '../../services/blogService'
 import toast from 'react-hot-toast'
+import SEO from '../../components/common/SEO'
 
 const BlogHomePage = () => {
   const [posts, setPosts] = useState([])
@@ -45,6 +46,11 @@ const BlogHomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="Blog de viajes"
+        description="Artículos, guías e inspiración para viajeros. Descubre destinos, consejos de viaje y experiencias de la comunidad ForumViajeros."
+        url="/blog"
+      />
       <BlogHero />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">

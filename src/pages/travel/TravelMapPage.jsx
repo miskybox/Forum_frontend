@@ -7,6 +7,7 @@ import PlacesList from '../../components/travel/PlacesList'
 import AddPlaceModal from '../../components/travel/AddPlaceModal'
 import travelService from '../../services/travelService'
 import { Link } from 'react-router-dom'
+import SEO from '../../components/common/SEO'
 
 // Generar partículas decorativas una sola vez
 const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
@@ -96,6 +97,11 @@ const TravelMapPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-primary">
+      <SEO
+        title="Mapa de viajes"
+        description="Marca los países que has visitado, descubre estadísticas de tus viajes y explora el mapa mundial de la comunidad ForumViajeros."
+        url="/travel"
+      />
       {/* Efectos de fondo decorativo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         {PARTICLES.map((p) => (

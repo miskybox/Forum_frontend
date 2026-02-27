@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
+import SEO from '../components/common/SEO'
 
 const ContactPage = () => {
   const { t } = useLanguage()
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO
+        title="Contacto"
+        description="Contacta con el equipo de ForumViajeros. Estamos aquí para ayudarte con cualquier duda sobre nuestra comunidad de viajeros."
+        url="/contact"
+      />
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold mb-6">{t('contact.title')}</h1>
         <div className="prose prose-lg">

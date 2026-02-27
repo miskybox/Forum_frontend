@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import ForumList from '../components/forums/ForumList'
 import { useLanguage } from '../contexts/LanguageContext'
+import SEO from '../components/common/SEO'
 
 /**
  * ForumListPage con tema Adventure Explorer Retro
@@ -12,6 +13,11 @@ const ForumListPage = () => {
 
   return (
     <div className="min-h-screen py-8 sm:py-12 relative overflow-hidden">
+      <SEO
+        title="Foros de viaje"
+        description="Explora y participa en foros de viaje por destinos, consejos, rutas y experiencias de viajeros de todo el mundo."
+        url="/forums"
+      />
       {/* Efectos sutiles de aventura - partículas doradas */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         {[...Array(10)].map((_, i) => (

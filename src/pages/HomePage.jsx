@@ -5,6 +5,7 @@ import ForumList from '../components/forums/ForumList'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
 import logo from '../assets/logoFV.png'
+import SEO from '../components/common/SEO'
 
 /**
  * HomePage - Paleta del logo
@@ -53,8 +54,25 @@ const HomePage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'ForumViajeros',
+    url: 'https://forumviajeros.com',
+    description: 'Comunidad de viajeros para compartir experiencias, consejos y rutas por todo el mundo.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://forumviajeros.com/forums?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
+      <SEO
+        url="/"
+        jsonLd={jsonLd}
+      />
       {/* Efecto sutil de pergamino - partículas doradas apenas visibles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         {[...Array(12)].map((_, i) => (
