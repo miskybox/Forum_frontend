@@ -158,10 +158,10 @@ const ForumDetailsPage = () => {
         {/* Header del foro */}
         <div className="card border-golden mb-8 animate-fade-in overflow-hidden">
           <div className="relative">
-            {forum.imagePath && (
+            {forum.imageUrl && (
               <div className="h-48 bg-gradient-to-r from-midnight to-teal-dark relative overflow-hidden">
                 <img
-                  src={forum.imagePath}
+                  src={forum.imageUrl}
                   alt={forum.title}
                   className="w-full h-full object-cover opacity-70"
                 />
@@ -169,7 +169,7 @@ const ForumDetailsPage = () => {
               </div>
             )}
 
-            {!forum.imagePath && (
+            {!forum.imageUrl && (
               <div className="h-32 bg-gradient-to-r from-midnight via-teal-dark to-midnight flex items-center justify-center">
                 <div className="w-16 h-16 bg-golden rounded-full flex items-center justify-center">
                   <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
@@ -177,7 +177,7 @@ const ForumDetailsPage = () => {
               </div>
             )}
 
-            <div className={`px-6 py-6 ${forum.imagePath ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-midnight to-transparent' : ''}`}>
+            <div className={`px-6 py-6 ${forum.imageUrl ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-midnight to-transparent' : ''}`}>
               <h1 className="text-3xl md:text-4xl font-bold text-golden mb-3 tracking-wide">
                 {forum.title}
               </h1>
