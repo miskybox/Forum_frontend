@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
 import messageService from '../../services/messageService'
 import notificationService from '../../services/notificationService'
-import logo from '../../assets/logo-bubble_FV.png'
+import logo from '../../assets/logo-bubble_FV.webp'
 
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()

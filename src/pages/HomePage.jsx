@@ -4,7 +4,7 @@ import CategoryList from '../components/categories/CategoryList'
 import ForumCard from '../components/forums/ForumCard'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
-import logo from '../assets/logoFV.png'
+import logo from '../assets/logoFV.webp'
 import Seo from '../components/common/SEO'
 
 // Partículas decorativas generadas una sola vez (estables entre renders)

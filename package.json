@@ -50,6 +50,7 @@
     "globals": "^16.0.0",
     "jsdom": "^27.2.0",
     "postcss": "^8.5.3",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.7",
     "vite": "^6.3.5",
     "vitest": "^4.0.15"
