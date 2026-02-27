@@ -249,14 +249,14 @@ const TriviaHomePage = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
             <h2 className="text-2xl font-bold text-midnight mb-6 tracking-normal uppercase">
               {t('trivia.chooseMode')}
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {gameModes.map(mode => (
                 <button
                   key={mode.mode}
@@ -308,7 +308,7 @@ const TriviaHomePage = () => {
             </div>
 
             {/* Links adicionales */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
                 className="card hover:border-golden group bg-golden"

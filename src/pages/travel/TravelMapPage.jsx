@@ -7,7 +7,7 @@ import PlacesList from '../../components/travel/PlacesList'
 import AddPlaceModal from '../../components/travel/AddPlaceModal'
 import travelService from '../../services/travelService'
 import { Link } from 'react-router-dom'
-import SEO from '../../components/common/SEO'
+import Seo from '../../components/common/SEO'
 
 // Generar partículas decorativas una sola vez
 const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
@@ -97,7 +97,7 @@ const TravelMapPage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-primary">
-      <SEO
+      <Seo
         title="Mapa de viajes"
         description="Marca los países que has visitado, descubre estadísticas de tus viajes y explora el mapa mundial de la comunidad ForumViajeros."
         url="/travel"
@@ -159,7 +159,7 @@ const TravelMapPage = () => {
 
       <div className="container mx-auto px-4 py-8 relative z-10 overflow-x-hidden">
         {isAuthenticated ? (
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Columna principal - Mapa */}
             <div className="lg:col-span-2 space-y-8">
               {/* Mapa */}

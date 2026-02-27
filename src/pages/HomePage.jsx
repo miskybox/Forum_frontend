@@ -156,7 +156,7 @@ const HomePage = () => {
             </p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentForums.length > 0 ? (
               recentForums.map((forum) => (
                 <div key={forum.id} className="card group hover:border-secondary">

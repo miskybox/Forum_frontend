@@ -248,6 +248,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-full"
+          overflow="hidden"
           style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
         >
           {/* Gradiente para océano */}

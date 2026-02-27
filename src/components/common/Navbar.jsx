@@ -117,20 +117,20 @@ const Navbar = () => {
                   <div className="absolute h-full w-1 bg-red-600"></div>
                 </div>
               )}
-              <span className="text-sm font-bold uppercase group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">
+              <span className="hidden sm:inline text-sm font-bold uppercase group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">
                 {language === 'es' ? 'ES' : 'EN'}
               </span>
             </button>
 
             {isAuthenticated ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 {/* Notifications icon */}
                 <Link
                   to="/notifications"
-                  className="relative p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] flex items-center justify-center"
+                  className="relative p-1.5 sm:p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] min-w-[36px] flex items-center justify-center"
                   aria-label={`Notificaciones${unreadNotifications > 0 ? ` (${unreadNotifications} sin leer)` : ''}`}
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   {unreadNotifications > 0 && (
@@ -143,10 +143,10 @@ const Navbar = () => {
                 {/* Messages icon */}
                 <Link
                   to="/messages"
-                  className="relative p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] flex items-center justify-center"
+                  className="relative p-1.5 sm:p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] min-w-[36px] flex items-center justify-center"
                   aria-label={`Mensajes${unreadMessages > 0 ? ` (${unreadMessages} sin leer)` : ''}`}
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                   </svg>
                   {unreadMessages > 0 && (
@@ -159,7 +159,7 @@ const Navbar = () => {
                 <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="text-text border-text border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-primary-dark transition-all duration-200 flex items-center space-x-2 min-h-[44px]"
+                  className="text-text border-text border-2 px-2 sm:px-4 py-2 rounded-lg font-bold text-sm hover:bg-primary-dark transition-all duration-200 flex items-center space-x-1 min-h-[44px]"
                   aria-expanded={isProfileMenuOpen}
                   aria-haspopup="true"
                   aria-label="User menu"
@@ -223,7 +223,7 @@ const Navbar = () => {
               </div>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="hidden sm:flex items-center space-x-2">
                 <Link
                   to="/login"
                   className="group text-midnight border-midnight border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-golden hover:border-golden hover:scale-105 transition-all duration-200 min-h-[44px] flex items-center"
@@ -279,6 +279,26 @@ const Navbar = () => {
                   <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{link.label}</span>
                 </Link>
               ))}
+            {!isAuthenticated && (
+              <div className="border-t border-accent/30 pt-2 mt-2 flex flex-col gap-2 sm:hidden">
+                <Link
+                  to="/login"
+                  className="text-midnight hover:bg-golden px-4 py-3 rounded-lg font-bold text-base border-l-4 border-midnight transition-all duration-200 min-h-[44px] flex items-center"
+                  onClick={() => setIsMenuOpen(false)}
+                  role="menuitem"
+                >
+                  {t('nav.login')}
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-golden text-midnight px-4 py-3 rounded-lg font-bold text-base border-l-4 border-golden transition-all duration-200 min-h-[44px] flex items-center"
+                  onClick={() => setIsMenuOpen(false)}
+                  role="menuitem"
+                >
+                  {t('nav.register')}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
