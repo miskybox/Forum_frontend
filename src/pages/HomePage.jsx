@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import CategoryList from '../components/categories/CategoryList'
+import ForumCard from '../components/forums/ForumCard'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
 import logo from '../assets/logoFV.png'
@@ -167,23 +168,7 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentForums.length > 0 ? (
               recentForums.map((forum) => (
-                <div key={forum.id} className="card group hover:border-secondary">
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-text mb-3 group-hover:text-secondary transition-colors tracking-normal uppercase">
-                      {forum.title}
-                    </h3>
-                    <p className="text-sm text-text-light mb-4 line-clamp-3">
-                      {forum.description}
-                    </p>
-                    <Link
-                      to={`/forums/${forum.id}`}
-                      className="inline-flex items-center space-x-2 text-secondary hover:text-secondary-dark transition-colors font-bold text-sm uppercase tracking-normal"
-                    >
-                      <span>{t('home.explore')}</span>
-                      <span>→</span>
-                    </Link>
-                  </div>
-                </div>
+                <ForumCard key={forum.id} forum={forum} />
               ))
             ) : (
               <div className="col-span-3 text-center py-12">
