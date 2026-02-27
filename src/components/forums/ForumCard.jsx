@@ -30,7 +30,7 @@ const ForumCard = ({ forum }) => {
           {/* Gradient overlay: opaque at bottom for legibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/30 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 px-5 py-4">
-            <h3 className="text-lg md:text-xl font-bold text-white mb-1 break-words drop-shadow-md">
+            <h3 className="text-lg md:text-xl font-bold mb-1 break-words [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]" style={{ color: '#ffffff' }}>
               {forum.title.toUpperCase()}
             </h3>
             {forum.tags && forum.tags.length > 0 && (
