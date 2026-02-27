@@ -21,7 +21,7 @@ const TravelStats = ({ stats }) => {
         </div>
         {stats.globalRanking && (
           <div className="text-right">
-            <span className="text-4xl font-bold text-accent">#{stats.globalRanking}</span>
+            <span className="text-2xl md:text-4xl font-bold text-accent">#{stats.globalRanking}</span>
             <p className="text-text-light text-sm font-semibold">{t('trivia.globalRanking')}</p>
           </div>
         )}

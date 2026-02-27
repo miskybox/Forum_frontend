@@ -103,7 +103,7 @@ const HomePage = () => {
             <p className="text-base md:text-lg font-medium text-text-light tracking-wide mb-4">
               {t('home.demo')}
             </p>
-            <div className="h-1 w-64 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-6"></div>
+            <div className="h-1 w-32 sm:w-48 md:w-64 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-6"></div>
           </div>
 
           {/* Quote animado - Accesible */}
@@ -114,24 +114,24 @@ const HomePage = () => {
           </div>
 
           {/* Botones de acción - Nueva paleta */}
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 mb-16 w-full sm:w-auto px-4 sm:px-0">
             <Link
               to="/forums"
-              className="group bg-midnight text-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
+              className="group bg-midnight text-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.exploreForum') || 'EXPLORAR FOROS'}</span>
             </Link>
 
             <Link
               to="/trivia"
-              className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
+              className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">Jugar trivia</span>
             </Link>
 
             <Link
               to="/travel"
-              className="group bg-aqua text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-64 flex items-center justify-center focus:outline-none"
+              className="group bg-aqua text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
             >
               <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.myMap') || 'MI MAPA'}</span>
             </Link>
