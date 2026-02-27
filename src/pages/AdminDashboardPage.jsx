@@ -283,7 +283,7 @@ const AdminDashboardPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h3 className="font-semibold text-white">Permisos de Administrador</h3>
+              <h3 className="font-semibold text-[#E5A13E]">Permisos de Administrador</h3>
               <ul className="text-sm mt-1 list-disc list-inside text-[#CFE7E5]">
                 <li>Gestionar usuarios: bloquear, desbloquear, eliminar y asignar roles</li>
                 <li>Moderar contenido: ocultar y eliminar foros, posts y comentarios</li>
@@ -449,7 +449,10 @@ const AdminDashboardPage = () => {
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 flex-wrap">
+                          <button onClick={() => navigate(`/forums/${forum.id}/edit`)} className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
+                            Editar
+                          </button>
                           {forum.status === 'HIDDEN' ? (
                             <button onClick={() => handleShowForum(forum.id)} className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">
                               Mostrar
