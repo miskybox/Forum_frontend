@@ -6,7 +6,7 @@ import forumService from '../services/forumService'
 import postService from '../services/postService'
 import PostList from '../components/post/PostList'
 import { useLanguage } from '../contexts/LanguageContext'
-import SEO from '../components/common/SEO'
+import Seo from '../components/common/SEO'
 
 /**
  * ForumDetailsPage con tema Adventure Explorer Retro
@@ -131,7 +131,7 @@ const ForumDetailsPage = () => {
 
   return (
     <div className="min-h-screen py-8 relative overflow-hidden">
-      <SEO
+      <Seo
         title={forum.title}
         description={forum.description || `Foro de viaje: ${forum.title}. Participa en la conversación con otros viajeros.`}
         url={`/forums/${forum.id}`}

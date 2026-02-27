@@ -5,7 +5,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 import TriviaStats from '../../components/trivia/TriviaStats'
 import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
-import SEO from '../../components/common/SEO'
+import Seo from '../../components/common/SEO'
 
 // Generar partículas decorativas una sola vez
 const PARTICLES = Array.from({ length: 20 }).map((_, i) => ({
@@ -216,7 +216,7 @@ const TriviaHomePage = () => {
 
   return (
     <div className="min-h-screen py-8 relative overflow-hidden">
-      <SEO
+      <Seo
         title="Trivia de geografía y viajes"
         description="Pon a prueba tus conocimientos de geografía y viajes con la trivia de ForumViajeros. Compite con otros viajeros en el ranking mundial."
         url="/trivia"

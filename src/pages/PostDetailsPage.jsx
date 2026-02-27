@@ -10,7 +10,7 @@ import CommentList from '../components/comments/CommentList'
 import CommentForm from '../components/comments/CommentForm'
 import LikeButton from '../components/social/LikeButton'
 import ShareButton from '../components/social/ShareButton'
-import SEO from '../components/common/SEO'
+import Seo from '../components/common/SEO'
 
 const PostDetailsPage = () => {
   const { id } = useParams()
@@ -87,7 +87,7 @@ const PostDetailsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SEO
+      <Seo
         title={post.title}
         description={postDescription}
         url={`/posts/${post.id}`}

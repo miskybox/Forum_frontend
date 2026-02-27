@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
-import SEO from '../components/common/SEO'
+import Seo from '../components/common/SEO'
 
 const AboutPage = () => {
   const { t } = useLanguage()
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SEO
+      <Seo
         title="Sobre nosotros"
         description="Conoce ForumViajeros, la comunidad de viajeros donde compartir experiencias, rutas y consejos de viaje de todo el mundo."
         url="/about"

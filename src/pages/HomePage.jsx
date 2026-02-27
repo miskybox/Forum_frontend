@@ -4,7 +4,7 @@ import CategoryList from '../components/categories/CategoryList'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
 import logo from '../assets/logoFV.png'
-import SEO from '../components/common/SEO'
+import Seo from '../components/common/SEO'
 
 // Partículas decorativas generadas una sola vez (estables entre renders)
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
@@ -77,7 +77,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <SEO
+      <Seo
         url="/"
         jsonLd={jsonLd}
       />
@@ -157,12 +157,12 @@ const HomePage = () => {
         </div>
 
         {loading ? (
-          <div className="text-center py-20" role="status" aria-live="polite">
+          <output className="block text-center py-20" aria-live="polite">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-golden border-t-transparent" aria-hidden="true"></div>
             <p className="mt-4 text-text font-bold text-lg tracking-normal">
-              <span className="sr-only">Estado: </span>{t('home.loading')}
+              {t('home.loading')}
             </p>
-          </div>
+          </output>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {recentForums.length > 0 ? (
