@@ -25,7 +25,7 @@ const ForumEditPage = () => {
         setForum(data)
 
         // Verificar si el usuario tiene permiso para editar este foro
-        if (currentUser && (data.creator?.id === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
+        if (currentUser && (data.creator?.id === currentUser.id || hasRole('ROLE_ADMIN') || hasRole('ROLE_MODERATOR'))) {
           setError(null)
         } else {
           setError(t('forums.noPermissionEdit'))

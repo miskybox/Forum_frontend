@@ -82,7 +82,7 @@ const ForumDetailsPage = () => {
   }
 
   const isForumAuthor = currentUser && forum.createdBy === currentUser.id
-  const canEditForum = isForumAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
+  const canEditForum = isForumAuthor || hasRole('ROLE_ADMIN') || hasRole('ROLE_MODERATOR')
 
   const EmptyPostsMessage = () => (
     <div className="text-center py-12 px-6 card border-golden hover:border-golden-dark transition-colors">
