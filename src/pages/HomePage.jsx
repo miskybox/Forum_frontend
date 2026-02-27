@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import CategoryList from '../components/categories/CategoryList'
-import ForumList from '../components/forums/ForumList'
 import forumService from '../services/forumService'
 import { useLanguage } from '../contexts/LanguageContext'
 import logo from '../assets/logoFV.png'
 import SEO from '../components/common/SEO'
+
+// Partículas decorativas generadas una sola vez (estables entre renders)
+const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
+  id: `particle-${i}`,
+  left: Math.random() * 100,
+  top: Math.random() * 100,
+  delay: Math.random() * 5,
+  duration: 5 + Math.random() * 3,
+}))
 
 /**
  * HomePage - Paleta del logo
@@ -75,15 +83,15 @@ const HomePage = () => {
       />
       {/* Efecto sutil de pergamino - partículas doradas apenas visibles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        {[...Array(12)].map((_, i) => (
+        {PARTICLES.map((p) => (
           <div
-            key={i}
+            key={p.id}
             className="absolute w-1 h-1 bg-accent rounded-full animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 3}s`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.duration}s`,
             }}
           />
         ))}
