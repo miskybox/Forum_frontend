@@ -613,7 +613,12 @@ Pendientes:  2 vulnerabilidades críticas
 
 ## 📄 Licencia
 
-Este proyecto es privado y de uso educativo.
+© 2024-2026 **Eva Sisalli Guzmán** — Todos los derechos reservados.
+
+Este código fuente y todos los archivos asociados son propiedad intelectual exclusiva de Eva Sisalli Guzmán.
+Queda prohibida la reproducción, copia, modificación, distribución o uso no autorizado de este material sin el permiso previo y por escrito de la autora.
+
+Ver archivo [LICENSE](./LICENSE) para más detalles.
 
 ---
 
