@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { geoMercator, geoPath } from 'd3-geo'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 // Constantes pre-generadas para elementos decorativos (evita recalcular en cada render)
 const STARS = Array.from({ length: 50 }, (_, i) => ({
@@ -25,6 +26,7 @@ const HORIZONTAL_LINES = Array.from({ length: 9 }, (_, i) => ({
  * Muestra países coloreados según su estado de visita
  */
 const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
+  const { t } = useLanguage()
   const [geoData, setGeoData] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
   const [tooltip, setTooltip] = useState({ x: 0, y: 0 })
@@ -163,14 +165,14 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
             textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.8)'
           }}
         >
-          Leyenda
+          {t('travel.legend')}
         </h4>
         <div className="space-y-1 md:space-y-2">
           {[
-            { status: 'VISITED', label: 'Visitado', color: statusColors.VISITED },
-            { status: 'WISHLIST', label: 'Quiero ir', color: statusColors.WISHLIST },
-            { status: 'LIVED', label: 'He vivido', color: statusColors.LIVED },
-            { status: 'LIVING', label: 'Vivo aquí', color: statusColors.LIVING },
+            { status: 'VISITED', label: t('travel.visited'), color: statusColors.VISITED },
+            { status: 'WISHLIST', label: t('travel.wantToGo'), color: statusColors.WISHLIST },
+            { status: 'LIVED', label: t('travel.lived'), color: statusColors.LIVED },
+            { status: 'LIVING', label: t('travel.living'), color: statusColors.LIVING },
           ].map(item => (
             <div key={item.status} className="flex items-center gap-1.5">
               <div
@@ -238,7 +240,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
               textShadow: '-1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF'
             }}
           >
-            países marcados
+            {t('travel.countriesMarked')}
           </span>
         </div>
       </div>

@@ -204,6 +204,9 @@ const translations = {
       noCategories: 'No hay categorías disponibles',
       error: 'No se pudieron cargar las categorías. Por favor, inténtalo de nuevo más tarde.',
       retry: 'Reintentar',
+      forum: 'FORO',
+      forums: 'FOROS',
+      available: 'DISPONIBLES',
     },
     // Trivia
     trivia: {
@@ -364,6 +367,8 @@ const translations = {
       noPlacesCategory: 'No hay lugares en esta categoría',
       startAdding: 'Empieza a agregar tus viajes',
       confirmDelete: '¿Eliminar este lugar de tu mapa?',
+      legend: 'Leyenda',
+      countriesMarked: 'países marcados',
     },
     // Posts
     posts: {
@@ -866,6 +871,9 @@ const translations = {
       noCategories: 'No categories available',
       error: 'Could not load categories. Please try again later.',
       retry: 'Retry',
+      forum: 'FORUM',
+      forums: 'FORUMS',
+      available: 'AVAILABLE',
     },
     // Trivia
     trivia: {
@@ -1026,6 +1034,8 @@ const translations = {
       noPlacesCategory: 'No places in this category',
       startAdding: 'Start adding your trips',
       confirmDelete: 'Delete this place from your map?',
+      legend: 'Legend',
+      countriesMarked: 'countries marked',
     },
     // Posts
     posts: {

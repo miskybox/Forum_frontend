@@ -85,7 +85,7 @@ const CategoryCard = ({ category }) => {
         </div>
         <div className="p-4 bg-adventure-dark/50">
           <div className="text-xs text-adventure-gold font-retro uppercase tracking-normal mb-2 truncate">
-            {category.forumCount || 0} {category.forumCount === 1 ? 'FORO' : 'FOROS'} DISPONIBLES
+            {category.forumCount || 0} {category.forumCount === 1 ? t('categories.forum') : t('categories.forums')} {t('categories.available')}
           </div>
           <p className="text-adventure-light font-retro text-xs line-clamp-2 opacity-80 break-words">
             {category.description}
