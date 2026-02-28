@@ -4,9 +4,11 @@ import feedService from '../../services/feedService'
 import FeedCard from '../../components/social/FeedCard'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import useAuth from '../../hooks/useAuth'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const FeedPage = () => {
   const { isAuthenticated } = useAuth()
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState(isAuthenticated ? 'following' : 'explore')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -62,8 +64,8 @@ const FeedPage = () => {
     <div className="max-w-2xl mx-auto px-4 py-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-forest">Contenido</h1>
-        <p className="text-forest/70 mt-1">Descubre las publicaciones de la comunidad</p>
+        <h1 className="text-2xl font-bold text-forest">{t('nav.feed')}</h1>
+        <p className="text-forest/70 mt-1">{t('feed.subtitle')}</p>
       </div>
 
       {/* Tabs */}
@@ -77,7 +79,7 @@ const FeedPage = () => {
                 : 'bg-white text-midnight border-midnight hover:bg-teal hover:text-white hover:scale-105'
             }`}
           >
-            <span className={activeTab === 'following' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>Siguiendo</span>
+            <span className={activeTab === 'following' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>{t('feed.following')}</span>
           </button>
         )}
         <button
@@ -88,7 +90,7 @@ const FeedPage = () => {
               : 'bg-teal text-white border-midnight hover:bg-golden hover:text-midnight hover:scale-105'
           }`}
         >
-          <span className={activeTab === 'explore' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>Explorar</span>
+          <span className={activeTab === 'explore' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>{t('feed.explore')}</span>
         </button>
       </div>
 
@@ -104,7 +106,7 @@ const FeedPage = () => {
             onClick={() => loadFeed(true)}
             className="group bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-aqua hover:scale-105 transition-all duration-200 min-h-[44px]"
           >
-            <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">Reintentar</span>
+            <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('feed.retry')}</span>
           </button>
         </div>
       ) : items.length === 0 ? (
@@ -114,20 +116,20 @@ const FeedPage = () => {
           </div>
           <h3 className="text-lg font-semibold text-forest mb-2">
             {activeTab === 'following'
-              ? 'Sin publicaciones de seguidos'
-              : 'Sin publicaciones recientes'}
+              ? t('feed.noPostsFollowing')
+              : t('feed.noPostsExplore')}
           </h3>
           <p className="text-forest/70 mb-4">
             {activeTab === 'following'
-              ? 'Sigue a otros viajeros para ver sus publicaciones aqui'
-              : 'Se el primero en publicar algo'}
+              ? t('feed.followToSee')
+              : t('feed.noExploreHint')}
           </p>
           {activeTab === 'following' && (
             <Link
               to="/forums"
               className="inline-block bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-teal hover:text-white hover:scale-105 transition-all duration-200 min-h-[44px]"
             >
-              Explorar foros
+              {t('feed.exploreForum')}
             </Link>
           )}
         </div>
@@ -151,10 +153,10 @@ const FeedPage = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
-                    Cargando...
+                    {t('common.loading')}
                   </span>
                 ) : (
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">Cargar más</span>
+                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('feed.loadMore')}</span>
                 )}
               </button>
             </div>

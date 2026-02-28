@@ -46,6 +46,7 @@ const translations = {
       joinNow: 'Únete Ahora',
       featuredForums: 'Foros Destacados',
       recentPosts: 'Publicaciones Recientes',
+      generalForum: 'Foro General',
     },
     // Auth
     auth: {
@@ -358,6 +359,11 @@ const translations = {
       achievementsUnlocked: 'Logros desbloqueados',
       more: 'más',
       favoritePlace: 'Lugar favorito: ',
+      myPlaces: 'Mis lugares',
+      all: 'Todos',
+      noPlacesCategory: 'No hay lugares en esta categoría',
+      startAdding: 'Empieza a agregar tus viajes',
+      confirmDelete: '¿Eliminar este lugar de tu mapa?',
     },
     // Posts
     posts: {
@@ -616,6 +622,13 @@ const translations = {
       noPostsYet: 'Aún no hay publicaciones',
       followToSee: 'Sigue a otros viajeros para ver sus publicaciones',
       loadingFeed: 'Cargando feed...',
+      subtitle: 'Descubre las publicaciones de la comunidad',
+      noPostsFollowing: 'Sin publicaciones de seguidos',
+      noPostsExplore: 'Sin publicaciones recientes',
+      noExploreHint: 'Sé el primero en publicar algo',
+      exploreForum: 'Explorar foros',
+      loadMore: 'Cargar más',
+      retry: 'Reintentar',
     },
     // Comments
     comments: {
@@ -695,6 +708,7 @@ const translations = {
       joinNow: 'Join Now',
       featuredForums: 'Featured Forums',
       recentPosts: 'Recent Posts',
+      generalForum: 'General Forum',
     },
     // Auth
     auth: {
@@ -1007,6 +1021,11 @@ const translations = {
       achievementsUnlocked: 'Achievements unlocked',
       more: 'more',
       favoritePlace: 'Favorite place: ',
+      myPlaces: 'My places',
+      all: 'All',
+      noPlacesCategory: 'No places in this category',
+      startAdding: 'Start adding your trips',
+      confirmDelete: 'Delete this place from your map?',
     },
     // Posts
     posts: {
@@ -1265,6 +1284,13 @@ const translations = {
       noPostsYet: 'No posts yet',
       followToSee: 'Follow other travelers to see their posts',
       loadingFeed: 'Loading feed...',
+      subtitle: 'Discover community posts',
+      noPostsFollowing: 'No posts from following',
+      noPostsExplore: 'No recent posts',
+      noExploreHint: 'Be the first to post something',
+      exploreForum: 'Explore forums',
+      loadMore: 'Load more',
+      retry: 'Retry',
     },
     // Comments
     comments: {

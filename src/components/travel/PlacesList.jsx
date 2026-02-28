@@ -4,19 +4,21 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import travelService from '../../services/travelService'
 import toast from 'react-hot-toast'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 /**
  * Lista de lugares visitados del usuario
  */
 const PlacesList = ({ places, onEdit, onRefresh }) => {
+  const { t } = useLanguage()
   const [filter, setFilter] = useState('all')
   const [deletingId, setDeletingId] = useState(null)
 
   const statusLabels = {
-    VISITED: { label: 'Visitado', color: 'bg-success-light text-success-dark' },
-    WISHLIST: { label: 'Quiero ir', color: 'bg-warning-light text-warning-dark' },
-    LIVED: { label: 'He vivido', color: 'bg-info-light text-info-dark' },
-    LIVING: { label: 'Vivo aquí', color: 'bg-info-light text-info-dark' }
+    VISITED: { label: t('travel.visited'), color: 'bg-success-light text-success-dark' },
+    WISHLIST: { label: t('travel.wantToGo'), color: 'bg-warning-light text-warning-dark' },
+    LIVED: { label: t('travel.lived'), color: 'bg-info-light text-info-dark' },
+    LIVING: { label: t('travel.living'), color: 'bg-info-light text-info-dark' }
   }
 
   const filteredPlaces = filter === 'all'
@@ -24,7 +26,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
     : places.filter(p => p.status === filter)
 
   const handleDelete = async (placeId) => {
-    if (!confirm('¿Eliminar este lugar de tu mapa?')) return
+    if (!confirm(t('travel.confirmDelete'))) return
 
     setDeletingId(placeId)
     try {
@@ -55,7 +57,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
       <div className="bg-gradient-to-r from-midnight to-teal-dark px-4 py-3">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-base sm:text-lg font-bold text-golden">
-            Mis lugares ({filteredPlaces.length})
+            {t('travel.myPlaces')} ({filteredPlaces.length})
           </h3>
         </div>
 
@@ -64,7 +66,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
             active={filter === 'all'}
             onClick={() => setFilter('all')}
           >
-            Todos
+            {t('travel.all')}
           </FilterButton>
           {Object.entries(statusLabels).map(([status, { label }]) => (
             <FilterButton
@@ -85,8 +87,8 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
             <div className="w-16 h-16 mx-auto mb-4 bg-aqua rounded-full flex items-center justify-center">
               <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
             </div>
-            <p className="text-text-light">No hay lugares en esta categoría</p>
-            <p className="text-text-lighter text-sm">Empieza a agregar tus viajes</p>
+            <p className="text-text-light">{t('travel.noPlacesCategory')}</p>
+            <p className="text-text-lighter text-sm">{t('travel.startAdding')}</p>
           </div>
         ) : (
           filteredPlaces.map(place => (

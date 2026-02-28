@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import { useLanguage } from '../../contexts/LanguageContext'
 import imgEuropa    from '../../assets/paris-moulin-europa.JPG'
 import imgAmerica   from '../../assets/patagonia-américa.jpg'
 import imgAsia      from '../../assets/tailandia-asia.jpg'
@@ -33,11 +34,28 @@ const CATEGORY_ALT = {
   'Antártida':         'Photo by sigu / Antártida',
 }
 
+// English translations for category names coming from DB (always Spanish)
+const CATEGORY_NAMES_EN = {
+  'General':           'General',
+  'Europa':            'Europe',
+  'Asia':              'Asia',
+  'América':           'Americas',
+  'América del Norte': 'North America',
+  'América del Sur':   'South America',
+  'África':            'Africa',
+  'Oceanía':           'Oceania',
+  'Antártida':         'Antarctica',
+}
+
 /**
  * CategoryCard con estilo retro Adventure
  */
 const CategoryCard = ({ category }) => {
+  const { language } = useLanguage()
   const imageUrl = category.imageUrl || CATEGORY_IMAGES[category.name]
+  const displayName = language === 'en'
+    ? (CATEGORY_NAMES_EN[category.name] || category.name)
+    : category.name
 
   return (
     <Link
@@ -61,7 +79,7 @@ const CategoryCard = ({ category }) => {
           )}
           <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
             <h3 className="text-lg md:text-xl font-extrabold uppercase tracking-wider truncate [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]" style={{ color: '#ffffff' }}>
-              {category.name}
+              {displayName}
             </h3>
           </div>
         </div>

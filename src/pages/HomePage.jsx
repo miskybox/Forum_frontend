@@ -135,7 +135,7 @@ const HomePage = () => {
               to="/trivia"
               className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
             >
-              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">Jugar trivia</span>
+              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.playTrivia')}</span>
             </Link>
 
             <Link
@@ -194,7 +194,7 @@ const HomePage = () => {
       <section className="container mx-auto px-4 py-6 relative z-10">
         <div className="text-center mb-6">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
-            Foro General
+            {t('home.generalForum')}
           </h2>
           <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
         </div>
