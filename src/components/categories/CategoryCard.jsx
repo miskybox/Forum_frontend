@@ -51,7 +51,7 @@ const CATEGORY_NAMES_EN = {
  * CategoryCard con estilo retro Adventure
  */
 const CategoryCard = ({ category }) => {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
   const imageUrl = category.imageUrl || CATEGORY_IMAGES[category.name]
   const displayName = language === 'en'
     ? (CATEGORY_NAMES_EN[category.name] || category.name)
