@@ -5,6 +5,7 @@ import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
 import { useTheme } from './contexts/ThemeContext';
+import { useIdleLogout } from './hooks/useIdleLogout';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
 // LocalStorageDebug removed - was only for development debugging
@@ -68,6 +69,7 @@ import ForumBgPreviewPage from './pages/ForumBgPreviewPage';
 
 function App() {
   const { theme } = useTheme();
+  useIdleLogout();
 
   // Aplicar tema al body
   React.useEffect(() => {
