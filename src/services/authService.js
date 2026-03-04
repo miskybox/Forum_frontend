@@ -102,8 +102,8 @@ const authService = {
       if (import.meta.env.DEV) {
         console.error('Error al obtener usuario actual:', error.response?.data || error.message)
       }
-      // If we get 401, clear auth state
-      if (error.response?.status === 401) {
+      // If we get 401 or 403, clear auth state
+      if (error.response?.status === 401 || error.response?.status === 403) {
         this._isAuthenticated = false
         localStorage.removeItem('isAuthenticated')
       }

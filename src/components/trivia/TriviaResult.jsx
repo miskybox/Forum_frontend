@@ -38,18 +38,18 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       </div>
 
       {/* Puntos ganados */}
-      <div className="bg-white/20 rounded-xl p-4 mb-6">
+      <div className="bg-midnight/50 rounded-xl p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-white text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
-            <p className="text-2xl font-bold text-white">+{result.pointsEarned}</p>
+            <p className="text-aqua text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
+            <p className="text-2xl font-bold text-golden">+{result.pointsEarned}</p>
           </div>
           <div>
-            <p className="text-white text-sm font-semibold">{t('trivia.score')}</p>
+            <p className="text-aqua text-sm font-semibold">{t('trivia.score')}</p>
             <p className="text-2xl font-bold text-white">{result.currentGameScore}</p>
           </div>
           <div>
-            <p className="text-white text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
+            <p className="text-aqua text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
             <p className="text-2xl font-bold text-white">{result.currentStreak}</p>
           </div>
         </div>

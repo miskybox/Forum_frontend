@@ -78,7 +78,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="card overflow-hidden">
+    <div className="bg-amber-50 border-2 border-secondary/30 rounded-xl overflow-hidden shadow-lg">
       {/* Header con progreso y timer */}
       <div className="bg-primary border-b-2 border-secondary px-6 py-4">
         <div className="flex items-center justify-between mb-3">

@@ -452,7 +452,7 @@ const TriviaHomePage = () => {
                 </button>
                 <button
                   onClick={() => setShowActiveGameModal(false)}
-                  className="text-text-light text-sm hover:text-text transition-colors"
+                  className="text-text-light text-sm hover:text-text hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
                 >
                   {t('common.cancel')}
                 </button>
@@ -491,7 +491,7 @@ const TriviaHomePage = () => {
                 </button>
                 <button
                   onClick={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
-                  className="text-text-light text-sm hover:text-text transition-colors"
+                  className="text-text-light text-sm hover:text-text hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
                 >
                   {t('common.cancel')}
                 </button>

@@ -238,16 +238,16 @@ const TriviaInfinitePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-midnight via-teal-dark to-midnight">
       {/* Header */}
-      <div className="bg-midnight/90 py-4 sticky top-0 z-10 backdrop-blur-sm border-b border-white/10">
+      <div className="bg-midnight py-4 sticky top-0 z-10 border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <div>
-                <p className="text-white/60 text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.scoreText')}</p>
+                <p className="text-aqua text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.scoreText')}</p>
                 <p className="text-2xl font-black text-white">{score}</p>
               </div>
               <div>
-                <p className="text-white/60 text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.streakText')}</p>
+                <p className="text-aqua text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.streakText')}</p>
                 <p className="text-2xl font-black text-golden">{streak}</p>
               </div>
             </div>
@@ -260,7 +260,7 @@ const TriviaInfinitePage = () => {
                   </span>
                 ))}
               </div>
-              <div className="text-white text-sm font-bold bg-white/10 px-2 py-1 rounded-md">
+              <div className="text-golden text-sm font-bold bg-golden/20 px-2 py-1 rounded-md">
                 #{totalAnswered + 1}
               </div>
               <button
