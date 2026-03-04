@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import TriviaQuestion from '../../components/trivia/TriviaQuestion'
 import TriviaResult from '../../components/trivia/TriviaResult'
 import TriviaGameSummary from '../../components/trivia/TriviaGameSummary'
@@ -13,7 +13,9 @@ import toast from 'react-hot-toast'
 const TriviaPlayPage = () => {
   const { gameId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const { t } = useLanguage()
+  const withTimer = location.state?.withTimer !== false
   
   const [game, setGame] = useState(null)
   const [currentQuestion, setCurrentQuestion] = useState(null)
@@ -196,6 +198,7 @@ const TriviaPlayPage = () => {
         <TriviaQuestion
           question={currentQuestion}
           onAnswer={handleAnswer}
+          withTimer={withTimer}
         />
       )
     }

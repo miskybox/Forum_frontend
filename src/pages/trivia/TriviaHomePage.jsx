@@ -30,6 +30,8 @@ const TriviaHomePage = () => {
   const [activeGame, setActiveGame] = useState(null)
   const [showActiveGameModal, setShowActiveGameModal] = useState(false)
   const [pendingGameConfig, setPendingGameConfig] = useState(null)
+  const [showTimerModal, setShowTimerModal] = useState(false)
+  const [pendingChallengeConfig, setPendingChallengeConfig] = useState(null)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -77,6 +79,13 @@ const TriviaHomePage = () => {
       return
     }
 
+    // CHALLENGE: pedir preferencia de cronómetro antes de crear la partida
+    if (mode === 'CHALLENGE') {
+      setPendingChallengeConfig({ mode, options })
+      setShowTimerModal(true)
+      return
+    }
+
     // Verificar si hay partida activa
     if (activeGame) {
       setPendingGameConfig({ mode, options })
@@ -87,10 +96,10 @@ const TriviaHomePage = () => {
     await createNewGame(mode, options)
   }
 
-  const createNewGame = async (mode, options) => {
+  const createNewGame = async (mode, options, withTimer = true) => {
     setStarting(true)
     try {
-      if (import.meta.env.DEV) console.log('Iniciando partida:', { mode, options })
+      if (import.meta.env.DEV) console.log('Iniciando partida:', { mode, options, withTimer })
       const game = await triviaService.startGame({
         gameMode: mode,
         totalQuestions: options.questions || 10,
@@ -98,7 +107,7 @@ const TriviaHomePage = () => {
         continent: options.continent
       })
       if (import.meta.env.DEV) console.log('Partida creada:', game.id)
-      navigate(`/trivia/play/${game.id}`)
+      navigate(`/trivia/play/${game.id}`, { state: { withTimer } })
     } catch (error) {
       if (import.meta.env.DEV) console.error('Error al iniciar partida:', error)
 
@@ -158,7 +167,7 @@ const TriviaHomePage = () => {
       await triviaService.abandonGame(activeGame.id)
       setActiveGame(null)
       if (pendingGameConfig) {
-        await createNewGame(pendingGameConfig.mode, pendingGameConfig.options)
+        await createNewGame(pendingGameConfig.mode, pendingGameConfig.options, pendingGameConfig.withTimer)
       }
     } catch (error) {
       console.error('Error abandonando partida:', error)
@@ -173,6 +182,21 @@ const TriviaHomePage = () => {
       setStarting(false)
       setPendingGameConfig(null)
     }
+  }
+
+  const handleTimerChoice = async (withTimer) => {
+    setShowTimerModal(false)
+    const config = pendingChallengeConfig
+    setPendingChallengeConfig(null)
+    if (!config) return
+
+    // Si hay partida activa, mostrar modal de partida activa en su lugar
+    if (activeGame) {
+      setPendingGameConfig({ ...config, withTimer })
+      setShowActiveGameModal(true)
+      return
+    }
+    await createNewGame(config.mode, config.options, withTimer)
   }
 
   const getTextColorClass = (modeColor) => {
@@ -428,6 +452,45 @@ const TriviaHomePage = () => {
                 </button>
                 <button
                   onClick={() => setShowActiveGameModal(false)}
+                  className="text-text-light text-sm hover:text-text transition-colors"
+                >
+                  {t('common.cancel')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal selección de cronómetro (solo CHALLENGE) */}
+      {showTimerModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="card max-w-sm w-full p-6 animate-fadeIn">
+            <div className="text-center">
+              <div className="text-4xl mb-3">⏱️</div>
+              <h3 className="text-xl font-bold text-midnight mb-2 tracking-normal uppercase">
+                {t('trivia.timerChoice.title')}
+              </h3>
+              <p className="text-text-light text-sm mb-6">
+                {t('trivia.timerChoice.description')}
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => handleTimerChoice(true)}
+                  disabled={starting}
+                  className="btn bg-golden text-midnight font-bold hover:bg-golden-dark w-full disabled:opacity-50"
+                >
+                  ⏱️ {t('trivia.timerChoice.withTimer')}
+                </button>
+                <button
+                  onClick={() => handleTimerChoice(false)}
+                  disabled={starting}
+                  className="btn bg-midnight text-white font-bold hover:bg-midnight/80 w-full disabled:opacity-50"
+                >
+                  🌙 {t('trivia.timerChoice.withoutTimer')}
+                </button>
+                <button
+                  onClick={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
                   className="text-text-light text-sm hover:text-text transition-colors"
                 >
                   {t('common.cancel')}

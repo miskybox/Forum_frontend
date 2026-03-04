@@ -154,7 +154,7 @@ const TriviaInfinitePage = () => {
 
   const getOptionStyle = (option) => {
     if (!answered) {
-      return 'bg-earth-50/20 hover:bg-earth-50/30 border-white/30'
+      return 'bg-slate-700 hover:bg-slate-600 border-white/40 text-white'
     }
     if (option === currentQuestion?.correctAnswer) {
       return 'bg-success border-success-light text-white'
@@ -162,7 +162,7 @@ const TriviaInfinitePage = () => {
     if (option === selectedAnswer && option !== currentQuestion?.correctAnswer) {
       return 'bg-error border-error-light text-white'
     }
-    return 'bg-earth-50/10 border-white/20 opacity-50'
+    return 'bg-slate-800/80 border-white/20 text-white/60'
   }
 
   if (loading && questions.length === 0) {
@@ -267,7 +267,7 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-earth-50/10 backdrop-blur-lg rounded-3xl p-6 md:p-8">
+          <div className="bg-slate-800/80 backdrop-blur-lg rounded-3xl p-6 md:p-8">
             {/* Tipo de pregunta */}
             <div className="flex items-center justify-between mb-6">
               <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm">

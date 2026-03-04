@@ -5,16 +5,16 @@ import { useLanguage } from '../../contexts/LanguageContext'
 /**
  * Componente que muestra una pregunta de trivia
  */
-const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
+const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }) => {
   const { t } = useLanguage()
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [timeLeft, setTimeLeft] = useState(timeLimit)
   const [answered, setAnswered] = useState(false)
   const [startTime] = useState(Date.now())
 
-  // Timer
+  // Timer — solo si withTimer está activo
   useEffect(() => {
-    if (answered) return
+    if (!withTimer || answered) return
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -28,7 +28,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
 
     return () => clearInterval(timer)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answered])
+  }, [answered, withTimer])
 
   // Reset cuando cambia la pregunta
   useEffect(() => {
@@ -85,19 +85,23 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15 }) => {
           <span className="text-text text-sm font-semibold">
             {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}
           </span>
-          <div className={`flex items-center gap-2 font-mono text-2xl font-bold ${getTimerColor()}`}>
-            <span>⏱️</span>
-            <span>{timeLeft}s</span>
-          </div>
+          {withTimer && (
+            <div className={`flex items-center gap-2 font-mono text-2xl font-bold ${getTimerColor()}`}>
+              <span>⏱️</span>
+              <span>{timeLeft}s</span>
+            </div>
+          )}
         </div>
 
         {/* Barra de tiempo */}
-        <div className="h-2 bg-primary-dark rounded-full overflow-hidden">
-          <div
-            className="h-full bg-secondary rounded-full transition-all duration-1000 ease-linear"
-            style={{ width: `${timerPercent}%` }}
-          />
-        </div>
+        {withTimer && (
+          <div className="h-2 bg-primary-dark rounded-full overflow-hidden">
+            <div
+              className="h-full bg-secondary rounded-full transition-all duration-1000 ease-linear"
+              style={{ width: `${timerPercent}%` }}
+            />
+          </div>
+        )}
 
         {/* Puntos — countryFlag/Name solo tras responder para no revelar la respuesta */}
         <div className="flex items-center justify-between mt-3 text-text text-sm font-semibold">
@@ -191,7 +195,8 @@ TriviaQuestion.propTypes = {
     countryFlag: PropTypes.string
   }).isRequired,
   onAnswer: PropTypes.func.isRequired,
-  timeLimit: PropTypes.number
+  timeLimit: PropTypes.number,
+  withTimer: PropTypes.bool
 }
 
 export default TriviaQuestion
