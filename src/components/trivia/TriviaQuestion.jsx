@@ -129,31 +129,36 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
         </h2>
 
         {/* Opciones */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {question.options.map((option, idx) => {
-            const baseClasses = 'px-6 py-5 rounded-xl border-3 text-left font-bold transition-all min-h-[70px] flex items-center cursor-pointer'
-            let stateClasses
+            const COLORS = [
+              { tile: 'bg-midnight border-[#1a4d52] text-white hover:bg-[#2a5d62] hover:shadow-[0_0_16px_rgba(33,54,56,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+              { tile: 'bg-accent border-accent-dark text-white hover:bg-accent-dark hover:shadow-[0_0_16px_rgba(165,103,50,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+              { tile: 'bg-secondary border-secondary-dark text-white hover:bg-secondary-dark hover:shadow-[0_0_16px_rgba(76,126,117,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+              { tile: 'bg-golden border-golden-dark text-midnight hover:bg-golden-dark hover:shadow-[0_0_16px_rgba(229,161,62,0.5)] hover:scale-[1.02]', badge: 'bg-midnight/20 text-midnight' },
+            ]
+            let tileClass
+            let badgeClass
             if (answered) {
-              if (selectedAnswer === option) {
-                stateClasses = 'border-[#2D5016] bg-[#2D5016] text-white shadow-lg'
-              } else {
-                stateClasses = 'border-[#5C4033] bg-[#5C4033] text-white opacity-70'
-              }
+              tileClass = selectedAnswer === option
+                ? 'bg-[#1e3a5f] border-[#1e3a5f] text-white shadow-xl scale-[1.02]'
+                : `${COLORS[idx % 4].tile} opacity-30`
+              badgeClass = 'bg-white/20 text-inherit'
             } else {
-              stateClasses = 'border-secondary bg-primary-light text-text hover:border-accent hover:bg-secondary hover:shadow-lg hover:scale-[1.02]'
+              tileClass = COLORS[idx % 4].tile
+              badgeClass = COLORS[idx % 4].badge
             }
-            const buttonClass = `${baseClasses} ${stateClasses}`
             return (
               <button
                 key={`${question.id}-${option}`}
                 onClick={() => handleSelectAnswer(option)}
                 disabled={answered}
-                className={buttonClass}
+                className={`px-5 py-4 rounded-xl border-2 text-left font-bold transition-all duration-200 min-h-[70px] flex items-center gap-3 cursor-pointer disabled:cursor-not-allowed ${tileClass}`}
               >
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent text-primary-dark mr-4 text-base font-bold flex-shrink-0">
+                <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-base font-black flex-shrink-0 ${badgeClass}`}>
                   {String.fromCodePoint(65 + idx)}
                 </span>
-                <span className="text-base">{option}</span>
+                <span className="text-base leading-tight">{option}</span>
               </button>
             )
           })}

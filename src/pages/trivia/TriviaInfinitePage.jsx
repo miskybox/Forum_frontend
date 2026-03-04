@@ -160,17 +160,18 @@ const TriviaInfinitePage = () => {
     loadQuestions()
   }
 
-  const getOptionStyle = (option) => {
-    if (!answered) {
-      return 'bg-white border-secondary/40 text-text hover:border-secondary hover:bg-secondary/10'
-    }
-    if (option === currentQuestion?.correctAnswer) {
-      return 'bg-[#d1fae5] border-[#047857] text-[#065F46] font-bold'
-    }
-    if (option === selectedAnswer && option !== currentQuestion?.correctAnswer) {
-      return 'bg-[#fee2e2] border-[#b91c1c] text-[#991b1b] font-bold'
-    }
-    return 'bg-primary-dark border-secondary/20 text-text/50'
+  const OPTION_COLORS = [
+    { tile: 'bg-midnight border-[#1a4d52] text-white hover:bg-[#2a5d62] hover:shadow-[0_0_16px_rgba(33,54,56,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+    { tile: 'bg-accent border-accent-dark text-white hover:bg-accent-dark hover:shadow-[0_0_16px_rgba(165,103,50,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+    { tile: 'bg-secondary border-secondary-dark text-white hover:bg-secondary-dark hover:shadow-[0_0_16px_rgba(76,126,117,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
+    { tile: 'bg-golden border-golden-dark text-midnight hover:bg-golden-dark hover:shadow-[0_0_16px_rgba(229,161,62,0.55)] hover:scale-[1.02]', badge: 'bg-midnight/20 text-midnight' },
+  ]
+
+  const getOptionStyle = (option, idx) => {
+    if (!answered) return OPTION_COLORS[idx % 4].tile
+    if (option === currentQuestion?.correctAnswer) return 'bg-[#d1fae5] border-[#047857] text-[#065F46] font-bold'
+    if (option === selectedAnswer) return 'bg-[#fee2e2] border-[#b91c1c] text-[#991b1b] font-bold'
+    return `${OPTION_COLORS[idx % 4].tile} opacity-30`
   }
 
   if (loading && questions.length === 0) {
@@ -302,15 +303,18 @@ const TriviaInfinitePage = () => {
             </h2>
 
             {/* Opciones */}
-            <div className="space-y-3">
-              {currentQuestion.options.map((option) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {currentQuestion.options.map((option, idx) => (
                 <button
                   key={option}
                   onClick={() => handleAnswer(option)}
                   disabled={answered}
-                  className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all cursor-pointer disabled:cursor-not-allowed ${getOptionStyle(option)} ${!answered && 'hover:scale-[1.02]'}`}
+                  className={`w-full px-4 py-4 rounded-xl border-2 text-left font-bold transition-all duration-200 cursor-pointer disabled:cursor-not-allowed flex items-center gap-3 min-h-[64px] ${getOptionStyle(option, idx)}`}
                 >
-                  {option}
+                  <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-black flex-shrink-0 ${answered ? 'bg-black/15 text-inherit' : OPTION_COLORS[idx % 4].badge}`}>
+                    {['A','B','C','D'][idx]}
+                  </span>
+                  <span className="text-sm md:text-base leading-tight">{option}</span>
                 </button>
               ))}
             </div>
