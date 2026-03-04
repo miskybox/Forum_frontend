@@ -31,10 +31,10 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
   const getRankStyle = (rank) => {
     switch (rank) {
-      case 1: return 'bg-gradient-to-r from-warning-dark to-warning text-white font-bold'
-      case 2: return 'bg-gradient-to-r from-terracotta-500 to-terracotta-600 text-white font-bold'
-      case 3: return 'bg-gradient-to-r from-ocean-500 to-ocean-600 text-white font-bold'
-      default: return 'bg-accent text-primary-light font-semibold'
+      case 1: return 'bg-gradient-to-r from-golden-dark to-golden text-midnight font-bold'
+      case 2: return 'bg-gradient-to-r from-accent to-accent-dark text-white font-bold'
+      case 3: return 'bg-gradient-to-r from-secondary to-secondary-dark text-white font-bold'
+      default: return 'bg-midnight text-aqua font-semibold'
     }
   }
 
@@ -63,10 +63,10 @@ const TriviaLeaderboard = ({ currentUserId }) => {
             <button
               key={tab.value}
               onClick={() => setType(tab.value)}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer ${
                 type === tab.value
                   ? 'bg-golden text-midnight'
-                  : 'bg-aqua/20 text-white/80 hover:bg-aqua/30'
+                  : 'bg-aqua/20 text-white hover:bg-aqua/30'
               }`}
             >
               {tab.label}
@@ -124,7 +124,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                     <p className="font-bold text-text truncate">
                       {entry.username}
                       {entry.userId === currentUserId && (
-                        <span className="ml-2 text-xs bg-secondary text-text px-2 py-0.5 rounded-full font-semibold">
+                        <span className="ml-2 text-xs bg-secondary text-white px-2 py-0.5 rounded-full font-semibold">
                           {t('trivia.you')}
                         </span>
                       )}

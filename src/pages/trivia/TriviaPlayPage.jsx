@@ -214,8 +214,8 @@ const TriviaPlayPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-ocean-500 border-t-transparent mx-auto" />
-          <p className="text-light-muted mt-4">{t('trivia.loadingQuestion')}</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent mx-auto" />
+          <p className="text-text-light mt-4">{t('trivia.loadingQuestion')}</p>
         </div>
       </div>
     )
@@ -232,25 +232,25 @@ const TriviaPlayPage = () => {
   return (
     <div className="min-h-screen">
       {/* Header con progreso */}
-      <div className="bg-dark-lighter py-4 border-b border-ocean-500">
+      <div className="bg-midnight py-4 border-b border-white/10">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/trivia')}
-              className="p-2 rounded-lg text-ocean-400 hover:bg-ocean-500/20 transition-colors"
+              className="p-2 rounded-lg text-aqua hover:bg-aqua/20 transition-colors cursor-pointer"
               title={t('common.back')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
-            <div className="text-light">
-              <span className="text-ocean-400 text-sm">{t('trivia.score')}</span>
+            <div className="text-white">
+              <span className="text-aqua text-sm">{t('trivia.score')}</span>
               <p className="text-2xl font-bold">{game?.score || 0}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <div className="text-center text-light">
-              <span className="text-ocean-400 text-sm">{t('trivia.correctAnswers')}</span>
+            <div className="text-center text-white">
+              <span className="text-aqua text-sm">{t('trivia.correctAnswers')}</span>
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             
@@ -263,13 +263,13 @@ const TriviaPlayPage = () => {
                 </div>
                 <button
                   onClick={handleAbandonConfirmed}
-                  className="px-3 py-1.5 bg-error text-white rounded-lg hover:bg-error/80 transition-colors text-sm font-bold"
+                  className="px-3 py-1.5 bg-error text-white rounded-lg hover:bg-error-dark transition-colors text-sm font-bold cursor-pointer"
                 >
                   {t('common.yes')}
                 </button>
                 <button
                   onClick={() => setShowAbandonConfirm(false)}
-                  className="px-3 py-1.5 bg-primary-light border border-secondary text-text rounded-lg hover:bg-secondary/30 transition-colors text-sm"
+                  className="px-3 py-1.5 bg-primary-light border border-secondary text-text rounded-lg hover:bg-secondary/30 transition-colors text-sm cursor-pointer"
                 >
                   {t('common.no')}
                 </button>
@@ -277,7 +277,7 @@ const TriviaPlayPage = () => {
             ) : (
               <button
                 onClick={handleAbandon}
-                className="px-4 py-2 bg-error/20 text-error-light border border-error rounded-lg hover:bg-error/30 transition-colors text-sm"
+                className="px-4 py-2 bg-error/20 text-error border border-error rounded-lg hover:bg-error/30 transition-colors text-sm cursor-pointer"
               >
                 {t('trivia.abandon')}
               </button>

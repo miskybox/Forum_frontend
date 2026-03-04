@@ -176,11 +176,11 @@ const TriviaInfinitePage = () => {
 
   if (loading && questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-midnight via-teal-dark to-midnight flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-ocean-400 border-t-transparent mx-auto" />
-          <p className="text-ocean-200 mt-4 font-semibold">{t('trivia.infinite.loadingQuestions')}</p>
-          <p className="text-ocean-300/70 text-sm mt-2 font-medium">{t('trivia.infinite.generatingTrivia')}</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-aqua border-t-transparent mx-auto" />
+          <p className="text-aqua mt-4 font-semibold">{t('trivia.infinite.loadingQuestions')}</p>
+          <p className="text-aqua/70 text-sm mt-2 font-medium">{t('trivia.infinite.generatingTrivia')}</p>
         </div>
       </div>
     )
@@ -255,11 +255,9 @@ const TriviaInfinitePage = () => {
 
             <div className="flex items-center gap-4">
               <div className="flex gap-1" aria-label={`${lives} vidas restantes`}>
-                {[...Array(3)].map((_, i) => (
-                  <span key={i} className="text-xl leading-none" role="img" aria-hidden="true">
-                    {i < lives ? '❤️' : '🖤'}
-                  </span>
-                ))}
+                <span className="text-xl leading-none" role="img" aria-hidden="true">{0 < lives ? '❤️' : '🖤'}</span>
+                <span className="text-xl leading-none" role="img" aria-hidden="true">{1 < lives ? '❤️' : '🖤'}</span>
+                <span className="text-xl leading-none" role="img" aria-hidden="true">{2 < lives ? '❤️' : '🖤'}</span>
               </div>
               <div className="text-golden text-sm font-bold bg-golden/20 px-2 py-1 rounded-md">
                 #{totalAnswered + 1}
@@ -323,7 +321,7 @@ const TriviaInfinitePage = () => {
             {answered && (
               <button
                 onClick={handleNext}
-                className="w-full mt-6 py-4 bg-secondary text-white rounded-xl font-bold hover:bg-secondary-dark transition-all"
+                className="w-full mt-6 py-4 bg-golden text-midnight rounded-xl font-bold hover:bg-golden-dark transition-all cursor-pointer"
               >
                 {t('trivia.infinite.nextQuestion')} →
               </button>
@@ -331,15 +329,15 @@ const TriviaInfinitePage = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-ocean-400 border-t-transparent mx-auto" />
-            <p className="text-ocean-200 mt-4 font-semibold">{t('trivia.infinite.loadingMore')}</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-aqua border-t-transparent mx-auto" />
+            <p className="text-aqua mt-4 font-semibold">{t('trivia.infinite.loadingMore')}</p>
           </div>
         )}
       </div>
 
       {/* Footer con info */}
-      <div className="fixed bottom-0 left-0 right-0 bg-black/30 py-2 text-center">
-        <p className="text-ocean-300/70 text-xs font-medium">
+      <div className="fixed bottom-0 left-0 right-0 bg-midnight/80 py-2 text-center">
+        <p className="text-aqua/70 text-xs font-medium">
           {t('trivia.infinite.modeInfo')} • {usedQuestionIds.size} {t('trivia.infinite.uniqueQuestions')}
         </p>
       </div>
