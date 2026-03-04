@@ -165,10 +165,10 @@ const TriviaInfinitePage = () => {
       return 'bg-white border-secondary/40 text-text hover:border-secondary hover:bg-secondary/10'
     }
     if (option === currentQuestion?.correctAnswer) {
-      return 'bg-success border-success text-white'
+      return 'bg-[#d1fae5] border-[#047857] text-[#065F46] font-bold'
     }
     if (option === selectedAnswer && option !== currentQuestion?.correctAnswer) {
-      return 'bg-error border-error text-white'
+      return 'bg-[#fee2e2] border-[#b91c1c] text-[#991b1b] font-bold'
     }
     return 'bg-primary-dark border-secondary/20 text-text/50'
   }
