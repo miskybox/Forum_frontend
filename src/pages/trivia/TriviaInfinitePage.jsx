@@ -230,7 +230,7 @@ const TriviaInfinitePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-midnight via-teal-dark to-midnight">
       {/* Header */}
-      <div className="bg-black/30 py-4 sticky top-0 z-10 backdrop-blur-sm">
+      <div className="bg-midnight/90 py-4 sticky top-0 z-10 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
@@ -255,9 +255,9 @@ const TriviaInfinitePage = () => {
               </div>
               <button
                 onClick={() => navigate('/trivia')}
-                className="px-4 py-2 bg-aqua/10 text-white rounded-lg hover:bg-aqua/20 text-sm font-bold"
+                className="px-4 py-2 bg-error/70 hover:bg-error text-white rounded-lg text-sm font-bold border border-error/50 transition-all duration-200 hover:scale-105"
               >
-                {t('trivia.infinite.exit')}
+                ✕ {t('trivia.infinite.exit')}
               </button>
             </div>
           </div>
@@ -267,17 +267,12 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-slate-800/80 backdrop-blur-lg rounded-3xl p-6 md:p-8">
+          <div className="bg-slate-900 rounded-3xl p-6 md:p-8">
             {/* Tipo de pregunta */}
-            <div className="flex items-center justify-between mb-6">
-              <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm">
+            <div className="flex items-center mb-6">
+              <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm font-semibold">
                 {getQuestionTypeLabel(currentQuestion.type)}
               </span>
-              {currentQuestion.countryCode && (
-                <span className="text-white/60 text-sm">
-                  Código: {currentQuestion.countryCode}
-                </span>
-              )}
             </div>
 
             {/* Imagen de bandera si es pregunta de bandera */}
