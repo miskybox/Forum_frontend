@@ -256,9 +256,11 @@ const TriviaPlayPage = () => {
             
             {showAbandonConfirm ? (
               <div className="flex items-center gap-2">
-                <span className="text-error-light text-sm font-semibold">
-                  {t('trivia.abandonConfirm')}
-                </span>
+                <div className="bg-error/10 border border-error/40 px-3 py-1.5 rounded-lg">
+                  <span className="text-error text-sm font-semibold">
+                    {t('trivia.abandonConfirm')}
+                  </span>
+                </div>
                 <button
                   onClick={handleAbandonConfirmed}
                   className="px-3 py-1.5 bg-error text-white rounded-lg hover:bg-error/80 transition-colors text-sm font-bold"

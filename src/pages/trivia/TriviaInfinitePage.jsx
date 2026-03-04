@@ -154,15 +154,15 @@ const TriviaInfinitePage = () => {
 
   const getOptionStyle = (option) => {
     if (!answered) {
-      return 'bg-slate-700 hover:bg-slate-600 border-white/40 text-white'
+      return 'bg-white border-secondary/40 text-text hover:border-secondary hover:bg-secondary/10'
     }
     if (option === currentQuestion?.correctAnswer) {
-      return 'bg-success border-success-light text-white'
+      return 'bg-success border-success text-white'
     }
     if (option === selectedAnswer && option !== currentQuestion?.correctAnswer) {
-      return 'bg-error border-error-light text-white'
+      return 'bg-error border-error text-white'
     }
-    return 'bg-slate-800/80 border-white/20 text-white/60'
+    return 'bg-primary-dark border-secondary/20 text-text/50'
   }
 
   if (loading && questions.length === 0) {
@@ -235,11 +235,11 @@ const TriviaInfinitePage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <div>
-                <p className="text-aqua text-xs font-bold">{t('trivia.infinite.scoreText')}</p>
+                <p className="text-white/60 text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.scoreText')}</p>
                 <p className="text-2xl font-black text-white">{score}</p>
               </div>
               <div>
-                <p className="text-aqua text-xs font-bold">{t('trivia.infinite.streakText')}</p>
+                <p className="text-white/60 text-xs font-bold uppercase tracking-wide">{t('trivia.infinite.streakText')}</p>
                 <p className="text-2xl font-black text-golden">{streak}</p>
               </div>
             </div>
@@ -255,7 +255,7 @@ const TriviaInfinitePage = () => {
               </div>
               <button
                 onClick={() => navigate('/trivia')}
-                className="px-4 py-2 bg-error/70 hover:bg-error text-white rounded-lg text-sm font-bold border border-error/50 transition-all duration-200 hover:scale-105"
+                className="px-4 py-2 bg-error text-white rounded-lg text-sm font-bold border-2 border-error-light/40 transition-all duration-200 hover:bg-error-dark hover:scale-105 shadow-md"
               >
                 ✕ {t('trivia.infinite.exit')}
               </button>
@@ -267,10 +267,10 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-slate-900 rounded-3xl p-6 md:p-8">
+          <div className="bg-primary rounded-3xl p-6 md:p-8 shadow-2xl border border-golden/30">
             {/* Tipo de pregunta */}
             <div className="flex items-center mb-6">
-              <span className="px-3 py-1 bg-ocean-500/30 text-ocean-200 rounded-full text-sm font-semibold">
+              <span className="px-3 py-1 bg-secondary/20 text-secondary rounded-full text-sm font-semibold border border-secondary/30">
                 {getQuestionTypeLabel(currentQuestion.type)}
               </span>
             </div>
@@ -278,16 +278,16 @@ const TriviaInfinitePage = () => {
             {/* Imagen de bandera si es pregunta de bandera */}
             {currentQuestion.type === 'FLAG' && currentQuestion.flagUrl && (
               <div className="mb-6 flex justify-center">
-                <img 
-                  src={currentQuestion.flagUrl} 
+                <img
+                  src={currentQuestion.flagUrl}
                   alt="Bandera"
-                  className="h-32 md:h-40 object-contain rounded-lg shadow-lg border-4 border-white/20"
+                  className="h-32 md:h-40 object-contain rounded-lg shadow-lg border-4 border-secondary/30"
                 />
               </div>
             )}
 
             {/* Pregunta */}
-            <h2 className="text-xl md:text-2xl font-bold text-white text-center mb-8">
+            <h2 className="text-xl md:text-2xl font-bold text-text text-center mb-8">
               {currentQuestion.question}
             </h2>
 
@@ -300,7 +300,7 @@ const TriviaInfinitePage = () => {
                   disabled={answered}
                   className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all ${getOptionStyle(option)} ${!answered && 'hover:scale-[1.02]'}`}
                 >
-                  <span className="text-white">{option}</span>
+                  {option}
                 </button>
               ))}
             </div>
@@ -309,7 +309,7 @@ const TriviaInfinitePage = () => {
             {answered && (
               <button
                 onClick={handleNext}
-                className="w-full mt-6 py-4 bg-ocean-600 text-white rounded-xl font-bold hover:bg-ocean-700 transition-all"
+                className="w-full mt-6 py-4 bg-secondary text-white rounded-xl font-bold hover:bg-secondary-dark transition-all"
               >
                 {t('trivia.infinite.nextQuestion')} →
               </button>
