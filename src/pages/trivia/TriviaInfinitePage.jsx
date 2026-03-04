@@ -112,7 +112,9 @@ const TriviaInfinitePage = () => {
       
       // Efecto visual de éxito
       toast.success(`+${points} ${t('trivia.infinite.pointsEarned')} ${streak + 1}`, {
-        duration: 1500
+        duration: 1500,
+        style: { background: '#4c7e75', color: '#ffffff', border: '2px solid #2c4a33' },
+        icon: '✅'
       })
     } else {
       setStreak(0)
@@ -120,10 +122,16 @@ const TriviaInfinitePage = () => {
 
       if (lives <= 1) {
         setGameOver(true)
-        toast.error(t('trivia.infinite.gameOverNoLives'), { duration: 3000 })
+        toast.error(t('trivia.infinite.gameOverNoLives'), {
+          duration: 3000,
+          style: { background: '#a56732', color: '#ffffff', border: '2px solid #8B5A2B' },
+          icon: '💀'
+        })
       } else {
         toast.error(`${t('trivia.infinite.incorrectLives')} (${lives - 1})`, {
-          duration: 1500
+          duration: 1500,
+          style: { background: '#a56732', color: '#ffffff', border: '2px solid #8B5A2B' },
+          icon: '❌'
         })
       }
     }
@@ -245,19 +253,21 @@ const TriviaInfinitePage = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex gap-1">
+              <div className="flex gap-1" aria-label={`${lives} vidas restantes`}>
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className={`w-4 h-4 rounded-full ${i < lives ? 'bg-error' : 'bg-gray-600'}`}></div>
+                  <span key={i} className="text-xl leading-none" role="img" aria-hidden="true">
+                    {i < lives ? '❤️' : '🖤'}
+                  </span>
                 ))}
               </div>
-              <div className="text-white/70 text-sm font-semibold">
+              <div className="text-white text-sm font-bold bg-white/10 px-2 py-1 rounded-md">
                 #{totalAnswered + 1}
               </div>
               <button
                 onClick={() => navigate('/trivia')}
-                className="px-4 py-2 bg-error text-white rounded-lg text-sm font-bold border-2 border-error-light/40 transition-all duration-200 hover:bg-error-dark hover:scale-105 shadow-md"
+                className="px-4 py-2 bg-golden text-midnight rounded-lg text-sm font-bold transition-all duration-200 hover:bg-golden-dark hover:scale-105 shadow-md cursor-pointer"
               >
-                ✕ {t('trivia.infinite.exit')}
+                {t('trivia.infinite.exit')}
               </button>
             </div>
           </div>
@@ -298,7 +308,7 @@ const TriviaInfinitePage = () => {
                   key={option}
                   onClick={() => handleAnswer(option)}
                   disabled={answered}
-                  className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all ${getOptionStyle(option)} ${!answered && 'hover:scale-[1.02]'}`}
+                  className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all cursor-pointer disabled:cursor-not-allowed ${getOptionStyle(option)} ${!answered && 'hover:scale-[1.02]'}`}
                 >
                   {option}
                 </button>

@@ -38,27 +38,27 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       </div>
 
       {/* Puntos ganados */}
-      <div className="bg-earth-50/20 rounded-xl p-4 mb-6">
+      <div className="bg-white/20 rounded-xl p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-white/70 text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
-            <p className="text-2xl font-bold">+{result.pointsEarned}</p>
+            <p className="text-white text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
+            <p className="text-2xl font-bold text-white">+{result.pointsEarned}</p>
           </div>
           <div>
-            <p className="text-white/70 text-sm font-semibold">{t('trivia.score')}</p>
-            <p className="text-2xl font-bold">{result.currentGameScore}</p>
+            <p className="text-white text-sm font-semibold">{t('trivia.score')}</p>
+            <p className="text-2xl font-bold text-white">{result.currentGameScore}</p>
           </div>
           <div>
-            <p className="text-white/70 text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
-            <p className="text-2xl font-bold">{result.currentStreak}</p>
+            <p className="text-white text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
+            <p className="text-2xl font-bold text-white">{result.currentStreak}</p>
           </div>
         </div>
       </div>
 
       {/* Explicación */}
       {result.explanation && (
-        <div className="bg-earth-50/10 rounded-xl p-4 mb-6">
-          <p className="text-sm font-medium">
+        <div className="bg-white/15 rounded-xl p-4 mb-6">
+          <p className="text-sm font-medium text-white">
             <span className="font-bold">{t('trivia.result.funFact')}</span> {result.explanation}
           </p>
         </div>
@@ -67,7 +67,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       {/* Botón continuar */}
       <button
         onClick={onNext}
-        className="w-full py-4 bg-golden text-midnight rounded-xl font-bold text-lg hover:bg-golden-dark transition-colors"
+        className="w-full py-4 bg-golden text-midnight rounded-xl font-bold text-lg hover:bg-golden-dark transition-colors cursor-pointer"
       >
         {isLastQuestion ? t('trivia.result.viewResults') : t('trivia.nextQuestion')}
       </button>
