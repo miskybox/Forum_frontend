@@ -57,9 +57,9 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
 
       {/* Explicación */}
       {result.explanation && (
-        <div className="bg-white/15 rounded-xl p-4 mb-6">
-          <p className="text-sm font-medium text-white">
-            <span className="font-bold">{t('trivia.result.funFact')}</span> {result.explanation}
+        <div className="bg-midnight/60 rounded-xl p-4 mb-6">
+          <p className="text-sm font-medium text-aqua">
+            <span className="font-bold text-golden">{t('trivia.result.funFact')}</span> {result.explanation}
           </p>
         </div>
       )}
