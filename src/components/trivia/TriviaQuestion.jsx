@@ -78,7 +78,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="bg-amber-50 border-2 border-secondary/30 rounded-xl overflow-hidden shadow-lg">
+    <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-xl overflow-hidden shadow-lg">
       {/* Header con progreso y timer */}
       <div className="bg-primary border-b-2 border-secondary px-6 py-4">
         <div className="flex items-center justify-between mb-3">
@@ -132,18 +132,18 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {question.options.map((option, idx) => {
             const COLORS = [
-              { tile: 'bg-midnight border-[#1a4d52] text-white hover:bg-[#2a5d62] hover:shadow-[0_0_16px_rgba(33,54,56,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-              { tile: 'bg-accent border-accent-dark text-white hover:bg-accent-dark hover:shadow-[0_0_16px_rgba(165,103,50,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-              { tile: 'bg-secondary border-secondary-dark text-white hover:bg-secondary-dark hover:shadow-[0_0_16px_rgba(76,126,117,0.5)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-              { tile: 'bg-golden border-golden-dark text-midnight hover:bg-golden-dark hover:shadow-[0_0_16px_rgba(229,161,62,0.5)] hover:scale-[1.02]', badge: 'bg-midnight/20 text-midnight' },
+              { tile: 'bg-[#dbeafe] border-[#1d4ed8] text-[#1e3a8a] hover:bg-[#bfdbfe] hover:shadow-[0_0_16px_rgba(59,130,246,0.35)] hover:scale-[1.02]', badge: 'bg-[#bfdbfe] text-[#1e3a8a]' },
+              { tile: 'bg-[#ffedd5] border-[#c2410c] text-[#7c2d12] hover:bg-[#fed7aa] hover:shadow-[0_0_16px_rgba(194,65,12,0.35)] hover:scale-[1.02]', badge: 'bg-[#fed7aa] text-[#7c2d12]' },
+              { tile: 'bg-[#dcfce7] border-[#166534] text-[#14532d] hover:bg-[#bbf7d0] hover:shadow-[0_0_16px_rgba(22,101,52,0.35)] hover:scale-[1.02]', badge: 'bg-[#bbf7d0] text-[#14532d]' },
+              { tile: 'bg-[#fef3c7] border-[#a16207] text-[#713f12] hover:bg-[#fde68a] hover:shadow-[0_0_16px_rgba(161,98,7,0.35)] hover:scale-[1.02]', badge: 'bg-[#fde68a] text-[#713f12]' },
             ]
             let tileClass
             let badgeClass
             if (answered) {
               tileClass = selectedAnswer === option
-                ? 'bg-[#1e3a5f] border-[#1e3a5f] text-white shadow-xl scale-[1.02]'
+                ? 'bg-[#bfdbfe] border-[#1d4ed8] text-[#1e3a8a] shadow-xl scale-[1.02]'
                 : `${COLORS[idx % 4].tile} opacity-30`
-              badgeClass = 'bg-white/20 text-inherit'
+              badgeClass = 'bg-black/10 text-inherit'
             } else {
               tileClass = COLORS[idx % 4].tile
               badgeClass = COLORS[idx % 4].badge

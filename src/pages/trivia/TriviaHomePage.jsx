@@ -352,10 +352,10 @@ const TriviaHomePage = () => {
                 className="card hover:border-secondary group bg-secondary"
               >
                 <div className="p-4 text-center">
-                  <h3 className="text-lg font-bold text-white mb-2 tracking-normal uppercase">
+                  <h3 className="text-lg font-bold text-midnight mb-2 tracking-normal uppercase">
                     {t('trivia.myMap')}
                   </h3>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-midnight/80 text-sm font-medium">
                     {t('trivia.registerTrips')}
                   </p>
                 </div>

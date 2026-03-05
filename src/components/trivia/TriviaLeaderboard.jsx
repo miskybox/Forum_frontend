@@ -32,8 +32,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   const getRankStyle = (rank) => {
     switch (rank) {
       case 1: return 'bg-gradient-to-r from-golden-dark to-golden text-midnight font-bold'
-      case 2: return 'bg-gradient-to-r from-accent to-accent-dark text-white font-bold'
-      case 3: return 'bg-gradient-to-r from-secondary to-secondary-dark text-white font-bold'
+      case 2: return 'bg-gradient-to-r from-[#f6c49b] to-[#e7a676] text-[#5b2c0c] font-bold'
+      case 3: return 'bg-gradient-to-r from-[#c7e5de] to-[#9ccdc3] text-[#17322e] font-bold'
       default: return 'bg-midnight text-aqua font-semibold'
     }
   }
@@ -66,7 +66,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer ${
                 type === tab.value
                   ? 'bg-golden text-midnight'
-                  : 'bg-aqua/20 text-white hover:bg-aqua/30'
+                  : 'bg-aqua/20 text-aqua hover:bg-aqua/30'
               }`}
             >
               {tab.label}

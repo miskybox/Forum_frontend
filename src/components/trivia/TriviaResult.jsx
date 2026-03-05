@@ -10,13 +10,13 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
   return (
     <div className={`p-6 rounded-2xl ${
       result.correct
-        ? 'bg-gradient-to-br from-success to-success-dark'
-        : 'bg-gradient-to-br from-error to-error-dark'
-    } text-white shadow-xl`}>
+        ? 'bg-[#ecfdf5] border-2 border-[#047857] text-[#065f46]'
+        : 'bg-[#fef2f2] border-2 border-[#b91c1c] text-[#7f1d1d]'
+    } shadow-xl`}>
       {/* Icono y mensaje */}
       <div className="text-center mb-6">
         <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
-          result.correct ? 'bg-white/20' : 'bg-white/10'
+          result.correct ? 'bg-[#d1fae5]' : 'bg-[#fee2e2]'
         }`}>
           <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
             {result.correct ? (
@@ -31,35 +31,35 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
         </h3>
 
         {!result.correct && (
-          <p className="mt-2 text-white/90 font-semibold">
+          <p className="mt-2 text-[#7f1d1d] font-semibold">
             {t('trivia.result.correctAnswerWas')} <strong>{result.correctAnswer}</strong>
           </p>
         )}
       </div>
 
       {/* Puntos ganados */}
-      <div className="bg-midnight/50 rounded-xl p-4 mb-6">
+      <div className="bg-primary-light border border-secondary/30 rounded-xl p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-aqua text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
-            <p className="text-2xl font-bold text-golden">+{result.pointsEarned}</p>
+            <p className="text-text text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
+            <p className="text-2xl font-bold text-[#92400e]">+{result.pointsEarned}</p>
           </div>
           <div>
-            <p className="text-aqua text-sm font-semibold">{t('trivia.score')}</p>
-            <p className="text-2xl font-bold text-white">{result.currentGameScore}</p>
+            <p className="text-text text-sm font-semibold">{t('trivia.score')}</p>
+            <p className="text-2xl font-bold text-midnight">{result.currentGameScore}</p>
           </div>
           <div>
-            <p className="text-aqua text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
-            <p className="text-2xl font-bold text-white">{result.currentStreak}</p>
+            <p className="text-text text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
+            <p className="text-2xl font-bold text-midnight">{result.currentStreak}</p>
           </div>
         </div>
       </div>
 
       {/* Explicación */}
       {result.explanation && (
-        <div className="bg-midnight/60 rounded-xl p-4 mb-6">
-          <p className="text-sm font-medium text-aqua">
-            <span className="font-bold text-golden">{t('trivia.result.funFact')}</span> {result.explanation}
+        <div className="bg-[#f8fafc] border border-secondary/30 rounded-xl p-4 mb-6">
+          <p className="text-sm font-medium text-text">
+            <span className="font-bold text-[#92400e]">{t('trivia.result.funFact')}</span> {result.explanation}
           </p>
         </div>
       )}

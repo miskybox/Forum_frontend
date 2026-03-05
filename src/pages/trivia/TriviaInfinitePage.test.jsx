@@ -161,12 +161,12 @@ describe('TriviaInfinitePage — Accesibilidad', () => {
       expect(h2.className).toContain('text-text')
     })
 
-    it('el contador de pregunta es visible (fondo semitransparente)', async () => {
+    it('el contador de pregunta es visible con alto contraste', async () => {
       renderPage()
       await waitFor(() => screen.getByText(/¿Cuál es la capital de Japón\?/))
       const counter = screen.getByText('#1')
       expect(counter).toBeVisible()
-      expect(counter.className).toContain('bg-white/10')
+      expect(counter.className).toContain('bg-golden/20')
     })
   })
 })

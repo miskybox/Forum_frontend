@@ -263,7 +263,7 @@ const TriviaPlayPage = () => {
                 </div>
                 <button
                   onClick={handleAbandonConfirmed}
-                  className="px-3 py-1.5 bg-error text-white rounded-lg hover:bg-error-dark transition-colors text-sm font-bold cursor-pointer"
+                  className="px-3 py-1.5 bg-[#fecaca] text-[#7f1d1d] border border-[#b91c1c] rounded-lg hover:bg-[#fca5a5] transition-colors text-sm font-bold cursor-pointer"
                 >
                   {t('common.yes')}
                 </button>
@@ -277,7 +277,7 @@ const TriviaPlayPage = () => {
             ) : (
               <button
                 onClick={handleAbandon}
-                className="px-4 py-2 bg-error/20 text-error border border-error rounded-lg hover:bg-error/30 transition-colors text-sm cursor-pointer"
+                className="px-4 py-2 bg-[#fee2e2] text-[#7f1d1d] border border-[#b91c1c] rounded-lg hover:bg-[#fecaca] transition-colors text-sm font-semibold cursor-pointer"
               >
                 {t('trivia.abandon')}
               </button>

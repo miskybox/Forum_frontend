@@ -161,10 +161,10 @@ const TriviaInfinitePage = () => {
   }
 
   const OPTION_COLORS = [
-    { tile: 'bg-midnight border-[#1a4d52] text-white hover:bg-[#2a5d62] hover:shadow-[0_0_16px_rgba(33,54,56,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-    { tile: 'bg-accent border-accent-dark text-white hover:bg-accent-dark hover:shadow-[0_0_16px_rgba(165,103,50,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-    { tile: 'bg-secondary border-secondary-dark text-white hover:bg-secondary-dark hover:shadow-[0_0_16px_rgba(76,126,117,0.55)] hover:scale-[1.02]', badge: 'bg-white/25 text-white' },
-    { tile: 'bg-golden border-golden-dark text-midnight hover:bg-golden-dark hover:shadow-[0_0_16px_rgba(229,161,62,0.55)] hover:scale-[1.02]', badge: 'bg-midnight/20 text-midnight' },
+    { tile: 'bg-[#dbeafe] border-[#1d4ed8] text-[#1e3a8a] hover:bg-[#bfdbfe] hover:shadow-[0_0_16px_rgba(59,130,246,0.35)] hover:scale-[1.02]', badge: 'bg-[#bfdbfe] text-[#1e3a8a]' },
+    { tile: 'bg-[#ffedd5] border-[#c2410c] text-[#7c2d12] hover:bg-[#fed7aa] hover:shadow-[0_0_16px_rgba(194,65,12,0.35)] hover:scale-[1.02]', badge: 'bg-[#fed7aa] text-[#7c2d12]' },
+    { tile: 'bg-[#dcfce7] border-[#166534] text-[#14532d] hover:bg-[#bbf7d0] hover:shadow-[0_0_16px_rgba(22,101,52,0.35)] hover:scale-[1.02]', badge: 'bg-[#bbf7d0] text-[#14532d]' },
+    { tile: 'bg-[#fef3c7] border-[#a16207] text-[#713f12] hover:bg-[#fde68a] hover:shadow-[0_0_16px_rgba(161,98,7,0.35)] hover:scale-[1.02]', badge: 'bg-[#fde68a] text-[#713f12]' },
   ]
 
   const getOptionStyle = (option, idx) => {
@@ -189,29 +189,29 @@ const TriviaInfinitePage = () => {
   if (gameOver) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-midnight via-teal-dark to-midnight flex items-center justify-center p-4">
-        <div className="bg-aqua/10 backdrop-blur-lg rounded-3xl p-8 max-w-md w-full text-center border border-golden">
+        <div className="bg-primary-light rounded-3xl p-8 max-w-md w-full text-center border border-secondary/40 shadow-2xl">
           <div className="w-20 h-20 mx-auto mb-4 bg-golden rounded-full flex items-center justify-center">
             <svg className="w-10 h-10 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           </div>
-          <h2 className="text-3xl font-black text-white mb-2">{t('trivia.infinite.gameOver')}</h2>
-          <p className="text-aqua mb-6 font-semibold">{t('trivia.infinite.infiniteMode')}</p>
+          <h2 className="text-3xl font-black text-midnight mb-2">{t('trivia.infinite.gameOver')}</h2>
+          <p className="text-text mb-6 font-semibold">{t('trivia.infinite.infiniteMode')}</p>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="bg-golden/20 rounded-xl p-4">
-              <p className="text-aqua text-sm font-semibold">{t('trivia.infinite.scoreLabel')}</p>
-              <p className="text-3xl font-bold text-white">{score}</p>
+              <p className="text-text text-sm font-semibold">{t('trivia.infinite.scoreLabel')}</p>
+              <p className="text-3xl font-bold text-midnight">{score}</p>
             </div>
             <div className="bg-aqua/20 rounded-xl p-4">
-              <p className="text-aqua text-sm font-semibold">{t('trivia.infinite.bestStreakLabel')}</p>
-              <p className="text-3xl font-bold text-white">{bestStreak}</p>
+              <p className="text-text text-sm font-semibold">{t('trivia.infinite.bestStreakLabel')}</p>
+              <p className="text-3xl font-bold text-midnight">{bestStreak}</p>
             </div>
             <div className="bg-midnight/50 rounded-xl p-4">
               <p className="text-aqua text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
-              <p className="text-3xl font-bold text-white">{totalAnswered}</p>
+              <p className="text-3xl font-bold text-primary-light">{totalAnswered}</p>
             </div>
             <div className="bg-golden/20 rounded-xl p-4">
-              <p className="text-aqua text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>
-              <p className="text-3xl font-bold text-white">
+              <p className="text-text text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>
+              <p className="text-3xl font-bold text-midnight">
                 {totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0}%
               </p>
             </div>
@@ -226,7 +226,7 @@ const TriviaInfinitePage = () => {
             </button>
             <button
               onClick={() => navigate('/trivia')}
-              className="w-full py-4 bg-aqua/20 text-white rounded-xl font-bold hover:bg-aqua/30 transition-all"
+              className="w-full py-4 bg-aqua/40 text-midnight rounded-xl font-bold hover:bg-aqua/60 transition-all cursor-pointer"
             >
               {t('trivia.infinite.backToMenu')}
             </button>
@@ -276,7 +276,7 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-primary rounded-3xl p-6 md:p-8 shadow-2xl border border-golden/30">
+          <div className="bg-[#e8f4f1] rounded-3xl p-6 md:p-8 shadow-2xl border border-secondary/40">
             {/* Tipo de pregunta */}
             <div className="flex items-center mb-6">
               <span className="px-3 py-1 bg-secondary/20 text-secondary rounded-full text-sm font-semibold border border-secondary/30">
@@ -309,7 +309,7 @@ const TriviaInfinitePage = () => {
                   disabled={answered}
                   className={`w-full px-4 py-4 rounded-xl border-2 text-left font-bold transition-all duration-200 cursor-pointer disabled:cursor-not-allowed flex items-center gap-3 min-h-[64px] ${getOptionStyle(option, idx)}`}
                 >
-                  <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-black flex-shrink-0 ${answered ? 'bg-black/15 text-inherit' : OPTION_COLORS[idx % 4].badge}`}>
+                  <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-black flex-shrink-0 ${answered ? 'bg-black/10 text-inherit' : OPTION_COLORS[idx % 4].badge}`}>
                     {['A','B','C','D'][idx]}
                   </span>
                   <span className="text-sm md:text-base leading-tight">{option}</span>
