@@ -310,6 +310,10 @@ const translations = {
         pointsLabel: 'Puntos',
         streakLabel: 'Racha',
         funFact: 'Dato curioso:',
+        extraInsightCorrect: 'Excelente elección. Relacionar capitales, banderas y región acelera mucho tu precisión.',
+        extraInsightIncorrect: 'Tip rápido: compara región, idioma oficial y moneda; suele descartar opciones parecidas.',
+        strategyLabel: 'Consejo táctico:',
+        strategyTip: 'lee primero todas las opciones y luego elimina dos imposibles antes de responder.',
         viewResults: 'Ver resultados',
       },
       summary: {
@@ -985,6 +989,10 @@ const translations = {
         pointsLabel: 'Points',
         streakLabel: 'Streak',
         funFact: 'Fun fact:',
+        extraInsightCorrect: 'Great choice. Linking capitals, flags and region dramatically improves precision.',
+        extraInsightIncorrect: 'Quick tip: compare region, official language and currency to discard similar options.',
+        strategyLabel: 'Strategy tip:',
+        strategyTip: 'scan all options first, then eliminate two impossible ones before answering.',
         viewResults: 'View results',
       },
       summary: {

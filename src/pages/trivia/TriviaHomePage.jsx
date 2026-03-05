@@ -99,13 +99,19 @@ const TriviaHomePage = () => {
   const createNewGame = async (mode, options, withTimer = true) => {
     setStarting(true)
     try {
+      const gamePayload = { gameMode: mode }
+      if (mode !== 'DAILY') {
+        gamePayload.totalQuestions = options.questions || 10
+      }
+      if (options.difficulty) {
+        gamePayload.difficulty = options.difficulty
+      }
+      if (options.continent) {
+        gamePayload.continent = options.continent
+      }
+
       if (import.meta.env.DEV) console.log('Iniciando partida:', { mode, options, withTimer })
-      const game = await triviaService.startGame({
-        gameMode: mode,
-        totalQuestions: options.questions || 10,
-        difficulty: options.difficulty,
-        continent: options.continent
-      })
+      const game = await triviaService.startGame(gamePayload)
       if (import.meta.env.DEV) console.log('Partida creada:', game.id)
       navigate(`/trivia/play/${game.id}`, { state: { withTimer } })
     } catch (error) {
@@ -134,7 +140,7 @@ const TriviaHomePage = () => {
           errorMessage = 'No tienes permisos para iniciar partidas.'
         } else if (status === 400) {
           const backendMsg = error.response.data?.message
-          if (backendMsg?.includes('diaria')) {
+          if (/diari|daily/i.test(backendMsg || '')) {
             errorMessage = '¡Ya jugaste la trivia diaria! Vuelve mañana.'
           } else {
             errorMessage = 'Configuración de partida inválida.'

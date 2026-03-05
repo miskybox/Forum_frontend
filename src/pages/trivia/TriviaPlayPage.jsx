@@ -256,20 +256,25 @@ const TriviaPlayPage = () => {
             
             {showAbandonConfirm ? (
               <div className="flex items-center gap-2">
-                <div className="bg-error/10 border border-error/40 px-3 py-1.5 rounded-lg">
-                  <span className="text-error text-sm font-semibold">
+                <div className="bg-[#fee2e2] border border-[#b91c1c] px-3 py-1.5 rounded-lg">
+                  <span
+                    className="text-[#7f1d1d] text-sm font-semibold"
+                    style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(127,29,29,0.25)' }}
+                  >
                     {t('trivia.abandonConfirm')}
                   </span>
                 </div>
                 <button
                   onClick={handleAbandonConfirmed}
                   className="px-3 py-1.5 bg-[#fecaca] text-[#7f1d1d] border border-[#b91c1c] rounded-lg hover:bg-[#fca5a5] transition-colors text-sm font-bold cursor-pointer"
+                  style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(127,29,29,0.25)' }}
                 >
                   {t('common.yes')}
                 </button>
                 <button
                   onClick={() => setShowAbandonConfirm(false)}
                   className="px-3 py-1.5 bg-primary-light border border-secondary text-text rounded-lg hover:bg-secondary/30 transition-colors text-sm cursor-pointer"
+                  style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(33,54,56,0.2)' }}
                 >
                   {t('common.no')}
                 </button>

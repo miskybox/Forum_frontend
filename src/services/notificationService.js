@@ -6,8 +6,15 @@ const notificationService = {
     return response.data
   },
   getUnreadCount: async () => {
-    const response = await api.get('/notifications/unread-count')
-    return response.data
+    try {
+      const response = await api.get('/notifications/unread-count')
+      return response.data
+    } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        return 0
+      }
+      throw error
+    }
   },
   markAsRead: async (id) => {
     const response = await api.post(`/notifications/${id}/read`)

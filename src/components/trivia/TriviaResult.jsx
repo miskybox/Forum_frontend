@@ -1,11 +1,24 @@
 import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 
+const sanitizeText = (value = '') => value.toLowerCase().trim()
+
+const isExplanationRedundant = (explanation, correctAnswer) => {
+  const normalizedExplanation = sanitizeText(explanation)
+  const normalizedAnswer = sanitizeText(correctAnswer)
+  if (!normalizedExplanation || !normalizedAnswer) return false
+
+  // If the explanation mostly repeats the exact answer, show a better fallback insight.
+  return normalizedExplanation.includes(normalizedAnswer) && normalizedExplanation.length <= normalizedAnswer.length + 30
+}
+
 /**
  * Componente que muestra el resultado de una respuesta
  */
 const TriviaResult = ({ result, onNext, isLastQuestion }) => {
   const { t } = useLanguage()
+  const showExplanation = result.explanation && !isExplanationRedundant(result.explanation, result.correctAnswer)
+  const fallbackInsight = result.correct ? t('trivia.result.extraInsightCorrect') : t('trivia.result.extraInsightIncorrect')
 
   return (
     <div className={`p-6 rounded-2xl ${
@@ -56,10 +69,13 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       </div>
 
       {/* Explicación */}
-      {result.explanation && (
+      {(showExplanation || fallbackInsight) && (
         <div className="bg-[#f8fafc] border border-secondary/30 rounded-xl p-4 mb-6">
           <p className="text-sm font-medium text-text">
-            <span className="font-bold text-[#92400e]">{t('trivia.result.funFact')}</span> {result.explanation}
+            <span className="font-bold text-[#92400e]">{t('trivia.result.funFact')}</span> {showExplanation ? result.explanation : fallbackInsight}
+          </p>
+          <p className="text-xs mt-2 text-text-light">
+            <span className="font-semibold text-secondary">{t('trivia.result.strategyLabel')}</span> {t('trivia.result.strategyTip')}
           </p>
         </div>
       )}
