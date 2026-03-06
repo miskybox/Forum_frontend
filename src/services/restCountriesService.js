@@ -275,7 +275,7 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: country.capital[0],
         options: shuffleArray([
           country.capital[0],
-          ...getRandomCapitals(allCountries, country.cca2, 3)
+          ...getRandomCapitals(allCountries, country.cca2, 3, [country.capital[0]])
         ]),
         countryCode: country.cca2,
         difficulty: 1,
@@ -290,7 +290,7 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: countryName,
         options: shuffleArray([
           countryName,
-          ...getRandomCountryNames(allCountries, country.cca2, 3)
+          ...getRandomCountryNames(allCountries, country.cca2, 3, [countryName])
         ]),
         countryCode: country.cca2,
         difficulty: 2,
@@ -308,7 +308,7 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: currencyES,
         options: shuffleArray([
           currencyES,
-          ...getRandomCurrencies(allCountries, country.cca2, 3)
+          ...getRandomCurrencies(allCountries, country.cca2, 3, [currencyES])
         ]),
         countryCode: country.cca2,
         difficulty: 2,
@@ -326,7 +326,7 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: langES,
         options: shuffleArray([
           langES,
-          ...getRandomLanguages(allCountries, country.cca2, 3)
+          ...getRandomLanguages(allCountries, country.cca2, 3, [langES])
         ]),
         countryCode: country.cca2,
         difficulty: 2,
@@ -461,31 +461,35 @@ const shuffleArray = (array) => {
   return shuffled
 }
 
-const getRandomCapitals = (countries, excludeCode, count) => {
+const getRandomCapitals = (countries, excludeCode, count, excludeValues = []) => {
   const capitals = countries
     .filter(c => c.cca2 !== excludeCode && c.capital?.[0])
     .map(c => c.capital[0])
-  return shuffleArray(capitals).slice(0, count)
+    .filter(v => !excludeValues.includes(v))
+  return [...new Set(shuffleArray(capitals))].slice(0, count)
 }
 
-const getRandomCountryNames = (countries, excludeCode, count) => {
+const getRandomCountryNames = (countries, excludeCode, count, excludeValues = []) => {
   const names = countries
     .filter(c => c.cca2 !== excludeCode)
     .map(c => getSpanishName(c))
-  return shuffleArray(names).slice(0, count)
+    .filter(v => !excludeValues.includes(v))
+  return [...new Set(shuffleArray(names))].slice(0, count)
 }
 
-const getRandomCurrencies = (countries, excludeCode, count) => {
+const getRandomCurrencies = (countries, excludeCode, count, excludeValues = []) => {
   const currencies = countries
     .filter(c => c.cca2 !== excludeCode && c.currencies)
     .flatMap(c => Object.values(c.currencies).map(cur => getSpanishCurrency(cur.name)))
+    .filter(v => !excludeValues.includes(v))
   return [...new Set(shuffleArray(currencies))].slice(0, count)
 }
 
-const getRandomLanguages = (countries, excludeCode, count) => {
+const getRandomLanguages = (countries, excludeCode, count, excludeValues = []) => {
   const languages = countries
     .filter(c => c.cca2 !== excludeCode && c.languages)
     .flatMap(c => Object.values(c.languages).map(getSpanishLanguage))
+    .filter(v => !excludeValues.includes(v))
   return [...new Set(shuffleArray(languages))].slice(0, count)
 }
 

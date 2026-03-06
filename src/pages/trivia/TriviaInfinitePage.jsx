@@ -206,8 +206,8 @@ const TriviaInfinitePage = () => {
               <p className="text-3xl font-bold text-midnight">{bestStreak}</p>
             </div>
             <div className="bg-midnight/50 rounded-xl p-4">
-              <p className="text-aqua text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
-              <p className="text-3xl font-bold text-primary-light">{totalAnswered}</p>
+              <p className="text-white text-sm font-semibold">{t('trivia.infinite.questionsLabel')}</p>
+              <p className="text-3xl font-bold text-white">{totalAnswered}</p>
             </div>
             <div className="bg-golden/20 rounded-xl p-4">
               <p className="text-text text-sm font-semibold">{t('trivia.infinite.precisionLabel')}</p>

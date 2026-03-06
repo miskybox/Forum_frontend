@@ -319,10 +319,10 @@ const TriviaHomePage = () => {
                 <div className="flex flex-wrap gap-3">
                   {[
                     { key: 'europe', apiValue: 'Europa' },
-                    { key: 'america', apiValue: 'América' },
+                    { key: 'america', apiValue: 'America' },
                     { key: 'asia', apiValue: 'Asia' },
-                    { key: 'africa', apiValue: 'África' },
-                    { key: 'oceania', apiValue: 'Oceanía' }
+                    { key: 'africa', apiValue: 'Africa' },
+                    { key: 'oceania', apiValue: 'Oceania' }
                   ].map(continent => (
                     <button
                       key={continent.key}
