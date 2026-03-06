@@ -317,11 +317,19 @@ const TriviaInfinitePage = () => {
               ))}
             </div>
 
+            {/* Dato curioso tras responder */}
+            {answered && currentQuestion?.funFact && (
+              <div className="mt-5 bg-[#f0fdf4] border border-[#86efac] rounded-xl p-4">
+                <p className="text-sm font-bold text-[#166534] mb-1">💡 {t('trivia.result.funFact')}</p>
+                <p className="text-sm text-[#166534] leading-snug">{currentQuestion.funFact}</p>
+              </div>
+            )}
+
             {/* Botón siguiente */}
             {answered && (
               <button
                 onClick={handleNext}
-                className="w-full mt-6 py-4 bg-golden text-midnight rounded-xl font-bold hover:bg-golden-dark transition-all cursor-pointer"
+                className="w-full mt-4 py-4 bg-golden text-midnight rounded-xl font-bold hover:bg-golden-dark transition-all cursor-pointer"
               >
                 {t('trivia.infinite.nextQuestion')} →
               </button>

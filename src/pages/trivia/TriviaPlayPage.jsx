@@ -273,8 +273,7 @@ const TriviaPlayPage = () => {
                 </button>
                 <button
                   onClick={() => setShowAbandonConfirm(false)}
-                  className="px-3 py-1.5 bg-primary-light border border-secondary text-text rounded-lg hover:bg-secondary/30 transition-colors text-sm cursor-pointer"
-                  style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(33,54,56,0.2)' }}
+                  className="px-3 py-1.5 bg-[#d1fae5] text-[#065f46] border border-[#047857] rounded-lg hover:bg-[#a7f3d0] transition-colors text-sm font-bold cursor-pointer"
                 >
                   {t('common.no')}
                 </button>

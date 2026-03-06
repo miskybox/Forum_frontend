@@ -51,8 +51,8 @@ export const getAllCountries = async () => {
       const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout (reducido)
 
       const response = await fetch(
-        `${API_BASE_URL}/all?fields=name,capital,flags,currencies,languages,population,area,region,subregion,cca2,cca3,borders,timezones,latlng`,
-        { 
+        `${API_BASE_URL}/all?fields=name,capital,flags,currencies,languages,population,area,region,subregion,cca2,cca3,borders,timezones,latlng,translations`,
+        {
           signal: controller.signal,
           mode: 'cors',
           cache: 'default'
@@ -211,10 +211,60 @@ export const generateTriviaQuestions = async (count = 10, usedQuestionIds = []) 
 }
 
 /**
+ * Generar un dato curioso sobre el país según el tipo de pregunta
+ */
+const generateFunFact = (country, type) => {
+  const name = getSpanishName(country)
+  const capital = country.capital?.[0]
+  const population = country.population
+  const area = country.area
+  const region = getSpanishRegion(country.region)
+  const languages = Object.values(country.languages || {}).map(getSpanishLanguage)
+  const currencies = Object.values(country.currencies || {})
+  const currency = currencies[0]
+
+  const formatNum = (n) => {
+    if (n >= 1000000000) return `${(n / 1000000000).toFixed(1)} mil millones`
+    if (n >= 1000000) return `${Math.round(n / 1000000)} millones`
+    if (n >= 1000) return `${Math.round(n / 1000)} mil`
+    return n?.toLocaleString('es-ES') || '?'
+  }
+
+  switch (type) {
+    case 'capital':
+      if (!capital) return null
+      if (population) return `${name} tiene una población de ${formatNum(population)} habitantes y su capital ${capital} es el centro político y cultural del país.`
+      return `${capital} es la capital de ${name}, ubicado en ${region}.`
+    case 'flag':
+      if (languages.length > 1) return `${name} tiene ${languages.length} idiomas oficiales: ${languages.slice(0, 3).join(', ')}.`
+      if (capital) return `La capital de ${name} es ${capital}${area ? `, con una superficie de ${formatNum(area)} km²` : ''}.`
+      return `${name} se encuentra en ${region}.`
+    case 'currency':
+      if (currency?.symbol) return `${name} usa ${getSpanishCurrency(currency.name)} (símbolo: ${currency.symbol}) como moneda oficial${population ? `, con ${formatNum(population)} habitantes` : ''}.`
+      return `La moneda de ${name} es oficial en ${region}.`
+    case 'language':
+      if (languages.length > 1) return `${name} tiene ${languages.length} idiomas oficiales: ${languages.join(', ')}.`
+      if (capital) return `En ${name}, cuya capital es ${capital}, el idioma oficial es ${languages[0] || '?'}.`
+      return `${name} se encuentra en ${region}.`
+    case 'population':
+      if (area) return `${name} ocupa una superficie de ${formatNum(area)} km² en ${region}${capital ? `, con capital en ${capital}` : ''}.`
+      return `${name} se encuentra en ${region}.`
+    case 'region':
+      if (capital && population) return `${name} tiene su capital en ${capital} y una población de ${formatNum(population)} personas.`
+      return `${name} pertenece a ${region}${capital ? `, con capital en ${capital}` : ''}.`
+    case 'area':
+      if (population) return `${name} tiene ${formatNum(population)} habitantes distribuidos en su territorio de ${region}.`
+      return `${name} se encuentra en ${region}${capital ? `, capital: ${capital}` : ''}.`
+    default:
+      return null
+  }
+}
+
+/**
  * Crear una pregunta de trivia
  */
 const createQuestion = (country, type, allCountries) => {
-  const countryName = country.name.common
+  const countryName = getSpanishName(country)
 
   switch (type) {
     case 'capital':
@@ -228,7 +278,8 @@ const createQuestion = (country, type, allCountries) => {
           ...getRandomCapitals(allCountries, country.cca2, 3)
         ]),
         countryCode: country.cca2,
-        difficulty: 1
+        difficulty: 1,
+        funFact: generateFunFact(country, 'capital')
       }
 
     case 'flag':
@@ -242,39 +293,44 @@ const createQuestion = (country, type, allCountries) => {
           ...getRandomCountryNames(allCountries, country.cca2, 3)
         ]),
         countryCode: country.cca2,
-        difficulty: 2
+        difficulty: 2,
+        funFact: generateFunFact(country, 'flag')
       }
 
     case 'currency': {
       const currencies = Object.values(country.currencies || {})
       if (currencies.length === 0) return null
       const currency = currencies[0]
+      const currencyES = getSpanishCurrency(currency.name)
       return {
         type: 'CURRENCY',
         question: `¿Cuál es la moneda oficial de ${countryName}?`,
-        correctAnswer: currency.name,
+        correctAnswer: currencyES,
         options: shuffleArray([
-          currency.name,
+          currencyES,
           ...getRandomCurrencies(allCountries, country.cca2, 3)
         ]),
         countryCode: country.cca2,
-        difficulty: 2
+        difficulty: 2,
+        funFact: generateFunFact(country, 'currency')
       }
     }
 
     case 'language': {
       const languages = Object.values(country.languages || {})
       if (languages.length === 0) return null
+      const langES = getSpanishLanguage(languages[0])
       return {
         type: 'LANGUAGE',
         question: `¿Cuál es uno de los idiomas oficiales de ${countryName}?`,
-        correctAnswer: languages[0],
+        correctAnswer: langES,
         options: shuffleArray([
-          languages[0],
+          langES,
           ...getRandomLanguages(allCountries, country.cca2, 3)
         ]),
         countryCode: country.cca2,
-        difficulty: 2
+        difficulty: 2,
+        funFact: generateFunFact(country, 'language')
       }
     }
 
@@ -287,22 +343,26 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: populationRanges.correct,
         options: shuffleArray(populationRanges.all),
         countryCode: country.cca2,
-        difficulty: 3
+        difficulty: 3,
+        funFact: generateFunFact(country, 'population')
       }
     }
 
-    case 'region':
+    case 'region': {
+      const regionES = getSpanishRegion(country.region)
       return {
         type: 'CONTINENT',
         question: `¿En qué continente se encuentra ${countryName}?`,
-        correctAnswer: country.region,
+        correctAnswer: regionES,
         options: shuffleArray([
-          country.region,
+          regionES,
           ...getOtherRegions(country.region)
         ]).slice(0, 4),
         countryCode: country.cca2,
-        difficulty: 1
+        difficulty: 1,
+        funFact: generateFunFact(country, 'region')
       }
+    }
 
     case 'area': {
       const area = country.area
@@ -313,7 +373,8 @@ const createQuestion = (country, type, allCountries) => {
         correctAnswer: areaRanges.correct,
         options: shuffleArray(areaRanges.all),
         countryCode: country.cca2,
-        difficulty: 3
+        difficulty: 3,
+        funFact: generateFunFact(country, 'area')
       }
     }
 
@@ -321,6 +382,74 @@ const createQuestion = (country, type, allCountries) => {
       return null
   }
 }
+
+// Traducción de regiones al español
+const REGION_ES = {
+  'Africa': 'África',
+  'Americas': 'América',
+  'Asia': 'Asia',
+  'Europe': 'Europa',
+  'Oceania': 'Oceanía',
+  'Antarctic': 'Antártica'
+}
+
+// Traducción de idiomas al español (los más comunes de la API)
+const LANGUAGE_ES = {
+  'Spanish': 'Español', 'English': 'Inglés', 'French': 'Francés',
+  'German': 'Alemán', 'Portuguese': 'Portugués', 'Italian': 'Italiano',
+  'Arabic': 'Árabe', 'Chinese': 'Chino', 'Russian': 'Ruso',
+  'Japanese': 'Japonés', 'Korean': 'Coreano', 'Hindi': 'Hindi',
+  'Dutch': 'Neerlandés', 'Polish': 'Polaco', 'Turkish': 'Turco',
+  'Swedish': 'Sueco', 'Norwegian': 'Noruego', 'Danish': 'Danés',
+  'Finnish': 'Finlandés', 'Greek': 'Griego', 'Hungarian': 'Húngaro',
+  'Czech': 'Checo', 'Romanian': 'Rumano', 'Ukrainian': 'Ucraniano',
+  'Hebrew': 'Hebreo', 'Swahili': 'Suajili', 'Malay': 'Malayo',
+  'Thai': 'Tailandés', 'Vietnamese': 'Vietnamita', 'Indonesian': 'Indonesio',
+  'Urdu': 'Urdu', 'Bengali': 'Bengalí', 'Tagalog': 'Tagalo',
+  'Persian': 'Persa', 'Catalan': 'Catalán', 'Basque': 'Vasco',
+  'Galician': 'Gallego', 'Serbian': 'Serbio', 'Croatian': 'Croata',
+  'Slovak': 'Eslovaco', 'Slovenian': 'Esloveno', 'Bulgarian': 'Búlgaro',
+  'Estonian': 'Estonio', 'Latvian': 'Letón', 'Lithuanian': 'Lituano',
+  'Albanian': 'Albanés', 'Macedonian': 'Macedonio', 'Bosnian': 'Bosnio',
+  'Maltese': 'Maltés', 'Icelandic': 'Islandés', 'Welsh': 'Galés',
+  'Irish': 'Irlandés', 'Luxembourgish': 'Luxemburgués'
+}
+
+// Traducción de monedas al español
+const CURRENCY_ES = {
+  'Euro': 'Euro', 'United States dollar': 'Dólar estadounidense',
+  'Pound sterling': 'Libra esterlina', 'Japanese yen': 'Yen japonés',
+  'Swiss franc': 'Franco suizo', 'Canadian dollar': 'Dólar canadiense',
+  'Australian dollar': 'Dólar australiano', 'Chinese yuan': 'Yuan chino',
+  'Swedish krona': 'Corona sueca', 'Norwegian krone': 'Corona noruega',
+  'Danish krone': 'Corona danesa', 'Brazilian real': 'Real brasileño',
+  'Mexican peso': 'Peso mexicano', 'Argentine peso': 'Peso argentino',
+  'Chilean peso': 'Peso chileno', 'Colombian peso': 'Peso colombiano',
+  'Russian ruble': 'Rublo ruso', 'Indian rupee': 'Rupia india',
+  'South Korean won': 'Won surcoreano', 'Turkish lira': 'Lira turca',
+  'New Zealand dollar': 'Dólar neozelandés', 'Singapore dollar': 'Dólar singapurense',
+  'South African rand': 'Rand sudafricano', 'Egyptian pound': 'Libra egipcia',
+  'Saudi riyal': 'Riyal saudí', 'United Arab Emirates dirham': 'Dírham emiratí',
+  'Czech koruna': 'Corona checa', 'Hungarian forint': 'Forinto húngaro',
+  'Polish złoty': 'Esloti polaco', 'Romanian leu': 'Leu rumano',
+  'Ukrainian hryvnia': 'Grivna ucraniana', 'Israeli new shekel': 'Séquel israelí',
+  'Thai baht': 'Baht tailandés', 'Malaysian ringgit': 'Ringgit malayo',
+  'Indonesian rupiah': 'Rupia indonesia', 'Philippine peso': 'Peso filipino',
+  'Vietnamese đồng': 'Dong vietnamita', 'Pakistani rupee': 'Rupia pakistaní'
+}
+
+// Obtener nombre del país en español
+const getSpanishName = (country) =>
+  country.translations?.spa?.common || country.name.common
+
+// Obtener nombre de idioma en español
+const getSpanishLanguage = (lang) => LANGUAGE_ES[lang] || lang
+
+// Obtener nombre de moneda en español
+const getSpanishCurrency = (name) => CURRENCY_ES[name] || name
+
+// Obtener región en español
+const getSpanishRegion = (region) => REGION_ES[region] || region
 
 // Funciones auxiliares
 const shuffleArray = (array) => {
@@ -342,27 +471,27 @@ const getRandomCapitals = (countries, excludeCode, count) => {
 const getRandomCountryNames = (countries, excludeCode, count) => {
   const names = countries
     .filter(c => c.cca2 !== excludeCode)
-    .map(c => c.name.common)
+    .map(c => getSpanishName(c))
   return shuffleArray(names).slice(0, count)
 }
 
 const getRandomCurrencies = (countries, excludeCode, count) => {
   const currencies = countries
     .filter(c => c.cca2 !== excludeCode && c.currencies)
-    .flatMap(c => Object.values(c.currencies).map(cur => cur.name))
+    .flatMap(c => Object.values(c.currencies).map(cur => getSpanishCurrency(cur.name)))
   return [...new Set(shuffleArray(currencies))].slice(0, count)
 }
 
 const getRandomLanguages = (countries, excludeCode, count) => {
   const languages = countries
     .filter(c => c.cca2 !== excludeCode && c.languages)
-    .flatMap(c => Object.values(c.languages))
+    .flatMap(c => Object.values(c.languages).map(getSpanishLanguage))
   return [...new Set(shuffleArray(languages))].slice(0, count)
 }
 
 const getOtherRegions = (currentRegion) => {
   const allRegions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'Antarctic']
-  return allRegions.filter(r => r !== currentRegion)
+  return allRegions.filter(r => r !== currentRegion).map(r => REGION_ES[r] || r)
 }
 
 const getPopulationRanges = (population) => {
