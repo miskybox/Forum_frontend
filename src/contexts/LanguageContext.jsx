@@ -1481,6 +1481,12 @@ export const useLanguage = () => {
           'demo.disclaimerTitle': 'Sitio Demo',
           'demo.disclaimerRegister': 'Esta es una página de demostración. No utilices contraseñas reales ni datos personales.',
           'demo.existingAccounts': 'Si solo quieres probar, puedes usar las cuentas demo desde la página de login.',
+          // Home additional
+          'home.playTrivia': 'Jugar trivia',
+          // Category keys
+          'categories.forum': 'foro',
+          'categories.forums': 'foros',
+          'categories.available': 'disponibles',
         }
         return fallbacks[key] || key
       },

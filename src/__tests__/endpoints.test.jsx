@@ -305,8 +305,8 @@ describe('Endpoints - Verificación Completa de Llamadas', () => {
 
       await userService.changePassword(1, 'old', 'new')
 
-      expect(api.put).toHaveBeenCalledWith('/users/1/change-password', null, {
-        params: { currentPassword: 'old', newPassword: 'new' }
+      expect(api.put).toHaveBeenCalledWith('/users/1/change-password', {
+        currentPassword: 'old', newPassword: 'new'
       })
     })
   })

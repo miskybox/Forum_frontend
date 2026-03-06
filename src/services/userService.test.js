@@ -152,8 +152,8 @@ describe('userService', () => {
 
       const result = await userService.changePassword(1, 'oldPass123', 'newPass456')
 
-      expect(api.put).toHaveBeenCalledWith('/users/1/change-password', null, {
-        params: { currentPassword: 'oldPass123', newPassword: 'newPass456' }
+      expect(api.put).toHaveBeenCalledWith('/users/1/change-password', {
+        currentPassword: 'oldPass123', newPassword: 'newPass456'
       })
       expect(result).toEqual({ success: true })
     })

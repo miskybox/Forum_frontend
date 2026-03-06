@@ -70,7 +70,7 @@ describe('CategoryCard - Links funcionales', () => {
     expect(screen.getByText(/foros/i)).toBeInTheDocument()
   })
 
-  it('funciona sin imagen (muestra placeholder)', () => {
+  it('funciona sin imageUrl (usa imagen por defecto del mapa de categorías)', () => {
     const categoryWithoutImage = { ...mockCategory, imageUrl: null }
     render(
       <MemoryRouter>
@@ -78,9 +78,9 @@ describe('CategoryCard - Links funcionales', () => {
       </MemoryRouter>
     )
 
-    // Sin imagen, no debe haber elemento img
-    expect(screen.queryByRole('img')).not.toBeInTheDocument()
-    // Pero debe mostrar el nombre
+    // El componente usa CATEGORY_IMAGES['Europa'] como fallback — siempre hay img
+    expect(screen.getByRole('img')).toBeInTheDocument()
+    // Y debe mostrar el nombre
     const europaElements = screen.getAllByText(/Europa/i)
     expect(europaElements.length).toBeGreaterThan(0)
   })

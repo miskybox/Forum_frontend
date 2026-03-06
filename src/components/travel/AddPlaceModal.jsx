@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useLanguage } from '../../contexts/LanguageContext'
 import CountrySelector from './CountrySelector'
@@ -97,10 +97,26 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
     }
   }
 
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') onClose()
+  }, [onClose])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isOpen, handleKeyDown])
+
   if (!isOpen) return null
 
   return (
-    <dialog open className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
+    <dialog
+      open
+      aria-modal="true"
+      aria-labelledby="add-place-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
+    >
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/60"
@@ -128,7 +144,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
               className="text-[#CFE7E5] hover:text-white p-1"
               aria-label="Cerrar"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -217,10 +233,13 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                   <button
                     key={star}
                     type="button"
+                    aria-label={`${star} estrella${star > 1 ? 's' : ''}`}
+                    aria-pressed={formData.rating === star}
                     onClick={() => setFormData({ ...formData, rating: formData.rating === star ? 0 : star })}
                     className="p-0.5"
                   >
                     <svg
+                      aria-hidden="true"
                       className={`w-5 h-5 ${star <= formData.rating ? 'text-[#E5A13E]' : 'text-gray-300'}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"

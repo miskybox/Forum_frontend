@@ -27,7 +27,7 @@ const TriviaStats = ({ stats }) => {
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <svg className="w-7 h-7 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <svg aria-hidden="true" className="w-7 h-7 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
               )}
             </div>
             <div>
@@ -89,7 +89,7 @@ const TriviaStats = ({ stats }) => {
       {/* Tiempo promedio */}
       {stats.avgResponseTime && (
         <div className="bg-primary-dark rounded-xl p-4 text-center flex items-center justify-center gap-2">
-          <svg className="w-5 h-5 text-golden" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
+          <svg aria-hidden="true" className="w-5 h-5 text-golden" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
           <p className="text-2xl font-bold text-text">
             {(stats.avgResponseTime / 1000).toFixed(1)}s
           </p>

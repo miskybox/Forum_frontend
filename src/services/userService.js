@@ -69,13 +69,9 @@ const userService = {
   
   changePassword: async (id, currentPassword, newPassword) => {
     try {
-      // La API espera parámetros vía query según los tests
       const response = await api.put(
         `/users/${id}/change-password`,
-        null,
-        {
-          params: { currentPassword, newPassword }
-        }
+        { currentPassword, newPassword }
       )
       return response.data
     } catch (error) {
