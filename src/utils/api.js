@@ -145,6 +145,8 @@ api.interceptors.response.use(
       error.userMessage = 'El servidor tardó demasiado en responder. Por favor, intenta de nuevo en unos segundos.';
     } else if (!error.response) {
       error.userMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+    } else if (error.response.status === 503) {
+      error.userMessage = 'El servidor está arrancando, intenta de nuevo en unos segundos.';
     } else if (error.response.status === 500) {
       error.userMessage = 'Error interno del servidor. Por favor, intenta más tarde.';
     } else if (error.response.status === 403) {
