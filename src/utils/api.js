@@ -32,6 +32,8 @@ const api = axios.create({
   // Enable XSRF token handling
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN",
+  // Timeout to avoid infinite spinner when backend is sleeping (Render cold start)
+  timeout: 15000,
 });
 
 /**
@@ -139,7 +141,9 @@ api.interceptors.response.use(
     }
 
     // Enhance error message for network errors
-    if (!error.response) {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED') {
+      error.userMessage = 'El servidor tardó demasiado en responder. Por favor, intenta de nuevo en unos segundos.';
+    } else if (!error.response) {
       error.userMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
     } else if (error.response.status === 500) {
       error.userMessage = 'Error interno del servidor. Por favor, intenta más tarde.';
