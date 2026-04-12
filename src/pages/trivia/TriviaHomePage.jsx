@@ -326,9 +326,9 @@ const TriviaHomePage = () => {
                   ].map(continent => (
                     <button
                       key={continent.key}
-                      onClick={() => startGame('CHALLENGE', { questions: 15, continent: continent.apiValue })}
+                      onClick={() => startGame('QUICK', { questions: 15, continent: continent.apiValue })}
                       disabled={starting}
-                      className="bg-midnight text-white px-4 py-2 text-sm disabled:opacity-50 rounded-lg font-semibold hover:bg-secondary transition-colors"
+                      className="bg-midnight text-white px-4 py-2 text-sm disabled:opacity-50 rounded-lg font-semibold hover:bg-golden hover:text-midnight hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
                     >
                       {t(`continentsNames.${continent.key}`)}
                     </button>
