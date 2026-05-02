@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import CategoryList from '../components/categories/CategoryList'
 import ForumCard from '../components/forums/ForumCard'
 import forumService from '../services/forumService'
+import api from '../utils/api'
 import { useLanguage } from '../contexts/LanguageContext'
 import logo from '../assets/logoFV.webp'
 import Seo from '../components/common/SEO'
@@ -15,6 +16,8 @@ const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   delay: Math.random() * 5,
   duration: 5 + Math.random() * 3,
 }))
+
+const IS_TEST_ENV = import.meta.env.MODE === 'test'
 
 /**
  * HomePage - Paleta del logo
@@ -38,8 +41,21 @@ const HomePage = () => {
   ]
 
   useEffect(() => {
+    const warmUpBackend = async () => {
+      if (IS_TEST_ENV) {
+        return
+      }
+
+      try {
+        await api.get('/health', { timeout: 8000 })
+      } catch {
+        // If warm-up fails, continue loading data; retry logic is handled by api client.
+      }
+    }
+
     const fetchRecentForums = async () => {
       try {
+        await warmUpBackend()
         const response = await forumService.getAllForums(0, 3)
         // Manejar tanto respuesta paginada como array directo
         const forums = Array.isArray(response) ? response : (response.content || [])

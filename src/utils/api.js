@@ -3,6 +3,81 @@ import axios from "axios";
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
+const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 30000);
+const RETRYABLE_METHODS = new Set(["get", "head", "options"]);
+const MAX_RETRIES = Number(import.meta.env.VITE_API_RETRY_COUNT || 2);
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function logApiError(error, originalRequest) {
+  if (!import.meta.env.DEV) {
+    return;
+  }
+
+  console.error(
+    `❌ [API] Error ${error.response?.status || 'NETWORK'}: ${originalRequest?.method?.toUpperCase()} ${originalRequest?.url}`
+  );
+}
+
+function isRetryableRequest(error, originalRequest) {
+  if (!originalRequest) {
+    return false;
+  }
+
+  const method = originalRequest.method?.toLowerCase();
+  const isRetryableMethod = RETRYABLE_METHODS.has(method);
+  const isTimeoutOrNetwork = error.code === 'ECONNABORTED' || !error.response;
+
+  return isRetryableMethod && isTimeoutOrNetwork;
+}
+
+async function retryRequestIfPossible(originalRequest) {
+  originalRequest._retryCount = originalRequest._retryCount || 0;
+
+  if (originalRequest._retryCount >= MAX_RETRIES) {
+    return null;
+  }
+
+  originalRequest._retryCount += 1;
+  const backoffMs = 1500 * originalRequest._retryCount;
+
+  if (import.meta.env.DEV) {
+    console.warn(
+      `⏳ [API] Retry ${originalRequest._retryCount}/${MAX_RETRIES} in ${backoffMs}ms: ${originalRequest.url}`
+    );
+  }
+
+  await delay(backoffMs);
+  return api(originalRequest);
+}
+
+function shouldAttemptRefresh(error, originalRequest) {
+  const isAuthEndpoint = originalRequest?.url?.includes('/auth/');
+  const hasSessionHint = localStorage.getItem("isAuthenticated") === "true";
+
+  return error.response?.status === 401 && hasSessionHint && !originalRequest?._retry && !isAuthEndpoint;
+}
+
+function addUserMessage(error) {
+  if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED') {
+    error.userMessage = 'El servidor tardó demasiado en responder. Por favor, intenta de nuevo en unos segundos.';
+    return;
+  }
+
+  if (!error.response) {
+    error.userMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+    return;
+  }
+
+  if (error.response.status === 503) {
+    error.userMessage = 'El servidor está arrancando, intenta de nuevo en unos segundos.';
+  } else if (error.response.status === 500) {
+    error.userMessage = 'Error interno del servidor. Por favor, intenta más tarde.';
+  } else if (error.response.status === 403) {
+    error.userMessage = 'No tienes permisos para realizar esta acción.';
+  }
+}
+
 // Flag to prevent multiple redirects
 let isRefreshing = false;
 let failedQueue = [];
@@ -32,8 +107,8 @@ const api = axios.create({
   // Enable XSRF token handling
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN",
-  // Timeout to avoid infinite spinner when backend is sleeping (Render cold start)
-  timeout: 15000,
+  // Render/Neon cold starts can exceed 15s; allow more time on first hit.
+  timeout: API_TIMEOUT_MS,
 });
 
 /**
@@ -89,17 +164,18 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+    logApiError(error, originalRequest);
 
-    // Security: Log errors in development without sensitive data
-    if (import.meta.env.DEV) {
-      console.error(`❌ [API] Error ${error.response?.status || 'NETWORK'}: ${originalRequest?.method?.toUpperCase()} ${originalRequest?.url}`);
+    // Retry idempotent requests for transient errors (cold start/network hiccups)
+    if (isRetryableRequest(error, originalRequest)) {
+      const retriedResponse = await retryRequestIfPossible(originalRequest);
+      if (retriedResponse) {
+        return retriedResponse;
+      }
     }
 
-    // Don't retry for login/register/refresh endpoints
-    const isAuthEndpoint = originalRequest?.url?.includes('/auth/');
-    
-    // Handle 401 errors by attempting token refresh (except for auth endpoints)
-    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
+    // Handle 401 with refresh only when client believes there is an active session.
+    if (shouldAttemptRefresh(error, originalRequest)) {
       if (isRefreshing) {
         // Queue the request while refresh is in progress
         return new Promise((resolve, reject) => {
@@ -140,18 +216,7 @@ api.interceptors.response.use(
       }
     }
 
-    // Enhance error message for network errors
-    if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED') {
-      error.userMessage = 'El servidor tardó demasiado en responder. Por favor, intenta de nuevo en unos segundos.';
-    } else if (!error.response) {
-      error.userMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
-    } else if (error.response.status === 503) {
-      error.userMessage = 'El servidor está arrancando, intenta de nuevo en unos segundos.';
-    } else if (error.response.status === 500) {
-      error.userMessage = 'Error interno del servidor. Por favor, intenta más tarde.';
-    } else if (error.response.status === 403) {
-      error.userMessage = 'No tienes permisos para realizar esta acción.';
-    }
+    addUserMessage(error);
 
     throw error;
   }
