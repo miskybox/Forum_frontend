@@ -47,15 +47,15 @@ const HomePage = () => {
       }
 
       try {
-        await api.get('/health', { timeout: 8000 })
+        await api.get('/health', { timeout: 2500, skipRetry: true })
       } catch {
-        // If warm-up fails, continue loading data; retry logic is handled by api client.
+        // Best effort only.
       }
     }
 
     const fetchRecentForums = async () => {
       try {
-        await warmUpBackend()
+        warmUpBackend()
         const response = await forumService.getAllForums(0, 3)
         // Manejar tanto respuesta paginada como array directo
         const forums = Array.isArray(response) ? response : (response.content || [])

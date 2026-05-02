@@ -3,9 +3,19 @@ import axios from "axios";
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
-const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 30000);
+const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 20000);
 const RETRYABLE_METHODS = new Set(["get", "head", "options"]);
-const MAX_RETRIES = Number(import.meta.env.VITE_API_RETRY_COUNT || 2);
+const MAX_RETRIES = Number(import.meta.env.VITE_API_RETRY_COUNT || 1);
+
+const COLD_START_RETRY_ENDPOINTS = [
+  '/categories',
+  '/forums',
+  '/posts',
+  '/countries',
+  '/travel',
+  '/trivia',
+  '/feed/explore'
+];
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -24,11 +34,19 @@ function isRetryableRequest(error, originalRequest) {
     return false;
   }
 
+  if (originalRequest.skipRetry) {
+    return false;
+  }
+
   const method = originalRequest.method?.toLowerCase();
   const isRetryableMethod = RETRYABLE_METHODS.has(method);
   const isTimeoutOrNetwork = error.code === 'ECONNABORTED' || !error.response;
+  const requestUrl = originalRequest.url || '';
+  const isColdStartEndpoint = COLD_START_RETRY_ENDPOINTS.some((endpoint) =>
+    requestUrl.startsWith(endpoint)
+  );
 
-  return isRetryableMethod && isTimeoutOrNetwork;
+  return isRetryableMethod && isTimeoutOrNetwork && isColdStartEndpoint;
 }
 
 async function retryRequestIfPossible(originalRequest) {
