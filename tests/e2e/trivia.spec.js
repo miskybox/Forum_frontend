@@ -9,8 +9,8 @@ test.describe('Trivia Geográfica', () => {
   test.beforeEach(async ({ page }) => {
     // Login antes de cada test
     await page.goto('/login');
-    await page.fill('input[name="username"], input[type="text"]', 'user');
-    await page.fill('input[name="password"], input[type="password"]', 'User123!');
+    await page.fill('input[name="username"], input[type="text"]', 'viajero_demo');
+    await page.fill('input[name="password"], input[type="password"]', 'Demo1234!');
     await page.click('button[type="submit"]');
     await expect(page).not.toHaveURL(/.*login/, { timeout: 10000 });
   });

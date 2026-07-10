@@ -10,8 +10,8 @@ import { test, expect } from '@playwright/test';
 async function loginAsAdmin(page) {
   await page.goto('/login');
   await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'admin');
-  await page.fill('#password', 'Admin123!');
+  await page.fill('#username', 'admin_demo');
+  await page.fill('#password', 'FV_Admin_2026!');
   await page.click('button[type="submit"]');
   await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
   await page.waitForLoadState('networkidle');
@@ -21,8 +21,8 @@ async function loginAsAdmin(page) {
 async function loginAsUser(page) {
   await page.goto('/login');
   await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'user');
-  await page.fill('#password', 'User123!');
+  await page.fill('#username', 'viajero_demo');
+  await page.fill('#password', 'Demo1234!');
   await page.click('button[type="submit"]');
   await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
   await page.waitForLoadState('networkidle');

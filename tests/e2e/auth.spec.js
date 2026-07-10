@@ -45,8 +45,8 @@ test.describe('Autenticación', () => {
     await page.waitForLoadState('networkidle');
 
     // Usar credenciales de prueba con selectores por id
-    await page.fill('#username', 'user');
-    await page.fill('#password', 'User123!');
+    await page.fill('#username', 'viajero_demo');
+    await page.fill('#password', 'Demo1234!');
     await page.click('button[type="submit"]');
 
     // Esperar redirección (no debe estar en /login)
@@ -57,8 +57,8 @@ test.describe('Autenticación', () => {
     // Primero hacer login
     await page.goto('/login');
     await page.waitForLoadState('networkidle');
-    await page.fill('#username', 'user');
-    await page.fill('#password', 'User123!');
+    await page.fill('#username', 'viajero_demo');
+    await page.fill('#password', 'Demo1234!');
     await page.click('button[type="submit"]');
 
     // Esperar a estar logueado

@@ -49,9 +49,9 @@ test.describe('Autenticación completa', () => {
     // Verificar que el formulario está visible
     await expect(page.locator('form')).toBeVisible()
 
-    // Llenar formulario de login usando IDs (user debe existir en backend)
-    await page.fill('#username', 'user')
-    await page.fill('#password', 'User123!')
+    // Llenar formulario de login usando IDs (viajero_demo se crea al arrancar el backend, ver .env)
+    await page.fill('#username', 'viajero_demo')
+    await page.fill('#password', 'Demo1234!')
 
     // Enviar formulario
     await page.click('button[type="submit"]')
