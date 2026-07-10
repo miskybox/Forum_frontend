@@ -4,29 +4,11 @@ import { test, expect } from '@playwright/test';
 /**
  * Tests E2E para CRUD de Foros
  * Verifica crear, leer, actualizar y eliminar foros
+ *
+ * Los describes que necesitan sesión iniciada usan las de admin_demo /
+ * viajero_demo ya autenticadas (tests/global-setup.ts) en vez de loguear en
+ * cada test.
  */
-
-// Helper para login como admin (necesario para crear foros)
-async function loginAsAdmin(page) {
-  await page.goto('/login');
-  await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'admin_demo');
-  await page.fill('#password', 'FV_Admin_2026!');
-  await page.click('button[type="submit"]');
-  await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
-  await page.waitForLoadState('networkidle');
-}
-
-// Helper para login como usuario regular
-async function loginAsUser(page) {
-  await page.goto('/login');
-  await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'viajero_demo');
-  await page.fill('#password', 'Demo1234!');
-  await page.click('button[type="submit"]');
-  await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
-  await page.waitForLoadState('networkidle');
-}
 
 test.describe('Foros - Lectura (READ)', () => {
 
@@ -98,9 +80,9 @@ test.describe('Foros - Lectura (READ)', () => {
 });
 
 test.describe('Foros - Creación (CREATE)', () => {
+  test.use({ storageState: 'tests/.auth/admin.json' });
 
   test('debe mostrar botón de crear foro para admin', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -114,7 +96,6 @@ test.describe('Foros - Creación (CREATE)', () => {
   });
 
   test('admin debe poder crear un nuevo foro', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -151,7 +132,6 @@ test.describe('Foros - Creación (CREATE)', () => {
   });
 
   test('debe validar campos obligatorios al crear foro', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -179,9 +159,10 @@ test.describe('Foros - Creación (CREATE)', () => {
 });
 
 test.describe('Foros - Actualización (UPDATE)', () => {
+  test.describe('como admin', () => {
+    test.use({ storageState: 'tests/.auth/admin.json' });
 
   test('admin debe poder editar un foro', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -208,7 +189,6 @@ test.describe('Foros - Actualización (UPDATE)', () => {
   });
 
   test('debe actualizar título del foro', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -244,9 +224,12 @@ test.describe('Foros - Actualización (UPDATE)', () => {
       }
     }
   });
+  });
+
+  test.describe('como usuario regular', () => {
+    test.use({ storageState: 'tests/.auth/user.json' });
 
   test('usuario regular no debe poder editar foros', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -265,12 +248,14 @@ test.describe('Foros - Actualización (UPDATE)', () => {
       expect(!hasEdit || true).toBeTruthy();
     }
   });
+  });
 });
 
 test.describe('Foros - Eliminación (DELETE)', () => {
+  test.describe('como admin', () => {
+    test.use({ storageState: 'tests/.auth/admin.json' });
 
   test('admin debe ver botón de eliminar', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -290,7 +275,6 @@ test.describe('Foros - Eliminación (DELETE)', () => {
   });
 
   test('debe mostrar confirmación antes de eliminar', async ({ page }) => {
-    await loginAsAdmin(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -316,9 +300,12 @@ test.describe('Foros - Eliminación (DELETE)', () => {
       }
     }
   });
+  });
+
+  test.describe('como usuario regular', () => {
+    test.use({ storageState: 'tests/.auth/user.json' });
 
   test('usuario regular no debe poder eliminar foros', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -335,6 +322,7 @@ test.describe('Foros - Eliminación (DELETE)', () => {
 
       expect(!hasDelete || true).toBeTruthy();
     }
+  });
   });
 });
 

@@ -27,6 +27,7 @@ dist-ssr
 # Playwright
 playwright-report/
 test-results/
+tests/.auth/
 
 # Maven
 target/

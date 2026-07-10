@@ -4,18 +4,10 @@ import { test, expect } from '@playwright/test';
 /**
  * Tests E2E para CRUD de Posts
  * Verifica crear, leer, actualizar y eliminar posts
+ *
+ * Los describes que necesitan sesión iniciada usan la de viajero_demo ya
+ * autenticada (tests/global-setup.ts) en vez de loguear en cada test.
  */
-
-// Helper para login
-async function loginAsUser(page) {
-  await page.goto('/login');
-  await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'viajero_demo');
-  await page.fill('#password', 'Demo1234!');
-  await page.click('button[type="submit"]');
-  await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
-  await page.waitForLoadState('networkidle');
-}
 
 test.describe('Posts - Lectura (READ)', () => {
 
@@ -107,9 +99,9 @@ test.describe('Posts - Lectura (READ)', () => {
 });
 
 test.describe('Posts - Creación (CREATE)', () => {
+  test.use({ storageState: 'tests/.auth/user.json' });
 
   test('usuario logueado debe ver botón crear post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -128,7 +120,6 @@ test.describe('Posts - Creación (CREATE)', () => {
   });
 
   test('debe poder crear un nuevo post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -168,7 +159,6 @@ test.describe('Posts - Creación (CREATE)', () => {
   });
 
   test('debe validar campos obligatorios al crear post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -197,7 +187,6 @@ test.describe('Posts - Creación (CREATE)', () => {
   });
 
   test('debe permitir agregar imágenes al post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -222,9 +211,9 @@ test.describe('Posts - Creación (CREATE)', () => {
 });
 
 test.describe('Posts - Actualización (UPDATE)', () => {
+  test.use({ storageState: 'tests/.auth/user.json' });
 
   test('autor debe poder editar su propio post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
@@ -258,7 +247,6 @@ test.describe('Posts - Actualización (UPDATE)', () => {
   });
 
   test('debe actualizar título y contenido del post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
@@ -297,9 +285,9 @@ test.describe('Posts - Actualización (UPDATE)', () => {
 });
 
 test.describe('Posts - Eliminación (DELETE)', () => {
+  test.use({ storageState: 'tests/.auth/user.json' });
 
   test('autor debe poder eliminar su propio post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
@@ -323,7 +311,6 @@ test.describe('Posts - Eliminación (DELETE)', () => {
   });
 
   test('debe mostrar confirmación antes de eliminar post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
 
@@ -354,9 +341,9 @@ test.describe('Posts - Eliminación (DELETE)', () => {
 });
 
 test.describe('Posts - Comentarios', () => {
+  test.use({ storageState: 'tests/.auth/user.json' });
 
   test('usuario logueado debe poder comentar en un post', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -394,7 +381,6 @@ test.describe('Posts - Comentarios', () => {
   });
 
   test('debe poder editar propio comentario', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 
@@ -418,7 +404,6 @@ test.describe('Posts - Comentarios', () => {
   });
 
   test('debe poder eliminar propio comentario', async ({ page }) => {
-    await loginAsUser(page);
     await page.goto('/forums');
     await page.waitForLoadState('networkidle');
 

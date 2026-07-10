@@ -5,15 +5,7 @@ import { test, expect } from '@playwright/test';
  * Tests E2E para el Mapa de Viajes
  */
 test.describe('Mapa de Viajes', () => {
-
-  test.beforeEach(async ({ page }) => {
-    // Login antes de cada test
-    await page.goto('/login');
-    await page.fill('input[name="username"], input[type="text"]', 'viajero_demo');
-    await page.fill('input[name="password"], input[type="password"]', 'Demo1234!');
-    await page.click('button[type="submit"]');
-    await expect(page).not.toHaveURL(/.*login/, { timeout: 10000 });
-  });
+  test.use({ storageState: 'tests/.auth/user.json' });
 
   test('debe cargar la página del mapa correctamente', async ({ page }) => {
     await page.goto('/travel');

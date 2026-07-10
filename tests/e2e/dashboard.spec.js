@@ -4,23 +4,16 @@ import { test, expect } from '@playwright/test';
 /**
  * Tests E2E para Dashboard
  * Verifica enlaces, botones y funcionalidad principal del dashboard
+ *
+ * Usa la sesión de viajero_demo ya autenticada (tests/global-setup.ts) en vez
+ * de loguear en cada test: evita chocar con el rate limiting de
+ * /api/auth/login y acelera la suite.
  */
-
-// Helper para login
-async function login(page) {
-  await page.goto('/login');
-  await page.waitForLoadState('networkidle');
-  await page.fill('#username', 'viajero_demo');
-  await page.fill('#password', 'Demo1234!');
-  await page.click('button[type="submit"]');
-  await expect(page).not.toHaveURL(/\/login/, { timeout: 15000 });
-  await page.waitForLoadState('networkidle');
-}
+test.use({ storageState: 'tests/.auth/user.json' });
 
 test.describe('Dashboard - Enlaces y Navegación', () => {
 
   test.beforeEach(async ({ page }) => {
-    await login(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
   });
@@ -92,7 +85,6 @@ test.describe('Dashboard - Enlaces y Navegación', () => {
 test.describe('Dashboard - Botones de Acción', () => {
 
   test.beforeEach(async ({ page }) => {
-    await login(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
   });
@@ -125,7 +117,6 @@ test.describe('Dashboard - Botones de Acción', () => {
 test.describe('Dashboard - Estadísticas', () => {
 
   test.beforeEach(async ({ page }) => {
-    await login(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
   });
@@ -152,7 +143,6 @@ test.describe('Dashboard - Estadísticas', () => {
 test.describe('Dashboard - Responsive', () => {
 
   test('debe ser responsive en mobile', async ({ page }) => {
-    await login(page);
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -161,7 +151,6 @@ test.describe('Dashboard - Responsive', () => {
   });
 
   test('debe ser responsive en tablet', async ({ page }) => {
-    await login(page);
     await page.setViewportSize({ width: 768, height: 1024 });
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -170,7 +159,6 @@ test.describe('Dashboard - Responsive', () => {
   });
 
   test('debe ser responsive en desktop', async ({ page }) => {
-    await login(page);
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');

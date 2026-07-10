@@ -50,7 +50,7 @@ test.describe('Flujo Completo: Registro → Login → Uso', () => {
 
     // Debe mostrar error de validación de contraseña
     await expect(
-      page.locator('text=/8 caracteres|mayúscula|especial|contraseña/i')
+      page.locator('text=/8 caracteres|mayúscula|especial|contraseña/i').first()
     ).toBeVisible({ timeout: 5000 })
   })
 
@@ -111,6 +111,7 @@ test.describe('Flujo Completo: Registro → Login → Uso', () => {
       page.locator('text=/PERFIL|Dashboard|Cerrar|Mi|Logout/i')
         .or(page.locator('a[href="/profile"]'))
         .or(page.locator('nav'))
+        .first()
     ).toBeVisible({ timeout: 15000 })
   })
 
@@ -126,6 +127,7 @@ test.describe('Flujo Completo: Registro → Login → Uso', () => {
     await expect(
       page.locator('text=/inválid|incorrect|error|credencial/i')
         .or(page.locator('[role="alert"]'))
+        .first()
     ).toBeVisible({ timeout: 10000 })
   })
 
@@ -180,7 +182,7 @@ test.describe('Navegación y Accesibilidad', () => {
     await page.waitForLoadState('networkidle')
 
     await expect(
-      page.locator('text=/404|no encontrada|not found|página no existe/i')
+      page.locator('text=/404|no encontrada|not found|página no existe/i').first()
     ).toBeVisible({ timeout: 5000 })
   })
 
@@ -189,7 +191,7 @@ test.describe('Navegación y Accesibilidad', () => {
     await page.waitForLoadState('networkidle')
 
     // Verificar enlaces principales
-    await expect(page.locator('nav a[href="/forums"]').or(page.locator('nav >> text=/FORO/i'))).toBeVisible()
+    await expect(page.locator('nav a[href="/forums"]').or(page.locator('nav >> text=/FORO/i')).first()).toBeVisible()
   })
 
   test('11. La HomePage carga sin errores de consola críticos', async ({ page }) => {

@@ -58,7 +58,7 @@ test.describe('Diseño Responsivo - Múltiples Dispositivos', () => {
       await page.waitForLoadState('networkidle')
 
       // En tablet, puede mostrar menú completo o botón hamburguesa
-      const navbar = page.locator('nav')
+      const navbar = page.getByRole('navigation', { name: 'Main navigation' })
       await expect(navbar).toBeVisible()
 
       // Verificar que los links principales son accesibles
@@ -90,7 +90,7 @@ test.describe('Diseño Responsivo - Múltiples Dispositivos', () => {
       await page.goto('/')
 
       // En desktop, todos los links deberían ser visibles sin menú hamburguesa
-      const desktopLinks = page.getByRole('navigation').getByRole('link', { name: /Inicio|Continentes|Foros|Blog/i })
+      const desktopLinks = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: /Inicio|Foros|Trivia|Mapa/i })
       const count = await desktopLinks.count()
 
       // Debería haber al menos los links principales
@@ -143,7 +143,7 @@ test.describe('Diseño Responsivo - Múltiples Dispositivos', () => {
       await page.goto('/')
 
       // En este breakpoint, debería mostrar menú desktop
-      const navbar = page.locator('nav')
+      const navbar = page.getByRole('navigation', { name: 'Main navigation' })
       await expect(navbar).toBeVisible()
     })
   })
@@ -185,8 +185,8 @@ test.describe('Diseño Responsivo - Múltiples Dispositivos', () => {
       await page.setViewportSize({ width: 375, height: 667 })
       await page.goto('/login')
 
-      const emailInput = page.locator('input[type="email"]')
-      const box = await emailInput.boundingBox()
+      const usernameInput = page.locator('#username')
+      const box = await usernameInput.boundingBox()
 
       if (box) {
         // Input debería tener altura adecuada para touch (mínimo 44px ideal)
@@ -201,7 +201,7 @@ test.describe('Diseño Responsivo - Múltiples Dispositivos', () => {
       await page.setViewportSize({ width: 375, height: 667 })
       await page.goto('/login')
 
-      const submitButton = page.getByRole('button', { name: /iniciar sesión/i })
+      const submitButton = page.getByRole('button', { name: /acceder|login/i })
       const box = await submitButton.boundingBox()
 
       if (box) {
