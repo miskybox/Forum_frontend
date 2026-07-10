@@ -8,7 +8,7 @@ import logo from '../../assets/logo-bubble_FV.webp'
 
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()
-  const { language, toggleLanguage, t } = useLanguage()
+  const { language, setLanguage, t } = useLanguage()
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
@@ -98,29 +98,51 @@ const Navbar = () => {
           {/* Botones de usuario y selector de idioma */}
           <div className="flex items-center space-x-2 sm:space-x-4">
 
-            {/* Selector de idioma */}
-            <button
-              onClick={toggleLanguage}
-              className="group flex items-center gap-2 px-3 py-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] cursor-pointer hover:scale-110"
-              title={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
-              aria-label={language === 'es' ? 'Switch to English' : 'Cambiar a Español'}
+            {/* Selector de idioma: ambas banderas visibles para que se note que se puede elegir */}
+            <div
+              className="flex items-center gap-1 p-1 rounded-lg bg-midnight/5"
+              role="group"
+              aria-label="Selector de idioma / Language selector"
             >
-              {language === 'es' ? (
-                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-midnight" aria-hidden="true">
+              <button
+                onClick={() => setLanguage('es')}
+                aria-pressed={language === 'es'}
+                title="Español"
+                aria-label="Español"
+                className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-all duration-200 min-h-[44px] cursor-pointer ${
+                  language === 'es'
+                    ? 'bg-golden text-midnight shadow-sm'
+                    : 'text-midnight/50 hover:bg-golden/40 hover:text-midnight'
+                }`}
+              >
+                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-midnight/60 flex-shrink-0" aria-hidden="true">
                   <div className="h-1/4 bg-red-600"></div>
                   <div className="h-2/4 bg-yellow-400"></div>
                   <div className="h-1/4 bg-red-600"></div>
                 </div>
-              ) : (
-                <div className="flex items-center justify-center w-6 h-4 bg-white rounded overflow-hidden border border-midnight relative" aria-hidden="true">
-                  <div className="absolute w-full h-1 bg-red-600"></div>
-                  <div className="absolute h-full w-1 bg-red-600"></div>
+                <span className="text-xs font-bold uppercase">ES</span>
+              </button>
+
+              <button
+                onClick={() => setLanguage('en')}
+                aria-pressed={language === 'en'}
+                title="English"
+                aria-label="English"
+                className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-all duration-200 min-h-[44px] cursor-pointer ${
+                  language === 'en'
+                    ? 'bg-golden text-midnight shadow-sm'
+                    : 'text-midnight/50 hover:bg-golden/40 hover:text-midnight'
+                }`}
+              >
+                <div className="flex items-center justify-center w-6 h-4 bg-blue-900 rounded overflow-hidden border border-midnight/60 relative flex-shrink-0" aria-hidden="true">
+                  <div className="absolute w-full h-0.5 bg-white"></div>
+                  <div className="absolute h-full w-0.5 bg-white"></div>
+                  <div className="absolute w-full h-px bg-red-600"></div>
+                  <div className="absolute h-full w-px bg-red-600"></div>
                 </div>
-              )}
-              <span className="hidden sm:inline text-sm font-bold uppercase group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">
-                {language === 'es' ? 'ES' : 'EN'}
-              </span>
-            </button>
+                <span className="text-xs font-bold uppercase">EN</span>
+              </button>
+            </div>
 
             {isAuthenticated ? (
               <div className="flex items-center gap-1 sm:gap-2">

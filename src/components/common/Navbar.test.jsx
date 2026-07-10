@@ -12,7 +12,7 @@ vi.mock('../../contexts/ThemeContext', () => ({
 vi.mock('../../contexts/LanguageContext', () => ({
   useLanguage: () => ({
     language: 'es',
-    toggleLanguage: vi.fn(),
+    setLanguage: vi.fn(),
     t: (key) => {
       const translations = {
         'nav.home': 'Inicio',
@@ -260,8 +260,10 @@ describe('Navbar - Links y Botones', () => {
         </MemoryRouter>
       )
 
-      const languageButton = screen.getByRole('button', { name: /switch to english|cambiar a español/i })
-      expect(languageButton).toBeInTheDocument()
+      const spanishButton = screen.getByRole('button', { name: /^español$/i })
+      const englishButton = screen.getByRole('button', { name: /^english$/i })
+      expect(spanishButton).toBeInTheDocument()
+      expect(englishButton).toBeInTheDocument()
     })
 
     it('muestra bandera española cuando idioma es español', () => {
@@ -372,7 +374,7 @@ describe('Navbar - Links y Botones', () => {
         </MemoryRouter>
       )
 
-      const languageButtons = screen.getAllByRole('button', { name: /switch to english|cambiar/i })
+      const languageButtons = screen.getAllByRole('button', { name: /^español$|^english$/i })
       expect(languageButtons.length).toBeGreaterThan(0)
       languageButtons.forEach(btn => {
         expect(btn).toHaveAttribute('aria-label')
