@@ -5,7 +5,10 @@ const BASE_URL =
 
 const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 20000);
 const RETRYABLE_METHODS = new Set(["get", "head", "options"]);
-const MAX_RETRIES = Number(import.meta.env.VITE_API_RETRY_COUNT || 1);
+// Render free tier puede tardar 30-60s en despertar de un cold start; con el
+// warm-up disparado al cargar la app (main.jsx) 1 reintento suele bastar,
+// pero se deja margen extra para el caso de que el warm-up no llegue a tiempo.
+const MAX_RETRIES = Number(import.meta.env.VITE_API_RETRY_COUNT || 2);
 
 const COLD_START_RETRY_ENDPOINTS = [
   '/categories',
