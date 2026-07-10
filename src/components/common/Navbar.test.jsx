@@ -275,9 +275,8 @@ describe('Navbar - Links y Botones', () => {
         </MemoryRouter>
       )
 
-      // Verificar que hay un botón de idioma con texto ES
-      const esText = screen.getAllByText(/ES/)
-      expect(esText.length).toBeGreaterThan(0)
+      // Verificar que el botón de bandera española está presente
+      expect(screen.getByRole('button', { name: /^español$/i })).toBeInTheDocument()
     })
   })
 

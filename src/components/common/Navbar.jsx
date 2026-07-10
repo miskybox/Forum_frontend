@@ -98,9 +98,10 @@ const Navbar = () => {
           {/* Botones de usuario y selector de idioma */}
           <div className="flex items-center space-x-2 sm:space-x-4">
 
-            {/* Selector de idioma: ambas banderas visibles para que se note que se puede elegir */}
+            {/* Selector de idioma: ambas banderas visibles para que se note que se puede elegir.
+                Botones compactos pero con área de toque de 44px (WCAG) vía padding invisible. */}
             <div
-              className="flex items-center gap-1 p-1 rounded-lg bg-midnight/5"
+              className="flex items-center gap-0.5"
               role="group"
               aria-label="Selector de idioma / Language selector"
             >
@@ -109,18 +110,14 @@ const Navbar = () => {
                 aria-pressed={language === 'es'}
                 title="Español"
                 aria-label="Español"
-                className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-all duration-200 min-h-[44px] cursor-pointer ${
-                  language === 'es'
-                    ? 'bg-golden text-midnight shadow-sm'
-                    : 'text-midnight/50 hover:bg-golden/40 hover:text-midnight'
+                className={`flex items-center justify-center w-11 h-11 rounded-md transition-all duration-200 cursor-pointer ${
+                  language === 'es' ? 'bg-golden/70' : 'hover:bg-golden/30'
                 }`}
               >
-                <div className="flex flex-col w-6 h-4 rounded overflow-hidden border border-midnight/60 flex-shrink-0" aria-hidden="true">
-                  <div className="h-1/4 bg-red-600"></div>
-                  <div className="h-2/4 bg-yellow-400"></div>
-                  <div className="h-1/4 bg-red-600"></div>
-                </div>
-                <span className="text-xs font-bold uppercase">ES</span>
+                <svg className="w-5 h-[14px] rounded-sm shadow-sm flex-shrink-0" viewBox="0 0 60 40" aria-hidden="true">
+                  <rect width="60" height="40" fill="#AA151B" />
+                  <rect y="10" width="60" height="20" fill="#F1BF00" />
+                </svg>
               </button>
 
               <button
@@ -128,19 +125,22 @@ const Navbar = () => {
                 aria-pressed={language === 'en'}
                 title="English"
                 aria-label="English"
-                className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-all duration-200 min-h-[44px] cursor-pointer ${
-                  language === 'en'
-                    ? 'bg-golden text-midnight shadow-sm'
-                    : 'text-midnight/50 hover:bg-golden/40 hover:text-midnight'
+                className={`flex items-center justify-center w-11 h-11 rounded-md transition-all duration-200 cursor-pointer ${
+                  language === 'en' ? 'bg-golden/70' : 'hover:bg-golden/30'
                 }`}
               >
-                <div className="flex items-center justify-center w-6 h-4 bg-blue-900 rounded overflow-hidden border border-midnight/60 relative flex-shrink-0" aria-hidden="true">
-                  <div className="absolute w-full h-0.5 bg-white"></div>
-                  <div className="absolute h-full w-0.5 bg-white"></div>
-                  <div className="absolute w-full h-px bg-red-600"></div>
-                  <div className="absolute h-full w-px bg-red-600"></div>
-                </div>
-                <span className="text-xs font-bold uppercase">EN</span>
+                <svg className="w-5 h-[14px] rounded-sm shadow-sm flex-shrink-0" viewBox="0 0 60 30" aria-hidden="true">
+                  <clipPath id="navbar-gb-clip">
+                    <path d="M0,0 v30 h60 v-30 z" />
+                  </clipPath>
+                  <g clipPath="url(#navbar-gb-clip)">
+                    <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+                    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+                    <path d="M0,0 L30,15 M60,0 L30,15 M0,30 L30,15 M60,30 L30,15" stroke="#C8102E" strokeWidth="4" />
+                    <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+                    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+                  </g>
+                </svg>
               </button>
             </div>
 
