@@ -81,7 +81,9 @@ function shouldAttemptRefresh(error, originalRequest) {
 
 function addUserMessage(error) {
   if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED') {
-    error.userMessage = 'El servidor tardó demasiado en responder. Por favor, intenta de nuevo en unos segundos.';
+    // Demo alojada en plan gratuito: el servidor se duerme tras inactividad y el primer
+    // arranque puede tardar. No es un fallo de conexión real, solo hay que darle un momento.
+    error.userMessage = 'El servidor se está iniciando (puede tardar unos segundos la primera vez). Por favor, inténtalo de nuevo en un momento.';
     return;
   }
 

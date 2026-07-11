@@ -22,7 +22,7 @@ const CategoryList = ({ typeFilter = null }) => {
         setError(null)
       } catch (err) {
         console.error('Error al cargar las categorías:', err)
-        setError(t('categories.error'))
+        setError(err.userMessage || t('categories.error'))
       } finally {
         setLoading(false)
       }

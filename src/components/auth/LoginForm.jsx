@@ -111,10 +111,14 @@ const LoginForm = () => {
 
       let message = ''
 
-      if (error.response) {
+      if (error.code === 'ECONNABORTED' || error.code === 'ERR_CANCELED') {
+        // Timeout: no es un fallo de conexión, el servidor (demo en plan gratuito) puede
+        // tardar en despertar. Usar el mensaje específico calculado en el interceptor.
+        message = error.userMessage || t('auth.errors.networkError')
+      } else if (error.response) {
         // Error del servidor
         const status = error.response.status
-        
+
         if (status === 401) {
           message = t('auth.errors.invalidCredentials')
         } else if (status === 403) {

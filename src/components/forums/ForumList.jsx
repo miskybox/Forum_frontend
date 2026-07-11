@@ -47,7 +47,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
         setError(null)
       } catch (err) {
         console.error('Error al cargar los foros:', err)
-        setError(t('forumList.errorLoading'))
+        setError(err.userMessage || t('forumList.errorLoading'))
       } finally {
         setLoading(false)
       }
