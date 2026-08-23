@@ -14,7 +14,31 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Enlaces */}
           <div className="flex items-center gap-6">
-            <nav className="flex items-center gap-4">
+            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link
+                to="/forums"
+                className="text-midnight hover:text-golden transition-colors duration-200 font-semibold text-sm"
+              >
+                {t('footer.forums')}
+              </Link>
+              <Link
+                to="/categories"
+                className="text-midnight hover:text-golden transition-colors duration-200 font-semibold text-sm"
+              >
+                {t('footer.continents')}
+              </Link>
+              <Link
+                to="/travel"
+                className="text-midnight hover:text-golden transition-colors duration-200 font-semibold text-sm"
+              >
+                {t('footer.myMap')}
+              </Link>
+              <Link
+                to="/blog"
+                className="text-midnight hover:text-golden transition-colors duration-200 font-semibold text-sm"
+              >
+                {t('footer.blog')}
+              </Link>
               <Link
                 to="/about"
                 className="text-midnight hover:text-golden transition-colors duration-200 font-semibold text-sm"
