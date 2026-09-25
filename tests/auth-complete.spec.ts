@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { demoCredentials } from './e2e/credentials.js'
 
 test.describe('Autenticación completa', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,12 +23,10 @@ test.describe('Autenticación completa', () => {
     const testUser = `testuser_${timestamp}`
     const testEmail = `test_${timestamp}@example.com`
 
-    await page.fill('#firstName', 'Test')
-    await page.fill('#lastName', 'User')
     await page.fill('#username', testUser)
     await page.fill('#email', testEmail)
-    await page.fill('#password', 'password123')
-    await page.fill('#confirmPassword', 'password123')
+    await page.fill('#password', 'ValidPass123!')
+    await page.fill('#confirmPassword', 'ValidPass123!')
 
     // Enviar formulario
     await page.click('button[type="submit"]')
@@ -36,10 +35,7 @@ test.describe('Autenticación completa', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(2000) // Dar tiempo al backend
 
-    // Verificar que se guardó el token en localStorage O que navegó correctamente
-    const token = await page.evaluate(() => localStorage.getItem('token'))
-    const currentUrl = page.url()
-    expect(token || currentUrl.includes('/')).toBeTruthy()
+    await expect(page).toHaveURL(/\/login$/)
   })
 
   test('Login completo con credenciales válidas', async ({ page }) => {
@@ -50,8 +46,8 @@ test.describe('Autenticación completa', () => {
     await expect(page.locator('form')).toBeVisible()
 
     // Llenar formulario de login usando IDs (viajero_demo se crea al arrancar el backend, ver .env)
-    await page.fill('#username', 'viajero_demo')
-    await page.fill('#password', 'Demo1234!')
+    await page.fill('#username', demoCredentials.username)
+    await page.fill('#password', demoCredentials.password)
 
     // Enviar formulario
     await page.click('button[type="submit"]')
@@ -60,9 +56,8 @@ test.describe('Autenticación completa', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(3000) // Dar tiempo para que el backend responda
 
-    // Verificar que se guardó el token
-    const token = await page.evaluate(() => localStorage.getItem('token'))
-    expect(token).toBeTruthy()
+    const authenticated = await page.evaluate(() => localStorage.getItem('isAuthenticated'))
+    expect(authenticated).toBe('true')
 
     // Verificar que se navegó a la página principal
     await expect(page).toHaveURL(/\/$/)
@@ -81,8 +76,8 @@ test.describe('Autenticación completa', () => {
     await page.waitForTimeout(2000)
     
     // Verificar que NO se guardó el token
-    const token = await page.evaluate(() => localStorage.getItem('token'))
-    expect(token).toBeFalsy()
+    const authenticated = await page.evaluate(() => localStorage.getItem('isAuthenticated'))
+    expect(authenticated).not.toBe('true')
 
     // Verificar que se muestra un mensaje de error (toast o en el formulario)
     const errorMessage = page.getByText(/incorrecto|inválido|error/i).first()
@@ -94,7 +89,7 @@ test.describe('Autenticación completa', () => {
     await page.waitForLoadState('networkidle')
 
     // Intentar enviar sin llenar campos
-    await page.getByRole('button', { name: /registrarse/i }).click()
+    await page.getByRole('button', { name: /crear cuenta/i }).click()
 
     // Verificar que se muestran mensajes de error
     await expect(page.getByText(/obligatorio/i).first()).toBeVisible({ timeout: 3000 })
@@ -104,14 +99,12 @@ test.describe('Autenticación completa', () => {
     await page.goto('/register')
     await page.waitForLoadState('networkidle')
 
-    await page.getByLabel(/nombre de usuario/i).fill('testuser')
-    await page.getByLabel(/correo electrónico/i).fill('test@test.com')
-    await page.getByLabel(/^nombre$/i).fill('Test')
-    await page.getByLabel(/apellido/i).fill('User')
-    await page.getByLabel(/^contraseña$/i).fill('password123')
-    await page.getByLabel(/confirmar contraseña/i).fill('password456')
+    await page.locator('#username').fill('testuser')
+    await page.locator('#email').fill('test@test.com')
+    await page.locator('#password').fill('ValidPass123!')
+    await page.locator('#confirmPassword').fill('DifferentPass123!')
 
-    await page.getByRole('button', { name: /registrarse/i }).click()
+    await page.getByRole('button', { name: /crear cuenta/i }).click()
 
     // Verificar mensaje de error
     await expect(page.getByText(/no coinciden/i)).toBeVisible({ timeout: 3000 })
@@ -121,7 +114,7 @@ test.describe('Autenticación completa', () => {
     await page.goto('/login')
     await page.waitForLoadState('networkidle')
 
-    await page.getByRole('button', { name: /iniciar sesión/i }).click()
+    await page.getByRole('button', { name: /acceder|iniciar sesión/i }).click()
 
     // Verificar que se muestran mensajes de error
     await expect(page.getByText(/obligatorio/i).first()).toBeVisible({ timeout: 3000 })
@@ -132,13 +125,13 @@ test.describe('Autenticación completa', () => {
     await page.waitForLoadState('networkidle')
 
     // Ir a registro desde login
-    const registerLink = page.getByRole('link', { name: /regístrate|registrarse/i })
+    const registerLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Registrarse' })
     await expect(registerLink).toBeVisible()
     await registerLink.click()
     await expect(page).toHaveURL(/\/register$/)
 
     // Volver a login desde registro
-    const loginLink = page.getByRole('link', { name: /iniciar sesión|ya tienes cuenta/i })
+    const loginLink = page.locator('a[href="/login"]').last()
     await expect(loginLink).toBeVisible()
     await loginLink.click()
     await expect(page).toHaveURL(/\/login$/)
@@ -148,8 +141,7 @@ test.describe('Autenticación completa', () => {
     // Primero hacer login (simulado)
     await page.goto('/')
     await page.evaluate(() => {
-      localStorage.setItem('token', 'test_token')
-      localStorage.setItem('refreshToken', 'test_refresh_token')
+      localStorage.setItem('isAuthenticated', 'true')
     })
 
     // Navegar a una página que requiera autenticación
@@ -163,9 +155,8 @@ test.describe('Autenticación completa', () => {
       await logoutButton.click()
       await page.waitForLoadState('networkidle')
 
-      // Verificar que se eliminaron los tokens
-      const token = await page.evaluate(() => localStorage.getItem('token'))
-      expect(token).toBeFalsy()
+      const authenticated = await page.evaluate(() => localStorage.getItem('isAuthenticated'))
+      expect(authenticated).not.toBe('true')
     }
   })
 
@@ -173,11 +164,11 @@ test.describe('Autenticación completa', () => {
     await page.goto('/login')
     await page.waitForLoadState('networkidle')
 
-    const passwordInput = page.getByLabel(/contraseña/i)
+    const passwordInput = page.locator('#password')
     await passwordInput.fill('testpassword')
 
     // Buscar botón de mostrar contraseña
-    const toggleButton = page.locator('button[aria-label*="contraseña"], button[type="button"]').filter({ hasText: /mostrar|ocultar|ver/i }).first()
+    const toggleButton = page.getByRole('button', { name: /mostrar contraseña/i })
     
     if (await toggleButton.isVisible().catch(() => false)) {
       const initialType = await passwordInput.getAttribute('type')

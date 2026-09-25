@@ -5,6 +5,11 @@ import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getSafeRedirectPath } from '../utils/sanitize'
 
+const demoUsername = import.meta.env.VITE_DEMO_USERNAME
+const demoPassword = import.meta.env.VITE_DEMO_PASSWORD
+const showDemoCredentials = import.meta.env.VITE_SHOW_DEMO_CREDENTIALS === 'true'
+  && Boolean(demoUsername && demoPassword)
+
 /**
  * LoginPage con tema Adventure Explorer Retro
  */
@@ -35,7 +40,7 @@ const LoginPage = () => {
           </div>
 
           {/* Banner Demo */}
-          <div className="mb-6 animate-fade-in" data-testid="demo-banner">
+          {showDemoCredentials && <div className="mb-6 animate-fade-in" data-testid="demo-banner">
             <div className="bg-gradient-to-br from-ocean-900/90 to-midnight/90 border-2 border-ocean-500/50 rounded-xl p-5 shadow-lg backdrop-blur-sm">
               <div className="flex items-start gap-3 mb-3">
                 <div className="bg-ocean-500/20 rounded-lg p-2 flex-shrink-0">
@@ -55,14 +60,14 @@ const LoginPage = () => {
               <div className="bg-dark/40 rounded-lg p-3 border border-ocean-600/30">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-ocean-200/70 font-medium">{t('demo.roleUser')}</span>
-                  <code className="text-ocean-300 font-mono bg-ocean-900/50 px-2 py-0.5 rounded">viajero_demo / Demo1234!</code>
+                  <code className="text-ocean-300 font-mono bg-ocean-900/50 px-2 py-0.5 rounded">{demoUsername} / {demoPassword}</code>
                 </div>
               </div>
               <p className="text-xs text-ocean-200/50 mt-3 text-center italic">
                 {t('demo.disclaimer')}
               </p>
             </div>
-          </div>
+          </div>}
           
           {/* Formulario */}
           <div className="card border-ocean-600 animate-slide-in relative z-50">

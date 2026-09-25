@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-ssr/
+.git/
+.gitignore
+.env
+.env.*
+!.env.example
+*.md
+.vscode/
+.idea/
+playwright-report/
+test-results/
+tests/
+.vite/

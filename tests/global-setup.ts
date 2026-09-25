@@ -2,6 +2,7 @@ import { request } from '@playwright/test'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { adminCredentials, demoCredentials } from './e2e/credentials.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const AUTH_DIR = path.join(__dirname, '.auth')
@@ -17,6 +18,9 @@ const API_BASE_URL = 'http://localhost:8080'
  */
 async function loginAndSave(username: string, password: string, outFile: string) {
   const apiContext = await request.newContext({ baseURL: API_BASE_URL })
+
+  // El backend (dev/main) no usa CSRF (confía en CORS estricto), así que el
+  // login es un POST directo sin token/cookie previos.
   const response = await apiContext.post('/api/auth/login', {
     data: { username, password },
     headers: { 'Content-Type': 'application/json' },
@@ -45,6 +49,6 @@ async function loginAndSave(username: string, password: string, outFile: string)
 export default async function globalSetup() {
   fs.mkdirSync(AUTH_DIR, { recursive: true })
 
-  await loginAndSave('viajero_demo', 'Demo1234!', path.join(AUTH_DIR, 'user.json'))
-  await loginAndSave('admin_demo', 'FV_Admin_2026!', path.join(AUTH_DIR, 'admin.json'))
+  await loginAndSave(demoCredentials.username, demoCredentials.password, path.join(AUTH_DIR, 'user.json'))
+  await loginAndSave(adminCredentials.username, adminCredentials.password, path.join(AUTH_DIR, 'admin.json'))
 }

@@ -215,7 +215,21 @@ npm install
 
 # Crear .env.local (opcional)
 echo "VITE_API_BASE_URL=http://localhost:8080/api" > .env.local
+
+# Credenciales de demo (solo para un despliegue publico de demostracion)
+# No incluir credenciales reales ni subir este archivo al repositorio.
+VITE_SHOW_DEMO_CREDENTIALS=false
+VITE_DEMO_USERNAME=usuario_demo
+VITE_DEMO_PASSWORD=contraseña_demo
 ```
+
+`VITE_SHOW_DEMO_CREDENTIALS` debe ser `true` solo cuando las credenciales
+correspondan a una cuenta demo aislada, sin datos personales y con permisos
+minimos. En cualquier otro entorno debe permanecer en `false`.
+
+Los tests E2E no contienen credenciales. Antes de ejecutarlos, define
+`E2E_DEMO_USERNAME`, `E2E_DEMO_PASSWORD`, `E2E_ADMIN_USERNAME` y
+`E2E_ADMIN_PASSWORD` en el entorno local o en los secretos de CI.
 
 ---
 

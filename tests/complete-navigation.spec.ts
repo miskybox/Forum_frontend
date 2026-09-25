@@ -21,10 +21,9 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await expect(page).toHaveURL(/\/$/)
     })
 
-    test('Link Continentes navega a /categories', async ({ page }) => {
-      // Usar href es más robusto que buscar por texto "Continentes"
-      await page.locator('nav a[href="/categories"]').first().click()
-      await expect(page).toHaveURL(/\/categories$/)
+    test('Link Trivia navega a /trivia', async ({ page }) => {
+      await page.locator('nav a[href="/trivia"]').first().click()
+      await expect(page).toHaveURL(/\/trivia$/)
     })
 
     test('Link Foros navega a /forums', async ({ page }) => {
@@ -42,7 +41,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
 
   // ============ NAVBAR - Usuario No Autenticado ============
   test.describe('Navbar - Usuario No Autenticado', () => {
-    test('Botón Iniciar Sesión navega a /login', async ({ page }) => {
+    test('Botón Entrar navega a /login', async ({ page }) => {
       // Usar href en vez de texto que puede variar
       const loginButton = page.locator('a[href="/login"]').first()
       await expect(loginButton).toBeVisible()
@@ -61,7 +60,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
 
   // ============ HOME PAGE ============
   test.describe('Home Page - CTAs y Links', () => {
-    test('CTA Unirse ahora navega a /register', async ({ page }) => {
+    test('CTA Registrarse navega a /register', async ({ page }) => {
       // Buscar cualquier link a /register que sea visible (puede estar en diferentes lugares)
       const cta = page.locator('a[href="/register"]').first()
       await expect(cta).toBeVisible({ timeout: 10000 })
@@ -69,20 +68,18 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await expect(page).toHaveURL(/\/register$/)
     })
 
-    test('CTA Iniciar sesión navega a /login', async ({ page }) => {
-      // Hay dos links con "Iniciar sesión", usar el del hero (el que tiene la clase específica)
-      const cta = page.locator('a[href="/login"]').filter({ hasText: 'Iniciar sesión' }).first()
+    test('CTA Entrar navega a /login', async ({ page }) => {
+      const cta = page.locator('a[href="/login"]').first()
       await expect(cta).toBeVisible()
       await cta.click()
       await expect(page).toHaveURL(/\/login$/)
     })
 
-    test('CTA Explorar destinos navega a /categories', async ({ page }) => {
-      // Buscar link a /categories que sea visible
-      const cta = page.locator('a[href="/categories"]').first()
+    test('CTA Explorar Foros navega a /forums', async ({ page }) => {
+      const cta = page.locator('a[href="/forums"]').first()
       await expect(cta).toBeVisible({ timeout: 10000 })
       await cta.click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await expect(page).toHaveURL(/\/forums$/)
     })
 
     test('CTA Ver todos los continentes navega a /categories', async ({ page }) => {
@@ -96,7 +93,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
 
   // ============ FOOTER ============
   test.describe('Footer - Links', () => {
-    test('Link Foros en footer navega a /forums', async ({ page }) => {
+    test('Link Foros del footer navega a /forums', async ({ page }) => {
       // Buscar dentro del footer con href
       const footerLink = page.locator('footer a[href="/forums"]').first()
       await expect(footerLink).toBeVisible()
@@ -104,12 +101,11 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await expect(page).toHaveURL(/\/forums$/)
     })
 
-    test('Link Continentes en footer navega a /categories', async ({ page }) => {
-      // Buscar dentro del footer con href
-      const footerLink = page.locator('footer a[href="/categories"]').first()
+    test('Link Foros en footer navega a /forums', async ({ page }) => {
+      const footerLink = page.locator('footer a[href="/forums"]').first()
       await expect(footerLink).toBeVisible()
       await footerLink.click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await expect(page).toHaveURL(/\/forums$/)
     })
   })
 
@@ -144,7 +140,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await expect(page).toHaveURL(/\/$/)
     })
 
-    test('Menú móvil - Link Continentes navega correctamente', async ({ page }) => {
+    test('Menú móvil - Link Trivia navega correctamente', async ({ page }) => {
       await page.goto('/')
       await page.waitForLoadState('networkidle')
 
@@ -153,8 +149,8 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await page.waitForTimeout(500)
 
       // Usar href dentro del menú móvil
-      await page.locator('#mobile-menu a[href="/categories"], nav[class*="mobile"] a[href="/categories"]').first().click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await page.locator('#mobile-menu a[href="/trivia"], nav[class*="mobile"] a[href="/trivia"]').first().click()
+      await expect(page).toHaveURL(/\/trivia$/)
     })
 
     test('Menú móvil - Link Foros navega correctamente', async ({ page }) => {
@@ -170,7 +166,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await expect(page).toHaveURL(/\/forums$/)
     })
 
-    test('Menú móvil - Link Blog navega correctamente', async ({ page }) => {
+    test('Menú móvil - Link Mi Mapa navega correctamente', async ({ page }) => {
       await page.goto('/')
       await page.waitForLoadState('networkidle')
 
@@ -179,8 +175,8 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
       await page.waitForTimeout(500)
 
       // Usar href dentro del menú móvil
-      await page.locator('#mobile-menu a[href="/blog"], nav[class*="mobile"] a[href="/blog"]').first().click()
-      await expect(page).toHaveURL(/\/blog$/)
+      await page.locator('#mobile-menu a[href="/travel"], nav[class*="mobile"] a[href="/travel"]').first().click()
+      await expect(page).toHaveURL(/\/travel$/)
     })
   })
 
@@ -188,29 +184,29 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
   test.describe('Navegación entre páginas', () => {
     test('Desde Home a Categories y volver', async ({ page }) => {
       await page.goto('/')
-      await page.getByRole('link', { name: 'Continentes' }).first().click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Trivia' }).click()
+      await expect(page).toHaveURL(/\/trivia$/)
       
       // Volver usando el logo
-      await page.getByRole('link', { name: /ForumViajeros/i }).first().click()
+      await page.locator('a[href="/"]').first().click()
       await expect(page).toHaveURL(/\/$/)
     })
 
     test('Desde Home a Foros y volver', async ({ page }) => {
       await page.goto('/')
-      await page.getByRole('link', { name: 'Foros' }).first().click()
+      await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Foros' }).click()
       await expect(page).toHaveURL(/\/forums$/)
       
-      await page.getByRole('link', { name: /ForumViajeros/i }).first().click()
+      await page.locator('a[href="/"]').first().click()
       await expect(page).toHaveURL(/\/$/)
     })
 
     test('Desde Home a Blog y volver', async ({ page }) => {
       await page.goto('/')
-      await page.getByRole('link', { name: 'Blog' }).first().click()
+      await page.getByRole('contentinfo').getByRole('link', { name: 'Blog' }).click()
       await expect(page).toHaveURL(/\/blog$/)
       
-      await page.getByRole('link', { name: /ForumViajeros/i }).first().click()
+      await page.locator('a[href="/"]').first().click()
       await expect(page).toHaveURL(/\/$/)
     })
   })
@@ -218,7 +214,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
   // ============ ACCESIBILIDAD ============
   test.describe('Accesibilidad - ARIA Labels y Roles', () => {
     test('Navbar tiene role="navigation"', async ({ page }) => {
-      const navbar = page.getByRole('navigation')
+      const navbar = page.getByRole('navigation', { name: 'Main navigation' })
       await expect(navbar).toBeVisible()
     })
 
@@ -239,7 +235,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
     test('Links tienen texto descriptivo', async ({ page }) => {
       const links = [
         { name: 'Inicio', url: '/' },
-        { name: 'Continentes', url: '/categories' },
+        { name: 'Trivia', url: '/trivia' },
         { name: 'Foros', url: '/forums' },
         { name: 'Blog', url: '/blog' }
       ]
@@ -263,7 +259,7 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
 
     test('Enter activa el link enfocado', async ({ page }) => {
       // Enfocar un link específico primero
-      const forumsLink = page.getByRole('navigation').getByRole('link', { name: 'Foros' })
+      const forumsLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Foros' })
       await forumsLink.focus()
       await page.keyboard.press('Enter')
       // Debería haber navegado a /forums

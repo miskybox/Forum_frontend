@@ -6,34 +6,32 @@ test.describe('Botones y links de autenticación', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test('Botón "Unirse ahora" en hero es clickeable', async ({ page }) => {
-    const ctaButton = page.locator('a[href="/register"]').filter({ hasText: 'Unirse ahora' }).first()
+  test('Botón Registrarse es clickeable', async ({ page }) => {
+    const ctaButton = page.locator('a[href="/register"]').first()
     await expect(ctaButton).toBeVisible()
     await ctaButton.click()
     await expect(page).toHaveURL(/\/register$/)
   })
 
-  test('Link "Iniciar Sesión" en navbar funciona', async ({ page }) => {
-    const loginLink = page.getByRole('navigation').getByRole('link', { name: 'Iniciar Sesión' })
+  test('Link Entrar en navbar funciona', async ({ page }) => {
+      const loginLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Entrar' })
     await expect(loginLink).toBeVisible()
     await loginLink.click()
     await expect(page).toHaveURL(/\/login$/)
   })
 
   test('Link "Registrarse" en navbar funciona', async ({ page }) => {
-    const registerLink = page.getByRole('navigation').getByRole('link', { name: /registrarse|unirse/i })
-    
-    if (await registerLink.isVisible().catch(() => false)) {
-      await registerLink.click()
-      await expect(page).toHaveURL(/\/register$/)
-    }
+    const registerLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Registrarse' })
+    await expect(registerLink).toBeVisible()
+    await registerLink.click()
+    await expect(page).toHaveURL(/\/register$/)
   })
 
   test('Botón de registro en formulario es funcional', async ({ page }) => {
     await page.goto('/register')
     await page.waitForLoadState('networkidle')
 
-    const submitButton = page.getByRole('button', { name: /registrarse/i })
+    const submitButton = page.getByRole('button', { name: /crear cuenta/i })
     await expect(submitButton).toBeVisible()
     await expect(submitButton).toBeEnabled()
   })
@@ -42,8 +40,7 @@ test.describe('Botones y links de autenticación', () => {
     await page.goto('/login')
     await page.waitForLoadState('networkidle')
 
-    const submitButton = page.getByRole('button', { name: /iniciar sesión/i })
-    await expect(submitButton).toBeVisible()
+    const submitButton = page.getByRole('button', { name: /acceder/i })
     await expect(submitButton).toBeEnabled()
   })
 
@@ -51,7 +48,7 @@ test.describe('Botones y links de autenticación', () => {
     await page.goto('/register')
     await page.waitForLoadState('networkidle')
 
-    const loginLink = page.getByRole('link', { name: /ya tienes cuenta|iniciar sesión/i })
+    const loginLink = page.locator('a[href="/login"]').last()
     await expect(loginLink).toBeVisible()
     await loginLink.click()
     await expect(page).toHaveURL(/\/login$/)
@@ -61,7 +58,7 @@ test.describe('Botones y links de autenticación', () => {
     await page.goto('/login')
     await page.waitForLoadState('networkidle')
 
-    const registerLink = page.getByRole('link', { name: /regístrate|registrarse|no tienes cuenta/i })
+    const registerLink = page.locator('a[href="/register"]').last()
     await expect(registerLink).toBeVisible()
     await registerLink.click()
     await expect(page).toHaveURL(/\/register$/)
@@ -71,11 +68,11 @@ test.describe('Botones y links de autenticación', () => {
     await page.goto('/login')
     await page.waitForLoadState('networkidle')
 
-    const submitButton = page.getByRole('button', { name: /iniciar sesión/i })
+    const submitButton = page.getByRole('button', { name: /acceder/i })
     
     // Llenar formulario
-    await page.getByLabel(/nombre de usuario/i).fill('testuser')
-    await page.getByLabel(/contraseña/i).fill('password123')
+    await page.locator('#username').fill('testuser')
+    await page.locator('#password').fill('Password123!')
 
     // Hacer clic y verificar que se deshabilita temporalmente
     await submitButton.click()
@@ -94,7 +91,7 @@ test.describe('Botones y links de autenticación', () => {
     await page.keyboard.press('Tab')
     
     // Verificar que podemos llegar al link de registro
-    const registerLink = page.getByRole('link', { name: /regístrate|registrarse/i })
+    const registerLink = page.locator('a[href="/register"]').last()
     await registerLink.focus()
     await expect(registerLink).toBeFocused()
   })

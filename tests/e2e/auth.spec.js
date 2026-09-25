@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { demoCredentials } from './credentials.js';
 
 /**
  * Tests E2E para Autenticación
@@ -45,8 +46,8 @@ test.describe('Autenticación', () => {
     await page.waitForLoadState('networkidle');
 
     // Usar credenciales de prueba con selectores por id
-    await page.fill('#username', 'viajero_demo');
-    await page.fill('#password', 'Demo1234!');
+    await page.fill('#username', demoCredentials.username);
+    await page.fill('#password', demoCredentials.password);
     await page.click('button[type="submit"]');
 
     // Esperar redirección (no debe estar en /login)
@@ -57,8 +58,8 @@ test.describe('Autenticación', () => {
     // Primero hacer login
     await page.goto('/login');
     await page.waitForLoadState('networkidle');
-    await page.fill('#username', 'viajero_demo');
-    await page.fill('#password', 'Demo1234!');
+    await page.fill('#username', demoCredentials.username);
+    await page.fill('#password', demoCredentials.password);
     await page.click('button[type="submit"]');
 
     // Esperar a estar logueado
