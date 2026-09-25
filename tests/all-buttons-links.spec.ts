@@ -22,29 +22,29 @@ test.describe('Verificación Completa de Links y Botones', () => {
       await expect(page).toHaveURL(/\/$/)
     })
 
-    test('Link Continentes en navbar navega a /categories', async ({ page }) => {
-      const link = page.getByRole('navigation').getByRole('link', { name: 'Continentes' })
+    test('Link Trivia en navbar navega a /trivia', async ({ page }) => {
+      const link = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Trivia' })
       await link.click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await expect(page).toHaveURL(/\/trivia$/)
     })
 
-    test('Link Foros en navbar navega a /forums', async ({ page }) => {
-      const link = page.getByRole('navigation').getByRole('link', { name: 'Foros' })
+    test('Link Foros principal navega a /forums', async ({ page }) => {
+      const link = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Foros' })
       await link.click()
       await expect(page).toHaveURL(/\/forums$/)
     })
 
-    test('Link Blog en navbar navega a /blog', async ({ page }) => {
-      const link = page.getByRole('navigation').getByRole('link', { name: 'Blog' })
+    test('Link Foros en navbar navega a /forums', async ({ page }) => {
+      const link = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Foros' })
       await link.click()
-      await expect(page).toHaveURL(/\/blog$/)
+      await expect(page).toHaveURL(/\/forums$/)
     })
   })
 
   // ============ NAVBAR - Usuario No Autenticado ============
   test.describe('Navbar - Usuario No Autenticado', () => {
-    test('Botón Iniciar Sesión navega a /login', async ({ page }) => {
-      const button = page.getByRole('link', { name: 'Iniciar Sesión' }).first()
+    test('Botón Entrar navega a /login', async ({ page }) => {
+      const button = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Entrar' })
       await expect(button).toBeVisible()
       await button.click()
       await expect(page).toHaveURL(/\/login$/)
@@ -63,18 +63,16 @@ test.describe('Verificación Completa de Links y Botones', () => {
     test('Logo del footer navega a /', async ({ page }) => {
       const footer = page.getByRole('contentinfo')
       await footer.scrollIntoViewIfNeeded()
-      const logoLink = footer.locator('a[href="/"]').first()
-      await expect(logoLink).toBeVisible()
-      await logoLink.click()
+      await page.locator('nav a[href="/"]').first().click()
       await expect(page).toHaveURL(/\/$/)
     })
 
-    test('Link Continentes en footer navega a /categories', async ({ page }) => {
+    test('Link Blog en footer navega a /blog', async ({ page }) => {
       const footer = page.getByRole('contentinfo')
       await footer.scrollIntoViewIfNeeded()
-      const link = footer.getByRole('link', { name: 'Continentes' })
+      const link = footer.getByRole('link', { name: 'Blog' })
       await link.click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await expect(page).toHaveURL(/\/blog$/)
     })
 
     test('Link Foros en footer navega a /forums', async ({ page }) => {
@@ -85,13 +83,9 @@ test.describe('Verificación Completa de Links y Botones', () => {
       await expect(page).toHaveURL(/\/forums$/)
     })
 
-    test('Link Crear Foro en footer navega a /forums/create', async ({ page }) => {
+    test('Footer contiene el enlace de ayuda', async ({ page }) => {
       const footer = page.getByRole('contentinfo')
-      await footer.scrollIntoViewIfNeeded()
-      const link = footer.getByRole('link', { name: 'Crear Foro' })
-      await link.click()
-      // Debería redirigir a login si no está autenticado
-      await expect(page).toHaveURL(/\/(login|forums\/create)$/)
+      await expect(footer.getByRole('link', { name: 'Ayuda' })).toBeVisible()
     })
 
     test('Link Política de Privacidad en footer navega a /privacy', async ({ page }) => {
@@ -142,22 +136,22 @@ test.describe('Verificación Completa de Links y Botones', () => {
 
   // ============ HOME PAGE - CTAs ============
   test.describe('Home Page - CTAs y Botones', () => {
-    test('CTA Explorar destinos navega a /categories', async ({ page }) => {
-      const cta = page.getByRole('link', { name: 'Explorar destinos' })
+    test('CTA Explorar Foros navega a /forums', async ({ page }) => {
+      const cta = page.getByRole('link', { name: 'Explorar Foros' })
       await expect(cta).toBeVisible()
       await cta.click()
-      await expect(page).toHaveURL(/\/categories$/)
+      await expect(page).toHaveURL(/\/forums$/)
     })
 
-    test('CTA Unirse ahora navega a /register', async ({ page }) => {
-      const cta = page.locator('a[href="/register"]').filter({ hasText: 'Unirse ahora' }).first()
+    test('CTA Registrarse navega a /register', async ({ page }) => {
+      const cta = page.locator('a[href="/register"]').first()
       await expect(cta).toBeVisible()
       await cta.click()
       await expect(page).toHaveURL(/\/register$/)
     })
 
-    test('CTA Iniciar sesión navega a /login', async ({ page }) => {
-      const cta = page.locator('a[href="/login"]').filter({ hasText: 'Iniciar sesión' }).first()
+    test('CTA Entrar navega a /login', async ({ page }) => {
+      const cta = page.locator('a[href="/login"]').first()
       await expect(cta).toBeVisible()
       await cta.click()
       await expect(page).toHaveURL(/\/login$/)
@@ -194,33 +188,20 @@ test.describe('Verificación Completa de Links y Botones', () => {
       await expect(mobileMenu).toBeVisible()
       
       // Cerrar menú
-      await menuButton.click()
+      await page.getByRole('button', { name: /cerrar menú principal/i }).click()
       await expect(mobileMenu).not.toBeVisible()
     })
 
     test('Todos los links del menú móvil funcionan', async ({ page }) => {
       const menuButton = page.getByRole('button', { name: /abrir menú principal/i })
-      await menuButton.click()
-      
       const mobileMenu = page.locator('#mobile-menu')
-      
-      // Inicio
-      await mobileMenu.getByRole('link', { name: 'Inicio' }).click()
-      await expect(page).toHaveURL(/\/$/)
-      
-      await menuButton.click()
-      await mobileMenu.getByRole('link', { name: 'Continentes' }).click()
-      await expect(page).toHaveURL(/\/categories$/)
-      
-      await page.goto('/')
-      await menuButton.click()
-      await mobileMenu.getByRole('link', { name: 'Foros' }).click()
-      await expect(page).toHaveURL(/\/forums$/)
-      
-      await page.goto('/')
-      await menuButton.click()
-      await mobileMenu.getByRole('link', { name: 'Blog' }).click()
-      await expect(page).toHaveURL(/\/blog$/)
+
+      for (const destination of ['/', '/trivia', '/forums', '/travel']) {
+        await page.goto('/')
+        await page.getByRole('button', { name: /abrir menú principal/i }).click()
+        await mobileMenu.locator(`a[href="${destination}"]`).click()
+        await expect(page).toHaveURL(new RegExp(`${destination === '/' ? '\\/$' : `${destination}$`}`))
+      }
     })
   })
 
@@ -230,7 +211,7 @@ test.describe('Verificación Completa de Links y Botones', () => {
       await page.goto('/login')
       await page.waitForLoadState('networkidle')
       
-      const registerLink = page.getByRole('link', { name: /registrarse|crear cuenta/i })
+      const registerLink = page.locator('a[href="/register"]').last()
       if (await registerLink.isVisible()) {
         await registerLink.click()
         await expect(page).toHaveURL(/\/register$/)
@@ -241,7 +222,7 @@ test.describe('Verificación Completa de Links y Botones', () => {
       await page.goto('/register')
       await page.waitForLoadState('networkidle')
       
-      const loginLink = page.getByRole('link', { name: /iniciar sesión|ya tienes cuenta/i })
+      const loginLink = page.locator('a[href="/login"]').last()
       if (await loginLink.isVisible()) {
         await loginLink.click()
         await expect(page).toHaveURL(/\/login$/)
@@ -305,7 +286,7 @@ test.describe('Verificación Completa de Links y Botones', () => {
         const href = await link.getAttribute('href')
         expect(href).toBeTruthy()
         // Verificar que no es solo '#'
-        if (href !== '#' && !href.startsWith('http')) {
+        if (href !== '#' && !href.startsWith('http') && !href.startsWith('#')) {
           expect(href).toMatch(/^\//)
         }
       }

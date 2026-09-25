@@ -64,7 +64,6 @@ import FeedPage from './pages/feed/FeedPage';
 import UsersPage from './pages/users/UsersPage'
 
 // Preview temporal de accesibilidad con imagen de fondo
-import ForumBgPreviewPage from './pages/ForumBgPreviewPage';
 
 
 function App() {
@@ -211,9 +210,6 @@ function App() {
             </ProtectedRoute>
           } />
           
-          {/* Preview temporal — accesibilidad imagen de fondo */}
-          <Route path="/forum-preview" element={<ForumBgPreviewPage />} />
-
           {/* Ruta 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
