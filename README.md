@@ -216,16 +216,16 @@ npm install
 # Crear .env.local (opcional)
 echo "VITE_API_BASE_URL=http://localhost:8080/api" > .env.local
 
-# Credenciales de demo (solo para un despliegue publico de demostracion)
-# No incluir credenciales reales ni subir este archivo al repositorio.
-VITE_SHOW_DEMO_CREDENTIALS=false
-VITE_DEMO_USERNAME=usuario_demo
-VITE_DEMO_PASSWORD=contraseña_demo
+# Credenciales de demo (opcional). Por defecto el login muestra
+# viajero_demo / Demo1234! (cuenta USER sin privilegios).
+# VITE_SHOW_DEMO_CREDENTIALS=false   # para ocultar el banner
+# VITE_DEMO_USERNAME=viajero_demo
+# VITE_DEMO_PASSWORD=Demo1234!
 ```
 
-`VITE_SHOW_DEMO_CREDENTIALS` debe ser `true` solo cuando las credenciales
-correspondan a una cuenta demo aislada, sin datos personales y con permisos
-minimos. En cualquier otro entorno debe permanecer en `false`.
+El banner de la cuenta demo se muestra por defecto en el login para que
+cualquier visitante pueda probar la app sin registrarse. Define
+`VITE_SHOW_DEMO_CREDENTIALS=false` en entornos que no sean de demostración.
 
 Los tests E2E no contienen credenciales. Antes de ejecutarlos, define
 `E2E_DEMO_USERNAME`, `E2E_DEMO_PASSWORD`, `E2E_ADMIN_USERNAME` y

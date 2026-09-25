@@ -5,10 +5,11 @@ import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getSafeRedirectPath } from '../utils/sanitize'
 
-const demoUsername = import.meta.env.VITE_DEMO_USERNAME
-const demoPassword = import.meta.env.VITE_DEMO_PASSWORD
-const showDemoCredentials = import.meta.env.VITE_SHOW_DEMO_CREDENTIALS === 'true'
-  && Boolean(demoUsername && demoPassword)
+// Cuenta demo pública (rol USER, sin privilegios) para que cualquier visitante
+// pueda probar la app sin registrarse. Se puede sobrescribir por variables de entorno.
+const demoUsername = import.meta.env.VITE_DEMO_USERNAME || 'viajero_demo'
+const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'Demo1234!'
+const showDemoCredentials = import.meta.env.VITE_SHOW_DEMO_CREDENTIALS !== 'false'
 
 /**
  * LoginPage con tema Adventure Explorer Retro
