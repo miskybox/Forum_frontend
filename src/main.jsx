@@ -15,7 +15,7 @@ import './index.css'
 // petición de datos no sean los que tengan que esperar el cold-start desde
 // cero. Best-effort: no bloquea el render ni falla si el backend tarda.
 if (import.meta.env.MODE !== 'test') {
-  api.get('/health/data-status', { timeout: 25000, skipRetry: true }).catch(() => {})
+  api.get('/health', { timeout: 25000, skipRetry: true }).catch(() => {})
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

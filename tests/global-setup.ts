@@ -18,27 +18,12 @@ const API_BASE_URL = 'http://localhost:8080'
  */
 async function loginAndSave(username: string, password: string, outFile: string) {
   const apiContext = await request.newContext({ baseURL: API_BASE_URL })
-  const csrfResponse = await apiContext.get('/api/health/data-status')
-  if (!csrfResponse.ok()) {
-    throw new Error(
-      `[global-setup] No se pudo obtener el token CSRF (HTTP ${csrfResponse.status()}). ` +
-      'Verifica que el backend esté corriendo en http://localhost:8080.'
-    )
-  }
 
-  const csrfCookie = (await apiContext.storageState()).cookies.find(
-    (cookie) => cookie.name === 'XSRF-TOKEN'
-  )
-  if (!csrfCookie) {
-    throw new Error('[global-setup] El backend no entregó la cookie XSRF-TOKEN.')
-  }
-
+  // El backend (dev/main) no usa CSRF (confía en CORS estricto), así que el
+  // login es un POST directo sin token/cookie previos.
   const response = await apiContext.post('/api/auth/login', {
     data: { username, password },
-    headers: {
-      'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': csrfCookie.value,
-    },
+    headers: { 'Content-Type': 'application/json' },
   })
 
   if (!response.ok()) {
