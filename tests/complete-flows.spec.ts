@@ -8,14 +8,14 @@ test.describe('Flujos completos de usuario', () => {
     await expect(page).toHaveTitle(/ForumViajeros|Viajeros/)
 
     // Categorías
-    const categoriasLink = page.getByRole('navigation').getByRole('link', { name: 'Continentes' })
-    await expect(categoriasLink).toBeVisible({ timeout: 10000 })
-    await categoriasLink.click()
-    await expect(page).toHaveURL(/\/categories/)
+    const triviaLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Trivia' })
+    await expect(triviaLink).toBeVisible({ timeout: 10000 })
+    await triviaLink.click()
+    await expect(page).toHaveURL(/\/trivia/)
 
     // Foros
     await page.waitForLoadState('networkidle')
-    const forosLink = page.getByRole('navigation').getByRole('link', { name: 'Foros' })
+    const forosLink = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Foros' })
     await expect(forosLink).toBeVisible({ timeout: 10000 })
     await forosLink.click()
     await expect(page).toHaveURL(/\/forums/)
@@ -53,16 +53,16 @@ test.describe('Flujos completos de usuario', () => {
     await page.goto('/')
 
     // Test "Explorar destinos"
-    const explorarDestinos = page.getByRole('link', { name: 'Explorar destinos' }).first()
-    await explorarDestinos.click()
-    await expect(page).toHaveURL(/\/categories/)
+    const explorarForos = page.getByRole('link', { name: 'Explorar Foros' }).first()
+    await explorarForos.click()
+    await expect(page).toHaveURL(/\/forums/)
 
     // Volver a home
     await page.goto('/')
 
     // Test "Unirse ahora"  - primero en el hero
-    const unirseAhora = page.getByRole('link', { name: 'Unirse ahora' }).first()
-    await unirseAhora.click()
+    const registrarse = page.locator('a[href="/register"]').first()
+    await registrarse.click()
     await expect(page).toHaveURL(/\/register/)
   })
 
@@ -70,10 +70,10 @@ test.describe('Flujos completos de usuario', () => {
     await page.goto('/login')
 
     // Intentar submit sin llenar campos
-    await page.getByRole('button', { name: /iniciar sesión/i }).click()
+    await page.getByRole('button', { name: /acceder|iniciar sesión/i }).click()
 
     // HTML5 validation debería prevenir el submit
-    const usernameInput = page.getByLabel(/nombre de usuario/i)
+    const usernameInput = page.getByLabel(/usuario/i)
     await expect(usernameInput).toHaveAttribute('required', '')
   })
 
@@ -81,10 +81,10 @@ test.describe('Flujos completos de usuario', () => {
     await page.goto('/register')
 
     // Intentar submit sin llenar campos
-    await page.getByRole('button', { name: /registrarse/i }).click()
+    await page.getByRole('button', { name: /crear cuenta/i }).click()
 
     // HTML5 validation
-    const usernameInput = page.getByLabel(/usuario/i)
+    const usernameInput = page.locator('#username')
     await expect(usernameInput).toHaveAttribute('required', '')
   })
 
@@ -115,12 +115,12 @@ test.describe('Accesibilidad básica', () => {
   test('navbar tiene navegación accesible', async ({ page }) => {
     await page.goto('/')
 
-    const nav = page.getByRole('navigation')
+    const nav = page.getByRole('navigation', { name: 'Main navigation' })
     await expect(nav).toBeVisible()
 
     // Los links deben ser accesibles por rol
     await expect(nav.getByRole('link', { name: 'Inicio' })).toBeVisible()
-    await expect(nav.getByRole('link', { name: 'Continentes' })).toBeVisible()
+    await expect(nav.getByRole('link', { name: 'Trivia' })).toBeVisible()
     await expect(nav.getByRole('link', { name: 'Foros' })).toBeVisible()
   })
 
@@ -135,7 +135,7 @@ test.describe('Accesibilidad básica', () => {
     await page.goto('/')
 
     // CTA buttons deben tener aria-labels
-    const ctaButtons = await page.getByRole('link', { name: /unirse ahora|explorar destinos/i }).all()
+    const ctaButtons = await page.getByRole('link', { name: /explorar foros|jugar trivia|mi mapa/i }).all()
     expect(ctaButtons.length).toBeGreaterThan(0)
   })
 })
