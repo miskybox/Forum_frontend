@@ -12,18 +12,18 @@ import LoadingSpinner from '../components/common/LoadingSpinner'
 import { toast } from 'react-hot-toast'
 import PropTypes from 'prop-types'
 
-const StatCard = ({ title, value, icon, color }) => (
-  <div className={`rounded-xl p-5 shadow-lg text-white ${color}`}>
-    <div className="flex items-center justify-between">
+const StatCard = ({ title, value, icon }) => (
+  <div className="bg-surface-container-lowest rounded-lg p-space-lg shadow-level-1">
+    <div className="flex items-center justify-between gap-space-sm">
       <div>
-        <p className="text-sm opacity-80">{title}</p>
-        <p className="text-3xl font-bold">{value}</p>
+        <p className="text-label-md uppercase tracking-wider text-on-surface-variant">{title}</p>
+        <p className="mt-1 font-headline text-headline-lg text-on-surface">{value}</p>
       </div>
-      <div className="bg-white/20 p-3 rounded-full">
-        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <span className="w-12 h-12 rounded-full bg-secondary-container text-secondary flex items-center justify-center">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
         </svg>
-      </div>
+      </span>
     </div>
   </div>
 )
@@ -32,7 +32,6 @@ StatCard.propTypes = {
   title: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   icon: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired
 }
 
 const AdminDashboardPage = () => {
@@ -256,11 +255,11 @@ const AdminDashboardPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#213638] via-[#2d4a4d] to-[#1a2c2e]">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
 
         {/* Header */}
-        <div className="mb-8 bg-gradient-to-r from-[#E5A13E] to-[#d4922f] rounded-2xl p-6 shadow-lg">
+        <div className="mb-8 bg-gradient-to-r from-primary to-primary-container rounded-lg p-6 shadow-level-2">
           <div className="flex items-center gap-4">
             <div className="bg-white/20 p-3 rounded-full">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,14 +276,14 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Info Box */}
-        <div className="mb-6 bg-[#CFE7E5]/20 border-l-4 border-[#E5A13E] p-4 rounded-r-lg">
+        <div className="mb-6 bg-secondary-container/50 border-l-4 border-primary p-4 rounded-r-lg">
           <div className="flex items-start">
-            <svg className="w-6 h-6 text-[#E5A13E] mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-primary mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <h3 className="font-semibold text-[#7a4b0f]">Permisos de Administrador</h3>
-              <ul className="text-sm mt-1 list-disc list-inside text-[#213638]">
+              <h3 className="font-semibold text-on-primary-fixed-variant">Permisos de Administrador</h3>
+              <ul className="text-sm mt-1 list-disc list-inside text-on-surface">
                 <li>Gestionar usuarios: bloquear, desbloquear, eliminar y asignar roles</li>
                 <li>Moderar contenido: ocultar y eliminar foros, posts y comentarios</li>
                 <li>Acceso completo a todas las funciones del sistema</li>
@@ -294,15 +293,15 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b border-[#CFE7E5]/30 pb-4">
+        <div className="flex flex-wrap gap-2 mb-6 border-b border-surface-container-high pb-4">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-label-lg transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-[#E5A13E] text-[#213638] shadow-md'
-                  : 'bg-white/10 text-[#CFE7E5] hover:bg-white/20'
+                  ? 'bg-secondary text-on-secondary shadow-level-1'
+                  : 'bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container shadow-level-1'
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -316,53 +315,53 @@ const AdminDashboardPage = () => {
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard title="Usuarios" value={stats.totalUsers} icon="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" color="bg-gradient-to-br from-blue-500 to-blue-700" />
-            <StatCard title="Foros" value={stats.totalForums} icon="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" color="bg-gradient-to-br from-green-500 to-emerald-700" />
-            <StatCard title="Posts" value={stats.totalPosts} icon="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" color="bg-gradient-to-br from-pink-500 to-rose-700" />
-            <StatCard title="Comentarios" value={stats.totalComments} icon="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" color="bg-gradient-to-br from-purple-500 to-violet-700" />
-            <StatCard title="Categorias" value={stats.totalCategories} icon="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" color="bg-gradient-to-br from-yellow-500 to-amber-700" />
-            <StatCard title="Contenido oculto" value={stats.hiddenContent} icon="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" color="bg-gradient-to-br from-orange-500 to-orange-700" />
-            <StatCard title="Usuarios bloqueados" value={stats.bannedUsers} icon="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" color="bg-gradient-to-br from-red-500 to-red-700" />
+            <StatCard title="Usuarios" value={stats.totalUsers} icon="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            <StatCard title="Foros" value={stats.totalForums} icon="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            <StatCard title="Posts" value={stats.totalPosts} icon="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <StatCard title="Comentarios" value={stats.totalComments} icon="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            <StatCard title="Categorias" value={stats.totalCategories} icon="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+            <StatCard title="Contenido oculto" value={stats.hiddenContent} icon="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+            <StatCard title="Usuarios bloqueados" value={stats.bannedUsers} icon="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
           </div>
         )}
 
         {/* Users Tab */}
         {activeTab === 'users' && (
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600">
+          <div className="bg-surface-container-lowest rounded-lg shadow-level-2 overflow-hidden">
+            <div className="p-4 bg-secondary">
               <h2 className="text-xl font-bold text-white">Gestionar Usuarios ({users.length})</h2>
-              <p className="text-blue-100 text-sm">Control total: bloquear, desbloquear, eliminar y asignar roles</p>
+              <p className="text-secondary-fixed text-sm">Control total: bloquear, desbloquear, eliminar y asignar roles</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-blue-50">
+                <thead className="bg-surface-container-low">
                   <tr>
-                    <th className="text-left py-3 px-4 text-blue-800 font-semibold">Usuario</th>
-                    <th className="text-left py-3 px-4 text-blue-800 font-semibold">Email</th>
-                    <th className="text-left py-3 px-4 text-blue-800 font-semibold">Roles</th>
-                    <th className="text-left py-3 px-4 text-blue-800 font-semibold">Estado</th>
-                    <th className="text-left py-3 px-4 text-blue-800 font-semibold">Acciones</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Usuario</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Email</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Roles</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Estado</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map((user) => (
-                    <tr key={user.id} className="border-b border-blue-100 hover:bg-blue-50/50">
+                    <tr key={user.id} className="border-b border-surface-container-high hover:bg-surface-container-low">
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E5A13E] to-[#d4922f] flex items-center justify-center text-white font-bold text-sm">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white font-bold text-sm">
                             {user.username?.charAt(0).toUpperCase()}
                           </div>
-                          <span className="text-gray-800 font-medium">{user.username}</span>
+                          <span className="text-on-surface font-medium">{user.username}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-gray-600">{user.email}</td>
+                      <td className="py-3 px-4 text-on-surface-variant">{user.email}</td>
                       <td className="py-3 px-4">
                         <div className="flex flex-wrap gap-1">
                           {user.roles?.map(role => (
                             <span key={role} className={`px-2 py-0.5 text-xs rounded-full font-medium ${
-                              role === 'ROLE_ADMIN' ? 'bg-purple-100 text-purple-700' :
-                              role === 'ROLE_MODERATOR' ? 'bg-orange-100 text-orange-700' :
-                              'bg-gray-100 text-gray-700'
+                              role === 'ROLE_ADMIN' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' :
+                              role === 'ROLE_MODERATOR' ? 'bg-warning-light text-warning-dark' :
+                              'bg-surface-container text-on-surface'
                             }`}>
                               {role.replace('ROLE_', '')}
                             </span>
@@ -371,7 +370,7 @@ const AdminDashboardPage = () => {
                       </td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          user.status === 'BANNED' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                          user.status === 'BANNED' ? 'bg-error-light text-error-dark' : 'bg-success-light text-success-dark'
                         }`}>
                           {user.status === 'BANNED' ? 'Bloqueado' : 'Activo'}
                         </span>
@@ -380,19 +379,19 @@ const AdminDashboardPage = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleOpenRoleModal(user)}
-                            className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
+                            className="px-2 py-1 text-xs bg-tertiary-fixed text-on-tertiary-fixed-variant rounded hover:bg-tertiary-fixed-dim"
                             title="Editar roles"
                           >
                             Roles
                           </button>
                           {user.status === 'BANNED' ? (
-                            <button onClick={() => handleUnblockUser(user.id)} className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">
+                            <button onClick={() => handleUnblockUser(user.id)} className="px-2 py-1 text-xs bg-success-light text-success-dark rounded hover:bg-secondary-fixed-dim">
                               Desbloquear
                             </button>
                           ) : (
                             <button
                               onClick={() => handleBlockUser(user.id)}
-                              className="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded hover:bg-orange-200"
+                              className="px-2 py-1 text-xs bg-warning-light text-warning-dark rounded hover:bg-primary-fixed"
                               disabled={user.username === currentUser?.username}
                             >
                               Bloquear
@@ -400,7 +399,7 @@ const AdminDashboardPage = () => {
                           )}
                           <button
                             onClick={() => handleDeleteUser(user.id)}
-                            className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                            className="px-2 py-1 text-xs bg-error-light text-error-dark rounded hover:bg-error-container"
                             disabled={user.username === currentUser?.username}
                           >
                             Eliminar
@@ -417,52 +416,52 @@ const AdminDashboardPage = () => {
 
         {/* Forums Tab */}
         {activeTab === 'forums' && (
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-gradient-to-r from-green-600 to-emerald-600">
+          <div className="bg-surface-container-lowest rounded-lg shadow-level-2 overflow-hidden">
+            <div className="p-4 bg-secondary">
               <h2 className="text-xl font-bold text-white">Gestionar Foros ({forums.length})</h2>
-              <p className="text-green-100 text-sm">Ocultar o eliminar foros permanentemente</p>
+              <p className="text-secondary-fixed text-sm">Ocultar o eliminar foros permanentemente</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-green-50">
+                <thead className="bg-surface-container-low">
                   <tr>
-                    <th className="text-left py-3 px-4 text-green-800 font-semibold">Titulo</th>
-                    <th className="text-left py-3 px-4 text-green-800 font-semibold">Autor</th>
-                    <th className="text-left py-3 px-4 text-green-800 font-semibold">Estado</th>
-                    <th className="text-left py-3 px-4 text-green-800 font-semibold">Acciones</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Titulo</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Autor</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Estado</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {forums.map((forum) => (
-                    <tr key={forum.id} className="border-b border-green-100 hover:bg-green-50/50">
+                    <tr key={forum.id} className="border-b border-surface-container-high hover:bg-surface-container-low">
                       <td className="py-3 px-4">
-                        <span className="text-gray-800 font-medium hover:text-green-600 cursor-pointer" onClick={() => navigate(`/forums/${forum.id}`)}>
+                        <span className="text-on-surface font-medium hover:text-secondary cursor-pointer" onClick={() => navigate(`/forums/${forum.id}`)}>
                           {forum.title}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-gray-600">{forum.authorUsername || 'N/A'}</td>
+                      <td className="py-3 px-4 text-on-surface-variant">{forum.authorUsername || 'N/A'}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          forum.status === 'HIDDEN' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                          forum.status === 'HIDDEN' ? 'bg-error-light text-error-dark' : 'bg-success-light text-success-dark'
                         }`}>
                           {forum.status === 'HIDDEN' ? 'Oculto' : 'Activo'}
                         </span>
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex gap-2 flex-wrap">
-                          <button onClick={() => navigate(`/forums/${forum.id}/edit`)} className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
+                          <button onClick={() => navigate(`/forums/${forum.id}/edit`)} className="px-2 py-1 text-xs bg-secondary-fixed text-on-secondary-fixed-variant rounded hover:bg-secondary-fixed-dim">
                             Editar
                           </button>
                           {forum.status === 'HIDDEN' ? (
-                            <button onClick={() => handleShowForum(forum.id)} className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">
+                            <button onClick={() => handleShowForum(forum.id)} className="px-2 py-1 text-xs bg-success-light text-success-dark rounded hover:bg-secondary-fixed-dim">
                               Mostrar
                             </button>
                           ) : (
-                            <button onClick={() => handleHideForum(forum.id)} className="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded hover:bg-orange-200">
+                            <button onClick={() => handleHideForum(forum.id)} className="px-2 py-1 text-xs bg-warning-light text-warning-dark rounded hover:bg-primary-fixed">
                               Ocultar
                             </button>
                           )}
-                          <button onClick={() => handleDeleteForum(forum.id)} className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">
+                          <button onClick={() => handleDeleteForum(forum.id)} className="px-2 py-1 text-xs bg-error-light text-error-dark rounded hover:bg-error-container">
                             Eliminar
                           </button>
                         </div>
@@ -477,31 +476,31 @@ const AdminDashboardPage = () => {
 
         {/* Posts Tab */}
         {activeTab === 'posts' && (
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-gradient-to-r from-pink-600 to-rose-600">
+          <div className="bg-surface-container-lowest rounded-lg shadow-level-2 overflow-hidden">
+            <div className="p-4 bg-secondary">
               <h2 className="text-xl font-bold text-white">Gestionar Posts ({posts.length})</h2>
-              <p className="text-pink-100 text-sm">Ver y eliminar posts</p>
+              <p className="text-secondary-fixed text-sm">Ver y eliminar posts</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-pink-50">
+                <thead className="bg-surface-container-low">
                   <tr>
-                    <th className="text-left py-3 px-4 text-pink-800 font-semibold">Titulo</th>
-                    <th className="text-left py-3 px-4 text-pink-800 font-semibold">Autor</th>
-                    <th className="text-left py-3 px-4 text-pink-800 font-semibold">Foro</th>
-                    <th className="text-left py-3 px-4 text-pink-800 font-semibold">Acciones</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Titulo</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Autor</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Foro</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {posts.map((post) => (
-                    <tr key={post.id} className="border-b border-pink-100 hover:bg-pink-50/50">
+                    <tr key={post.id} className="border-b border-surface-container-high hover:bg-surface-container-low">
                       <td className="py-3 px-4">
-                        <span className="text-gray-800 font-medium">{post.title || 'Sin titulo'}</span>
+                        <span className="text-on-surface font-medium">{post.title || 'Sin titulo'}</span>
                       </td>
-                      <td className="py-3 px-4 text-gray-600">{post.authorUsername || 'N/A'}</td>
-                      <td className="py-3 px-4 text-gray-600">{post.forumTitle || 'N/A'}</td>
+                      <td className="py-3 px-4 text-on-surface-variant">{post.authorUsername || 'N/A'}</td>
+                      <td className="py-3 px-4 text-on-surface-variant">{post.forumTitle || 'N/A'}</td>
                       <td className="py-3 px-4">
-                        <button onClick={() => handleDeletePost(post.id)} className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">
+                        <button onClick={() => handleDeletePost(post.id)} className="px-2 py-1 text-xs bg-error-light text-error-dark rounded hover:bg-error-container">
                           Eliminar
                         </button>
                       </td>
@@ -509,7 +508,7 @@ const AdminDashboardPage = () => {
                   ))}
                   {posts.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="py-8 text-center text-gray-500">No hay posts</td>
+                      <td colSpan={4} className="py-8 text-center text-on-surface-variant">No hay posts</td>
                     </tr>
                   )}
                 </tbody>
@@ -520,29 +519,29 @@ const AdminDashboardPage = () => {
 
         {/* Comments Tab */}
         {activeTab === 'comments' && (
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 bg-gradient-to-r from-purple-600 to-violet-600">
+          <div className="bg-surface-container-lowest rounded-lg shadow-level-2 overflow-hidden">
+            <div className="p-4 bg-secondary">
               <h2 className="text-xl font-bold text-white">Gestionar Comentarios ({comments.length})</h2>
-              <p className="text-purple-100 text-sm">Ocultar o eliminar comentarios permanentemente</p>
+              <p className="text-secondary-fixed text-sm">Ocultar o eliminar comentarios permanentemente</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-purple-50">
+                <thead className="bg-surface-container-low">
                   <tr>
-                    <th className="text-left py-3 px-4 text-purple-800 font-semibold">Contenido</th>
-                    <th className="text-left py-3 px-4 text-purple-800 font-semibold">Autor</th>
-                    <th className="text-left py-3 px-4 text-purple-800 font-semibold">Estado</th>
-                    <th className="text-left py-3 px-4 text-purple-800 font-semibold">Acciones</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Contenido</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Autor</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Estado</th>
+                    <th className="text-left py-3 px-4 text-on-surface-variant font-semibold">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comments.map((comment) => (
-                    <tr key={comment.id} className="border-b border-purple-100 hover:bg-purple-50/50">
-                      <td className="py-3 px-4 text-gray-800 max-w-xs truncate">{comment.content?.substring(0, 80)}...</td>
-                      <td className="py-3 px-4 text-gray-600">{comment.authorUsername || 'N/A'}</td>
+                    <tr key={comment.id} className="border-b border-surface-container-high hover:bg-surface-container-low">
+                      <td className="py-3 px-4 text-on-surface max-w-xs truncate">{comment.content?.substring(0, 80)}...</td>
+                      <td className="py-3 px-4 text-on-surface-variant">{comment.authorUsername || 'N/A'}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          comment.status === 'HIDDEN' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                          comment.status === 'HIDDEN' ? 'bg-error-light text-error-dark' : 'bg-success-light text-success-dark'
                         }`}>
                           {comment.status === 'HIDDEN' ? 'Oculto' : 'Activo'}
                         </span>
@@ -550,15 +549,15 @@ const AdminDashboardPage = () => {
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
                           {comment.status === 'HIDDEN' ? (
-                            <button onClick={() => handleShowComment(comment.id)} className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">
+                            <button onClick={() => handleShowComment(comment.id)} className="px-2 py-1 text-xs bg-success-light text-success-dark rounded hover:bg-secondary-fixed-dim">
                               Mostrar
                             </button>
                           ) : (
-                            <button onClick={() => handleHideComment(comment.id)} className="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded hover:bg-orange-200">
+                            <button onClick={() => handleHideComment(comment.id)} className="px-2 py-1 text-xs bg-warning-light text-warning-dark rounded hover:bg-primary-fixed">
                               Ocultar
                             </button>
                           )}
-                          <button onClick={() => handleDeleteComment(comment.id)} className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">
+                          <button onClick={() => handleDeleteComment(comment.id)} className="px-2 py-1 text-xs bg-error-light text-error-dark rounded hover:bg-error-container">
                             Eliminar
                           </button>
                         </div>
@@ -573,9 +572,9 @@ const AdminDashboardPage = () => {
 
         {/* Role Modal */}
         {showRoleModal && editingUser && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">
+          <div className="fixed inset-0 bg-inverse-surface/50 flex items-center justify-center z-50">
+            <div className="bg-surface-container-lowest rounded-lg p-6 w-full max-w-md shadow-2xl">
+              <h3 className="text-xl font-bold text-on-surface mb-4">
                 Editar roles de {editingUser.username}
               </h3>
               <div className="space-y-3 mb-6">
@@ -591,12 +590,12 @@ const AdminDashboardPage = () => {
                           setSelectedRoles(selectedRoles.filter(r => r !== role.name))
                         }
                       }}
-                      className="w-5 h-5 rounded border-gray-300 text-[#E5A13E] focus:ring-[#E5A13E]"
+                      className="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary"
                     />
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      role.name === 'ROLE_ADMIN' ? 'bg-purple-100 text-purple-700' :
-                      role.name === 'ROLE_MODERATOR' ? 'bg-orange-100 text-orange-700' :
-                      'bg-gray-100 text-gray-700'
+                      role.name === 'ROLE_ADMIN' ? 'bg-tertiary-fixed text-on-tertiary-fixed-variant' :
+                      role.name === 'ROLE_MODERATOR' ? 'bg-warning-light text-warning-dark' :
+                      'bg-surface-container text-on-surface'
                     }`}>
                       {role.name?.replace('ROLE_', '')}
                     </span>
@@ -606,13 +605,13 @@ const AdminDashboardPage = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowRoleModal(false)}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                  className="flex-1 px-4 py-2 bg-surface-container text-on-surface rounded-lg hover:bg-surface-container-high"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleSaveRoles}
-                  className="flex-1 px-4 py-2 bg-[#E5A13E] text-white rounded-lg hover:bg-[#d4922f]"
+                  className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-container"
                 >
                   Guardar
                 </button>
