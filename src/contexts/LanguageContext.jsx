@@ -228,6 +228,13 @@ const translations = {
       errorDeletingForum: 'No se pudo eliminar el foro',
       confirmDeleteForum: '¿Estás seguro de que quieres eliminar este foro? Esta acción no se puede deshacer.',
       forumDeletedSuccess: 'Foro eliminado con éxito',
+      eyebrow: 'Comunidades & Foros',
+      intro: 'Encuentra el foro de tu próximo destino, pregunta a quien ya ha estado y comparte lo que aprendiste en el camino.',
+      viewForum: 'Ver foro',
+      createCtaTitle: '¿No encuentras tu destino?',
+      createCtaText: 'Crea un foro nuevo y reúne a quienes van a viajar allí.',
+      joinToCreate: 'Únete para crear foros',
+      factsTitle: 'Datos del foro',
     },
     // Categories
     categories: {
@@ -239,9 +246,9 @@ const translations = {
       noCategories: 'No hay categorías disponibles',
       error: 'No se pudieron cargar las categorías. Por favor, inténtalo de nuevo más tarde.',
       retry: 'Reintentar',
-      forum: 'FORO',
-      forums: 'FOROS',
-      available: 'DISPONIBLES',
+      forum: 'foro',
+      forums: 'foros',
+      available: 'disponibles',
     },
     // Trivia
     trivia: {
@@ -1002,6 +1009,13 @@ const translations = {
       errorDeletingForum: 'Could not delete forum',
       confirmDeleteForum: 'Are you sure you want to delete this forum? This action cannot be undone.',
       forumDeletedSuccess: 'Forum deleted successfully',
+      eyebrow: 'Communities & Forums',
+      intro: 'Find the forum for your next destination, ask people who have been there and share what you learned on the road.',
+      viewForum: 'View forum',
+      createCtaTitle: "Can't find your destination?",
+      createCtaText: 'Create a new forum and bring together everyone traveling there.',
+      joinToCreate: 'Join to create forums',
+      factsTitle: 'Forum details',
     },
     // Categories
     categories: {
@@ -1013,9 +1027,9 @@ const translations = {
       noCategories: 'No categories available',
       error: 'Could not load categories. Please try again later.',
       retry: 'Retry',
-      forum: 'FORUM',
-      forums: 'FORUMS',
-      available: 'AVAILABLE',
+      forum: 'forum',
+      forums: 'forums',
+      available: 'available',
     },
     // Trivia
     trivia: {

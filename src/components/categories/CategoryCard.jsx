@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import { MdPublic } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import imgEuropa    from '../../assets/paris-moulin-europa.JPG'
 import imgAmerica   from '../../assets/patagonia-américa.jpg'
@@ -47,9 +48,6 @@ const CATEGORY_NAMES_EN = {
   'Antártida':         'Antarctica',
 }
 
-/**
- * CategoryCard con estilo retro Adventure
- */
 const CategoryCard = ({ category }) => {
   const { language, t } = useLanguage()
   const imageUrl = category.imageUrl || CATEGORY_IMAGES[category.name]
@@ -60,37 +58,35 @@ const CategoryCard = ({ category }) => {
   return (
     <Link
       to={`/forums/category/${category.id}`}
-      className="group"
+      className="group block bg-surface-container-lowest rounded-lg overflow-hidden shadow-level-1 hover:shadow-level-2 transition-shadow text-on-surface hover:text-on-surface"
     >
-      <div className="card border-adventure-gold overflow-hidden transition-all group-hover:border-adventure-gold/80">
-        <div className="aspect-video relative bg-adventure-dark overflow-hidden">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={CATEGORY_ALT[category.name] || category.name}
-              className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-300"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full bg-adventure-dark">
-              <div className="w-20 h-20 rounded-full bg-golden/30 flex items-center justify-center">
-                <svg className="w-10 h-10 text-golden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              </div>
-            </div>
-          )}
-          <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-            <h3 className="text-lg md:text-xl font-extrabold uppercase tracking-wider truncate [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]" style={{ color: '#ffffff' }}>
-              {displayName}
-            </h3>
+      <div className="aspect-video relative bg-surface-container overflow-hidden">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={CATEGORY_ALT[category.name] || category.name}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full bg-gradient-to-br from-secondary-fixed to-surface-container">
+            <MdPublic className="text-[3rem] text-secondary/60" aria-hidden="true" />
           </div>
-        </div>
-        <div className="p-4 bg-adventure-dark/50">
-          <div className="text-xs text-adventure-gold font-retro uppercase tracking-normal mb-2 truncate">
-            {category.forumCount || 0} {category.forumCount === 1 ? t('categories.forum') : t('categories.forums')} {t('categories.available')}
-          </div>
-          <p className="text-adventure-light font-retro text-xs line-clamp-2 opacity-80 break-words">
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent" />
+        <h3 className="absolute bottom-0 left-0 right-0 px-space-md py-space-sm font-headline text-headline-sm text-on-primary truncate">
+          {displayName}
+        </h3>
+      </div>
+      <div className="p-space-md">
+        <p className="text-label-md text-secondary">
+          {category.forumCount || 0} {category.forumCount === 1 ? t('categories.forum') : t('categories.forums')} {t('categories.available')}
+        </p>
+        {category.description && (
+          <p className="mt-space-xs text-body-sm text-on-surface-variant line-clamp-2 break-words">
             {category.description}
           </p>
-        </div>
+        )}
       </div>
     </Link>
   )
