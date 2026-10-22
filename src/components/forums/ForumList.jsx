@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import ForumCard from './ForumCard'
 import ForumSearch from './ForumSearch'
 import forumService from '../../services/forumService'
@@ -20,7 +20,8 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   const [category, setCategory] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const searchTerm = searchParams.get('q') || ''
 
   const { isAuthenticated } = useAuth()
   const { t } = useLanguage()
@@ -57,8 +58,9 @@ const ForumList = ({ categoryId: propCategoryId }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, searchTerm])
 
+  // The search term lives in the URL (?q=) so it can be shared and set from the home hero
   const handleSearch = (term) => {
-    setSearchTerm(term)
+    setSearchParams(term ? { q: term } : {})
   }
 
   if (loading) {
@@ -147,7 +149,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
                 {t('forumList.noResultsFor')} "{searchTerm}"
               </p>
               <button
-                onClick={() => setSearchTerm('')}
+                onClick={() => handleSearch('')}
                 className="btn btn-outline"
               >
                 {t('forumList.viewAll')}
