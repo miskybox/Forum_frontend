@@ -72,14 +72,18 @@ Tick a task in the same commit that completes it.
 - [x] Update `HomePage.test.jsx` mocks
 
 ### Forums & categories (`/forums`, `/categories`, `/forums/:id`)
-- [ ] Restyle `ForumListPage`, `ForumCard`, `ForumSearch`, `CategoryListPage`, `CategoryCard`
-- [ ] Restyle `ForumDetailsPage` with thread cards
+- [x] Restyle `ForumListPage`, `ForumCard`, `ForumSearch`, `CategoryListPage`, `CategoryCard`, `CategoryList`
+- [x] Restyle `ForumDetailsPage` with thread cards (`PostCard`, `PostList`)
 
 ### Thread / post detail (`/posts/:id`, mockup 02)
-- [ ] Header band: breadcrumb, badges, title, actions (vote, save, share), author bar
-- [ ] Body: restyle `PostContent`; support optional rich blocks (itinerary, budget table, gallery + lightbox, map/GPX) only where data exists
-- [ ] Replies: sort pills, nested replies (`CommentList`, `CommentItems`), reply composer (`CommentForm`) with markdown toolbar
-- [ ] Rail: route facts, related discussions, companions CTA (weather widget only if a data source is added)
+- [x] Header band: breadcrumb (forum + category), tags, title, actions (like, share, edit, delete), author bar
+- [ ] Save/bookmark action — B10
+- [x] Body: restyle `PostContent`
+- [ ] Rich blocks (itinerary, budget table, gallery + lightbox, map/GPX) — need post images in the DTO (B2) and route info (B16/B17)
+- [x] Replies: sort pills, comment cards with thread-author badge, reply composer
+- [ ] Nested replies — B4; markdown toolbar (content is plain text today)
+- [x] Rail: thread facts and more posts from the same forum
+- [ ] Weather widget (Open-Meteo) and companions CTA — B15, B21
 - [ ] Restyle `PostCreatePage` / `PostEditPage` / `PostForm`, `ForumCreatePage` / `ForumEditPage` / `ForumForm`
 
 ### Profile (`/profile`, `/profile/:userId`, mockup 04)
@@ -97,6 +101,16 @@ Tick a task in the same commit that completes it.
 - [ ] Messages & notifications: `MessagesPage`, `ChatWindow`, `ConversationList`, modals, `NotificationsPage`
 - [ ] Admin & moderator dashboards
 - [ ] Static pages: About, Contact, Help, NotFound
+
+## Bugs found and fixed during the redesign
+- [x] Comments showed "unknown user" and authors could not edit: API sends flat `userId/username/userAvatar`
+- [x] Comment edit/delete crashed: `CommentList` passed `onDeleted` instead of `onDelete`/`onUpdate`
+- [x] `hasRole('ADMIN')` never matched backend `ROLE_ADMIN` → admins/moderators had no post actions
+- [x] Post authors could not edit their posts (`author.id` instead of `createdBy`)
+- [x] Forum tags rendered empty (API sends strings, UI expected `{id, name}`)
+- [x] `LikeButton` crashed the page on a partial API response
+- [ ] Profile "Mis foros"/"Mis publicaciones" render all forums / nothing (`ForumList`/`PostList` without filters) — fix in profile redesign
+- [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
 
 ## Phase 5 — Quality
 - [ ] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
