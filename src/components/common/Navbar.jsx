@@ -154,6 +154,9 @@ const Navbar = () => {
 
   const username = currentUser?.username || t('nav.user')
 
+  // Post pages belong to the forums section even though their URL is /posts/...
+  const isSectionActive = (to) => to === '/forums' && location.pathname.startsWith('/posts')
+
   return (
     <header className="sticky top-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(45,74,62,0.05)]">
       <nav role="navigation" aria-label="Main navigation">
@@ -175,7 +178,12 @@ const Navbar = () => {
           {/* Desktop navigation */}
           <div className="hidden lg:flex items-center gap-space-xs p-1 bg-surface-container-low rounded-full">
             {navLinks.map((link) => (
-              <NavLink key={link.to} to={link.to} end={link.to === '/'} className={desktopLinkClass}>
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === '/'}
+                className={({ isActive }) => desktopLinkClass({ isActive: isActive || isSectionActive(link.to) })}
+              >
                 {link.label}
               </NavLink>
             ))}
@@ -344,7 +352,7 @@ const Navbar = () => {
                   key={link.to}
                   to={link.to}
                   end={link.to === '/'}
-                  className={mobileLinkClass}
+                  className={({ isActive }) => mobileLinkClass({ isActive: isActive || isSectionActive(link.to) })}
                   onClick={() => setIsMenuOpen(false)}
                   role="menuitem"
                 >
