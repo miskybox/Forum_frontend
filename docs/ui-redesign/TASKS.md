@@ -104,7 +104,7 @@ Tick a task in the same commit that completes it.
 
 ## Phase 6 — New features shown in mockups (need backend)
 Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an endpoint exists the UI hides that block (no fake data in production).
-- [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — decide between a real blog API or posts-with-photos
+- [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — working decision: diaries are posts with photos
 - [ ] Feed tabs (trending / recent / with photos / unanswered) — B3
 - [ ] Nested replies and reply sorting — B4
 - [ ] Profile cover, likes received, user content tabs — B6, B7
@@ -112,4 +112,6 @@ Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an end
 - [ ] Travel companions section (trips, filters, join requests, safety tips) — B15
 - [ ] Route telemetry, itinerary, GPX and elevation profile — B16, B17
 - [ ] Badges / adventure passport — B18
-- [ ] Destination of the month, newsletter, weather & alerts — B19–B21
+- [ ] Destination of the month, newsletter (store only, no sending), weather via Open-Meteo — B19–B21
+
+Constraint: demo project — own database, only free external APIs (see `BACKEND_TASKS.md`).

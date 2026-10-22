@@ -3,6 +3,15 @@
 Backend repo: `miskybox/Forum_backend` (Spring Boot). This list covers what the new interface needs from the API.
 Work on a backend branch `feature/new-ux-ui-api` and follow the same rules as the frontend (`AGENTS.md`).
 
+## Project constraints
+
+Forum Viajeros is a **demo project**:
+- Data lives in our own database (PostgreSQL). Demo content is created with seed data, not with external services.
+- **Only free external APIs, without paid plans or billing accounts.** Prefer APIs that need no key.
+  Allowed today: REST Countries (already used), Open-Meteo (weather, no key). Map data stays local (`countries.geojson`).
+- No paid email, SMS, storage, search or analytics providers. Features that would need one are simplified (see B20) or skipped.
+- Seed data must be clearly fictional (demo users and posts), never real personal data.
+
 Priorities:
 - **P1** — needed to build the redesigned pages with the features that already exist.
 - **P2** — nice to have for the redesign; the UI hides the block when there is no data.
@@ -24,7 +33,8 @@ Priorities:
 
 - [ ] **B1. Blog API is missing.** The frontend `blogService` calls `/api/blog/*` (categories, posts, slugs, search) but the backend has no blog controller, so the "Diarios de Viaje" section cannot work. Decide:
   - (a) implement `BlogPost`/`BlogCategory` entities and `/api/blog/*` endpoints matching `src/services/blogService.js`, or
-  - (b) drop the separate blog and model "travel diaries" as posts with images (filter `hasImages=true`, see B3). Recommended: (b), less code, one content model.
+  - (b) drop the separate blog and model "travel diaries" as posts with images (filter `hasImages=true`, see B3).
+  - **Working decision: (b)** — less code, one content model, fits the demo. Revisit if a real blog is needed.
 - [ ] **B2. Enrich `PostResponseDTO`** so cards render without N+1 calls:
   `likeCount`, `likedByCurrentUser`, `authorAvatarUrl`, `forumTitle`, `categoryId`, `categoryName`,
   `imageUrls` (or `coverImageUrl` + `imageCount`), `lastCommentAt`.
@@ -52,12 +62,14 @@ Priorities:
 - [ ] **B16. Route telemetry on posts**: optional `RouteInfo` (distance km, elevation gain/loss, max altitude, difficulty, total cost, transport type, best season) and itinerary days.
 - [ ] **B17. GPX upload/download** attached to posts, plus elevation profile points derived from the track.
 - [ ] **B18. Badges / adventure passport**: `Badge` and `UserBadge`, rules engine (e.g. 10 routes → "Guía Verificado"), user level.
-- [ ] **B19. Destination of the month** (admin-curated entity).
-- [ ] **B20. Newsletter subscription** (`POST /api/newsletter`), with double opt-in.
-- [ ] **B21. Weather & alerts**: proxy endpoint to an external API (e.g. Open-Meteo) with caching, or call it from the frontend.
+- [ ] **B19. Destination of the month**: admin-curated entity, or a seeded static entry for the demo.
+- [ ] **B20. Newsletter subscription**: demo only — store the email in the DB (`POST /api/newsletter`), no email sending (no paid provider). Alternatively hide the widget.
+- [ ] **B21. Weather**: call Open-Meteo (free, no API key) directly from the frontend; no backend needed. Mountain alerts are out of scope (no free reliable source).
 - [ ] **B22. Trip announcements on profiles** ("Próximos Viajes") — reuse B15.
 
 ## Notes
+
+- Add demo seed data for every new feature (companions trips, route info, badges) so the pages look complete without real users.
 
 - Keep DTOs backwards compatible: add fields, do not rename existing ones, so `main` keeps working while the redesign lives on its branch.
 - Every new endpoint needs integration tests and an update to the API docs.
