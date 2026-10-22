@@ -19,6 +19,12 @@ const translations = {
       user: 'Usuario',
       admin: 'Panel Admin',
       moderator: 'Panel Moderador',
+      tagline: 'Comunidad Global',
+      createPost: 'Crear debate',
+      notifications: 'Notificaciones',
+      messages: 'Mensajes',
+      openMenu: 'Abrir menú principal',
+      closeMenu: 'Cerrar menú principal',
     },
     // Home
     home: {
@@ -518,6 +524,14 @@ const translations = {
       visitX: 'Visitar nuestro X (se abre en nueva ventana)',
       visitTikTok: 'Visitar nuestro TikTok (se abre en nueva ventana)',
       madeWith: 'Hecho con pasión para viajeros de todo el mundo',
+      explore: 'Explorar',
+      community: 'Comunidad',
+      platform: 'Plataforma',
+      trivia: 'Trivia viajera',
+      feed: 'Contenido',
+      users: 'Viajeros',
+      manifestoTitle: 'Manifiesto de Viaje Responsable',
+      manifesto: 'Promovemos el mínimo impacto ecológico, el apoyo directo a comunidades locales y el respeto por la biodiversidad y el patrimonio.',
     },
     // Continentes
     continentsNames: {
@@ -699,6 +713,12 @@ const translations = {
       user: 'User',
       admin: 'Admin Panel',
       moderator: 'Moderator Panel',
+      tagline: 'Global Community',
+      createPost: 'Start a discussion',
+      notifications: 'Notifications',
+      messages: 'Messages',
+      openMenu: 'Open main menu',
+      closeMenu: 'Close main menu',
     },
     // Home
     home: {
@@ -1198,6 +1218,14 @@ const translations = {
       visitX: 'Visit our X (opens in new window)',
       visitTikTok: 'Visit our TikTok (opens in new window)',
       madeWith: 'Made with passion for travelers around the world',
+      explore: 'Explore',
+      community: 'Community',
+      platform: 'Platform',
+      trivia: 'Travel trivia',
+      feed: 'Feed',
+      users: 'Travelers',
+      manifestoTitle: 'Responsible Travel Manifesto',
+      manifesto: 'We promote minimal environmental impact, direct support for local communities and respect for biodiversity and heritage.',
     },
     // Continentes
     continentsNames: {

@@ -25,6 +25,12 @@ vi.mock('../../contexts/LanguageContext', () => ({
         'nav.logout': 'Salir',
         'nav.createForum': 'Crear Foro',
         'nav.myProfile': 'Mi Perfil',
+        'nav.tagline': 'Comunidad Global',
+        'nav.createPost': 'Crear debate',
+        'nav.notifications': 'Notificaciones',
+        'nav.messages': 'Mensajes',
+        'nav.openMenu': 'Abrir menú principal',
+        'nav.closeMenu': 'Cerrar menú principal',
       }
       return translations[key] || key
     }

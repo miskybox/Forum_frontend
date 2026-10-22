@@ -1,19 +1,81 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom'
+import {
+  MdAddCircleOutline,
+  MdChatBubbleOutline,
+  MdClose,
+  MdExpandMore,
+  MdMenu,
+  MdNotificationsNone,
+} from 'react-icons/md'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
 import messageService from '../../services/messageService'
 import notificationService from '../../services/notificationService'
+import Avatar from '../ui/Avatar'
 import logo from '../../assets/logo-bubble_FV.webp'
+
+const desktopLinkClass = ({ isActive }) =>
+  `px-4 py-1.5 rounded-full text-label-lg transition-colors whitespace-nowrap ${
+    isActive
+      ? 'bg-secondary text-on-secondary hover:text-on-secondary'
+      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+  }`
+
+const mobileLinkClass = ({ isActive }) =>
+  `flex items-center min-h-[44px] px-4 rounded-base text-body-md font-semibold transition-colors ${
+    isActive
+      ? 'bg-secondary text-on-secondary hover:text-on-secondary'
+      : 'text-on-surface hover:bg-surface-container-low hover:text-on-surface'
+  }`
+
+const iconButtonClass =
+  'relative w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors'
+
+const menuItemClass =
+  'w-full flex items-center min-h-[44px] px-4 rounded-base text-body-sm font-semibold text-on-surface hover:bg-surface-container-low hover:text-on-surface transition-colors text-left'
+
+const CountBadge = ({ count }) => {
+  if (count <= 0) return null
+  return (
+    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-on-primary text-caption font-bold flex items-center justify-center">
+      {count > 9 ? '9+' : count}
+    </span>
+  )
+}
+
+const SpainFlag = () => (
+  <svg className="w-5 h-[14px] rounded-sm flex-shrink-0" viewBox="0 0 60 40" aria-hidden="true">
+    <rect width="60" height="40" fill="#AA151B" />
+    <rect y="10" width="60" height="20" fill="#F1BF00" />
+  </svg>
+)
+
+const UkFlag = () => (
+  <svg className="w-5 h-[14px] rounded-sm flex-shrink-0" viewBox="0 0 60 30" aria-hidden="true">
+    <clipPath id="navbar-gb-clip">
+      <path d="M0,0 v30 h60 v-30 z" />
+    </clipPath>
+    <g clipPath="url(#navbar-gb-clip)">
+      <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path d="M0,0 L30,15 M60,0 L30,15 M0,30 L30,15 M60,30 L30,15" stroke="#C8102E" strokeWidth="4" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+    </g>
+  </svg>
+)
 
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()
   const { language, setLanguage, t } = useLanguage()
   const navigate = useNavigate()
+  const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [unreadNotifications, setUnreadNotifications] = useState(0)
+  const profileMenuRef = useRef(null)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,6 +88,31 @@ const Navbar = () => {
       return () => clearInterval(interval)
     }
   }, [isAuthenticated])
+
+  // Close menus when the route changes
+  useEffect(() => {
+    setIsMenuOpen(false)
+    setIsProfileMenuOpen(false)
+  }, [location.pathname])
+
+  // Close the profile menu on outside click or Escape
+  useEffect(() => {
+    if (!isProfileMenuOpen) return
+    const handleClick = (event) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setIsProfileMenuOpen(false)
+      }
+    }
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setIsProfileMenuOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+    }
+  }, [isProfileMenuOpen])
 
   const loadUnreadCount = async () => {
     try {
@@ -50,7 +137,6 @@ const Navbar = () => {
     navigate('/')
   }
 
-  // Links públicos (visibles para todos)
   const publicLinks = [
     { to: '/', label: t('nav.home') },
     { to: '/forums', label: t('nav.forums') },
@@ -58,273 +144,273 @@ const Navbar = () => {
     { to: '/travel', label: t('nav.map') },
   ]
 
-  // Links solo para usuarios logueados (estilo Instagram)
   const privateLinks = [
     { to: '/feed', label: t('nav.feed') },
   ]
 
-  // Combinar links según autenticación
   const navLinks = isAuthenticated
     ? [...publicLinks.slice(0, 1), ...privateLinks, ...publicLinks.slice(1)]
     : publicLinks
 
-  return (
-    <nav className="bg-aqua sticky top-0 z-50 shadow-lg" role="navigation" aria-label="Main navigation">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
+  const username = currentUser?.username || t('nav.user')
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
-            <img
-              src={logo}
-              alt="Forum Viajeros"
-              className="h-12 sm:h-16 lg:h-20 w-auto transition-transform duration-200"
-            />
+  return (
+    <header className="sticky top-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(45,74,62,0.05)]">
+      <nav role="navigation" aria-label="Main navigation">
+        <div className="max-w-7xl mx-auto h-16 lg:h-20 px-gutter-sm lg:px-gutter-lg flex items-center justify-between gap-space-md">
+
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-space-sm group flex-shrink-0">
+            <img src={logo} alt="" className="h-9 w-auto object-contain" />
+            <span className="flex flex-col leading-none">
+              <span className="font-headline text-title-md font-bold tracking-tight text-primary group-hover:text-primary-container transition-colors">
+                Forum Viajeros
+              </span>
+              <span className="hidden sm:block mt-0.5 text-caption uppercase tracking-widest text-on-surface-variant">
+                {t('nav.tagline')}
+              </span>
+            </span>
           </Link>
 
-          {/* Menú desktop */}
-          <div className="hidden lg:flex items-center space-x-2">
+          {/* Desktop navigation */}
+          <div className="hidden lg:flex items-center gap-space-xs p-1 bg-surface-container-low rounded-full">
             {navLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className="group text-midnight hover:bg-golden px-4 py-2 rounded-lg text-base font-bold transition-all duration-200 tracking-wide min-h-[44px] flex items-center hover:scale-105"
-                >
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{link.label}</span>
-                </Link>
-              ))}
+              <NavLink key={link.to} to={link.to} end={link.to === '/'} className={desktopLinkClass}>
+                {link.label}
+              </NavLink>
+            ))}
           </div>
 
-          {/* Botones de usuario y selector de idioma */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          {/* Actions */}
+          <div className="flex items-center gap-space-sm">
 
-            {/* Selector de idioma: ambas banderas visibles para que se note que se puede elegir.
-                Botones compactos pero con área de toque de 44px (WCAG) vía padding invisible. */}
+            {/* Language selector */}
             <div
-              className="flex items-center gap-0.5"
+              className="hidden sm:flex items-center gap-0.5 p-0.5 rounded-full bg-surface-container-low"
               role="group"
               aria-label="Selector de idioma / Language selector"
             >
               <button
+                type="button"
                 onClick={() => setLanguage('es')}
                 aria-pressed={language === 'es'}
                 title="Español"
                 aria-label="Español"
-                className={`flex items-center justify-center w-11 h-11 rounded-md transition-all duration-200 cursor-pointer ${
-                  language === 'es' ? 'bg-golden/70' : 'hover:bg-golden/30'
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
+                  language === 'es' ? 'bg-surface-container-lowest shadow-level-1' : 'hover:bg-surface-container'
                 }`}
               >
-                <svg className="w-5 h-[14px] rounded-sm shadow-sm flex-shrink-0" viewBox="0 0 60 40" aria-hidden="true">
-                  <rect width="60" height="40" fill="#AA151B" />
-                  <rect y="10" width="60" height="20" fill="#F1BF00" />
-                </svg>
+                <SpainFlag />
               </button>
-
               <button
+                type="button"
                 onClick={() => setLanguage('en')}
                 aria-pressed={language === 'en'}
                 title="English"
                 aria-label="English"
-                className={`flex items-center justify-center w-11 h-11 rounded-md transition-all duration-200 cursor-pointer ${
-                  language === 'en' ? 'bg-golden/70' : 'hover:bg-golden/30'
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
+                  language === 'en' ? 'bg-surface-container-lowest shadow-level-1' : 'hover:bg-surface-container'
                 }`}
               >
-                <svg className="w-5 h-[14px] rounded-sm shadow-sm flex-shrink-0" viewBox="0 0 60 30" aria-hidden="true">
-                  <clipPath id="navbar-gb-clip">
-                    <path d="M0,0 v30 h60 v-30 z" />
-                  </clipPath>
-                  <g clipPath="url(#navbar-gb-clip)">
-                    <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
-                    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
-                    <path d="M0,0 L30,15 M60,0 L30,15 M0,30 L30,15 M60,30 L30,15" stroke="#C8102E" strokeWidth="4" />
-                    <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
-                    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
-                  </g>
-                </svg>
+                <UkFlag />
               </button>
             </div>
 
             {isAuthenticated ? (
-              <div className="flex items-center gap-1 sm:gap-2">
-                {/* Notifications icon */}
+              <>
+                <Link
+                  to="/forums/create"
+                  className="hidden md:inline-flex items-center gap-space-xs bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary text-label-lg px-space-md py-2 rounded-full shadow-[0_2px_8px_-2px_rgba(45,74,62,0.12)] transition-colors active:scale-95"
+                >
+                  <MdAddCircleOutline className="text-title-md" aria-hidden="true" />
+                  <span>{t('nav.createPost')}</span>
+                </Link>
+
                 <Link
                   to="/notifications"
-                  className="relative p-1.5 sm:p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] min-w-[36px] flex items-center justify-center"
-                  aria-label={`Notificaciones${unreadNotifications > 0 ? ` (${unreadNotifications} sin leer)` : ''}`}
+                  className={iconButtonClass}
+                  aria-label={`${t('nav.notifications')}${unreadNotifications > 0 ? ` (${unreadNotifications})` : ''}`}
                 >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                  </svg>
-                  {unreadNotifications > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-terracota text-white text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
-                      {unreadNotifications > 9 ? '9+' : unreadNotifications}
-                    </span>
-                  )}
+                  <MdNotificationsNone className="text-title-md" aria-hidden="true" />
+                  <CountBadge count={unreadNotifications} />
                 </Link>
 
-                {/* Messages icon */}
                 <Link
                   to="/messages"
-                  className="relative p-1.5 sm:p-2 rounded-lg text-midnight hover:bg-golden transition-all duration-200 min-h-[44px] min-w-[36px] flex items-center justify-center"
-                  aria-label={`Mensajes${unreadMessages > 0 ? ` (${unreadMessages} sin leer)` : ''}`}
+                  className={`${iconButtonClass} hidden sm:flex`}
+                  aria-label={`${t('nav.messages')}${unreadMessages > 0 ? ` (${unreadMessages})` : ''}`}
                 >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                  </svg>
-                  {unreadMessages > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-terracota text-white text-xs font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1">
-                      {unreadMessages > 9 ? '9+' : unreadMessages}
-                    </span>
+                  <MdChatBubbleOutline className="text-title-md" aria-hidden="true" />
+                  <CountBadge count={unreadMessages} />
+                </Link>
+
+                <div className="relative" ref={profileMenuRef}>
+                  <button
+                    type="button"
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    className="flex items-center gap-space-xs pl-1 pr-2 py-1 rounded-full hover:bg-surface-container-low transition-colors"
+                    aria-expanded={isProfileMenuOpen}
+                    aria-haspopup="true"
+                    aria-label="User menu"
+                  >
+                    <Avatar name={currentUser?.username} src={currentUser?.profileImageUrl} size="sm" tone="primary" />
+                    <span className="hidden sm:inline text-label-lg text-on-surface max-w-[8rem] truncate">{username}</span>
+                    <MdExpandMore className={`text-title-md text-on-surface-variant transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                  </button>
+
+                  {isProfileMenuOpen && (
+                    <div
+                      className="absolute right-0 mt-2 w-56 p-space-sm bg-surface-container-lowest rounded-lg shadow-level-3 border border-surface-container-high"
+                      role="menu"
+                    >
+                      <Link to="/profile" className={menuItemClass} onClick={() => setIsProfileMenuOpen(false)} role="menuitem">
+                        {t('nav.myProfile')}
+                      </Link>
+                      <Link to="/forums/create" className={menuItemClass} onClick={() => setIsProfileMenuOpen(false)} role="menuitem">
+                        {t('nav.createForum')}
+                      </Link>
+                      {currentUser?.roles?.includes('ROLE_MODERATOR') && (
+                        <Link to="/moderator/dashboard" className={menuItemClass} onClick={() => setIsProfileMenuOpen(false)} role="menuitem">
+                          {t('nav.moderator') || 'Panel Moderador'}
+                        </Link>
+                      )}
+                      {currentUser?.roles?.includes('ROLE_ADMIN') && (
+                        <Link to="/admin/dashboard" className={menuItemClass} onClick={() => setIsProfileMenuOpen(false)} role="menuitem">
+                          {t('nav.admin') || 'Panel Admin'}
+                        </Link>
+                      )}
+                      <div className="my-space-xs border-t border-surface-container-high" role="separator" />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileMenuOpen(false)
+                          handleLogout()
+                        }}
+                        className={`${menuItemClass} text-primary hover:text-primary`}
+                        role="menuitem"
+                      >
+                        {t('nav.logout')}
+                      </button>
+                    </div>
                   )}
-                </Link>
-
-                <div className="relative">
-                <button
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="text-text border-text border-2 px-2 sm:px-4 py-2 rounded-lg font-bold text-sm hover:bg-primary-dark transition-all duration-200 flex items-center space-x-1 min-h-[44px]"
-                  aria-expanded={isProfileMenuOpen}
-                  aria-haspopup="true"
-                  aria-label="User menu"
-                >
-                  <span className="hidden sm:inline">{currentUser?.username || t('nav.user')}</span>
-                  <span className="text-xs" aria-hidden="true">▼</span>
-                </button>
-
-                {/* Menú desplegable */}
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white border-accent border-2 rounded-lg p-2 space-y-1 shadow-xl" role="menu">
-                    <Link
-                      to="/profile"
-                      className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                      role="menuitem"
-                    >
-                      {t('nav.myProfile')}
-                    </Link>
-                    <Link
-                      to="/forums/create"
-                      className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                      role="menuitem"
-                    >
-                      {t('nav.createForum')}
-                    </Link>
-                    {currentUser?.roles?.includes('ROLE_MODERATOR') && (
-                      <Link
-                        to="/moderator/dashboard"
-                        className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
-                        onClick={() => setIsProfileMenuOpen(false)}
-                        role="menuitem"
-                      >
-                        {t('nav.moderator') || 'Panel Moderador'}
-                      </Link>
-                    )}
-                    {currentUser?.roles?.includes('ROLE_ADMIN') && (
-                      <Link
-                        to="/admin/dashboard"
-                        className="text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
-                        onClick={() => setIsProfileMenuOpen(false)}
-                        role="menuitem"
-                      >
-                        {t('nav.admin') || 'Panel Admin'}
-                      </Link>
-                    )}
-                    <div className="border-t border-accent opacity-30 my-1"></div>
-                    <button
-                      onClick={() => {
-                        setIsProfileMenuOpen(false)
-                        handleLogout()
-                      }}
-                      className="w-full text-left text-text hover:text-accent px-4 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:bg-primary-dark min-h-[44px] flex items-center"
-                      role="menuitem"
-                    >
-                      {t('nav.logout')}
-                    </button>
-                  </div>
-                )}
-              </div>
-              </div>
+                </div>
+              </>
             ) : (
-              <div className="hidden sm:flex items-center space-x-2">
+              <div className="hidden sm:flex items-center gap-space-xs">
                 <Link
                   to="/login"
-                  className="group text-midnight border-midnight border-2 px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-golden hover:border-golden hover:scale-105 transition-all duration-200 min-h-[44px] flex items-center"
-                >
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('nav.login')}</span>
-                </Link>
-                <Link
-                  to="/register"
-                  className="group bg-golden text-midnight border-2 border-midnight px-3 sm:px-4 py-2 rounded-lg font-bold text-sm sm:text-base hover:bg-aqua hover:scale-105 transition-all duration-200 min-h-[44px] flex items-center"
-                >
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('nav.register')}</span>
-                </Link>
-              </div>
-            )}
-
-            {/* Botón menú móvil */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden text-text p-2 rounded-lg hover:bg-primary-dark transition-all duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label={isMenuOpen ? 'Cerrar menú principal' : 'Abrir menú principal'}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Menú móvil */}
-      {isMenuOpen && (
-        <div
-          id="mobile-menu"
-          className="lg:hidden bg-primary border-t border-accent py-4 shadow-lg"
-          role="menu"
-          aria-label="Menú de navegación móvil"
-        >
-          <div className="container mx-auto px-4 space-y-2">
-            {navLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className="group block text-midnight hover:bg-golden px-4 py-3 rounded-lg font-bold text-base border-l-4 border-golden transition-all duration-200 min-h-[44px]"
-                  onClick={() => setIsMenuOpen(false)}
-                  role="menuitem"
-                >
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{link.label}</span>
-                </Link>
-              ))}
-            {!isAuthenticated && (
-              <div className="border-t border-accent/30 pt-2 mt-2 flex flex-col gap-2 sm:hidden">
-                <Link
-                  to="/login"
-                  className="text-midnight hover:bg-golden px-4 py-3 rounded-lg font-bold text-base border-l-4 border-midnight transition-all duration-200 min-h-[44px] flex items-center"
-                  onClick={() => setIsMenuOpen(false)}
-                  role="menuitem"
+                  className="inline-flex items-center px-space-md py-2 rounded-full text-label-lg text-secondary hover:text-on-secondary-fixed-variant hover:bg-surface-container-low border-[1.5px] border-secondary transition-colors"
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-golden text-midnight px-4 py-3 rounded-lg font-bold text-base border-l-4 border-golden transition-all duration-200 min-h-[44px] flex items-center"
-                  onClick={() => setIsMenuOpen(false)}
-                  role="menuitem"
+                  className="inline-flex items-center px-space-md py-2 rounded-full text-label-lg bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary border-[1.5px] border-primary hover:border-primary-container transition-colors active:scale-95"
                 >
                   {t('nav.register')}
                 </Link>
               </div>
             )}
+
+            {/* Mobile menu toggle */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`lg:hidden ${iconButtonClass}`}
+              aria-label={isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {isMenuOpen ? (
+                <MdClose className="text-title-md" aria-hidden="true" />
+              ) : (
+                <MdMenu className="text-title-md" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
-      )}
-    </nav>
+
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div
+            id="mobile-menu"
+            className="lg:hidden bg-surface-container-lowest border-t border-surface-container-high shadow-level-2"
+            role="menu"
+            aria-label="Menú de navegación móvil"
+          >
+            <div className="max-w-7xl mx-auto px-gutter-sm py-space-md space-y-space-xs">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.to === '/'}
+                  className={mobileLinkClass}
+                  onClick={() => setIsMenuOpen(false)}
+                  role="menuitem"
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+
+              {isAuthenticated && (
+                <div className="pt-space-sm mt-space-sm border-t border-surface-container-high space-y-space-xs">
+                  <Link to="/forums/create" className={mobileLinkClass({ isActive: false })} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                    {t('nav.createPost')}
+                  </Link>
+                  <Link to="/messages" className={`sm:hidden ${mobileLinkClass({ isActive: false })}`} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                    {t('nav.messages')}
+                  </Link>
+                </div>
+              )}
+
+              <div className="sm:hidden pt-space-sm mt-space-sm border-t border-surface-container-high flex items-center gap-space-sm">
+                <button
+                  type="button"
+                  onClick={() => setLanguage('es')}
+                  aria-pressed={language === 'es'}
+                  className={`flex-1 flex items-center justify-center gap-space-xs min-h-[44px] rounded-full text-label-lg ${
+                    language === 'es' ? 'bg-secondary text-on-secondary' : 'bg-surface-container-low text-on-surface'
+                  }`}
+                >
+                  <SpainFlag /> ES
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('en')}
+                  aria-pressed={language === 'en'}
+                  className={`flex-1 flex items-center justify-center gap-space-xs min-h-[44px] rounded-full text-label-lg ${
+                    language === 'en' ? 'bg-secondary text-on-secondary' : 'bg-surface-container-low text-on-surface'
+                  }`}
+                >
+                  <UkFlag /> EN
+                </button>
+              </div>
+
+              {!isAuthenticated && (
+                <div className="pt-space-sm mt-space-sm border-t border-surface-container-high flex flex-col gap-space-sm sm:hidden">
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center min-h-[44px] rounded-full border-[1.5px] border-secondary text-secondary text-label-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                    role="menuitem"
+                  >
+                    {t('nav.login')}
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center justify-center min-h-[44px] rounded-full bg-primary text-on-primary hover:text-on-primary text-label-lg"
+                    onClick={() => setIsMenuOpen(false)}
+                    role="menuitem"
+                  >
+                    {t('nav.register')}
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
   )
 }
 
