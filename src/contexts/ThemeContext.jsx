@@ -1,52 +1,23 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const ThemeContext = createContext();
 
 /**
- * Contexto de temas con soporte para modo claro/oscuro
+ * Light/dark mode preference. The redesign ships a single light theme
+ * ("Tierra & Rumbo"); dark tokens are not defined yet, so the `dark`
+ * class only records the user's preference for future use.
  */
 export const ThemeProvider = ({ children }) => {
-  const location = useLocation();
-  const [theme, setTheme] = useState('retro');
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Cargar preferencia guardada o usar preferencia del sistema
     const saved = localStorage.getItem('darkMode');
     if (saved !== null) {
       return saved === 'true';
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
   });
 
   useEffect(() => {
-    // Determinar tema basado en la ruta
-    const path = location.pathname;
-
-    if (path.startsWith('/forums') || path.startsWith('/posts')) {
-      setTheme('adventure');
-    } else if (path.startsWith('/trivia')) {
-      setTheme('space');
-    } else if (path.startsWith('/travel')) {
-      setTheme('jungle');
-    } else if (path.startsWith('/profile')) {
-      setTheme('tech');
-    } else if (path.startsWith('/login') || path.startsWith('/register')) {
-      setTheme('space');
-    } else if (path === '/') {
-      setTheme('retro');
-    } else {
-      setTheme('retro');
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    // Aplicar clase dark al html cuando está en modo oscuro
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    // Guardar preferencia
+    document.documentElement.classList.toggle('dark', isDarkMode);
     localStorage.setItem('darkMode', isDarkMode);
   }, [isDarkMode]);
 
@@ -55,7 +26,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -69,4 +40,3 @@ export const useTheme = () => {
   }
   return context;
 };
-

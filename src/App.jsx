@@ -1,10 +1,8 @@
 // Archivo: src/App.jsx
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
-import { useTheme } from './contexts/ThemeContext';
 import { useIdleLogout } from './hooks/useIdleLogout';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
@@ -63,20 +61,8 @@ import FeedPage from './pages/feed/FeedPage';
 // Página de Usuarios
 import UsersPage from './pages/users/UsersPage'
 
-// Preview temporal de accesibilidad con imagen de fondo
-
-
 function App() {
-  const { theme } = useTheme();
   useIdleLogout();
-
-  // Aplicar tema al body
-  React.useEffect(() => {
-    document.body.className = `theme-${theme}`;
-    return () => {
-      document.body.className = '';
-    };
-  }, [theme]);
 
   return (
     <>
@@ -91,7 +77,7 @@ function App() {
       <Navbar />
       <main 
         id="main-content" 
-        className={`min-h-[calc(100vh-12rem)] theme-${theme}`}
+        className="min-h-[calc(100vh-12rem)]"
         tabIndex={-1}
         aria-label="Contenido principal"
       >
