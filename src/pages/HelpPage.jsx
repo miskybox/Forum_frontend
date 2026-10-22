@@ -1,43 +1,35 @@
-import { Link } from 'react-router-dom'
+import { MdExpandMore, MdHelpOutline } from 'react-icons/md'
 import { useLanguage } from '../contexts/LanguageContext'
+import ContentPageLayout from '../components/common/ContentPageLayout'
 
 const HelpPage = () => {
   const { t } = useLanguage()
+
+  const faqs = [
+    { question: t('help.howCreateForum'), answer: t('help.howCreateForumAnswer') },
+    { question: t('help.howPlayTrivia'), answer: t('help.howPlayTriviaAnswer') },
+    { question: t('help.howEditProfile'), answer: t('help.howEditProfileAnswer') },
+  ]
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">{t('help.title')}</h1>
-        <div className="prose prose-lg">
-          <div className="space-y-6">
-            <section>
-              <h2 className="text-2xl font-semibold mb-3">{t('help.faqTitle')}</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-xl font-semibold">{t('help.howCreateForum')}</h3>
-                  <p>{t('help.howCreateForumAnswer')}</p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{t('help.howPlayTrivia')}</h3>
-                  <p>{t('help.howPlayTriviaAnswer')}</p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{t('help.howEditProfile')}</h3>
-                  <p>{t('help.howEditProfileAnswer')}</p>
-                </div>
-              </div>
-            </section>
-          </div>
-          <div className="mt-8">
-            <Link to="/" className="btn btn-primary">
-              {t('help.backHome')}
-            </Link>
-          </div>
-        </div>
+    <ContentPageLayout eyebrow={t('help.title')} icon={MdHelpOutline} title={t('help.faqTitle')}>
+      <div className="space-y-space-sm">
+        {faqs.map((faq, index) => (
+          <details
+            key={faq.question}
+            className="group bg-surface-container-lowest rounded-lg shadow-level-1 open:shadow-level-2 transition-shadow"
+            open={index === 0}
+          >
+            <summary className="flex items-center justify-between gap-space-sm p-space-md sm:p-space-lg cursor-pointer list-none font-body text-title-md text-on-surface [&::-webkit-details-marker]:hidden">
+              <h2 className="font-body text-title-md">{faq.question}</h2>
+              <MdExpandMore className="text-headline-sm text-on-surface-variant transition-transform group-open:rotate-180 flex-shrink-0" aria-hidden="true" />
+            </summary>
+            <p className="px-space-md sm:px-space-lg pb-space-md sm:pb-space-lg text-body-md text-on-surface-variant">{faq.answer}</p>
+          </details>
+        ))}
       </div>
-    </div>
+    </ContentPageLayout>
   )
 }
 
 export default HelpPage
-
-
