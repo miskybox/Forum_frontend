@@ -5,6 +5,9 @@ import FeedCard from '../../components/social/FeedCard'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { MdErrorOutline, MdPeople, MdPublic } from 'react-icons/md'
+import SegmentedTabs from '../../components/ui/SegmentedTabs'
+import EmptyState from '../../components/ui/EmptyState'
 
 const FeedPage = () => {
   const { isAuthenticated } = useAuth()
@@ -38,16 +41,16 @@ const FeedPage = () => {
         : await feedService.getExploreFeed(currentPage, 10)
 
       if (reset) {
-        setItems(data.content)
+        setItems(data?.content || [])
       } else {
-        setItems(prev => [...prev, ...data.content])
+        setItems(prev => [...prev, ...(data?.content || [])])
       }
 
-      setHasMore(!data.last)
+      setHasMore(Boolean(data) && !data.last)
       setPage(currentPage + 1)
     } catch (err) {
       console.error('Error loading feed:', err)
-      setError('Error al cargar el feed')
+      setError(t('feed.loadError'))
     } finally {
       setLoading(false)
       setLoadingMore(false)
@@ -60,109 +63,61 @@ const FeedPage = () => {
     }
   }
 
-  return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-forest">{t('nav.feed')}</h1>
-        <p className="text-forest/70 mt-1">{t('feed.subtitle')}</p>
-      </div>
+  const tabs = [
+    ...(isAuthenticated ? [{ id: 'following', label: t('feed.following'), icon: MdPeople }] : []),
+    { id: 'explore', label: t('feed.explore'), icon: MdPublic },
+  ]
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 p-1 bg-beige-dark/50 rounded-lg">
-        {isAuthenticated && (
-          <button
-            onClick={() => setActiveTab('following')}
-            className={`group flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-200 min-h-[44px] border-2 ${
-              activeTab === 'following'
-                ? 'bg-golden text-midnight border-midnight shadow-md'
-                : 'bg-white text-midnight border-midnight hover:bg-teal hover:text-white hover:scale-105'
-            }`}
-          >
-            <span className={activeTab === 'following' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>{t('feed.following')}</span>
-          </button>
-        )}
-        <button
-          onClick={() => setActiveTab('explore')}
-          className={`group flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-200 min-h-[44px] border-2 ${
-            activeTab === 'explore'
-              ? 'bg-golden text-midnight border-midnight shadow-md'
-              : 'bg-teal text-white border-midnight hover:bg-golden hover:text-midnight hover:scale-105'
-          }`}
-        >
-          <span className={activeTab === 'explore' ? '[text-shadow:_1px_1px_0_#fff,_-1px_-1px_0_#fff,_1px_-1px_0_#fff,_-1px_1px_0_#fff]' : ''}>{t('feed.explore')}</span>
-        </button>
-      </div>
-
-      {/* Content */}
-      {loading ? (
-        <div className="flex justify-center py-12">
-          <LoadingSpinner />
-        </div>
-      ) : error ? (
-        <div className="text-center py-12">
-          <p className="text-terracota mb-4">{error}</p>
-          <button
-            onClick={() => loadFeed(true)}
-            className="group bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-aqua hover:scale-105 transition-all duration-200 min-h-[44px]"
-          >
-            <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('feed.retry')}</span>
-          </button>
-        </div>
-      ) : items.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-xl shadow-md border border-beige-dark">
-          <div className="text-6xl mb-4">
-            {activeTab === 'following' ? '👥' : '🌍'}
+  let content
+  if (loading) {
+    content = <LoadingSpinner />
+  } else if (error) {
+    content = (
+      <EmptyState
+        icon={MdErrorOutline}
+        title={error}
+        action={<button type="button" onClick={() => loadFeed(true)} className="btn btn-primary">{t('feed.retry')}</button>}
+      />
+    )
+  } else if (items.length === 0) {
+    const following = activeTab === 'following'
+    content = (
+      <EmptyState
+        icon={following ? MdPeople : MdPublic}
+        title={following ? t('feed.noPostsFollowing') : t('feed.noPostsExplore')}
+        description={following ? t('feed.followToSee') : t('feed.noExploreHint')}
+        action={<Link to="/forums" className="btn btn-primary">{t('feed.exploreForum')}</Link>}
+      />
+    )
+  } else {
+    content = (
+      <div className="space-y-space-lg">
+        {items.map((item) => (
+          <FeedCard key={item.id} item={item} />
+        ))}
+        {hasMore && (
+          <div className="text-center">
+            <button type="button" onClick={handleLoadMore} disabled={loadingMore} className="btn btn-outline" aria-busy={loadingMore}>
+              {loadingMore ? t('common.loading') : t('feed.loadMore')}
+            </button>
           </div>
-          <h3 className="text-lg font-semibold text-forest mb-2">
-            {activeTab === 'following'
-              ? t('feed.noPostsFollowing')
-              : t('feed.noPostsExplore')}
-          </h3>
-          <p className="text-forest/70 mb-4">
-            {activeTab === 'following'
-              ? t('feed.followToSee')
-              : t('feed.noExploreHint')}
-          </p>
-          {activeTab === 'following' && (
-            <Link
-              to="/forums"
-              className="inline-block bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-teal hover:text-white hover:scale-105 transition-all duration-200 min-h-[44px]"
-            >
-              {t('feed.exploreForum')}
-            </Link>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {items.map((item) => (
-            <FeedCard key={item.id} item={item} />
-          ))}
+        )}
+      </div>
+    )
+  }
 
-          {/* Load more */}
-          {hasMore && (
-            <div className="text-center py-4">
-              <button
-                onClick={handleLoadMore}
-                disabled={loadingMore}
-                className="group bg-golden text-midnight border-2 border-midnight px-6 py-3 rounded-lg font-bold hover:bg-aqua hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all duration-200 min-h-[44px]"
-              >
-                {loadingMore ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    {t('common.loading')}
-                  </span>
-                ) : (
-                  <span className="group-hover:text-white group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638] transition-all duration-200">{t('feed.loadMore')}</span>
-                )}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+  return (
+    <div className="max-w-3xl mx-auto w-full px-gutter-sm py-margin space-y-space-lg">
+      <header>
+        <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{t('nav.feed')}</h1>
+        <p className="mt-space-xs text-body-lg text-on-surface-variant">{t('feed.subtitle')}</p>
+      </header>
+
+      <SegmentedTabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} idPrefix="feed" label={t('feed.tabsLabel')} />
+
+      <div role="tabpanel" id={`feed-panel-${activeTab}`} aria-labelledby={`feed-tab-${activeTab}`}>
+        {content}
+      </div>
     </div>
   )
 }

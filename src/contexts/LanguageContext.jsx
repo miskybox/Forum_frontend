@@ -737,6 +737,8 @@ const translations = {
       exploreForum: 'Explorar foros',
       loadMore: 'Cargar más',
       retry: 'Reintentar',
+      loadError: 'Error al cargar el contenido',
+      tabsLabel: 'Tipo de contenido',
     },
     // Comments
     comments: {
@@ -1560,6 +1562,8 @@ const translations = {
       exploreForum: 'Explore forums',
       loadMore: 'Load more',
       retry: 'Retry',
+      loadError: 'Could not load the feed',
+      tabsLabel: 'Feed type',
     },
     // Comments
     comments: {
