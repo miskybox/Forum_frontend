@@ -36,8 +36,9 @@ Tick a task in the same commit that completes it.
 - [ ] `RouteBadge` (dual pill: icon+label | metric)
 - [x] `Avatar` (image or initials, stable tonal color per name, image fallback) — `src/components/ui/Avatar.jsx`
 - [ ] `Avatar` extras: verified badge overlay, avatar stack
-- [ ] `Card` (level 1 → 2 on hover) and `SectionCard` for rail widgets
-- [ ] `SegmentedTabs` (accessible tablist)
+- [x] `SectionCard` for rail widgets — `src/components/ui/SectionCard.jsx`
+- [ ] Generic `Card` component (level 1 → 2 on hover)
+- [x] `SegmentedTabs` (WAI-ARIA tablist with arrow/Home/End keys) — `src/components/ui/SegmentedTabs.jsx`
 - [ ] `Input`, `Select`, `Textarea`, `Checkbox`, `Radio` with focus styles
 - [ ] `Breadcrumb`
 - [ ] `TelemetryStats` (3-column metrics widget)
@@ -59,12 +60,16 @@ Tick a task in the same commit that completes it.
 
 ## Phase 4 — Pages
 ### Home / Explore (`/`, mockup 01)
-- [ ] Hero with eyebrow chip, editorial headline, multi-filter search, trending chips
-- [ ] Left rail: categories ("Canales Temáticos") from `categoryService`, continents filter, responsible-travel card
-- [ ] Center feed: segmented tabs (trending, recent, with photos, unanswered) wired to existing post/forum services
-- [ ] Feed card variants: featured guide, question with top reply, visual diary with cover + telemetry
-- [ ] Right rail: create CTA, companions preview, destination of the month, top contributors, newsletter (decide which have real data; hide the rest)
-- [ ] Update `HomePage.test.jsx`
+- [x] Hero with eyebrow chip, editorial headline, search (→ `/forums?q=`), quick-access chips
+- [ ] Hero interest/category filter and trending hashtags (needs public `/api/tags/popular`, currently auth-only)
+- [x] Left rail: topic channels with forum counts, continents grid, responsible-travel card
+- [x] Center feed: tabs "Recientes" (`/feed/explore`) and "Foros activos"
+- [ ] Extra tabs (trending, with photos, unanswered) — B3
+- [x] `FeedCard` redesigned as thread card (shared with `/feed`)
+- [ ] Feed card variants: featured guide, question with top reply, visual diary with cover + telemetry (need B2/B4/B16)
+- [x] Right rail: create/join CTA, top travelers (`/travel/ranking`), discover card (trivia, map)
+- [ ] Companions preview, destination of the month, newsletter — after B15, B19, B20
+- [x] Update `HomePage.test.jsx` mocks
 
 ### Forums & categories (`/forums`, `/categories`, `/forums/:id`)
 - [ ] Restyle `ForumListPage`, `ForumCard`, `ForumSearch`, `CategoryListPage`, `CategoryCard`
