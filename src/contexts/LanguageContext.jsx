@@ -432,6 +432,14 @@ const translations = {
       loadError: 'No se pudo cargar el foro',
       forumNotFound: 'Foro no encontrado',
       viewForums: 'Ver foros disponibles',
+      editPost: 'Editar publicación',
+      editDescription: 'Actualiza la información de tu publicación',
+      backToPost: 'Volver a la publicación',
+      postNotFound: 'Publicación no encontrada',
+      tipsTitle: 'Consejos para una buena publicación',
+      tipClearTitle: 'Título claro: resume la ruta, el destino o la duda en una línea.',
+      tipDetails: 'Datos prácticos: fechas, precios, transporte y enlaces oficiales.',
+      tipRespect: 'Respeto: escribe pensando en quien viajará después de ti.',
     },
     // Admin & Moderator
     admin: {
@@ -1257,6 +1265,14 @@ const translations = {
       loadError: 'Could not load forum',
       forumNotFound: 'Forum not found',
       viewForums: 'View available forums',
+      editPost: 'Edit post',
+      editDescription: 'Update the details of your post',
+      backToPost: 'Back to post',
+      postNotFound: 'Post not found',
+      tipsTitle: 'Tips for a good post',
+      tipClearTitle: 'Clear title: sum up the route, destination or question in one line.',
+      tipDetails: 'Practical details: dates, prices, transport and official links.',
+      tipRespect: 'Respect: write for the people who will travel after you.',
     },
     // Admin & Moderator
     admin: {

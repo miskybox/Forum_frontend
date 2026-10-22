@@ -5,6 +5,10 @@ import { useLanguage } from '../contexts/LanguageContext'
 import ForumForm from '../components/forums/ForumForm'
 import forumService from '../services/forumService'
 import useAuth from '../hooks/useAuth'
+import FormPageLayout from '../components/common/FormPageLayout'
+import EmptyState from '../components/ui/EmptyState'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import { MdErrorOutline } from 'react-icons/md'
 
 const ForumEditPage = () => {
   const { t } = useLanguage()
@@ -46,55 +50,31 @@ const ForumEditPage = () => {
   }, [id, currentUser, hasRole, navigate])
   
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
-      </div>
-    )
+    return <LoadingSpinner />
   }
-  
+
   if (error || !forum) {
     return (
-      <div className="min-h-screen py-10">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="text-center py-10 card">
-            <div className="text-red-600 mb-4 font-bold">{error || t('forums.forumNotFound')}</div>
-            <p className="mb-4 text-light-soft">{t('forums.redirecting')}</p>
-            <Link to={`/forums/${id}`} className="btn btn-primary">
-              {t('forums.backToForum')}
-            </Link>
-          </div>
-        </div>
+      <div className="max-w-md mx-auto px-gutter-sm py-margin-lg">
+        <EmptyState
+          icon={MdErrorOutline}
+          title={error || t('forums.forumNotFound')}
+          description={t('forums.redirecting')}
+          action={<Link to={`/forums/${id}`} className="btn btn-primary">{t('forums.backToForum')}</Link>}
+        />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen py-8 sm:py-12">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl sm:text-3xl font-bold text-ocean-500 tracking-normal uppercase">
-              {t('forums.editForum')}
-            </h1>
-
-            <Link
-              to={`/forums/${id}`}
-              className="text-ocean-400 hover:text-ocean-300 text-sm font-bold"
-            >
-              ← {t('forums.backToForum')}
-            </Link>
-          </div>
-          <p className="mt-2 text-light-soft">
-            {t('forums.updateForumInfo')} "{forum.title}".
-          </p>
-        </div>
-
-        <div className="card">
-          <ForumForm initialData={forum} isEdit={true} />
-        </div>
-      </div>
-    </div>
+    <FormPageLayout
+      title={t('forums.editForum')}
+      description={<>{t('forums.updateForumInfo')} <strong className="text-on-surface">“{forum.title}”</strong>.</>}
+      backTo={`/forums/${id}`}
+      backLabel={t('forums.backToForum')}
+    >
+      <ForumForm initialData={forum} isEdit={true} />
+    </FormPageLayout>
   )
 }
 
