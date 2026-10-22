@@ -111,37 +111,37 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
       onKeyDown={handleKeyDown}
     >
       <div
-        className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[80vh] flex flex-col"
+        className="bg-surface-container-lowest rounded-lg shadow-level-2 w-full max-w-md max-h-[80vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-beige-dark">
-          <h2 className="text-lg font-semibold text-forest">Compartir publicacion</h2>
+        <div className="flex items-center justify-between p-4 border-b border-surface-container-high">
+          <h2 className="text-lg font-semibold text-on-surface">Compartir publicacion</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-beige rounded-full transition-colors"
+            className="p-2 hover:bg-surface-container-low rounded-full transition-colors"
             aria-label="Cerrar"
           >
-            <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Preview of shared content */}
-        <div className="p-4 bg-beige/30 border-b border-beige-dark">
-          <p className="text-sm text-forest/70 mb-1">Compartiendo:</p>
-          <p className="font-medium text-forest truncate">{shareContent.title}</p>
+        <div className="p-4 bg-surface-container-low/30 border-b border-surface-container-high">
+          <p className="text-sm text-on-surface-variant mb-1">Compartiendo:</p>
+          <p className="font-medium text-on-surface truncate">{shareContent.title}</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-beige-dark">
+        <div className="flex border-b border-surface-container-high">
           <button
             onClick={() => setActiveTab('recent')}
             className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${
               activeTab === 'recent'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/70 hover:text-forest'
+                ? 'text-secondary border-b-2 border-secondary'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Recientes
@@ -150,8 +150,8 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
             onClick={() => setActiveTab('search')}
             className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${
               activeTab === 'search'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/70 hover:text-forest'
+                ? 'text-secondary border-b-2 border-secondary'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Buscar
@@ -160,10 +160,10 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
 
         {/* Search input (only in search tab) */}
         {activeTab === 'search' && (
-          <div className="p-4 border-b border-beige-dark">
+          <div className="p-4 border-b border-surface-container-high">
             <div className="relative">
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-forest/50"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -176,7 +176,7 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar usuario..."
-                className="w-full pl-10 pr-4 py-2 border border-beige-dark rounded-lg focus:outline-none focus:border-teal bg-beige/30"
+                className="w-full pl-10 pr-4 py-2 border border-surface-container-high rounded-lg focus:outline-none focus:border-secondary bg-surface-container-low/30"
               />
             </div>
           </div>
@@ -189,38 +189,38 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
               <LoadingSpinner />
             </div>
           ) : error ? (
-            <div className="text-center py-8 text-terracota">
+            <div className="text-center py-8 text-primary">
               {error}
             </div>
           ) : activeTab === 'recent' ? (
             conversations.length === 0 ? (
-              <div className="text-center py-12 text-forest/60">
+              <div className="text-center py-12 text-on-surface-variant">
                 <p>No hay conversaciones recientes</p>
                 <button
                   onClick={() => setActiveTab('search')}
-                  className="text-teal hover:underline mt-2"
+                  className="text-secondary hover:underline mt-2"
                 >
                   Buscar usuarios
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-beige-dark">
+              <div className="divide-y divide-surface-container-high">
                 {conversations.map((conv) => (
                   <button
                     key={conv.participantId}
                     onClick={() => handleSendToUser(conv.participantId, conv.participantUsername)}
                     disabled={sending}
-                    className="w-full p-4 flex items-center gap-3 hover:bg-beige-dark/50 transition-colors text-left disabled:opacity-50"
+                    className="w-full p-4 flex items-center gap-3 hover:bg-surface-container/50 transition-colors text-left disabled:opacity-50"
                   >
                     <img
                       src={conv.participantAvatarUrl || '/default-avatar.png'}
                       alt={conv.participantUsername}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-teal"
+                      className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
                     />
-                    <span className="font-semibold text-forest flex-1 truncate">
+                    <span className="font-semibold text-on-surface flex-1 truncate">
                       {conv.participantUsername}
                     </span>
-                    <svg className="w-5 h-5 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                   </button>
@@ -228,32 +228,32 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
               </div>
             )
           ) : searchQuery.trim().length < 2 ? (
-            <div className="text-center py-12 text-forest/60">
+            <div className="text-center py-12 text-on-surface-variant">
               <p>Escribe al menos 2 caracteres para buscar</p>
             </div>
           ) : users.length === 0 ? (
-            <div className="text-center py-12 text-forest/60">
+            <div className="text-center py-12 text-on-surface-variant">
               <div className="text-4xl mb-2">🔍</div>
               <p>No se encontraron usuarios</p>
             </div>
           ) : (
-            <div className="divide-y divide-beige-dark">
+            <div className="divide-y divide-surface-container-high">
               {users.map((user) => (
                 <button
                   key={user.id}
                   onClick={() => handleSendToUser(user.id, user.username)}
                   disabled={sending}
-                  className="w-full p-4 flex items-center gap-3 hover:bg-beige-dark/50 transition-colors text-left disabled:opacity-50"
+                  className="w-full p-4 flex items-center gap-3 hover:bg-surface-container/50 transition-colors text-left disabled:opacity-50"
                 >
                   <img
                     src={user.avatarUrl || '/default-avatar.png'}
                     alt={user.username}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-teal"
+                    className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
                   />
-                  <span className="font-semibold text-forest flex-1 truncate">
+                  <span className="font-semibold text-on-surface flex-1 truncate">
                     {user.username}
                   </span>
-                  <svg className="w-5 h-5 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                 </button>

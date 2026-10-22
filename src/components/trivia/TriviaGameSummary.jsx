@@ -29,11 +29,11 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
     : 0
 
   const getGrade = () => {
-    if (accuracy >= 90) return { grade: 'S', color: 'text-golden', message: t('trivia.summary.perfect') }
+    if (accuracy >= 90) return { grade: 'S', color: 'text-primary', message: t('trivia.summary.perfect') }
     if (accuracy >= 80) return { grade: 'A', color: 'text-success', message: t('trivia.summary.excellent') }
     if (accuracy >= 70) return { grade: 'B', color: 'text-secondary', message: t('trivia.summary.veryGood') }
-    if (accuracy >= 60) return { grade: 'C', color: 'text-accent', message: t('trivia.summary.wellDone') }
-    if (accuracy >= 50) return { grade: 'D', color: 'text-accent-dark', message: t('trivia.summary.canImprove') }
+    if (accuracy >= 60) return { grade: 'C', color: 'text-primary', message: t('trivia.summary.wellDone') }
+    if (accuracy >= 50) return { grade: 'D', color: 'text-on-primary-fixed-variant', message: t('trivia.summary.canImprove') }
     return { grade: 'F', color: 'text-error', message: t('trivia.summary.keepPracticing') }
   }
 
@@ -44,8 +44,8 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
       {/* Header con confeti si es partida perfecta */}
       <div className={`relative px-6 py-8 text-center ${
         game.perfectGame
-          ? 'bg-gradient-to-br from-golden-dark via-golden to-golden'
-          : 'bg-gradient-to-br from-midnight to-secondary'
+          ? 'bg-gradient-to-br from-primary-fixed-dim via-primary-fixed to-primary-fixed'
+          : 'bg-gradient-to-br from-inverse-surface to-secondary'
       }`}>
         {game.perfectGame && (
           <div className="absolute inset-0 overflow-hidden">
@@ -63,11 +63,11 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 
         <div className="relative z-10">
           <span className={`text-8xl font-black ${color}`}>{grade}</span>
-          <p className="text-aqua text-xl mt-2 font-bold">{message}</p>
+          <p className="text-secondary text-xl mt-2 font-bold">{message}</p>
 
           {game.perfectGame && (
-            <div className="mt-4 bg-golden rounded-full px-4 py-2 inline-block">
-              <span className="text-midnight font-bold">🏆 {t('trivia.summary.perfectGame')}</span>
+            <div className="mt-4 bg-primary-fixed rounded-full px-4 py-2 inline-block">
+              <span className="text-on-surface font-bold">🏆 {t('trivia.summary.perfectGame')}</span>
             </div>
           )}
         </div>
@@ -100,11 +100,11 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 
         {/* Barra de precisión */}
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-text mb-2 font-semibold">
+          <div className="flex justify-between text-sm text-on-surface mb-2 font-semibold">
             <span>{t('trivia.precision')}</span>
             <span className="font-bold">{accuracy.toFixed(1)}%</span>
           </div>
-          <div className="h-3 bg-primary-dark rounded-full overflow-hidden">
+          <div className="h-3 bg-surface-container-low rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-1000 ${getAccuracyBarColor(accuracy)}`}
               style={{ width: `${accuracy}%` }}
@@ -116,21 +116,21 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
         <div className="flex flex-col gap-3">
           <button
             onClick={onPlayAgain}
-            className="w-full py-3 bg-golden text-midnight rounded-xl font-bold hover:bg-golden-dark transition-colors cursor-pointer"
+            className="w-full py-3 bg-primary-fixed text-on-surface rounded-lg font-bold hover:bg-primary-fixed-dim transition-colors cursor-pointer"
           >
             🎮 {t('trivia.summary.playAgainButton')}
           </button>
 
           <Link
             to="/trivia/leaderboard"
-            className="w-full py-3 border-2 border-accent/50 rounded-xl font-bold text-text hover:bg-primary-dark transition-colors text-center"
+            className="w-full py-3 border-2 border-outline-variant/50 rounded-lg font-bold text-on-surface hover:bg-surface-container-low transition-colors text-center"
           >
             🏆 {t('trivia.summary.viewRanking')}
           </Link>
 
           <Link
             to="/trivia"
-            className="w-full py-3 text-secondary hover:text-secondary-dark transition-colors text-center font-semibold"
+            className="w-full py-3 text-secondary hover:text-on-secondary-fixed-variant transition-colors text-center font-semibold"
           >
             ← {t('trivia.infinite.backToMenu')}
           </Link>
@@ -141,10 +141,10 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 }
 
 const StatBox = ({ icon, value, label }) => (
-  <div className="bg-primary-dark rounded-xl p-4 text-center">
+  <div className="bg-surface-container-low rounded-lg p-4 text-center">
     <span className="text-2xl">{icon}</span>
-    <p className="text-2xl font-bold text-text mt-1">{value}</p>
-    <p className="text-text-light text-sm font-semibold">{label}</p>
+    <p className="text-2xl font-bold text-on-surface mt-1">{value}</p>
+    <p className="text-on-surface-variant text-sm font-semibold">{label}</p>
   </div>
 )
 

@@ -25,7 +25,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       result.correct
         ? 'bg-[#ecfdf5] border-2 border-[#047857] text-[#065f46]'
         : 'bg-[#fef2f2] border-2 border-[#b91c1c] text-[#7f1d1d]'
-    } shadow-xl`}>
+    } shadow-level-2`}>
       {/* Icono y mensaje */}
       <div className="text-center mb-6">
         <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
@@ -51,30 +51,30 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       </div>
 
       {/* Puntos ganados */}
-      <div className="bg-primary-light border border-secondary/30 rounded-xl p-4 mb-6">
+      <div className="bg-surface-container-lowest border border-secondary/30 rounded-lg p-4 mb-6">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-text text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
+            <p className="text-on-surface text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
             <p className="text-2xl font-bold text-[#92400e]">+{result.pointsEarned}</p>
           </div>
           <div>
-            <p className="text-text text-sm font-semibold">{t('trivia.score')}</p>
-            <p className="text-2xl font-bold text-midnight">{result.currentGameScore}</p>
+            <p className="text-on-surface text-sm font-semibold">{t('trivia.score')}</p>
+            <p className="text-2xl font-bold text-on-surface">{result.currentGameScore}</p>
           </div>
           <div>
-            <p className="text-text text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
-            <p className="text-2xl font-bold text-midnight">{result.currentStreak}</p>
+            <p className="text-on-surface text-sm font-semibold">{t('trivia.result.streakLabel')}</p>
+            <p className="text-2xl font-bold text-on-surface">{result.currentStreak}</p>
           </div>
         </div>
       </div>
 
       {/* Explicación */}
       {(showExplanation || fallbackInsight) && (
-        <div className="bg-[#f8fafc] border border-secondary/30 rounded-xl p-4 mb-6">
-          <p className="text-sm font-medium text-text">
+        <div className="bg-[#f8fafc] border border-secondary/30 rounded-lg p-4 mb-6">
+          <p className="text-sm font-medium text-on-surface">
             <span className="font-bold text-[#92400e]">{t('trivia.result.funFact')}</span> {showExplanation ? result.explanation : fallbackInsight}
           </p>
-          <p className="text-xs mt-2 text-text-light">
+          <p className="text-xs mt-2 text-on-surface-variant">
             <span className="font-semibold text-secondary">{t('trivia.result.strategyLabel')}</span> {t('trivia.result.strategyTip')}
           </p>
         </div>
@@ -83,7 +83,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
       {/* Botón continuar */}
       <button
         onClick={onNext}
-        className="w-full py-4 bg-golden text-midnight rounded-xl font-bold text-lg hover:bg-golden-dark transition-colors cursor-pointer"
+        className="w-full py-4 bg-primary-fixed text-on-surface rounded-lg font-bold text-lg hover:bg-primary-fixed-dim transition-colors cursor-pointer"
       >
         {isLastQuestion ? t('trivia.result.viewResults') : t('trivia.nextQuestion')}
       </button>

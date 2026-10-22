@@ -156,9 +156,9 @@ describe('TriviaInfinitePage — Accesibilidad', () => {
       renderPage()
       await waitFor(() => screen.getByText(/¿Cuál es la capital de Japón\?/))
       const h2 = screen.getByText(/¿Cuál es la capital de Japón\?/)
-      // text-text significa color oscuro (verde #37553b) — NO text-white
+      // Dark text token on a light surface — never white
       expect(h2.className).not.toContain('text-white')
-      expect(h2.className).toContain('text-text')
+      expect(h2.className).toContain('text-on-surface')
     })
 
     it('el contador de pregunta es visible con alto contraste', async () => {
@@ -166,7 +166,7 @@ describe('TriviaInfinitePage — Accesibilidad', () => {
       await waitFor(() => screen.getByText(/¿Cuál es la capital de Japón\?/))
       const counter = screen.getByText('#1')
       expect(counter).toBeVisible()
-      expect(counter.className).toContain('bg-golden/20')
+      expect(counter.className).toContain('bg-primary-fixed/20')
     })
   })
 })

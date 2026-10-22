@@ -49,11 +49,11 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-terracota">
+      <div className="text-center py-8 text-primary">
         {error}
         <button
           onClick={loadConversations}
-          className="block mx-auto mt-4 text-teal hover:underline"
+          className="block mx-auto mt-4 text-secondary hover:underline"
         >
           Reintentar
         </button>
@@ -65,10 +65,10 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
     return (
       <div className="text-center py-12">
         <div className="text-6xl mb-4">💬</div>
-        <h3 className="text-lg font-semibold text-forest mb-2">
+        <h3 className="text-lg font-semibold text-on-surface mb-2">
           Sin conversaciones
         </h3>
-        <p className="text-forest/70">
+        <p className="text-on-surface-variant">
           Inicia una conversacion con otro viajero
         </p>
       </div>
@@ -76,13 +76,13 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
   }
 
   return (
-    <div className="divide-y divide-beige-dark">
+    <div className="divide-y divide-surface-container-high">
       {conversations.map((conv) => (
         <div
           key={conv.participantId}
           onClick={() => onSelectConversation(conv.participantId)}
-          className={`p-4 cursor-pointer transition-colors hover:bg-beige-dark/50 ${
-            selectedUserId === conv.participantId ? 'bg-aqua/30' : ''
+          className={`p-4 cursor-pointer transition-colors hover:bg-surface-container/50 ${
+            selectedUserId === conv.participantId ? 'bg-secondary-container/30' : ''
           }`}
         >
           <div className="flex items-start gap-3">
@@ -90,25 +90,25 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
               <img
                 src={conv.participantAvatarUrl || '/default-avatar.png'}
                 alt={conv.participantUsername}
-                className="w-12 h-12 rounded-full object-cover border-2 border-teal"
+                className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
               />
               {conv.unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-terracota text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {conv.unreadCount > 9 ? '9+' : conv.unreadCount}
                 </span>
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between mb-1">
-                <span className={`font-semibold truncate ${conv.unreadCount > 0 ? 'text-forest' : 'text-forest/80'}`}>
+                <span className={`font-semibold truncate ${conv.unreadCount > 0 ? 'text-on-surface' : 'text-on-surface-variant'}`}>
                   {conv.participantUsername}
                 </span>
-                <span className="text-xs text-forest/60 flex-shrink-0 ml-2">
+                <span className="text-xs text-on-surface-variant flex-shrink-0 ml-2">
                   {formatDate(conv.lastMessageAt)}
                 </span>
               </div>
-              <p className={`text-sm truncate ${conv.unreadCount > 0 ? 'text-forest font-medium' : 'text-forest/70'}`}>
-                {conv.isLastMessageMine && <span className="text-teal">Tu: </span>}
+              <p className={`text-sm truncate ${conv.unreadCount > 0 ? 'text-on-surface font-medium' : 'text-on-surface-variant'}`}>
+                {conv.isLastMessageMine && <span className="text-secondary">Tu: </span>}
                 {conv.lastMessage}
               </p>
             </div>

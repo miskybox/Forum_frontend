@@ -15,31 +15,31 @@ const FollowModal = ({ userId, isOpen, onClose, initialTab = 'followers', stats 
       />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+      <div className="relative bg-surface-container-lowest rounded-lg shadow-level-2 w-full max-w-md overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-beige-dark">
-          <h2 className="text-lg font-bold text-forest">
+        <div className="flex items-center justify-between p-4 border-b border-surface-container-high">
+          <h2 className="text-lg font-bold text-on-surface">
             {activeTab === 'followers' ? 'Seguidores' : 'Siguiendo'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-beige rounded-full transition-colors"
+            className="p-2 hover:bg-surface-container-low rounded-full transition-colors"
             aria-label="Cerrar"
           >
-            <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-beige-dark">
+        <div className="flex border-b border-surface-container-high">
           <button
             onClick={() => setActiveTab('followers')}
             className={`flex-1 py-3 text-center font-medium transition-colors ${
               activeTab === 'followers'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/60 hover:text-forest'
+                ? 'text-secondary border-b-2 border-secondary'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Seguidores
@@ -51,8 +51,8 @@ const FollowModal = ({ userId, isOpen, onClose, initialTab = 'followers', stats 
             onClick={() => setActiveTab('following')}
             className={`flex-1 py-3 text-center font-medium transition-colors ${
               activeTab === 'following'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/60 hover:text-forest'
+                ? 'text-secondary border-b-2 border-secondary'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Siguiendo

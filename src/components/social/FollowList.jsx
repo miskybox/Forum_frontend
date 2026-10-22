@@ -40,9 +40,9 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-terracota">
+      <div className="text-center py-8 text-primary">
         {error}
-        <button onClick={loadUsers} className="block mx-auto mt-4 text-teal hover:underline">
+        <button onClick={loadUsers} className="block mx-auto mt-4 text-secondary hover:underline">
           Reintentar
         </button>
       </div>
@@ -51,7 +51,7 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
 
   if (users.length === 0) {
     return (
-      <div className="text-center py-12 text-forest/60">
+      <div className="text-center py-12 text-on-surface-variant">
         <div className="text-5xl mb-4">{type === 'followers' ? '👥' : '🔍'}</div>
         <p>{type === 'followers' ? 'Sin seguidores aun' : 'No sigue a nadie aun'}</p>
       </div>
@@ -59,9 +59,9 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
   }
 
   return (
-    <div className="divide-y divide-beige-dark max-h-96 overflow-y-auto">
+    <div className="divide-y divide-surface-container-high max-h-96 overflow-y-auto">
       {users.map((user) => (
-        <div key={user.userId} className="flex items-center justify-between p-4 hover:bg-beige/30 transition-colors">
+        <div key={user.userId} className="flex items-center justify-between p-4 hover:bg-surface-container-low/30 transition-colors">
           <Link
             to={`/profile/${user.userId}`}
             onClick={onClose}
@@ -70,15 +70,15 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
             <img
               src={user.avatarUrl || '/default-avatar.png'}
               alt={user.username}
-              className="w-12 h-12 rounded-full object-cover border-2 border-teal"
+              className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
             />
             <div className="min-w-0">
-              <p className="font-semibold text-forest truncate">{user.username}</p>
+              <p className="font-semibold text-on-surface truncate">{user.username}</p>
               {user.bio && (
-                <p className="text-sm text-forest/60 truncate">{user.bio}</p>
+                <p className="text-sm text-on-surface-variant truncate">{user.bio}</p>
               )}
               {user.isFollowingBack && (
-                <span className="text-xs text-teal">Te sigue</span>
+                <span className="text-xs text-secondary">Te sigue</span>
               )}
             </div>
           </Link>

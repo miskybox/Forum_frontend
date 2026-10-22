@@ -50,7 +50,7 @@ const BlogCategoryPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div
-        className="bg-gradient-to-r from-ocean-700 to-ocean-500 text-white py-16"
+        className="bg-gradient-to-r from-on-secondary-fixed-variant to-secondary text-white py-16"
         style={category?.color ? {
           background: `linear-gradient(135deg, ${category.color} 0%, ${category.color}dd 100%)`
         } : {}}
@@ -96,7 +96,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -106,7 +106,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

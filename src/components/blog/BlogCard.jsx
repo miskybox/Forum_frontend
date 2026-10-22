@@ -20,7 +20,7 @@ const BlogCard = ({ post }) => {
   }
 
   return (
-    <article className="bg-earth-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <article className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden hover:shadow-level-2 transition-shadow duration-300">
       {/* Imagen */}
       <Link to={`/blog/${post.slug}`} className="block relative h-48 overflow-hidden group">
         {post.featuredImage ? (
@@ -30,7 +30,7 @@ const BlogCard = ({ post }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-ocean-500 to-ocean-700 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-secondary to-on-secondary-fixed-variant flex items-center justify-center">
             <svg aria-hidden="true" className="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
           </div>
         )}
@@ -60,7 +60,7 @@ const BlogCard = ({ post }) => {
         )}
 
         {/* Título */}
-        <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-ocean-600 transition-colors line-clamp-2">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-on-secondary-fixed-variant transition-colors line-clamp-2">
           <Link to={`/blog/${post.slug}`}>
             {post.title}
           </Link>

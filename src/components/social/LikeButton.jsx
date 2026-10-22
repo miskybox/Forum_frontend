@@ -84,8 +84,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
         flex items-center ${sizeClasses[size]}
         transition-all duration-200
         ${liked
-          ? 'text-terracota'
-          : 'text-forest/60 hover:text-terracota'
+          ? 'text-primary'
+          : 'text-on-surface-variant hover:text-primary'
         }
         disabled:opacity-50
       `}

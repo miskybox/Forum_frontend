@@ -75,8 +75,8 @@ const UsersPage = () => {
     <div className="max-w-4xl mx-auto px-4 py-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-forest">Usuarios</h1>
-        <p className="text-forest/70 mt-1">Encuentra y conecta con otros viajeros</p>
+        <h1 className="text-2xl font-bold text-on-surface">Usuarios</h1>
+        <p className="text-on-surface-variant mt-1">Encuentra y conecta con otros viajeros</p>
       </div>
 
       {/* Search Bar */}
@@ -88,7 +88,7 @@ const UsersPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar usuarios por nombre..."
-              className="w-full px-4 py-3 pl-10 border border-beige-dark rounded-lg focus:ring-2 focus:ring-teal focus:border-transparent"
+              className="w-full px-4 py-3 pl-10 border border-surface-container-high rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -97,7 +97,7 @@ const UsersPage = () => {
           <button
             type="submit"
             disabled={searching}
-            className="px-6 py-3 bg-teal text-white rounded-lg hover:bg-teal/90 disabled:opacity-50 transition-colors"
+            className="px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 disabled:opacity-50 transition-colors"
           >
             {searching ? 'Buscando...' : 'Buscar'}
           </button>
@@ -105,7 +105,7 @@ const UsersPage = () => {
             <button
               type="button"
               onClick={clearSearch}
-              className="px-4 py-3 border border-beige-dark rounded-lg hover:bg-beige-dark/20 transition-colors"
+              className="px-4 py-3 border border-surface-container-high rounded-lg hover:bg-surface-container/20 transition-colors"
             >
               Limpiar
             </button>
@@ -115,13 +115,13 @@ const UsersPage = () => {
 
       {/* Tabs - Solo si autenticado */}
       {isAuthenticated && searchResults.length === 0 && (
-        <div className="flex gap-2 mb-6 p-1 bg-beige-dark/50 rounded-lg">
+        <div className="flex gap-2 mb-6 p-1 bg-surface-container/50 rounded-lg">
           <button
             onClick={() => setActiveTab('explore')}
             className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
               activeTab === 'explore'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
+                ? 'bg-surface-container-lowest text-secondary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Explorar
@@ -130,8 +130,8 @@ const UsersPage = () => {
             onClick={() => setActiveTab('suggestions')}
             className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
               activeTab === 'suggestions'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
+                ? 'bg-surface-container-lowest text-secondary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Sugerencias
@@ -140,8 +140,8 @@ const UsersPage = () => {
             onClick={() => setActiveTab('mutuals')}
             className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
               activeTab === 'mutuals'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
+                ? 'bg-surface-container-lowest text-secondary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Mutuos
@@ -155,11 +155,11 @@ const UsersPage = () => {
           <LoadingSpinner />
         </div>
       ) : displayUsers.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-xl shadow-md border border-beige-dark">
+        <div className="text-center py-12 bg-surface-container-lowest rounded-lg shadow-level-1 border border-surface-container-high">
           <div className="text-6xl mb-4">
             {searchQuery ? '🔍' : activeTab === 'mutuals' ? '🤝' : '👥'}
           </div>
-          <h3 className="text-lg font-semibold text-forest mb-2">
+          <h3 className="text-lg font-semibold text-on-surface mb-2">
             {searchQuery
               ? 'No se encontraron usuarios'
               : activeTab === 'mutuals'
@@ -168,7 +168,7 @@ const UsersPage = () => {
                   ? 'Sin sugerencias disponibles'
                   : 'No hay usuarios disponibles'}
           </h3>
-          <p className="text-forest/70">
+          <p className="text-on-surface-variant">
             {searchQuery
               ? 'Intenta con otro termino de busqueda'
               : activeTab === 'mutuals'
@@ -191,23 +191,23 @@ const UsersPage = () => {
 
       {/* Login prompt for non-authenticated users */}
       {!isAuthenticated && (
-        <div className="mt-8 p-6 bg-gradient-to-r from-teal/10 to-ocean/10 rounded-xl border border-teal/20 text-center">
-          <h3 className="text-lg font-semibold text-forest mb-2">
+        <div className="mt-8 p-6 bg-gradient-to-r from-secondary/10 to-secondary/10 rounded-lg border border-secondary/20 text-center">
+          <h3 className="text-lg font-semibold text-on-surface mb-2">
             Inicia sesion para seguir usuarios
           </h3>
-          <p className="text-forest/70 mb-4">
+          <p className="text-on-surface-variant mb-4">
             Conecta con otros viajeros, enviales mensajes y ve su contenido en tu feed
           </p>
           <div className="flex justify-center gap-3">
             <Link
               to="/login"
-              className="px-6 py-2 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
+              className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors"
             >
               Iniciar sesion
             </Link>
             <Link
               to="/register"
-              className="px-6 py-2 border-2 border-teal text-teal rounded-lg hover:bg-teal/10 transition-colors"
+              className="px-6 py-2 border-2 border-secondary text-secondary rounded-lg hover:bg-secondary/10 transition-colors"
             >
               Registrarse
             </Link>
@@ -224,11 +224,11 @@ const UserCard = ({ user, currentUserId, isAuthenticated }) => {
   const isOwnProfile = currentUserId === userId
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-beige-dark overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-surface-container-lowest rounded-lg shadow-level-1 border border-surface-container-high overflow-hidden hover:shadow-level-2 transition-shadow">
       <div className="p-4">
         {/* Avatar y nombre */}
         <Link to={`/profile/${userId}`} className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal to-ocean flex items-center justify-center text-white text-lg font-bold">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-secondary to-secondary flex items-center justify-center text-white text-lg font-bold">
             {user.avatarUrl || user.profileImageUrl ? (
               <img
                 src={user.avatarUrl || user.profileImageUrl}
@@ -240,25 +240,25 @@ const UserCard = ({ user, currentUserId, isAuthenticated }) => {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-forest truncate hover:text-teal transition-colors">
+            <h3 className="font-semibold text-on-surface truncate hover:text-secondary transition-colors">
               {user.username}
             </h3>
             {user.fullName && (
-              <p className="text-sm text-forest/60 truncate">{user.fullName}</p>
+              <p className="text-sm text-on-surface-variant truncate">{user.fullName}</p>
             )}
           </div>
         </Link>
 
         {/* Bio */}
         {(user.bio || user.biography) && (
-          <p className="text-sm text-forest/70 line-clamp-2 mb-3">
+          <p className="text-sm text-on-surface-variant line-clamp-2 mb-3">
             {user.bio || user.biography}
           </p>
         )}
 
         {/* Location */}
         {user.location && (
-          <p className="text-xs text-forest/50 flex items-center gap-1 mb-3">
+          <p className="text-xs text-on-surface-variant flex items-center gap-1 mb-3">
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -271,7 +271,7 @@ const UserCard = ({ user, currentUserId, isAuthenticated }) => {
         <div className="flex gap-2">
           <Link
             to={`/profile/${userId}`}
-            className="flex-1 text-center py-2 text-sm border border-teal text-teal rounded-lg hover:bg-teal/10 transition-colors"
+            className="flex-1 text-center py-2 text-sm border border-secondary text-secondary rounded-lg hover:bg-secondary/10 transition-colors"
           >
             Ver perfil
           </Link>
@@ -281,10 +281,10 @@ const UserCard = ({ user, currentUserId, isAuthenticated }) => {
               <FollowButton userId={userId} size="sm" />
               <Link
                 to={`/messages/${userId}`}
-                className="p-2 border border-beige-dark rounded-lg hover:bg-beige-dark/20 transition-colors"
+                className="p-2 border border-surface-container-high rounded-lg hover:bg-surface-container/20 transition-colors"
                 title="Enviar mensaje"
               >
-                <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </Link>

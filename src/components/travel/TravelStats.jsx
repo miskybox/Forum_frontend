@@ -12,17 +12,17 @@ const TravelStats = ({ stats }) => {
   const progressPercentage = stats.worldPercentageByCountries || 0
 
   return (
-    <div className="bg-gradient-to-br from-primary-dark to-secondary-light rounded-2xl p-5 text-text shadow-xl border-2 border-accent overflow-hidden">
+    <div className="bg-gradient-to-br from-surface-container-low to-secondary-fixed rounded-2xl p-5 text-on-surface shadow-level-2 border-2 border-outline-variant overflow-hidden">
       {/* Header con nivel */}
       <div className="flex items-center justify-between mb-5 gap-2">
         <div className="min-w-0 flex-1">
-          <h3 className="text-xl font-bold text-text truncate">{stats.username}</h3>
-          <p className="text-text-light font-semibold text-sm truncate">{stats.travelerLevel}</p>
+          <h3 className="text-xl font-bold text-on-surface truncate">{stats.username}</h3>
+          <p className="text-on-surface-variant font-semibold text-sm truncate">{stats.travelerLevel}</p>
         </div>
         {stats.globalRanking && (
           <div className="text-right">
-            <span className="text-2xl md:text-4xl font-bold text-accent">#{stats.globalRanking}</span>
-            <p className="text-text-light text-sm font-semibold">{t('trivia.globalRanking')}</p>
+            <span className="text-2xl md:text-4xl font-bold text-primary">#{stats.globalRanking}</span>
+            <p className="text-on-surface-variant text-sm font-semibold">{t('trivia.globalRanking')}</p>
           </div>
         )}
       </div>
@@ -30,8 +30,8 @@ const TravelStats = ({ stats }) => {
       {/* Barra de progreso del mundo */}
       <div className="mb-6">
         <div className="flex justify-between text-sm mb-2 font-semibold">
-          <span className="text-text" id="progress-label">{t('travel.statistics')}</span>
-          <span className="font-bold text-text">{progressPercentage.toFixed(1)}%</span>
+          <span className="text-on-surface" id="progress-label">{t('travel.statistics')}</span>
+          <span className="font-bold text-on-surface">{progressPercentage.toFixed(1)}%</span>
         </div>
         <div className="h-4 bg-primary rounded-full overflow-hidden">
           <progress
@@ -43,12 +43,12 @@ const TravelStats = ({ stats }) => {
             {progressPercentage.toFixed(1)}%
           </progress>
           <div
-            className="h-full bg-gradient-to-r from-accent to-accent-dark rounded-full transition-all duration-1000"
+            className="h-full bg-gradient-to-r from-primary to-on-primary-fixed-variant rounded-full transition-all duration-1000"
             style={{ width: `${Math.min(progressPercentage * 2, 100)}%` }}
             aria-hidden="true"
           />
         </div>
-        <p className="text-text-light text-xs mt-1 font-semibold">
+        <p className="text-on-surface-variant text-xs mt-1 font-semibold">
           {stats.totalAreaVisitedSqKm?.toLocaleString()} {t('travel.kmExplored')}
         </p>
       </div>
@@ -60,38 +60,38 @@ const TravelStats = ({ stats }) => {
           value={stats.countriesVisited || 0}
           label={t('travel.countriesVisited')}
           subLabel="/195"
-          bgColor="bg-golden/20"
+          bgColor="bg-primary-fixed/20"
         />
         <StatCard
           icon={null}
           value={stats.citiesVisited || 0}
           label={t('travel.cities')}
-          bgColor="bg-aqua/30"
+          bgColor="bg-secondary-container/30"
         />
         <StatCard
           icon={null}
           value={stats.continentsVisited || 0}
           label={t('travel.continents')}
           subLabel="/7"
-          bgColor="bg-midnight/20"
+          bgColor="bg-inverse-surface/20"
         />
         <StatCard
           icon={null}
           value={stats.countriesWishlist || 0}
           label={t('travel.inWishlist')}
-          bgColor="bg-golden/20"
+          bgColor="bg-primary-fixed/20"
         />
       </div>
 
       {/* Continentes visitados */}
       {stats.continentsList && stats.continentsList.length > 0 && (
         <div className="mb-6">
-          <h4 className="text-sm font-bold text-text mb-2">{t('footer.continents')}</h4>
+          <h4 className="text-sm font-bold text-on-surface mb-2">{t('footer.continents')}</h4>
           <div className="flex flex-wrap gap-2">
             {stats.continentsList.map(continent => (
               <span
                 key={continent}
-                className="px-3 py-1 bg-golden/30 rounded-full text-sm text-text font-medium border border-golden"
+                className="px-3 py-1 bg-primary-fixed/30 rounded-full text-sm text-on-surface font-medium border border-primary-fixed-dim"
               >
                 {continent}
               </span>
@@ -103,19 +103,19 @@ const TravelStats = ({ stats }) => {
       {/* Badges */}
       {stats.badges && stats.badges.length > 0 && (
         <div>
-          <h4 className="text-sm font-bold text-text mb-2">{t('travel.achievementsUnlocked')}</h4>
+          <h4 className="text-sm font-bold text-on-surface mb-2">{t('travel.achievementsUnlocked')}</h4>
           <div className="flex flex-wrap gap-2">
             {stats.badges.slice(0, 6).map((badge) => (
               <span
                 key={badge}
-                className="px-3 py-1 bg-accent-light border border-accent rounded-full text-sm text-text font-semibold"
+                className="px-3 py-1 bg-primary-container border border-outline-variant rounded-full text-sm text-on-surface font-semibold"
                 title={badge}
               >
                 {badge}
               </span>
             ))}
             {stats.badges.length > 6 && (
-              <span className="px-3 py-1 bg-secondary rounded-full text-sm text-text font-medium">
+              <span className="px-3 py-1 bg-secondary rounded-full text-sm text-on-surface font-medium">
                 +{stats.badges.length - 6} {t('travel.more')}
               </span>
             )}
@@ -125,9 +125,9 @@ const TravelStats = ({ stats }) => {
 
       {/* Lugar favorito */}
       {stats.favoritePlace && (
-        <div className="mt-4 pt-4 border-t border-accent flex items-center gap-2">
-          <span className="text-text-light text-sm font-semibold">{t('travel.favoritePlace')}</span>
-          <span className="font-bold text-accent">{stats.favoritePlace}</span>
+        <div className="mt-4 pt-4 border-t border-outline-variant flex items-center gap-2">
+          <span className="text-on-surface-variant text-sm font-semibold">{t('travel.favoritePlace')}</span>
+          <span className="font-bold text-primary">{stats.favoritePlace}</span>
         </div>
       )}
     </div>
@@ -137,14 +137,14 @@ const TravelStats = ({ stats }) => {
 /**
  * Tarjeta individual de estadística
  */
-const StatCard = ({ icon, value, label, subLabel, bgColor = 'bg-primary-light' }) => (
-  <div className={`${bgColor} rounded-xl p-3 text-center backdrop-blur-sm border border-accent overflow-hidden`}>
+const StatCard = ({ icon, value, label, subLabel, bgColor = 'bg-surface-container-lowest' }) => (
+  <div className={`${bgColor} rounded-lg p-3 text-center backdrop-blur-sm border border-outline-variant overflow-hidden`}>
     {icon && <span className="text-xl" aria-hidden="true">{icon}</span>}
-    <div className="text-xl font-bold mt-1 text-text">
+    <div className="text-xl font-bold mt-1 text-on-surface">
       {value}
-      {subLabel && <span className="text-xs font-normal text-text-light">{subLabel}</span>}
+      {subLabel && <span className="text-xs font-normal text-on-surface-variant">{subLabel}</span>}
     </div>
-    <p className="text-text-light text-xs font-semibold truncate">{label}</p>
+    <p className="text-on-surface-variant text-xs font-semibold truncate">{label}</p>
   </div>
 )
 

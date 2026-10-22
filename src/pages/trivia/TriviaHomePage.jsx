@@ -206,10 +206,10 @@ const TriviaHomePage = () => {
   }
 
   const getTextColorClass = (modeColor) => {
-    if (modeColor === 'bg-midnight') {
-      return 'text-golden'
+    if (modeColor === 'bg-inverse-surface') {
+      return 'text-primary'
     }
-    return 'text-midnight'
+    return 'text-on-surface'
   }
 
   const gameModes = [
@@ -218,14 +218,14 @@ const TriviaHomePage = () => {
       title: t('trivia.quickMode'),
       description: `10 ${t('trivia.randomQuestions')}`,
       questions: 10,
-      color: 'bg-golden'
+      color: 'bg-primary-fixed'
     },
     {
       mode: 'CHALLENGE',
       title: t('trivia.challengeMode'),
       description: `20 ${t('trivia.challengingQuestions')}`,
       questions: 20,
-      color: 'bg-midnight'
+      color: 'bg-inverse-surface'
     },
     {
       mode: 'INFINITE',
@@ -233,7 +233,7 @@ const TriviaHomePage = () => {
       description: t('trivia.unlimitedQuestions'),
       questions: '∞',
       special: true,
-      color: 'bg-aqua'
+      color: 'bg-secondary-container'
     },
     {
       mode: 'DAILY',
@@ -270,11 +270,11 @@ const TriviaHomePage = () => {
       {/* Header */}
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-midnight mb-4 tracking-normal uppercase">
+          <h1 className="text-4xl md:text-5xl font-bold text-on-surface mb-4 tracking-normal uppercase">
             {t('trivia.title')}
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-golden to-transparent mb-4"></div>
-          <p className="text-text text-lg font-semibold tracking-normal">
+          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-fixed to-transparent mb-4"></div>
+          <p className="text-on-surface text-lg font-semibold tracking-normal">
             {t('trivia.chooseMode')}
           </p>
         </div>
@@ -282,7 +282,7 @@ const TriviaHomePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-bold text-midnight mb-6 tracking-normal uppercase">
+            <h2 className="text-2xl font-bold text-on-surface mb-6 tracking-normal uppercase">
               {t('trivia.chooseMode')}
             </h2>
 
@@ -292,16 +292,16 @@ const TriviaHomePage = () => {
                   key={mode.mode}
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className={`card hover:shadow-xl hover:scale-[1.02] group disabled:opacity-50 disabled:cursor-not-allowed text-left cursor-pointer transition-all duration-200 ${mode.color} ${mode.color === 'bg-midnight' ? 'border-midnight' : ''}`}
+                  className={`card hover:shadow-level-2 hover:scale-[1.02] group disabled:opacity-50 disabled:cursor-not-allowed text-left cursor-pointer transition-all duration-200 ${mode.color} ${mode.color === 'bg-inverse-surface' ? 'border-outline-variant' : ''}`}
                 >
                   <div className="text-center p-4">
                     <h3 className={`text-xl font-bold mb-2 tracking-normal uppercase ${getTextColorClass(mode.color)}`}>
                         {mode.title}
                       </h3>
-                    <p className={`text-sm mb-4 ${mode.color === 'bg-midnight' ? 'text-aqua' : 'text-text'}`}>
+                    <p className={`text-sm mb-4 ${mode.color === 'bg-inverse-surface' ? 'text-secondary' : 'text-on-surface'}`}>
                       {mode.description}
                     </p>
-                    <div className={`flex items-center justify-between text-sm font-semibold ${mode.color === 'bg-midnight' ? 'text-white' : 'text-midnight'}`}>
+                    <div className={`flex items-center justify-between text-sm font-semibold ${mode.color === 'bg-inverse-surface' ? 'text-white' : 'text-on-surface'}`}>
                       <span>{mode.questions} {t('trivia.questions')}</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </div>
@@ -311,9 +311,9 @@ const TriviaHomePage = () => {
             </div>
 
             {/* Filtros por continente */}
-            <div className="card bg-aqua">
+            <div className="card bg-secondary-container">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-midnight mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-on-surface mb-4 tracking-normal uppercase">
                   {t('trivia.playByContinent')}
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -328,7 +328,7 @@ const TriviaHomePage = () => {
                       key={continent.key}
                       onClick={() => startGame('QUICK', { questions: 15, continent: continent.apiValue })}
                       disabled={starting}
-                      className="bg-midnight text-white px-4 py-2 text-sm disabled:opacity-50 rounded-lg font-semibold hover:bg-golden hover:text-midnight hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 cursor-pointer"
+                      className="bg-inverse-surface text-white px-4 py-2 text-sm disabled:opacity-50 rounded-lg font-semibold hover:bg-primary-fixed hover:text-on-surface hover:scale-105 hover:shadow-level-2 active:scale-95 transition-all duration-200 cursor-pointer"
                     >
                       {t(`continentsNames.${continent.key}`)}
                     </button>
@@ -341,13 +341,13 @@ const TriviaHomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
-                className="card hover:border-golden group bg-golden"
+                className="card hover:border-primary-fixed-dim group bg-primary-fixed"
               >
                 <div className="p-4 text-center">
-                  <h3 className="text-lg font-bold text-midnight mb-2 tracking-normal uppercase">
+                  <h3 className="text-lg font-bold text-on-surface mb-2 tracking-normal uppercase">
                     {t('trivia.ranking')}
                   </h3>
-                  <p className="text-midnight/70 text-sm">
+                  <p className="text-on-surface-variant text-sm">
                     {t('trivia.competeWithOthers')}
                   </p>
                 </div>
@@ -358,10 +358,10 @@ const TriviaHomePage = () => {
                 className="card hover:border-secondary group bg-secondary"
               >
                 <div className="p-4 text-center">
-                  <h3 className="text-lg font-bold text-midnight mb-2 tracking-normal uppercase">
+                  <h3 className="text-lg font-bold text-on-surface mb-2 tracking-normal uppercase">
                     {t('trivia.myMap')}
                   </h3>
-                  <p className="text-midnight/80 text-sm font-medium">
+                  <p className="text-on-surface-variant text-sm font-medium">
                     {t('trivia.registerTrips')}
                   </p>
                 </div>
@@ -373,24 +373,24 @@ const TriviaHomePage = () => {
           <div className="space-y-6">
             {loading && (
               <div className="card text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-golden border-t-transparent mb-4"></div>
-                <p className="text-text font-semibold">{t('trivia.loading')}</p>
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-fixed-dim border-t-transparent mb-4"></div>
+                <p className="text-on-surface font-semibold">{t('trivia.loading')}</p>
               </div>
             )}
             {!loading && isAuthenticated && stats && (
               <TriviaStats stats={stats} />
             )}
             {!loading && (!isAuthenticated || !stats) && (
-              <div className="card text-center p-6 bg-midnight">
-                <h3 className="text-xl font-bold text-golden mb-2 tracking-normal uppercase">
+              <div className="card text-center p-6 bg-inverse-surface">
+                <h3 className="text-xl font-bold text-primary mb-2 tracking-normal uppercase">
                   {t('trivia.join')}
                 </h3>
-                <p className="text-aqua text-sm mb-4">
+                <p className="text-secondary text-sm mb-4">
                   {t('trivia.loginToSaveProgress')}
                 </p>
                 <Link
                   to="/login"
-                  className="btn bg-golden text-midnight font-bold hover:bg-golden-dark"
+                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim"
                 >
                   {t('auth.loginButton')}
                 </Link>
@@ -398,12 +398,12 @@ const TriviaHomePage = () => {
             )}
 
             {/* Tips */}
-            <div className="card border-golden bg-golden/10">
+            <div className="card border-primary-fixed-dim bg-primary-fixed/10">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-midnight mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-on-surface mb-4 tracking-normal uppercase">
                   {t('trivia.tips.title')}
                 </h3>
-                <ul className="space-y-3 text-text text-sm">
+                <ul className="space-y-3 text-on-surface text-sm">
                   <li>{t('trivia.tips.speedBonus')}</li>
                   <li>{t('trivia.tips.keepStreak')}</li>
                   <li>{t('trivia.tips.playDaily')}</li>
@@ -420,24 +420,24 @@ const TriviaHomePage = () => {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="card max-w-md w-full p-6 animate-fadeIn">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-midnight mb-2 tracking-normal uppercase">
+              <h3 className="text-xl font-bold text-on-surface mb-2 tracking-normal uppercase">
                 {t('trivia.activeGame.title')}
               </h3>
-              <p className="text-text-light mb-4">
+              <p className="text-on-surface-variant mb-4">
                 {t('trivia.activeGame.message')}
               </p>
 
               {/* Info de la partida activa */}
-              <div className="bg-aqua rounded-lg p-4 mb-6">
+              <div className="bg-secondary-container rounded-lg p-4 mb-6">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-midnight">{t('trivia.activeGame.progress')}</span>
-                  <span className="text-midnight font-bold">
+                  <span className="text-on-surface">{t('trivia.activeGame.progress')}</span>
+                  <span className="text-on-surface font-bold">
                     {activeGame.currentQuestionIndex}/{activeGame.totalQuestions}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-sm mt-2">
-                  <span className="text-midnight">{t('trivia.score')}</span>
-                  <span className="text-midnight font-bold">{activeGame.score} pts</span>
+                  <span className="text-on-surface">{t('trivia.score')}</span>
+                  <span className="text-on-surface font-bold">{activeGame.score} pts</span>
                 </div>
               </div>
 
@@ -445,7 +445,7 @@ const TriviaHomePage = () => {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={handleContinueActiveGame}
-                  className="btn bg-golden text-midnight font-bold hover:bg-golden-dark w-full"
+                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim w-full"
                 >
                   {t('trivia.activeGame.continueGame')}
                 </button>
@@ -458,7 +458,7 @@ const TriviaHomePage = () => {
                 </button>
                 <button
                   onClick={() => setShowActiveGameModal(false)}
-                  className="text-text-light text-sm hover:text-text hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
+                  className="text-on-surface-variant text-sm hover:text-on-surface hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
                 >
                   {t('common.cancel')}
                 </button>
@@ -474,30 +474,30 @@ const TriviaHomePage = () => {
           <div className="card max-w-sm w-full p-6 animate-fadeIn">
             <div className="text-center">
               <div className="text-4xl mb-3">⏱️</div>
-              <h3 className="text-xl font-bold text-midnight mb-2 tracking-normal uppercase">
+              <h3 className="text-xl font-bold text-on-surface mb-2 tracking-normal uppercase">
                 {t('trivia.timerChoice.title')}
               </h3>
-              <p className="text-text-light text-sm mb-6">
+              <p className="text-on-surface-variant text-sm mb-6">
                 {t('trivia.timerChoice.description')}
               </p>
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => handleTimerChoice(true)}
                   disabled={starting}
-                  className="btn bg-golden text-midnight font-bold hover:bg-golden-dark w-full disabled:opacity-50"
+                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim w-full disabled:opacity-50"
                 >
                   ⏱️ {t('trivia.timerChoice.withTimer')}
                 </button>
                 <button
                   onClick={() => handleTimerChoice(false)}
                   disabled={starting}
-                  className="btn bg-midnight text-white font-bold hover:bg-midnight/80 w-full disabled:opacity-50"
+                  className="btn bg-inverse-surface text-white font-bold hover:bg-inverse-surface/80 w-full disabled:opacity-50"
                 >
                   🌙 {t('trivia.timerChoice.withoutTimer')}
                 </button>
                 <button
                   onClick={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
-                  className="text-text-light text-sm hover:text-text hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
+                  className="text-on-surface-variant text-sm hover:text-on-surface hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
                 >
                   {t('common.cancel')}
                 </button>

@@ -51,19 +51,19 @@ const MessagesPage = () => {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-forest flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-on-surface flex items-center gap-2">
             Mensajes
             {unreadCount > 0 && (
-              <span className="bg-terracota text-white text-sm px-2 py-0.5 rounded-full">
+              <span className="bg-primary text-white text-sm px-2 py-0.5 rounded-full">
                 {unreadCount}
               </span>
             )}
           </h1>
-          <p className="text-forest/70 mt-1">Conversaciones privadas con otros viajeros</p>
+          <p className="text-on-surface-variant mt-1">Conversaciones privadas con otros viajeros</p>
         </div>
         <button
           onClick={() => setShowNewConversation(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -72,17 +72,17 @@ const MessagesPage = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden border border-beige-dark">
+      <div className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden border border-surface-container-high">
         <div className="flex h-[calc(100vh-14rem)] min-h-[500px]">
           {/* Conversations sidebar */}
-          <div className={`w-full lg:w-80 border-r border-beige-dark overflow-y-auto ${
+          <div className={`w-full lg:w-80 border-r border-surface-container-high overflow-y-auto ${
             selectedUserId ? 'hidden lg:block' : 'block'
           }`}>
-            <div className="p-4 border-b border-beige-dark bg-beige/30 flex items-center justify-between">
-              <h2 className="font-semibold text-forest">Conversaciones</h2>
+            <div className="p-4 border-b border-surface-container-high bg-surface-container-low/30 flex items-center justify-between">
+              <h2 className="font-semibold text-on-surface">Conversaciones</h2>
               <button
                 onClick={() => setShowNewConversation(true)}
-                className="lg:hidden p-2 text-teal hover:bg-beige rounded-full transition-colors"
+                className="lg:hidden p-2 text-secondary hover:bg-surface-container-low rounded-full transition-colors"
                 aria-label="Nueva conversacion"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,12 +101,12 @@ const MessagesPage = () => {
             {selectedUserId ? (
               <ChatWindow userId={selectedUserId} onBack={handleBack} />
             ) : (
-              <div className="text-center text-forest/60 p-8">
+              <div className="text-center text-on-surface-variant p-8">
                 <div className="text-6xl mb-4">💬</div>
                 <p className="text-lg mb-4">Selecciona una conversacion</p>
                 <button
                   onClick={() => setShowNewConversation(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

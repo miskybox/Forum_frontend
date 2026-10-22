@@ -36,12 +36,12 @@ const ProfileStats = ({ userId }) => {
     return (
       <div className="flex gap-6 animate-pulse">
         <div className="text-center">
-          <div className="h-6 w-12 bg-beige-dark rounded mb-1 mx-auto"></div>
-          <div className="h-4 w-16 bg-beige-dark rounded"></div>
+          <div className="h-6 w-12 bg-surface-container rounded mb-1 mx-auto"></div>
+          <div className="h-4 w-16 bg-surface-container rounded"></div>
         </div>
         <div className="text-center">
-          <div className="h-6 w-12 bg-beige-dark rounded mb-1 mx-auto"></div>
-          <div className="h-4 w-16 bg-beige-dark rounded"></div>
+          <div className="h-6 w-12 bg-surface-container rounded mb-1 mx-auto"></div>
+          <div className="h-4 w-16 bg-surface-container rounded"></div>
         </div>
       </div>
     )
@@ -56,24 +56,24 @@ const ProfileStats = ({ userId }) => {
           onClick={() => openModal('followers')}
           className="text-center hover:opacity-80 transition-opacity"
         >
-          <span className="block text-xl font-bold text-forest">
+          <span className="block text-xl font-bold text-on-surface">
             {stats.followersCount || 0}
           </span>
-          <span className="text-sm text-forest/70">Seguidores</span>
+          <span className="text-sm text-on-surface-variant">Seguidores</span>
         </button>
         <button
           onClick={() => openModal('following')}
           className="text-center hover:opacity-80 transition-opacity"
         >
-          <span className="block text-xl font-bold text-forest">
+          <span className="block text-xl font-bold text-on-surface">
             {stats.followingCount || 0}
           </span>
-          <span className="text-sm text-forest/70">Siguiendo</span>
+          <span className="text-sm text-on-surface-variant">Siguiendo</span>
         </button>
       </div>
 
       {stats.isFollowingMe && (
-        <span className="inline-block mt-2 px-2 py-0.5 bg-aqua text-teal text-xs rounded-full">
+        <span className="inline-block mt-2 px-2 py-0.5 bg-secondary-container text-secondary text-xs rounded-full">
           Te sigue
         </span>
       )}

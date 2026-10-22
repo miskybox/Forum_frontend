@@ -74,9 +74,9 @@ const FollowButton = ({ userId, initialIsFollowing = false, onFollowChange, size
         disabled:opacity-50 disabled:cursor-not-allowed
         ${isFollowing
           ? hovering
-            ? 'bg-terracota text-white border-2 border-terracota'
-            : 'bg-white text-teal border-2 border-teal hover:border-terracota'
-          : 'bg-teal text-white border-2 border-teal hover:bg-teal/90'
+            ? 'bg-primary text-white border-2 border-primary'
+            : 'bg-surface-container-lowest text-secondary border-2 border-secondary hover:border-primary'
+          : 'bg-secondary text-white border-2 border-secondary hover:bg-secondary/90'
         }
       `}
     >

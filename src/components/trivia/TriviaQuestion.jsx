@@ -78,11 +78,11 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-xl overflow-hidden shadow-lg">
+    <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-lg overflow-hidden shadow-level-2">
       {/* Header con progreso y timer */}
       <div className="bg-primary border-b-2 border-secondary px-6 py-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-text text-sm font-semibold">
+          <span className="text-on-surface text-sm font-semibold">
             {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}
           </span>
           {withTimer && (
@@ -95,7 +95,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
 
         {/* Barra de tiempo */}
         {withTimer && (
-          <div className="h-2 bg-primary-dark rounded-full overflow-hidden">
+          <div className="h-2 bg-surface-container-low rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full transition-all duration-1000 ease-linear"
               style={{ width: `${timerPercent}%` }}
@@ -104,7 +104,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
         )}
 
         {/* Puntos — countryFlag/Name solo tras responder para no revelar la respuesta */}
-        <div className="flex items-center justify-between mt-3 text-text text-sm font-semibold">
+        <div className="flex items-center justify-between mt-3 text-on-surface text-sm font-semibold">
           <span>{answered ? `${question.countryFlag ?? ''} ${question.countryName ?? ''}`.trim() : ''}</span>
           <span>+{question.points} {t('trivia.points')}</span>
         </div>
@@ -118,13 +118,13 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
             <img
               src={question.imageUrl}
               alt="Pregunta"
-              className="max-h-40 rounded-xl shadow-lg"
+              className="max-h-40 rounded-lg shadow-level-2"
             />
           </div>
         )}
 
         {/* Texto de la pregunta */}
-        <h2 className="text-xl md:text-2xl font-bold text-text text-center mb-8">
+        <h2 className="text-xl md:text-2xl font-bold text-on-surface text-center mb-8">
           {question.questionText}
         </h2>
 
@@ -141,7 +141,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
             let badgeClass
             if (answered) {
               tileClass = selectedAnswer === option
-                ? 'bg-[#bfdbfe] border-[#1d4ed8] text-[#1e3a8a] shadow-xl scale-[1.02]'
+                ? 'bg-[#bfdbfe] border-[#1d4ed8] text-[#1e3a8a] shadow-level-2 scale-[1.02]'
                 : `${COLORS[idx % 4].tile} opacity-30`
               badgeClass = 'bg-black/10 text-inherit'
             } else {
@@ -153,7 +153,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
                 key={`${question.id}-${option}`}
                 onClick={() => handleSelectAnswer(option)}
                 disabled={answered}
-                className={`px-5 py-4 rounded-xl border-2 text-left font-bold transition-all duration-200 min-h-[70px] flex items-center gap-3 cursor-pointer disabled:cursor-not-allowed ${tileClass}`}
+                className={`px-5 py-4 rounded-lg border-2 text-left font-bold transition-all duration-200 min-h-[70px] flex items-center gap-3 cursor-pointer disabled:cursor-not-allowed ${tileClass}`}
               >
                 <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-base font-black flex-shrink-0 ${badgeClass}`}>
                   {String.fromCodePoint(65 + idx)}
@@ -172,11 +172,11 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
               className={`w-2 h-2 rounded-full ${
                 level <= question.difficulty
                   ? 'bg-secondary'
-                  : 'bg-primary-dark'
+                  : 'bg-surface-container-low'
               }`}
             />
           ))}
-          <span className="text-text-light text-xs ml-2 font-semibold">
+          <span className="text-on-surface-variant text-xs ml-2 font-semibold">
             {t('trivia.level')} {question.difficulty}
           </span>
         </div>

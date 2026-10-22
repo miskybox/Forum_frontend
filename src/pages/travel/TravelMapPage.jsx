@@ -86,8 +86,8 @@ const TravelMapPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 border-4 border-golden border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-text-light">
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-primary-fixed-dim border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-on-surface-variant">
             {t('common.loading')}
           </p>
         </div>
@@ -123,10 +123,10 @@ const TravelMapPage = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl md:text-2xl font-bold text-text flex items-center gap-3 mb-1 truncate">
+              <h1 className="text-xl md:text-2xl font-bold text-on-surface flex items-center gap-3 mb-1 truncate">
                 {t('travel.title')}
               </h1>
-              <p className="text-text-light text-xs md:text-sm leading-tight max-w-xs md:max-w-md truncate">
+              <p className="text-on-surface-variant text-xs md:text-sm leading-tight max-w-xs md:max-w-md truncate">
                 {t('travel.addNewDestination')}
               </p>
             </div>
@@ -135,7 +135,7 @@ const TravelMapPage = () => {
               {isAuthenticated ? (
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="btn bg-golden hover:bg-golden-dark text-midnight px-4 py-2 w-full md:w-auto font-bold"
+                  className="btn bg-primary-fixed hover:bg-primary-fixed-dim text-on-surface px-4 py-2 w-full md:w-auto font-bold"
                 >
                   <span className="flex items-center space-x-2">
                     <span>+</span>
@@ -145,7 +145,7 @@ const TravelMapPage = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-4 py-2 w-full md:w-auto"
+                  className="btn btn-outline border-outline-variant text-on-surface hover:bg-secondary-container px-4 py-2 w-full md:w-auto"
                 >
                   <span className="flex items-center space-x-2">
                     <span>{t('auth.loginButton')}</span>
@@ -183,26 +183,26 @@ const TravelMapPage = () => {
               <TravelStats stats={stats} />
 
               {/* Acciones rápidas */}
-              <div className="card border-golden">
+              <div className="card border-primary-fixed-dim">
                 <div className="p-4">
-                  <h3 className="font-bold text-text mb-4 text-sm uppercase">
+                  <h3 className="font-bold text-on-surface mb-4 text-sm uppercase">
                     {t('common.showMore')}
                   </h3>
                   <div className="space-y-3">
                     <QuickAction
                       label={t('trivia.ranking')}
                       href="/trivia/leaderboard"
-                      bgColor="bg-golden/20"
+                      bgColor="bg-primary-fixed/20"
                     />
                     <QuickAction
                       label={t('travel.statistics')}
                       href="/trivia"
-                      bgColor="bg-aqua/30"
+                      bgColor="bg-secondary-container/30"
                     />
                     <QuickAction
                       label={t('nav.trivia')}
                       href="/trivia"
-                      bgColor="bg-midnight/20"
+                      bgColor="bg-inverse-surface/20"
                     />
                   </div>
                 </div>
@@ -216,26 +216,26 @@ const TravelMapPage = () => {
               <WorldMap visitedPlaces={[]} />
             </div>
 
-            <div className="card text-center p-8 border-2 border-golden">
-              <div className="w-20 h-20 mx-auto mb-4 bg-aqua rounded-full flex items-center justify-center">
-                <svg className="w-10 h-10 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div className="card text-center p-8 border-2 border-primary-fixed-dim">
+              <div className="w-20 h-20 mx-auto mb-4 bg-secondary-container rounded-full flex items-center justify-center">
+                <svg className="w-10 h-10 text-on-surface" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               </div>
-              <h2 className="text-2xl font-bold text-text mb-4">
+              <h2 className="text-2xl font-bold text-on-surface mb-4">
                 {t('home.adventureAwaits')}
               </h2>
-              <p className="text-text-light text-sm mb-6 max-w-lg mx-auto">
+              <p className="text-on-surface-variant text-sm mb-6 max-w-lg mx-auto">
                 {t('travel.addNewDestination')}
               </p>
               <div className="flex justify-center gap-4">
                 <Link
                   to="/register"
-                  className="btn bg-golden hover:bg-golden-dark text-midnight px-6 py-3 font-bold"
+                  className="btn bg-primary-fixed hover:bg-primary-fixed-dim text-on-surface px-6 py-3 font-bold"
                 >
                   <span>{t('auth.registerButton')}</span>
                 </Link>
                 <Link
                   to="/login"
-                  className="btn btn-outline border-midnight text-midnight hover:bg-aqua px-6 py-3"
+                  className="btn btn-outline border-outline-variant text-on-surface hover:bg-secondary-container px-6 py-3"
                 >
                   <span>{t('auth.loginButton')}</span>
                 </Link>
@@ -257,15 +257,15 @@ const TravelMapPage = () => {
   )
 }
 
-const QuickAction = ({ label, href, bgColor = 'bg-primary-light' }) => (
+const QuickAction = ({ label, href, bgColor = 'bg-surface-container-lowest' }) => (
   <Link
     to={href}
-    className={`flex items-center gap-3 p-3 border-2 border-golden hover:border-golden-dark transition-colors group rounded-lg ${bgColor}`}
+    className={`flex items-center gap-3 p-3 border-2 border-primary-fixed-dim hover:border-primary transition-colors group rounded-lg ${bgColor}`}
   >
-    <span className="text-text text-sm font-semibold group-hover:text-accent flex-1">
+    <span className="text-on-surface text-sm font-semibold group-hover:text-primary flex-1">
       {label}
     </span>
-    <span className="text-golden group-hover:text-accent font-bold">→</span>
+    <span className="text-primary group-hover:text-primary font-bold">→</span>
   </Link>
 )
 

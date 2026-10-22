@@ -130,23 +130,23 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
   if (!geoData) {
     return (
-      <div className="relative w-full bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl p-6 shadow-2xl">
+      <div className="relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-2xl p-6 shadow-level-2">
         <div className="aspect-[2/1] w-full flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-success"></div>
-          <span className="ml-4 text-text">Cargando mapa...</span>
+          <span className="ml-4 text-on-surface">Cargando mapa...</span>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="relative w-full bg-gradient-to-br from-primary-light to-primary-dark rounded-2xl p-4 md:p-6 shadow-2xl overflow-hidden">
+    <div className="relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-2xl p-4 md:p-6 shadow-level-2 overflow-hidden">
       {/* Estrellas decorativas */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {STARS.map((star) => (
           <div
             key={star.id}
-            className="absolute w-1 h-1 bg-accent rounded-full opacity-30"
+            className="absolute w-1 h-1 bg-primary rounded-full opacity-30"
             style={{
               left: `${star.left}%`,
               top: `${star.top}%`,
@@ -157,7 +157,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       </div>
 
       {/* Leyenda — oculta en móvil, visible en sm+ */}
-      <div className="hidden sm:block absolute top-4 right-4 bg-primary-light/90 backdrop-blur-md rounded-xl p-2 md:p-4 z-20 border border-secondary">
+      <div className="hidden sm:block absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md rounded-lg p-2 md:p-4 z-20 border border-secondary">
         <h4
           className="font-semibold mb-2 text-xs md:text-sm flex items-center gap-2"
           style={{
@@ -196,7 +196,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       {/* Tooltip */}
       {hoveredCountry && (
         <div
-          className="absolute bg-primary-light border border-secondary rounded-lg px-4 py-2 shadow-xl z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
+          className="absolute bg-surface-container-lowest border border-secondary rounded-lg px-4 py-2 shadow-level-2 z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
           style={{
             left: tooltip.x,
             top: tooltip.y - 10,
@@ -220,7 +220,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       )}
 
       {/* Estadísticas rápidas con outline para accesibilidad */}
-      <div className="absolute top-4 left-4 bg-golden/90 backdrop-blur-md rounded-xl p-4 z-20 border border-midnight">
+      <div className="absolute top-4 left-4 bg-primary-fixed/90 backdrop-blur-md rounded-lg p-4 z-20 border border-outline-variant">
         <div className="text-sm">
           <div className="flex items-center gap-2 mb-1">
             <span

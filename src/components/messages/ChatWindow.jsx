@@ -126,13 +126,13 @@ const ChatWindow = ({ userId, onBack }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-beige-dark bg-white">
+      <div className="flex items-center gap-3 p-4 border-b border-surface-container-high bg-surface-container-lowest">
         <button
           onClick={onBack}
-          className="lg:hidden p-2 hover:bg-beige rounded-full transition-colors"
+          className="lg:hidden p-2 hover:bg-surface-container-low rounded-full transition-colors"
           aria-label="Volver"
         >
-          <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
@@ -141,19 +141,19 @@ const ChatWindow = ({ userId, onBack }) => {
             <img
               src={participant.avatarUrl || '/default-avatar.png'}
               alt={participant.username}
-              className="w-10 h-10 rounded-full object-cover border-2 border-teal"
+              className="w-10 h-10 rounded-full object-cover border-2 border-secondary"
             />
-            <span className="font-semibold text-forest">{participant.username}</span>
+            <span className="font-semibold text-on-surface">{participant.username}</span>
           </Link>
         )}
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-beige/30">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-surface-container-low/30">
         {Object.entries(groupedMessages).map(([dateKey, msgs]) => (
           <div key={dateKey}>
             <div className="flex justify-center mb-4">
-              <span className="px-3 py-1 bg-beige-dark text-forest/70 text-xs rounded-full">
+              <span className="px-3 py-1 bg-surface-container text-on-surface-variant text-xs rounded-full">
                 {formatDate(msgs[0].sentAt)}
               </span>
             </div>
@@ -166,12 +166,12 @@ const ChatWindow = ({ userId, onBack }) => {
                   <div
                     className={`group relative max-w-[75%] px-4 py-2 rounded-2xl ${
                       msg.isMine
-                        ? 'bg-teal text-white rounded-br-md'
-                        : 'bg-white text-forest rounded-bl-md shadow-sm'
+                        ? 'bg-secondary text-white rounded-br-md'
+                        : 'bg-surface-container-lowest text-on-surface rounded-bl-md shadow-sm'
                     }`}
                   >
                     <p className="break-words">{msg.content}</p>
-                    <div className={`flex items-center gap-1 mt-1 text-xs ${msg.isMine ? 'text-white/70' : 'text-forest/50'}`}>
+                    <div className={`flex items-center gap-1 mt-1 text-xs ${msg.isMine ? 'text-white/70' : 'text-on-surface-variant'}`}>
                       <span>{formatTime(msg.sentAt)}</span>
                       {msg.isMine && msg.isRead && (
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -182,7 +182,7 @@ const ChatWindow = ({ userId, onBack }) => {
                     {msg.isMine && (
                       <button
                         onClick={() => handleDelete(msg.id)}
-                        className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-terracota hover:text-terracota/80 transition-opacity"
+                        className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-primary hover:text-primary/80 transition-opacity"
                         aria-label="Eliminar mensaje"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -200,7 +200,7 @@ const ChatWindow = ({ userId, onBack }) => {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSend} className="p-4 border-t border-beige-dark bg-white">
+      <form onSubmit={handleSend} className="p-4 border-t border-surface-container-high bg-surface-container-lowest">
         <div className="flex items-center gap-2">
           <input
             ref={inputRef}
@@ -208,13 +208,13 @@ const ChatWindow = ({ userId, onBack }) => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Escribe un mensaje..."
-            className="flex-1 px-4 py-2 border border-beige-dark rounded-full focus:outline-none focus:border-teal bg-beige/30"
+            className="flex-1 px-4 py-2 border border-surface-container-high rounded-full focus:outline-none focus:border-secondary bg-surface-container-low/30"
             maxLength={2000}
           />
           <button
             type="submit"
             disabled={!newMessage.trim() || sending}
-            className="p-3 bg-teal text-white rounded-full hover:bg-teal/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-3 bg-secondary text-white rounded-full hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             aria-label="Enviar mensaje"
           >
             {sending ? (

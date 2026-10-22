@@ -22,12 +22,12 @@ const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
 
   // Colores por tema
   const themeColors = {
-    adventure: 'border-golden',
-    future: 'border-aqua',
+    adventure: 'border-primary-fixed-dim',
+    future: 'border-secondary-fixed-dim',
     jungle: 'border-green-500',
-    tech: 'border-midnight',
+    tech: 'border-outline-variant',
     space: 'border-purple-500',
-    default: 'border-golden'
+    default: 'border-primary-fixed-dim'
   }
 
   const colorClass = themeColors[theme] || themeColors.default
@@ -42,7 +42,7 @@ const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
         className={`${dimensions} ${colorClass} border-t-transparent rounded-full animate-spin`}
         aria-hidden="true"
       />
-      <p className="mt-4 text-adventure-gold font-retro text-xs uppercase tracking-normal opacity-70">
+      <p className="mt-4 text-primary font-headline text-xs uppercase tracking-normal opacity-70">
         <span className="sr-only">Estado: </span>CARGANDO...
       </p>
     </output>

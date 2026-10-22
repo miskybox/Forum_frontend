@@ -204,7 +204,7 @@ const TriviaPlayPage = () => {
     }
     
     return (
-      <div className="text-center text-light py-12">
+      <div className="text-center text-on-surface-variant py-12">
         <p>{t('trivia.loadingQuestion')}</p>
       </div>
     )
@@ -215,7 +215,7 @@ const TriviaPlayPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-secondary border-t-transparent mx-auto" />
-          <p className="text-text-light mt-4">{t('trivia.loadingQuestion')}</p>
+          <p className="text-on-surface-variant mt-4">{t('trivia.loadingQuestion')}</p>
         </div>
       </div>
     )
@@ -232,25 +232,25 @@ const TriviaPlayPage = () => {
   return (
     <div className="min-h-screen">
       {/* Header con progreso */}
-      <div className="bg-midnight py-4 border-b border-white/10">
+      <div className="bg-inverse-surface py-4 border-b border-white/10">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/trivia')}
-              className="p-2 rounded-lg text-aqua hover:bg-aqua/20 transition-colors cursor-pointer"
+              className="p-2 rounded-lg text-secondary hover:bg-secondary-container/20 transition-colors cursor-pointer"
               title={t('common.back')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
             <div className="text-white">
-              <span className="text-aqua text-sm">{t('trivia.score')}</span>
+              <span className="text-secondary text-sm">{t('trivia.score')}</span>
               <p className="text-2xl font-bold">{game?.score || 0}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-center text-white">
-              <span className="text-aqua text-sm">{t('trivia.correctAnswers')}</span>
+              <span className="text-secondary text-sm">{t('trivia.correctAnswers')}</span>
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             

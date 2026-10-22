@@ -36,9 +36,9 @@ const BlogSearchPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-earth-50 border-b">
+      <div className="bg-surface-container-lowest border-b">
         <div className="container mx-auto px-4 py-8">
-          <Link to="/blog" className="inline-flex items-center text-ocean-600 hover:text-ocean-700 mb-4">
+          <Link to="/blog" className="inline-flex items-center text-on-secondary-fixed-variant hover:text-on-secondary-fixed-variant mb-4">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -74,7 +74,7 @@ const BlogSearchPage = () => {
             </p>
             <Link
               to="/blog"
-              className="inline-flex items-center px-4 py-2 bg-ocean-600 text-white rounded-lg hover:bg-ocean-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-on-secondary-fixed-variant text-white rounded-lg hover:bg-on-secondary-fixed-variant transition-colors"
             >
               Ver todos los artículos
             </Link>
@@ -89,7 +89,7 @@ const BlogSearchPage = () => {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -99,7 +99,7 @@ const BlogSearchPage = () => {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

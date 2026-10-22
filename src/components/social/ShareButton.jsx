@@ -83,7 +83,7 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className={`${sizeClasses[size]} text-forest/60 hover:text-teal hover:bg-beige rounded-full transition-colors`}
+        className={`${sizeClasses[size]} text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-full transition-colors`}
         aria-label="Compartir"
         title="Compartir"
       >
@@ -93,10 +93,10 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
       </button>
 
       {showMenu && (
-        <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-lg shadow-lg border border-beige-dark py-1 z-50">
+        <div className="absolute right-0 bottom-full mb-2 w-48 bg-surface-container-lowest rounded-lg shadow-level-2 border border-surface-container-high py-1 z-50">
           <button
             onClick={handleCopyLink}
-            className="w-full px-4 py-2 text-left text-sm text-forest hover:bg-beige flex items-center gap-2"
+            className="w-full px-4 py-2 text-left text-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
@@ -105,7 +105,7 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
           </button>
           <button
             onClick={handleShareMessage}
-            className="w-full px-4 py-2 text-left text-sm text-forest hover:bg-beige flex items-center gap-2"
+            className="w-full px-4 py-2 text-left text-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -115,7 +115,7 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
           {navigator.share && (
             <button
               onClick={handleShareNative}
-              className="w-full px-4 py-2 text-left text-sm text-forest hover:bg-beige flex items-center gap-2"
+              className="w-full px-4 py-2 text-left text-sm text-on-surface hover:bg-surface-container-low flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
