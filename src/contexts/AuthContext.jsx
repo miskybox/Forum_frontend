@@ -28,6 +28,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
+  // Reload the signed-in user after profile changes
+  const refreshUser = useCallback(async () => {
+    const userInfo = await authService.getCurrentUser()
+    setCurrentUser(userInfo)
+    return userInfo
+  }, [])
+
   useEffect(() => {
     const initAuth = async () => {
       // Check if user was previously authenticated
@@ -132,13 +139,14 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
+    refreshUser,
     isAuthenticated: !!currentUser,
     // Backend roles are ROLE_*; accept both 'ADMIN' and 'ROLE_ADMIN'
     hasRole: (role) => {
       const normalized = role.startsWith('ROLE_') ? role : `ROLE_${role}`
       return currentUser?.roles?.includes(normalized) || false
     },
-  }), [currentUser, loading, error, login, register, logout])
+  }), [currentUser, loading, error, login, register, logout, refreshUser])
 
   return (
     <AuthContext.Provider value={value}>
