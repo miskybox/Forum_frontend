@@ -84,6 +84,8 @@ const translations = {
     // Auth
     auth: {
       loginTitle: 'Iniciar Sesión',
+      loginSubtitle: 'Vuelve a tu bitácora de viajes y a tus debates.',
+      registerSubtitle: 'Únete a la comunidad: comparte rutas, pregunta y encuentra inspiración.',
       registerTitle: 'Crear Cuenta',
       username: 'Usuario',
       usernamePlaceholder: 'Nombre de usuario',
@@ -127,6 +129,7 @@ const translations = {
         successTitle: 'Contraseña actualizada',
         successMessage: 'Tu contraseña ha sido restablecida exitosamente. Ya puedes iniciar sesión con tu nueva contraseña.',
         validatingLink: 'Validando enlace...',
+        demoNote: 'Versión demo: no se envían correos reales. El enlace de recuperación solo queda registrado en el servidor.',
       },
       noAccount: '¿No tienes cuenta?',
       hasAccount: '¿Ya tienes cuenta?',
@@ -904,6 +907,8 @@ const translations = {
     // Auth
     auth: {
       loginTitle: 'Login',
+      loginSubtitle: 'Get back to your travel log and discussions.',
+      registerSubtitle: 'Join the community: share routes, ask questions and get inspired.',
       registerTitle: 'Create Account',
       username: 'Username',
       usernamePlaceholder: 'Username',
@@ -947,6 +952,7 @@ const translations = {
         successTitle: 'Password updated',
         successMessage: 'Your password has been successfully reset. You can now log in with your new password.',
         validatingLink: 'Validating link...',
+        demoNote: 'Demo version: no real emails are sent. The reset link is only recorded on the server.',
       },
       noAccount: "Don't have an account?",
       hasAccount: 'Already have an account?',
