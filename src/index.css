@@ -59,6 +59,19 @@
   --color-on-error: #ffffff;
   --color-error-container: #ffdad6;
   --color-on-error-container: #93000a;
+  --color-error-light: #ffdad6;
+  --color-error-dark: #93000a;
+
+  /* Semantic status colors derived from the palette */
+  --color-success: #476558;
+  --color-success-light: #c9ead9;
+  --color-success-dark: #304d40;
+  --color-warning: #b05f32;
+  --color-warning-light: #ffdbcb;
+  --color-warning-dark: #763308;
+  --color-info: #3d6355;
+  --color-info-light: #c2ecd9;
+  --color-info-dark: #284e40;
 
   /* ---------- Typography ---------- */
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, "Segoe UI", sans-serif;

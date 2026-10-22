@@ -84,6 +84,10 @@ Radius: follow the DESIGN.md scale (`sm .25 / DEFAULT .5 / md .75 / lg 1 / xl 1.
 | `on-error` | `#ffffff` | |
 | `error-container` | `#ffdad6` | Question badge, weather alerts |
 | `on-error-container` | `#93000a` | |
+| `error-light` / `error-dark` | `#ffdad6` / `#93000a` | Destructive hover states |
+| `success` / `-light` / `-dark` | `#476558` / `#c9ead9` / `#304d40` | Positive status (visited, saved) |
+| `warning` / `-light` / `-dark` | `#b05f32` / `#ffdbcb` / `#763308` | Attention status (wishlist, pending) |
+| `info` / `-light` / `-dark` | `#3d6355` / `#c2ecd9` / `#284e40` | Informative status |
 
 Color usage rules:
 - Body/label text: `on-surface` on `background`/`surface-container-lowest`.
