@@ -46,6 +46,7 @@ Priorities:
 - [ ] **B5. Category metadata** for the "Canales Temáticos" list: `icon` (emoji or icon key) and `postCount` in `GET /api/categories` (`forumCount` already exists).
 - [ ] **B5b. Public popular tags**: allow anonymous `GET /api/tags/popular` (trending hashtags on the home hero).
 - [ ] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl` (+ upload endpoint), `likesReceived`, `countriesVisited` (from travel stats), `memberSince` (already `createdAt`). Add `PUT /api/users/{id}/cover`.
+- [ ] **B6b. Avatar upload**: `POST /api/users/{id}/avatar` (multipart, stored like post images). The old profile form had a picker that never uploaded anything.
 - [ ] **B7. Posts and forums by user** with pagination for profile tabs: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}` (current `/user` only returns the logged-in user's content).
 - [ ] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
 

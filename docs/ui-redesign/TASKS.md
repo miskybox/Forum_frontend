@@ -87,9 +87,13 @@ Tick a task in the same commit that completes it.
 - [ ] Restyle `PostCreatePage` / `PostEditPage` / `PostForm`, `ForumCreatePage` / `ForumEditPage` / `ForumForm`
 
 ### Profile (`/profile`, `/profile/:userId`, mockup 04)
-- [ ] Cover + overlapping identity card, follow/share actions, metrics bar (`ProfileStats`)
-- [ ] Left column: badges passport (decide data source), travel map card reusing `WorldMap`/`TravelStats`, gear
-- [ ] Right column: accessible tabs (posts/guides, debates, upcoming trips, saved routes) with horizontal cards
+- [x] Cover + overlapping identity card, follow/edit actions, metrics bar
+- [ ] Custom cover upload — B6
+- [x] Left column: traveler passport (badges/level from travel stats) and territory card
+- [ ] Mini world map in the territory card (reuse `WorldMap`)
+- [x] Right column: accessible tabs (posts, forums, edit profile, password, messages)
+- [ ] Upcoming trips and saved routes tabs — B15, B10
+- [ ] Other users' posts use a client-side filter of the latest 100 posts until B7 exists
 - [ ] Restyle `FollowModal`, `FollowList`, `UsersPage`
 
 ### Other pages
@@ -109,7 +113,9 @@ Tick a task in the same commit that completes it.
 - [x] Post authors could not edit their posts (`author.id` instead of `createdBy`)
 - [x] Forum tags rendered empty (API sends strings, UI expected `{id, name}`)
 - [x] `LikeButton` crashed the page on a partial API response
-- [ ] Profile "Mis foros"/"Mis publicaciones" render all forums / nothing (`ForumList`/`PostList` without filters) — fix in profile redesign
+- [x] Profile "Mis foros"/"Mis publicaciones" rendered all forums / nothing
+- [x] Profile edit never saved (sent firstName/lastName/bio; API needs fullName/biography/location)
+- [x] Inputs without `type` attribute had no base styles
 - [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
 
 ## Phase 5 — Quality
