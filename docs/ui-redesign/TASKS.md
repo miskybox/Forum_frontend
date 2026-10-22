@@ -84,7 +84,7 @@ Tick a task in the same commit that completes it.
 - [ ] Nested replies — B4; markdown toolbar (content is plain text today)
 - [x] Rail: thread facts and more posts from the same forum
 - [ ] Weather widget (Open-Meteo) and companions CTA — B15, B21
-- [ ] Restyle `PostCreatePage` / `PostEditPage` / `PostForm`, `ForumCreatePage` / `ForumEditPage` / `ForumForm`
+- [x] Restyle `PostCreatePage` / `PostEditPage` / `PostForm`, `ForumCreatePage` / `ForumEditPage` / `ForumForm` (shared `FormPageLayout`)
 
 ### Profile (`/profile`, `/profile/:userId`, mockup 04)
 - [x] Cover + overlapping identity card, follow/edit actions, metrics bar
@@ -116,6 +116,8 @@ Tick a task in the same commit that completes it.
 - [x] Profile "Mis foros"/"Mis publicaciones" rendered all forums / nothing
 - [x] Profile edit never saved (sent firstName/lastName/bio; API needs fullName/biography/location)
 - [x] Inputs without `type` attribute had no base styles
+- [x] Editing a post opened an empty form and saving created a new post (`PostForm` never received `postId`)
+- [x] Undefined `ocean/earth/light/dark` classes aliased to the new palette
 - [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
 
 ## Phase 5 — Quality
