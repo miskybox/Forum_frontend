@@ -7,11 +7,9 @@ import categoryService from '../../services/categoryService'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
 import PropTypes from 'prop-types'
+import { MdAddCircleOutline, MdErrorOutline, MdForum, MdSearchOff } from 'react-icons/md'
+import EmptyState from '../ui/EmptyState'
 
-/**
- * ForumList - Nueva paleta del logo
- * Teal (#5A8A7A), Terracota (#A67C52), Dark Green (#3D5F54)
- */
 const ForumList = ({ categoryId: propCategoryId }) => {
   const { categoryId: paramCategoryId } = useParams()
   const categoryId = propCategoryId || paramCategoryId
@@ -44,7 +42,7 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           forumData = response.content || response
         }
 
-        setForums(forumData)
+        setForums(Array.isArray(forumData) ? forumData : forumData?.content || [])
         setError(null)
       } catch (err) {
         console.error('Error al cargar los foros:', err)
@@ -63,159 +61,87 @@ const ForumList = ({ categoryId: propCategoryId }) => {
     setSearchParams(term ? { q: term } : {})
   }
 
+  const createAction = isAuthenticated ? (
+    <Link to="/forums/create" className="btn btn-primary">
+      <MdAddCircleOutline aria-hidden="true" />
+      {t('forumList.createFirstForum')}
+    </Link>
+  ) : (
+    <Link to="/login" className="btn btn-outline">
+      {t('forumList.login')}
+    </Link>
+  )
+
+  let heading = t('forumList.allForums')
+  if (category) heading = `${t('forumList.forumsOf')} ${category.name}`
+  else if (searchTerm) heading = `${t('forumList.searchResults')}: "${searchTerm}"`
+
+  let content
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-golden border-t-transparent mx-auto mb-4" />
-          <p className="text-secondary font-display text-sm">
-            {t('forumList.loadingForums')}
-          </p>
-        </div>
-      </div>
+    content = (
+      <output className="block text-center py-space-xl" aria-live="polite">
+        <span className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary-fixed border-t-primary" aria-hidden="true" />
+        <span className="block mt-space-sm text-body-sm text-on-surface-variant">{t('forumList.loadingForums')}</span>
+      </output>
     )
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-10 card border-error">
-        <div className="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-        </div>
-        <div className="text-error font-display text-sm uppercase tracking-wide mb-6">
-          {error}
-        </div>
-        <button
-          onClick={() => globalThis?.window?.location?.reload?.()}
-          className="btn btn-primary"
-        >
-          {t('forumList.retry')}
-        </button>
-      </div>
+  } else if (error) {
+    content = (
+      <EmptyState
+        icon={MdErrorOutline}
+        title={error}
+        action={
+          <button type="button" onClick={() => globalThis?.window?.location?.reload?.()} className="btn btn-primary">
+            {t('forumList.retry')}
+          </button>
+        }
+      />
     )
-  }
-
-  let heading;
-  if (category) {
-    heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-text">
-        {t('forumList.forumsOf')} {category.name}
-      </h2>
-    );
-  } else if (searchTerm) {
-    heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-text">
-        {t('forumList.searchResults')}: "{searchTerm}"
-      </h2>
-    );
+  } else if (forums.length === 0 && searchTerm) {
+    content = (
+      <EmptyState
+        icon={MdSearchOff}
+        title={t('forumList.noResults')}
+        description={`${t('forumList.noResultsFor')} "${searchTerm}"`}
+        action={
+          <button type="button" onClick={() => handleSearch('')} className="btn btn-outline">
+            {t('forumList.viewAll')}
+          </button>
+        }
+      />
+    )
+  } else if (forums.length === 0) {
+    content = (
+      <EmptyState
+        icon={MdForum}
+        title={category ? t('forumList.noCategoryForums') : t('forumList.noForums')}
+        description={category ? `${t('forumList.beFirstCategory')} ${category.name}` : t('forumList.beFirst')}
+        action={createAction}
+      />
+    )
   } else {
-    heading = (
-      <h2 className="text-2xl md:text-3xl font-bold text-text">
-        {t('forumList.allForums')}
-      </h2>
-    );
+    content = (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-lg">
+        {forums.map((forum) => (
+          <ForumCard key={forum.id} forum={forum} />
+        ))}
+      </div>
+    )
   }
 
   return (
-    <div>
-      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
+    <div className="space-y-space-lg">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md">
+        <h2 className="font-headline text-headline-md text-on-surface">
           {heading}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-          <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
-
-          {isAuthenticated && (
-            <Link to="/forums/create" className="btn btn-primary whitespace-nowrap text-center">
-              {t('forumList.createForum')}
-            </Link>
+          {!loading && !error && forums.length > 0 && (
+            <span className="ml-space-sm align-middle px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed text-label-md font-body">
+              {forums.length}
+            </span>
           )}
-        </div>
+        </h2>
+        <ForumSearch onSearch={handleSearch} initialValue={searchTerm} />
       </div>
-
-      {(() => {
-        let emptyStateContent;
-        if (searchTerm) {
-          emptyStateContent = (
-            <>
-              <div className="w-16 h-16 mx-auto mb-4 bg-aqua/30 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              </div>
-              <h3 className="text-xl font-bold text-text mb-2">
-                {t('forumList.noResults')}
-              </h3>
-              <p className="text-text-light font-display text-sm mb-6">
-                {t('forumList.noResultsFor')} "{searchTerm}"
-              </p>
-              <button
-                onClick={() => handleSearch('')}
-                className="btn btn-outline"
-              >
-                {t('forumList.viewAll')}
-              </button>
-            </>
-          );
-        } else if (category) {
-          emptyStateContent = (
-            <>
-              <div className="w-16 h-16 mx-auto mb-4 bg-golden/30 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
-              </div>
-              <h3 className="text-xl font-bold text-text mb-2">
-                {t('forumList.noCategoryForums')}
-              </h3>
-              <p className="text-text-light font-display text-sm mb-6">
-                {t('forumList.beFirstCategory')} {category.name}
-              </p>
-              {isAuthenticated ? (
-                <Link to="/forums/create" className="btn btn-primary">
-                  {t('forumList.createFirstForum')}
-                </Link>
-              ) : (
-                <Link to="/login" className="btn btn-outline">
-                  {t('forumList.login')}
-                </Link>
-              )}
-            </>
-          );
-        } else {
-          emptyStateContent = (
-            <>
-              <div className="w-16 h-16 mx-auto mb-4 bg-midnight/20 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-              </div>
-              <h3 className="text-xl font-bold text-text mb-2">
-                {t('forumList.noForums')}
-              </h3>
-              <p className="text-text-light font-display text-sm mb-6">
-                {t('forumList.beFirst')}
-              </p>
-              {isAuthenticated ? (
-                <Link to="/forums/create" className="btn btn-primary">
-                  {t('forumList.createFirstForum')}
-                </Link>
-              ) : (
-                <Link to="/login" className="btn btn-outline">
-                  {t('forumList.login')}
-                </Link>
-              )}
-            </>
-          );
-        }
-
-        return forums.length === 0 ? (
-          <div className="text-center py-12 card">
-            {emptyStateContent}
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {forums.map((forum) => (
-              <ForumCard key={forum.id} forum={forum} />
-            ))}
-          </div>
-        );
-      })()}
+      {content}
     </div>
   )
 }
