@@ -14,7 +14,7 @@ Tick a task in the same commit that completes it.
 - [x] Tailwind setup: v4.1.7 installed and working through `@tailwindcss/vite`; removed the redundant PostCSS pipeline (`postcss.config.cjs`, `@tailwindcss/postcss`, `autoprefixer`)
 - [x] Remove unused deps: DaisyUI and `@tailwindcss/forms` (never loaded), self-referencing `forum` dependency
 - [x] Remove unused `CustomCursor` and `ForumBgPreviewPage`
-- [ ] Simplify `ThemeContext`: per-route themes (`theme-retro`, `theme-space`…) and dark mode have no CSS at all → keep a single theme, drop the dead `theme-*` body/main classes
+- [x] Simplify `ThemeContext`: removed per-route themes (`theme-retro`, `theme-space`…, no CSS existed); only the dark-mode preference remains
 - [ ] Baseline screenshots of current pages (Playwright) for before/after comparison — the old UI can also be checked out from `release/ui-2025-2026`
 
 ## Phase 1 — Foundations (design tokens)
@@ -34,7 +34,8 @@ Tick a task in the same commit that completes it.
 - [ ] `Button` (primary, secondary, ghost, icon) with sizes and loading state
 - [ ] `Chip` / `FilterPill` (inactive, active, removable) and `Tag`
 - [ ] `RouteBadge` (dual pill: icon+label | metric)
-- [ ] `Avatar` (image or initials, tonal colors, verified badge, stack)
+- [x] `Avatar` (image or initials, stable tonal color per name, image fallback) — `src/components/ui/Avatar.jsx`
+- [ ] `Avatar` extras: verified badge overlay, avatar stack
 - [ ] `Card` (level 1 → 2 on hover) and `SectionCard` for rail widgets
 - [ ] `SegmentedTabs` (accessible tablist)
 - [ ] `Input`, `Select`, `Textarea`, `Checkbox`, `Radio` with focus styles
@@ -47,12 +48,14 @@ Tick a task in the same commit that completes it.
 - [ ] Unit tests for the new components (Vitest + Testing Library)
 
 ## Phase 3 — Layout shell
-- [ ] `Navbar`: fixed 80px header, blur background, logo + "Comunidad Global", search (xl+), segmented nav pill, "Crear Debate" CTA, notifications, language, avatar menu
-- [ ] Mobile navigation (drawer/bottom sheet) — mockups only cover desktop
-- [ ] Map new nav items to routes: Explorar `/`, Comunidades & Foros `/forums`, Diarios de Viaje `/blog`, Compañeros de Viaje (new, Phase 6); decide where Trivia, Mapa (`/travel`) and Mensajes go
-- [ ] `Footer`: brand + manifesto card, 3 link columns, bottom bar (fix links to real routes)
+- [x] `Navbar`: sticky 80px header, blur background, logo + "Comunidad Global", segmented nav pill with active state, "Crear debate" CTA, notifications/messages with counters, language toggle, avatar menu (closes on Esc/outside click/route change)
+- [ ] Header search (xl+) — needs global search endpoint (B11)
+- [x] Mobile navigation: dropdown panel with links, create/messages, language and auth buttons
+- [ ] Map new nav items to routes: Explorar `/`, Comunidades & Foros `/forums`, Diarios de Viaje `/blog`, Compañeros de Viaje (new). For now the nav keeps the existing sections (Inicio, Contenido, Foros, Trivia, Mi Mapa) until B1 (blog) and B15 (companions) exist
+- [x] `Footer`: brand + manifesto card, 3 link columns (real routes only), bottom bar with social links
 - [ ] Page container helper (max-w-7xl, gutters per breakpoint) and 12-col grid utilities
-- [ ] Update `Navbar.test.jsx` and link/route tests
+- [x] Update `Navbar.test.jsx` translation mock
+- [ ] Re-run Playwright navbar/footer specs against a running backend
 
 ## Phase 4 — Pages
 ### Home / Explore (`/`, mockup 01)
