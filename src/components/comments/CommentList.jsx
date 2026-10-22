@@ -1,58 +1,63 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import CommentItem from './CommentItems'
+import { useLanguage } from '../../contexts/LanguageContext'
 
-const CommentList = ({ comments, onCommentDeleted }) => {
-  const [sortOrder, setSortOrder] = useState('newest') 
-  
+const sortButtonClass = (active) =>
+  `px-3 py-1.5 rounded-full transition-colors ${
+    active ? 'bg-secondary text-on-secondary' : 'text-on-surface-variant hover:text-on-surface'
+  }`
+
+const CommentList = ({ comments, postAuthorId, onCommentUpdated, onCommentDeleted }) => {
+  const { t } = useLanguage()
+  const [sortOrder, setSortOrder] = useState('newest')
+
   const sortedComments = [...comments].sort((a, b) => {
-    const dateA = new Date(a.createdAt)
-    const dateB = new Date(b.createdAt)
-    return sortOrder === 'newest' ? dateB - dateA : dateA - dateB
+    const diff = new Date(b.createdAt) - new Date(a.createdAt)
+    return sortOrder === 'newest' ? diff : -diff
   })
 
   return (
-    <div className="mt-6">
-      <div className="flex justify-end mb-4">
-        <div className="text-sm text-gray-600">
-          <span>Ordenar por:</span>
-          <button
-            onClick={() => setSortOrder('newest')}
-            className={`ml-2 px-2 py-1 rounded ${
-              sortOrder === 'newest' 
-                ? 'bg-ocean-100 text-ocean-800' 
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            Más recientes
-          </button>
-          <button
-            onClick={() => setSortOrder('oldest')}
-            className={`ml-2 px-2 py-1 rounded ${
-              sortOrder === 'oldest' 
-                ? 'bg-ocean-100 text-ocean-800' 
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            Más antiguos
-          </button>
-        </div>
+    <div className="space-y-space-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-lowest p-space-md rounded-lg shadow-level-1">
+        <h2 className="font-body text-headline-sm text-on-surface">
+          {comments.length} {t('postDetail.replies')}
+        </h2>
+        {comments.length > 1 && (
+          <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-full text-label-md" role="group" aria-label={t('comments.sortLabel')}>
+            <button type="button" aria-pressed={sortOrder === 'newest'} onClick={() => setSortOrder('newest')} className={sortButtonClass(sortOrder === 'newest')}>
+              {t('comments.sortNewest')}
+            </button>
+            <button type="button" aria-pressed={sortOrder === 'oldest'} onClick={() => setSortOrder('oldest')} className={sortButtonClass(sortOrder === 'oldest')}>
+              {t('comments.sortOldest')}
+            </button>
+          </div>
+        )}
       </div>
-      
-      <div className="space-y-4">
-        {sortedComments.map(comment => (
-          <CommentItem 
-            key={comment.id} 
-            comment={comment} 
-            onDeleted={onCommentDeleted}
+
+      {sortedComments.length === 0 ? (
+        <p className="bg-surface-container-lowest rounded-lg p-space-lg text-center text-body-md text-on-surface-variant shadow-level-1">
+          {t('comments.empty')}
+        </p>
+      ) : (
+        sortedComments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            postAuthorId={postAuthorId}
+            onUpdate={onCommentUpdated}
+            onDelete={onCommentDeleted}
           />
-        ))}
-      </div>
+        ))
+      )}
     </div>
   )
 }
+
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  postAuthorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onCommentUpdated: PropTypes.func.isRequired,
   onCommentDeleted: PropTypes.func.isRequired,
 }
 

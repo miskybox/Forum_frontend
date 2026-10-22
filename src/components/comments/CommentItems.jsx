@@ -1,183 +1,169 @@
-// Archivo: src/components/comments/CommentItem.jsx
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { toast } from 'react-hot-toast'
 import commentService from '../../services/commentService'
 import useAuth from '../../hooks/useAuth'
+import { useLanguage } from '../../contexts/LanguageContext'
+import Avatar from '../ui/Avatar'
 
-const CommentItem = ({ comment, onUpdate, onDelete }) => {
+// The API returns flat fields (userId, username, userAvatar); older code used a nested `author`
+const getAuthor = (comment) => ({
+  id: comment.author?.id ?? comment.userId,
+  username: comment.author?.username ?? comment.username,
+  avatar: comment.author?.profileImage ?? comment.userAvatar,
+})
+
+const formatRelativeDate = (dateString) => {
+  const date = new Date(dateString)
+  if (Number.isNaN(date.getTime())) return ''
+  return formatDistanceToNow(date, { addSuffix: true, locale: es })
+}
+
+const actionClass = 'text-label-md text-on-surface-variant hover:text-primary transition-colors disabled:opacity-50'
+
+const CommentItem = ({ comment, postAuthorId, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(comment.content)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  
-  const { currentUser } = useAuth()
-  
-  // Comprobar si el usuario actual es el autor del comentario
-  const isAuthor = currentUser?.id === comment.author?.id
-  
-  // Formatear fecha relativa (ej: "hace 5 minutos")
-  const formatRelativeDate = (dateString) => {
-    const date = new Date(dateString)
-    return formatDistanceToNow(date, { addSuffix: true, locale: es })
-  }
-  
-  const handleEditClick = () => {
-    setIsEditing(true)
-    setEditContent(comment.content)
-  }
-  
-  const handleCancelEdit = () => {
-    setIsEditing(false)
-  }
-  
-  const handleUpdateComment = async () => {
+  const { currentUser, hasRole } = useAuth()
+  const { t } = useLanguage()
+
+  const author = getAuthor(comment)
+  const isAuthor = currentUser?.id != null && currentUser.id === author.id
+  const canDelete = isAuthor || hasRole?.('ADMIN') || hasRole?.('MODERATOR')
+  const isPostAuthor = postAuthorId != null && postAuthorId === author.id
+  const wasEdited = comment.updatedAt && comment.updatedAt !== comment.createdAt
+
+  const handleUpdate = async () => {
     if (!editContent.trim()) {
-      toast.error('El comentario no puede estar vacío')
+      toast.error(t('comments.emptyError'))
       return
     }
-    
     setIsSubmitting(true)
-    
     try {
-      const updatedComment = await commentService.updateComment(comment.id, { content: editContent })
-      onUpdate(updatedComment)
+      const updated = await commentService.updateComment(comment.id, { content: editContent })
+      onUpdate(updated)
       setIsEditing(false)
-      toast.success('Comentario actualizado')
+      toast.success(t('comments.updated'))
     } catch (error) {
-      console.error('Error al actualizar el comentario:', error)
-      toast.error('Error al actualizar el comentario')
+      console.error('Error updating comment:', error)
+      toast.error(t('comments.updateError'))
     } finally {
       setIsSubmitting(false)
     }
   }
-  
-  const handleDeleteComment = async () => {
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
-      return
-    }
-    
+
+  const handleDelete = async () => {
+    if (!window.confirm(t('comments.confirmDelete'))) return
     setIsSubmitting(true)
-    
     try {
       await commentService.deleteComment(comment.id)
       onDelete(comment.id)
-      toast.success('Comentario eliminado')
+      toast.success(t('comments.deleted'))
     } catch (error) {
-      console.error('Error al eliminar el comentario:', error)
-      toast.error('Error al eliminar el comentario')
-    } finally {
+      console.error('Error deleting comment:', error)
+      toast.error(t('comments.deleteError'))
       setIsSubmitting(false)
     }
   }
-  
+
   return (
-    <div className="bg-earth-50 p-4 rounded-lg shadow-sm border border-earth-100">
-      <div className="flex items-start space-x-3">
-        {/* Avatar del autor */}
-        <div className="flex-shrink-0">
-          <div className="w-10 h-10 bg-ocean-500 rounded-full flex items-center justify-center text-white text-sm overflow-hidden">
-            {comment.author?.profileImage ? (
-              <img 
-                src={comment.author.profileImage} 
-                alt={comment.author.username}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              comment.author?.username?.charAt(0)?.toUpperCase() || 'U'
-            )}
+    <article className="bg-surface-container-lowest rounded-lg p-space-md sm:p-space-lg shadow-level-1">
+      <header className="flex items-start justify-between gap-space-sm mb-space-sm">
+        <div className="flex items-center gap-space-sm min-w-0">
+          <Avatar name={author.username} src={author.avatar} />
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-x-2">
+              {author.id != null ? (
+                <Link to={`/profile/${author.id}`} className="text-body-md font-bold text-on-surface hover:text-primary truncate">
+                  @{author.username || t('comments.unknownUser')}
+                </Link>
+              ) : (
+                <span className="text-body-md font-bold text-on-surface">{t('comments.unknownUser')}</span>
+              )}
+              {isPostAuthor && (
+                <span className="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-caption font-semibold">
+                  {t('comments.postAuthor')}
+                </span>
+              )}
+            </div>
+            <span className="text-caption text-on-surface-variant">
+              <time dateTime={comment.createdAt}>{formatRelativeDate(comment.createdAt)}</time>
+              {wasEdited && <> · {t('comments.edited')}</>}
+            </span>
           </div>
         </div>
-        
-        {/* Contenido del comentario */}
-        <div className="flex-grow min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1">
-            <div>
-              <span className="font-medium text-earth-800">
-                {comment.author?.username || 'Usuario desconocido'}
-              </span>
-              <span className="mx-1">•</span>
-              <time className="text-sm text-earth-500" dateTime={comment.createdAt}>
-                {formatRelativeDate(comment.createdAt)}
-              </time>
-            </div>
-            
-            {/* Botones de acción para el autor */}
-            {isAuthor && !isEditing && (
-              <div className="flex items-center space-x-2 mt-1 sm:mt-0">
-                <button
-                  type="button"
-                  className="text-earth-500 hover:text-ocean-600 text-sm font-medium"
-                  onClick={handleEditClick}
-                  disabled={isSubmitting}
-                >
-                  Editar
-                </button>
-                <button
-                  type="button"
-                  className="text-earth-500 hover:text-red-600 text-sm font-medium"
-                  onClick={handleDeleteComment}
-                  disabled={isSubmitting}
-                >
-                  Eliminar
-                </button>
-              </div>
-            )}
+      </header>
+
+      {isEditing ? (
+        <div className="space-y-space-sm">
+          <label htmlFor={`edit-comment-${comment.id}`} className="sr-only">{t('comments.editComment')}</label>
+          <textarea
+            id={`edit-comment-${comment.id}`}
+            className="bg-surface-container-low resize-y"
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            rows={3}
+            disabled={isSubmitting}
+          />
+          <div className="flex justify-end gap-space-xs">
+            <button type="button" className="btn btn-outline" onClick={() => setIsEditing(false)} disabled={isSubmitting}>
+              {t('comments.cancel')}
+            </button>
+            <button type="button" className="btn btn-primary" onClick={handleUpdate} disabled={isSubmitting}>
+              {isSubmitting ? t('comments.saving') : t('comments.save')}
+            </button>
           </div>
-          
-          {isEditing ? (
-            <div className="space-y-3">
-              <textarea
-                className="input w-full"
-                value={editContent}
-                onChange={(e) => setEditContent(e.target.value)}
-                rows={3}
-                disabled={isSubmitting}
-              />
-              
-              <div className="flex space-x-2">
-                <button
-                  type="button"
-                  className="btn btn-primary text-sm py-1 px-3 h-auto"
-                  onClick={handleUpdateComment}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Guardando...' : 'Guardar'}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline text-sm py-1 px-3 h-auto"
-                  onClick={handleCancelEdit}
-                  disabled={isSubmitting}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="text-earth-700 break-words">
-              {comment.content}
-            </div>
+        </div>
+      ) : (
+        <p className="text-body-md text-on-surface whitespace-pre-line break-words">{comment.content}</p>
+      )}
+
+      {!isEditing && (isAuthor || canDelete) && (
+        <footer className="flex items-center gap-space-md pt-space-sm">
+          {isAuthor && (
+            <button
+              type="button"
+              className={actionClass}
+              onClick={() => {
+                setEditContent(comment.content)
+                setIsEditing(true)
+              }}
+              disabled={isSubmitting}
+            >
+              {t('comments.edit')}
+            </button>
           )}
-        </div>
-      </div>
-    </div>
+          {canDelete && (
+            <button type="button" className={actionClass} onClick={handleDelete} disabled={isSubmitting}>
+              {t('comments.delete')}
+            </button>
+          )}
+        </footer>
+      )}
+    </article>
   )
 }
-
-import PropTypes from 'prop-types'
 
 CommentItem.propTypes = {
   comment: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     content: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    username: PropTypes.string,
+    userAvatar: PropTypes.string,
     author: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       username: PropTypes.string,
       profileImage: PropTypes.string,
     }),
   }).isRequired,
+  postAuthorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 }
