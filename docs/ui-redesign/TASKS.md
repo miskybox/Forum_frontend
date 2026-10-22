@@ -27,7 +27,7 @@ Tick a task in the same commit that completes it.
 - [x] Map legacy palette names onto the new tokens (temporary aliases at the end of `@theme`)
 - [x] Add `prefers-reduced-motion` handling
 - [x] Icons: keep `react-icons` and use the Material Design set (`react-icons/md`) to match the mockups; no icon font (avoids extra font download and FOUT)
-- [ ] Remove each legacy alias (`midnight`, `golden`, `aqua`, `teal`, `forest`, `terracota`, `accent`, `text-*`, `primary-light/dark`, `font-display/retro`) once no component uses it
+- [x] Remove legacy aliases (all components migrated with an automated class mapping)
 - [ ] Optional: dark mode tokens (not in the mockups — decide later)
 
 ## Phase 2 — Base components (`src/components/ui/`)
@@ -100,9 +100,12 @@ Tick a task in the same commit that completes it.
 - [x] Auth: `LoginPage`, `RegisterPage`, `ForgotPasswordPage`, `ResetPasswordPage`, `LoginForm`, `RegisterForm` (shared `AuthLayout` and `AuthStatus`; demo note on password reset)
 - [ ] Blog: `BlogHomePage`, `BlogPostPage`, `BlogCategoryPage`, `BlogSearchPage`, `BlogCard`, `BlogHero` ("Diarios de Viaje")
 - [x] Feed: `FeedPage`, `FeedCard`
-- [ ] Travel map: `TravelMapPage`, `WorldMap` colors, `AddPlaceModal`, `PlacesList`, `CountrySelector`
-- [ ] Trivia: home, play, infinite, leaderboard + components
-- [ ] Messages & notifications: `MessagesPage`, `ChatWindow`, `ConversationList`, modals, `NotificationsPage`
+- [x] Travel map: `TravelMapPage`, `WorldMap` colors, `PlacesList`
+- [ ] Travel: polish `AddPlaceModal`, `CountrySelector`, `TravelStats` (migrated automatically, not reviewed in detail)
+- [x] Trivia home
+- [ ] Trivia: play, infinite, leaderboard + components (migrated automatically, not reviewed in detail)
+- [x] Messages & notifications migrated to tokens (checked visually; empty states)
+- [ ] Messages: review chat bubbles and modals with real conversations
 - [ ] Admin & moderator dashboards
 - [x] Static pages: About, Contact, Help, NotFound (shared `ContentPageLayout`)
 
@@ -118,6 +121,8 @@ Tick a task in the same commit that completes it.
 - [x] Inputs without `type` attribute had no base styles
 - [x] Editing a post opened an empty form and saving created a new post (`PostForm` never received `postId`)
 - [x] Undefined `ocean/earth/light/dark` classes aliased to the new palette
+- [x] Travel map never colored visited countries (wrong GeoJSON property names)
+- [x] Semantic `success/warning/info` classes were undefined
 - [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
 
 ## Phase 5 — Quality
