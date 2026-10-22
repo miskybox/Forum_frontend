@@ -241,9 +241,28 @@ Hero search: floating white pill with "Destino o región" + "Interés del viaje"
 
 ## 10. Implementation notes for this codebase
 
-- Stack: React 19 + Vite + Tailwind CSS v4 (`@tailwindcss/vite`), `react-icons`, DaisyUI installed.
-- Tailwind v4 does **not** read `tailwind.config.js` unless `@config` is declared; tokens should be defined with `@theme` in `src/index.css`
-  (e.g. `--color-primary: #91471c; --font-headline: "Newsreader", serif; --text-headline-md: 1.75rem; ...`).
+- Stack: React 19 + Vite + Tailwind CSS v4 (`@tailwindcss/vite` only, no PostCSS config), `react-icons`.
+- All tokens live in the `@theme` block of `src/index.css` (Tailwind v4 does not read `tailwind.config.js`; it was removed).
+- Icons: `react-icons/md` (Material Design), matching the Material Symbols used in the mockups.
+
+Token → class cheat sheet:
+
+| Token | Class examples |
+|---|---|
+| Colors | `bg-primary`, `text-on-primary`, `bg-surface-container-low`, `text-on-surface-variant`, `border-outline-variant`, `bg-inverse-surface/80` |
+| Fonts | `font-headline` (Newsreader), `font-body` / `font-sans` (Plus Jakarta Sans) |
+| Type scale | `text-display-lg`, `text-headline-md`, `text-title-md`, `text-body-sm`, `text-label-md`, `text-caption` (size + line-height + weight + tracking) |
+| Spacing | `p-space-lg`, `gap-space-sm`, `px-gutter-sm lg:px-gutter-lg`, `py-margin`, `mt-margin-lg` |
+| Radius | `rounded-sm` .25, `rounded-base` .5, `rounded-md` .75, `rounded-lg` 1 (cards), `rounded-xl` 1.5, `rounded-full` |
+| Elevation | `shadow-level-1`, `hover:shadow-level-2`, `shadow-level-3` |
+| Shared classes | `.btn .btn-primary/.btn-secondary/.btn-outline`, `.card`, `.badge-*`, `.container` |
+
+Mockup → codebase class differences: mockups use `rounded-xl` for cards (0.75rem in their config) → use `rounded-lg` here;
+mockups use `text-outline` for meta text → use `text-on-surface-variant` (contrast, see §9).
+
+Legacy aliases: old palette names (`midnight`, `golden`, `aqua`, `teal`, `forest`, `terracota`, `accent`, `text-*`,
+`primary-light/dark`, `font-display`) are mapped onto the new tokens at the end of `@theme` so unmigrated pages stay coherent.
+Do not use them in new code; remove them as pages are migrated.
 - Do not use the Tailwind Play CDN (`cdn.tailwindcss.com`) from the mockups; translate the classes to the build setup.
 - Mockup images are hosted on `lh3.googleusercontent.com` placeholders — replace with app assets or user content.
 - Keep copy in Spanish (i18n via `LanguageContext`), code identifiers in English.

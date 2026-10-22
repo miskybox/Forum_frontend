@@ -1,6 +1,6 @@
 # UI/UX Redesign — Tasks
 
-Branch: `feature/fix_new-ux-ui` · Reference: [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md) · Previous UI: `release/ui-2025-2026`
+Branch: `feature/fix_new-ux-ui` · Reference: [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md) · Backend: [`BACKEND_TASKS.md`](./BACKEND_TASKS.md) · Previous UI: `release/ui-2025-2026`
 
 Work stays on this branch until approved, then merges to `dev` → `main` (see `AGENTS.md`).
 Tick a task in the same commit that completes it.
@@ -9,21 +9,25 @@ Tick a task in the same commit that completes it.
 - [x] Create branch `feature/fix_new-ux-ui` from `dev`
 - [x] Freeze current UI in `release/ui-2025-2026`
 - [x] Add design reference, mockups and `AGENTS.md`
-- [ ] Take baseline screenshots of current pages (Playwright) for before/after comparison
-- [ ] Audit current styling: `tailwind.config.js` is not loaded by Tailwind v4 (no `@config`); list custom classes in use (`bg-secondary`, `text-accent`, …) that resolve to nothing or to defaults
-- [ ] Decide on DaisyUI: remove it if unused, or disable its themes to avoid conflicts with the new tokens
-- [ ] Review `ThemeContext` per-route themes (`retro`, `adventure`, `space`, `jungle`, `tech`): the new system uses one theme → simplify
-- [ ] Remove `CustomCursor` if it does not fit the new editorial style (and `ForumBgPreviewPage` if unused)
+- [x] Baseline: build OK, 507 unit tests passing, lint clean (2026-10-22)
+- [x] Audit current styling: `tailwind.config.js` was ignored by Tailwind v4 (no `@config`), so ~800 custom color classes (`text-midnight`, `bg-golden`, `text-text`…) generated no CSS; only ~20 hand-written ones in `index.css` worked
+- [x] Tailwind setup: v4.1.7 installed and working through `@tailwindcss/vite`; removed the redundant PostCSS pipeline (`postcss.config.cjs`, `@tailwindcss/postcss`, `autoprefixer`)
+- [x] Remove unused deps: DaisyUI and `@tailwindcss/forms` (never loaded), self-referencing `forum` dependency
+- [x] Remove unused `CustomCursor` and `ForumBgPreviewPage`
+- [ ] Simplify `ThemeContext`: per-route themes (`theme-retro`, `theme-space`…) and dark mode have no CSS at all → keep a single theme, drop the dead `theme-*` body/main classes
+- [ ] Baseline screenshots of current pages (Playwright) for before/after comparison — the old UI can also be checked out from `release/ui-2025-2026`
 
 ## Phase 1 — Foundations (design tokens)
-- [ ] Define color tokens with `@theme` in `src/index.css` (section 3 of the reference)
-- [ ] Define typography tokens (font families + `text-*` sizes with line-height/weight/tracking)
-- [ ] Define spacing, radius and shadow tokens (levels 1–3)
-- [ ] Load Newsreader + Plus Jakarta Sans in `index.html`; remove Inter/Montserrat
-- [ ] Rewrite base styles in `index.css` (body, headings, links, `::selection`, `focus-visible` ring); drop the old palette and `:root` vars
-- [ ] Delete or replace `tailwind.config.js`
-- [ ] Icons: decide between keeping `react-icons` (pick the closest set, e.g. `react-icons/md`) or adding Material Symbols; document the choice
-- [ ] Add `prefers-reduced-motion` handling for transitions/hover scales
+- [x] Define color tokens with `@theme` in `src/index.css` (section 3 of the reference)
+- [x] Define typography tokens (`font-headline`, `font-body`, `text-display-lg` … `text-caption` with line-height/weight/tracking)
+- [x] Define spacing (`p-space-lg`, `gap-gutter`…), radius (`rounded-base` = .5rem, `lg` = 1rem) and shadow tokens (`shadow-level-1..3`)
+- [x] Load Newsreader + Plus Jakarta Sans in `index.html`; remove Inter/Montserrat
+- [x] Rewrite base styles in `@layer base` (body, headings, links, inputs, `::selection`, `focus-visible` ring) and restyle shared `.btn`, `.card`, `.badge` in `@layer components`
+- [x] Delete `tailwind.config.js`
+- [x] Map legacy palette names onto the new tokens (temporary aliases at the end of `@theme`)
+- [x] Add `prefers-reduced-motion` handling
+- [x] Icons: keep `react-icons` and use the Material Design set (`react-icons/md`) to match the mockups; no icon font (avoids extra font download and FOUT)
+- [ ] Remove each legacy alias (`midnight`, `golden`, `aqua`, `teal`, `forest`, `terracota`, `accent`, `text-*`, `primary-light/dark`, `font-display/retro`) once no component uses it
 - [ ] Optional: dark mode tokens (not in the mockups — decide later)
 
 ## Phase 2 — Base components (`src/components/ui/`)
@@ -95,12 +99,14 @@ Tick a task in the same commit that completes it.
 - [ ] Before/after screenshots review with the owner
 - [ ] Merge to `dev`, verify deploy, then merge to `main`
 
-## Phase 6 — New features shown in mockups (need backend, separate scope)
-These appear in the mockups but have no API today. Track separately; do not block the redesign on them.
-- [ ] Travel companions section (trips with free spots, filters, join requests, safety tips) — new backend entities + endpoints
-- [ ] Route telemetry on posts (distance, elevation, difficulty, cost) and GPX upload
-- [ ] Bookmarks / saved routes
-- [ ] Badges / "adventure passport" and contributor points ranking
-- [ ] Destination of the month, newsletter subscription
-- [ ] Weather & alerts widget (external API)
-- [ ] Global search (⌘K)
+## Phase 6 — New features shown in mockups (need backend)
+Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an endpoint exists the UI hides that block (no fake data in production).
+- [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — decide between a real blog API or posts-with-photos
+- [ ] Feed tabs (trending / recent / with photos / unanswered) — B3
+- [ ] Nested replies and reply sorting — B4
+- [ ] Profile cover, likes received, user content tabs — B6, B7
+- [ ] Top contributors, bookmarks, global search (⌘K), related discussions — B9–B12
+- [ ] Travel companions section (trips, filters, join requests, safety tips) — B15
+- [ ] Route telemetry, itinerary, GPX and elevation profile — B16, B17
+- [ ] Badges / adventure passport — B18
+- [ ] Destination of the month, newsletter, weather & alerts — B19–B21
