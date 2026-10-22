@@ -1,96 +1,109 @@
 import { Link } from 'react-router-dom'
+import { MdArrowForward, MdChatBubbleOutline } from 'react-icons/md'
 import FollowButton from './FollowButton'
 import ShareButton from './ShareButton'
 import LikeButton from './LikeButton'
+import Avatar from '../ui/Avatar'
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const diffMs = Date.now() - date
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMs / 3600000)
+  const diffDays = Math.floor(diffMs / 86400000)
+
+  if (diffMins < 1) return 'Ahora'
+  if (diffMins < 60) return `hace ${diffMins}m`
+  if (diffHours < 24) return `hace ${diffHours}h`
+  if (diffDays < 7) return `hace ${diffDays}d`
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+}
 
 const FeedCard = ({ item }) => {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffMs = now - date
-    const diffMins = Math.floor(diffMs / 60000)
-    const diffHours = Math.floor(diffMs / 3600000)
-    const diffDays = Math.floor(diffMs / 86400000)
-
-    if (diffMins < 1) return 'Ahora'
-    if (diffMins < 60) return `hace ${diffMins}m`
-    if (diffHours < 24) return `hace ${diffHours}h`
-    if (diffDays < 7) return `hace ${diffDays}d`
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-  }
+  const postUrl = `/posts/${item.postId}`
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden border border-beige-dark hover:shadow-lg transition-shadow">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-beige-dark/50">
+    <article className="bg-surface-container-lowest rounded-lg p-space-md sm:p-space-lg shadow-level-1 hover:shadow-level-2 transition-shadow">
+      {/* Author row */}
+      <div className="flex items-center justify-between gap-space-sm mb-space-sm">
         <Link
           to={`/profile/${item.authorId}`}
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-space-sm min-w-0 group"
         >
-          <img
-            src={item.authorAvatarUrl || '/default-avatar.png'}
-            alt={item.authorUsername}
-            className="w-10 h-10 rounded-full object-cover border-2 border-teal"
-          />
-          <div>
-            <span className="font-semibold text-forest block">{item.authorUsername}</span>
-            <span className="text-xs text-forest/60">{formatDate(item.createdAt)}</span>
-          </div>
+          {item.authorAvatarUrl ? (
+            <img
+              src={item.authorAvatarUrl}
+              alt={item.authorUsername}
+              className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+            />
+          ) : (
+            <Avatar name={item.authorUsername} />
+          )}
+          <span className="min-w-0">
+            <span className="block text-body-md font-bold text-on-surface truncate group-hover:text-primary transition-colors">
+              {item.authorUsername}
+            </span>
+            <span className="block text-caption text-on-surface-variant">{formatDate(item.createdAt)}</span>
+          </span>
         </Link>
-        <FollowButton userId={item.authorId} size="sm" />
+        <div className="flex items-center gap-space-sm flex-shrink-0">
+          {item.forumName && (
+            <Link
+              to={`/forums/${item.forumId}`}
+              className="hidden sm:inline-flex px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant hover:text-on-secondary-fixed text-label-md"
+            >
+              {item.forumName}
+            </Link>
+          )}
+          <FollowButton userId={item.authorId} size="sm" />
+        </div>
       </div>
 
-      {/* Image (if exists) */}
+      {/* Title + excerpt */}
+      <Link to={postUrl} className="group block">
+        <h3 className="font-headline text-headline-sm sm:text-[1.5rem] sm:leading-8 font-medium text-on-surface group-hover:text-primary transition-colors">
+          {item.title}
+        </h3>
+      </Link>
+      {item.content && (
+        <p className="mt-space-xs text-body-sm sm:text-body-md text-on-surface-variant line-clamp-3">
+          {item.content}
+        </p>
+      )}
+
       {item.imageUrl && (
-        <Link to={`/posts/${item.postId}`}>
+        <Link to={postUrl} className="block mt-space-md rounded-base overflow-hidden group" tabIndex={-1}>
           <img
             src={item.imageUrl}
             alt={item.title}
-            className="w-full h-64 object-cover hover:opacity-95 transition-opacity"
+            loading="lazy"
+            className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </Link>
       )}
 
-      {/* Content */}
-      <div className="p-4">
-        <Link to={`/posts/${item.postId}`} className="group">
-          <h3 className="font-bold text-forest text-lg mb-2 group-hover:text-teal transition-colors">
-            {item.title}
-          </h3>
-        </Link>
-        <p className="text-forest/80 text-sm leading-relaxed">
-          {item.content}
-        </p>
-      </div>
-
       {/* Footer */}
-      <div className="flex items-center justify-between px-4 py-3 bg-beige/30 border-t border-beige-dark/50">
-        <Link
-          to={`/forums/${item.forumId}`}
-          className="text-sm text-teal hover:underline"
-        >
-          {item.forumName}
-        </Link>
-        <div className="flex items-center gap-4 text-sm text-forest/60">
+      <div className="mt-space-md pt-space-sm flex items-center justify-between gap-space-sm text-body-sm text-on-surface-variant">
+        <div className="flex items-center gap-space-md">
           <LikeButton
             postId={item.postId}
             initialLiked={item.liked}
             initialCount={item.likeCount || 0}
             size="sm"
           />
-          <Link
-            to={`/posts/${item.postId}`}
-            className="flex items-center gap-1 hover:text-teal transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            {item.commentCount || 0}
+          <Link to={postUrl} className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors">
+            <MdChatBubbleOutline className="text-title-md" aria-hidden="true" />
+            <span>{item.commentCount || 0}</span>
+            <span className="sr-only">respuestas</span>
           </Link>
           <ShareButton postId={item.postId} title={item.title} size="sm" />
         </div>
+        <Link to={postUrl} className="hidden sm:inline-flex items-center gap-space-xs text-label-md font-semibold text-primary hover:text-primary-container">
+          <span>Participar</span>
+          <MdArrowForward className="text-body-md" aria-hidden="true" />
+        </Link>
       </div>
-    </div>
+    </article>
   )
 }
 
