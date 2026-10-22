@@ -80,7 +80,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   return (
     <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-lg overflow-hidden shadow-level-2">
       {/* Header con progreso y timer */}
-      <div className="bg-primary border-b-2 border-secondary px-6 py-4">
+      <div className="bg-surface-container-low border-b border-surface-container-high px-6 py-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-on-surface text-sm font-semibold">
             {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}

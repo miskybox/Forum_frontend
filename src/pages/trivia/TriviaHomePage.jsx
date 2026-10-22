@@ -6,15 +6,8 @@ import TriviaStats from '../../components/trivia/TriviaStats'
 import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
 import Seo from '../../components/common/SEO'
+import { MdArrowForward, MdQuiz } from 'react-icons/md'
 
-// Generar partículas decorativas una sola vez
-const PARTICLES = Array.from({ length: 20 }).map((_, i) => ({
-  id: i,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  delay: Math.random() * 3,
-  duration: 3 + Math.random() * 2,
-}))
 
 /**
  * TriviaHomePage - Nueva paleta del logo
@@ -205,27 +198,20 @@ const TriviaHomePage = () => {
     await createNewGame(config.mode, config.options, withTimer)
   }
 
-  const getTextColorClass = (modeColor) => {
-    if (modeColor === 'bg-inverse-surface') {
-      return 'text-primary'
-    }
-    return 'text-on-surface'
-  }
-
   const gameModes = [
     {
       mode: 'QUICK',
       title: t('trivia.quickMode'),
       description: `10 ${t('trivia.randomQuestions')}`,
       questions: 10,
-      color: 'bg-primary-fixed'
+      tone: { card: 'bg-primary-fixed', title: 'text-on-primary-fixed', text: 'text-on-primary-fixed-variant' }
     },
     {
       mode: 'CHALLENGE',
       title: t('trivia.challengeMode'),
       description: `20 ${t('trivia.challengingQuestions')}`,
       questions: 20,
-      color: 'bg-inverse-surface'
+      tone: { card: 'bg-inverse-surface', title: 'text-inverse-primary', text: 'text-inverse-on-surface' }
     },
     {
       mode: 'INFINITE',
@@ -233,78 +219,54 @@ const TriviaHomePage = () => {
       description: t('trivia.unlimitedQuestions'),
       questions: '∞',
       special: true,
-      color: 'bg-secondary-container'
+      tone: { card: 'bg-secondary-container', title: 'text-on-secondary-fixed', text: 'text-on-secondary-fixed-variant' }
     },
     {
       mode: 'DAILY',
       title: t('trivia.dailyMode'),
       description: t('trivia.dailySpecial'),
       questions: 15,
-      color: 'bg-secondary'
+      tone: { card: 'bg-secondary', title: 'text-on-secondary', text: 'text-secondary-fixed' }
     }
   ]
 
   return (
-    <div className="min-h-screen py-8 relative overflow-hidden">
+    <div className="flex flex-col w-full">
       <Seo
         title="Trivia de geografía y viajes"
         description="Pon a prueba tus conocimientos de geografía y viajes con la trivia de ForumViajeros. Compite con otros viajeros en el ranking mundial."
         url="/trivia"
       />
-      {/* Efectos de fondo decorativo */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className="absolute w-2 h-2 bg-secondary rounded-full opacity-30 animate-float"
-            style={{
-              left: `${p.left}%`,
-              top: `${p.top}%`,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.duration}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Header */}
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-on-surface mb-4 tracking-normal uppercase">
-            {t('trivia.title')}
-          </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-primary-fixed to-transparent mb-4"></div>
-          <p className="text-on-surface text-lg font-semibold tracking-normal">
-            {t('trivia.chooseMode')}
+      <header className="relative overflow-hidden bg-gradient-to-b from-surface-container-high/80 via-surface-container-low to-background">
+        <div className="relative max-w-7xl mx-auto px-gutter-sm lg:px-gutter-lg pt-space-xl pb-space-lg">
+          <p className="inline-flex items-center gap-space-xs px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md mb-space-sm">
+            <MdQuiz className="text-title-md" aria-hidden="true" />
+            {t('nav.trivia')}
           </p>
+          <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{t('trivia.title')}</h1>
+          <p className="mt-space-xs text-body-lg text-on-surface-variant">{t('trivia.chooseMode')}</p>
         </div>
+      </header>
 
+      <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Columna principal - Modos de juego */}
           <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-2xl font-bold text-on-surface mb-6 tracking-normal uppercase">
-              {t('trivia.chooseMode')}
-            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {gameModes.map(mode => (
                 <button
                   key={mode.mode}
+                  type="button"
                   onClick={() => startGame(mode.mode, { questions: mode.questions })}
                   disabled={starting}
-                  className={`card hover:shadow-level-2 hover:scale-[1.02] group disabled:opacity-50 disabled:cursor-not-allowed text-left cursor-pointer transition-all duration-200 ${mode.color} ${mode.color === 'bg-inverse-surface' ? 'border-outline-variant' : ''}`}
+                  className={`rounded-lg p-space-lg text-left shadow-level-1 hover:shadow-level-2 transition-shadow group disabled:opacity-50 disabled:cursor-not-allowed ${mode.tone.card}`}
                 >
-                  <div className="text-center p-4">
-                    <h3 className={`text-xl font-bold mb-2 tracking-normal uppercase ${getTextColorClass(mode.color)}`}>
-                        {mode.title}
-                      </h3>
-                    <p className={`text-sm mb-4 ${mode.color === 'bg-inverse-surface' ? 'text-secondary' : 'text-on-surface'}`}>
-                      {mode.description}
-                    </p>
-                    <div className={`flex items-center justify-between text-sm font-semibold ${mode.color === 'bg-inverse-surface' ? 'text-white' : 'text-on-surface'}`}>
-                      <span>{mode.questions} {t('trivia.questions')}</span>
-                      <span className="group-hover:translate-x-1 transition-transform">→</span>
-                    </div>
+                  <h3 className={`font-headline text-headline-sm ${mode.tone.title}`}>{mode.title}</h3>
+                  <p className={`mt-space-xs text-body-sm ${mode.tone.text}`}>{mode.description}</p>
+                  <div className={`mt-space-md flex items-center justify-between text-label-lg ${mode.tone.title}`}>
+                    <span>{mode.questions} {t('trivia.questions')}</span>
+                    <MdArrowForward className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                   </div>
                 </button>
               ))}
@@ -313,7 +275,7 @@ const TriviaHomePage = () => {
             {/* Filtros por continente */}
             <div className="card bg-secondary-container">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-on-surface mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-on-surface mb-4 ">
                   {t('trivia.playByContinent')}
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -328,7 +290,7 @@ const TriviaHomePage = () => {
                       key={continent.key}
                       onClick={() => startGame('QUICK', { questions: 15, continent: continent.apiValue })}
                       disabled={starting}
-                      className="bg-inverse-surface text-white px-4 py-2 text-sm disabled:opacity-50 rounded-lg font-semibold hover:bg-primary-fixed hover:text-on-surface hover:scale-105 hover:shadow-level-2 active:scale-95 transition-all duration-200 cursor-pointer"
+                      className="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface text-label-lg shadow-level-1 hover:bg-secondary hover:text-on-secondary disabled:opacity-50 transition-colors"
                     >
                       {t(`continentsNames.${continent.key}`)}
                     </button>
@@ -341,13 +303,13 @@ const TriviaHomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 to="/trivia/leaderboard"
-                className="card hover:border-primary-fixed-dim group bg-primary-fixed"
+                className="block rounded-lg p-space-lg bg-primary-fixed text-on-primary-fixed hover:text-on-primary-fixed shadow-level-1 hover:shadow-level-2 transition-shadow"
               >
-                <div className="p-4 text-center">
-                  <h3 className="text-lg font-bold text-on-surface mb-2 tracking-normal uppercase">
+                <div>
+                  <h3 className="font-headline text-headline-sm">
                     {t('trivia.ranking')}
                   </h3>
-                  <p className="text-on-surface-variant text-sm">
+                  <p className="mt-space-xs text-body-sm">
                     {t('trivia.competeWithOthers')}
                   </p>
                 </div>
@@ -355,13 +317,13 @@ const TriviaHomePage = () => {
 
               <Link
                 to="/travel"
-                className="card hover:border-secondary group bg-secondary"
+                className="block rounded-lg p-space-lg bg-secondary-container text-on-secondary-fixed hover:text-on-secondary-fixed shadow-level-1 hover:shadow-level-2 transition-shadow"
               >
-                <div className="p-4 text-center">
-                  <h3 className="text-lg font-bold text-on-surface mb-2 tracking-normal uppercase">
+                <div>
+                  <h3 className="font-headline text-headline-sm">
                     {t('trivia.myMap')}
                   </h3>
-                  <p className="text-on-surface-variant text-sm font-medium">
+                  <p className="mt-space-xs text-body-sm">
                     {t('trivia.registerTrips')}
                   </p>
                 </div>
@@ -382,7 +344,7 @@ const TriviaHomePage = () => {
             )}
             {!loading && (!isAuthenticated || !stats) && (
               <div className="card text-center p-6 bg-inverse-surface">
-                <h3 className="text-xl font-bold text-primary mb-2 tracking-normal uppercase">
+                <h3 className="text-xl font-bold text-primary mb-2 ">
                   {t('trivia.join')}
                 </h3>
                 <p className="text-secondary text-sm mb-4">
@@ -400,7 +362,7 @@ const TriviaHomePage = () => {
             {/* Tips */}
             <div className="card border-primary-fixed-dim bg-primary-fixed/10">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-on-surface mb-4 tracking-normal uppercase">
+                <h3 className="text-lg font-bold text-on-surface mb-4 ">
                   {t('trivia.tips.title')}
                 </h3>
                 <ul className="space-y-3 text-on-surface text-sm">
@@ -420,7 +382,7 @@ const TriviaHomePage = () => {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="card max-w-md w-full p-6 animate-fadeIn">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-on-surface mb-2 tracking-normal uppercase">
+              <h3 className="text-xl font-bold text-on-surface mb-2 ">
                 {t('trivia.activeGame.title')}
               </h3>
               <p className="text-on-surface-variant mb-4">
@@ -474,7 +436,7 @@ const TriviaHomePage = () => {
           <div className="card max-w-sm w-full p-6 animate-fadeIn">
             <div className="text-center">
               <div className="text-4xl mb-3">⏱️</div>
-              <h3 className="text-xl font-bold text-on-surface mb-2 tracking-normal uppercase">
+              <h3 className="text-xl font-bold text-on-surface mb-2 ">
                 {t('trivia.timerChoice.title')}
               </h3>
               <p className="text-on-surface-variant text-sm mb-6">

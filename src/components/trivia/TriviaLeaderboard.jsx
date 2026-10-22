@@ -152,7 +152,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
       {/* Footer con total */}
       {leaderboard && (
-        <div className="bg-primary px-6 py-4 text-center text-on-surface-variant text-sm font-semibold">
+        <div className="bg-surface-container-low px-6 py-4 text-center text-on-surface-variant text-sm font-semibold">
           {leaderboard.totalPlayers?.toLocaleString()} {t('trivia.playersInRanking')}
         </div>
       )}

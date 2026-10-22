@@ -33,7 +33,7 @@ const TravelStats = ({ stats }) => {
           <span className="text-on-surface" id="progress-label">{t('travel.statistics')}</span>
           <span className="font-bold text-on-surface">{progressPercentage.toFixed(1)}%</span>
         </div>
-        <div className="h-4 bg-primary rounded-full overflow-hidden">
+        <div className="h-4 bg-surface-container-highest rounded-full overflow-hidden">
           <progress
             className="sr-only"
             value={progressPercentage}

@@ -15,10 +15,10 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
   const [deletingId, setDeletingId] = useState(null)
 
   const statusLabels = {
-    VISITED: { label: t('travel.visited'), color: 'bg-success-light text-success-dark' },
-    WISHLIST: { label: t('travel.wantToGo'), color: 'bg-warning-light text-warning-dark' },
-    LIVED: { label: t('travel.lived'), color: 'bg-info-light text-info-dark' },
-    LIVING: { label: t('travel.living'), color: 'bg-info-light text-info-dark' }
+    VISITED: { label: t('travel.visited'), color: 'bg-secondary text-on-secondary' },
+    WISHLIST: { label: t('travel.wantToGo'), color: 'bg-primary-fixed-dim text-on-primary-fixed' },
+    LIVED: { label: t('travel.lived'), color: 'bg-primary-container text-on-primary' },
+    LIVING: { label: t('travel.living'), color: 'bg-on-primary-fixed-variant text-on-primary' }
   }
 
   const filteredPlaces = filter === 'all'
@@ -52,11 +52,11 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
   }
 
   return (
-    <div className="bg-surface-container-lowest rounded-2xl shadow-level-2 overflow-hidden border border-secondary">
+    <div className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden">
       {/* Header con filtros */}
-      <div className="bg-gradient-to-r from-inverse-surface to-inverse-surface px-4 py-3">
+      <div className="px-space-md sm:px-space-lg pt-space-md pb-space-sm border-b border-surface-container-high">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base sm:text-lg font-bold text-primary">
+          <h3 className="font-headline text-headline-sm text-on-surface">
             {t('travel.myPlaces')} ({filteredPlaces.length})
           </h3>
         </div>
@@ -81,7 +81,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
       </div>
 
       {/* Lista */}
-      <div className="divide-y divide-secondary max-h-[50vh] md:max-h-[500px] overflow-y-auto">
+      <div className="divide-y divide-surface-container-high max-h-[50vh] md:max-h-[500px] overflow-y-auto">
         {filteredPlaces.length === 0 ? (
           <div className="p-6 md:p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-secondary-container rounded-full flex items-center justify-center">
@@ -94,7 +94,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
           filteredPlaces.map(place => (
             <div
               key={place.id}
-              className="p-4 hover:bg-primary transition-colors"
+              className="p-4 hover:bg-surface-container-low transition-colors"
             >
               <div className="flex items-start gap-3">
                 {/* Bandera */}
@@ -141,7 +141,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                     className={`p-2 rounded-lg transition-colors ${
                       place.favorite
                         ? 'text-error-dark hover:bg-error-light'
-                        : 'text-primary hover:bg-primary hover:text-error-dark'
+                        : 'text-primary hover:bg-surface-container hover:text-error-dark'
                     }`}
                     title={place.favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
                   >
@@ -149,7 +149,7 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
                   </button>
                   <button
                     onClick={() => onEdit(place)}
-                    className="p-2 rounded-lg text-primary hover:bg-primary hover:text-on-primary-fixed-variant transition-colors"
+                    className="p-2 rounded-lg text-primary hover:bg-surface-container hover:text-on-primary-fixed-variant transition-colors"
                     title="Editar"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -178,11 +178,13 @@ const PlacesList = ({ places, onEdit, onRefresh }) => {
 
 const FilterButton = ({ active, onClick, children }) => (
   <button
+    type="button"
+    aria-pressed={active}
     onClick={onClick}
-    className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
+    className={`px-3 py-1.5 rounded-full text-label-md transition-colors ${
       active
-        ? 'bg-surface-container-lowest text-on-surface'
-        : 'bg-surface-container-lowest/40 text-on-surface-variant hover:bg-surface-container-lowest/60'
+        ? 'bg-secondary text-on-secondary'
+        : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
     }`}
   >
     {children}

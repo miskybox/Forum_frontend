@@ -9,14 +9,6 @@ import travelService from '../../services/travelService'
 import { Link } from 'react-router-dom'
 import Seo from '../../components/common/SEO'
 
-// Generar partículas decorativas una sola vez
-const PARTICLES = Array.from({ length: 15 }).map((_, i) => ({
-  id: i,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  delay: Math.random() * 3,
-  color: ['#E5A13E', '#CFE7E5', '#213638'][Math.floor(Math.random() * 3)],
-}))
 
 /**
  * TravelMapPage con tema Adventure
@@ -84,7 +76,7 @@ const TravelMapPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-primary">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-4 border-4 border-primary-fixed-dim border-t-transparent rounded-full animate-spin"></div>
           <p className="text-on-surface-variant">
@@ -96,68 +88,36 @@ const TravelMapPage = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-primary">
+    <div className="flex flex-col w-full">
       <Seo
         title="Mapa de viajes"
         description="Marca los países que has visitado, descubre estadísticas de tus viajes y explora el mapa mundial de la comunidad ForumViajeros."
         url="/travel"
       />
-      {/* Efectos de fondo decorativo */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className="absolute w-3 h-3 rounded-full animate-float"
-            style={{
-              left: `${p.left}%`,
-              top: `${p.top}%`,
-              animationDelay: `${p.delay}s`,
-              backgroundColor: p.color,
-            }}
-          />
-        ))}
-      </div>
 
-      {/* Header */}
-      <div className="bg-transparent border-b-2 border-secondary py-12 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-xl md:text-2xl font-bold text-on-surface flex items-center gap-3 mb-1 truncate">
-                {t('travel.title')}
-              </h1>
-              <p className="text-on-surface-variant text-xs md:text-sm leading-tight max-w-xs md:max-w-md truncate">
-                {t('travel.addNewDestination')}
-              </p>
-            </div>
-
-            <div className="flex flex-row gap-2 w-full md:w-auto mt-2 md:mt-0">
-              {isAuthenticated ? (
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="btn bg-primary-fixed hover:bg-primary-fixed-dim text-on-surface px-4 py-2 w-full md:w-auto font-bold"
-                >
-                  <span className="flex items-center space-x-2">
-                    <span>+</span>
-                    <span>{t('travel.addPlace')}</span>
-                  </span>
-                </button>
-              ) : (
-                <Link
-                  to="/login"
-                  className="btn btn-outline border-outline-variant text-on-surface hover:bg-secondary-container px-4 py-2 w-full md:w-auto"
-                >
-                  <span className="flex items-center space-x-2">
-                    <span>{t('auth.loginButton')}</span>
-                  </span>
-                </Link>
-              )}
-            </div>
+      <header className="relative overflow-hidden bg-gradient-to-b from-surface-container-high/80 via-surface-container-low to-background">
+        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-secondary-fixed/25 blur-3xl pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-gutter-sm lg:px-gutter-lg pt-space-xl pb-space-lg flex flex-col md:flex-row md:items-end md:justify-between gap-space-md">
+          <div className="min-w-0">
+            <p className="inline-flex items-center gap-space-xs px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md mb-space-sm">
+              <MdMap className="text-title-md" aria-hidden="true" />
+              {t('nav.map')}
+            </p>
+            <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{t('travel.title')}</h1>
+            <p className="mt-space-xs text-body-lg text-on-surface-variant">{t('travel.addNewDestination')}</p>
           </div>
+          {isAuthenticated ? (
+            <button type="button" onClick={() => setIsModalOpen(true)} className="btn btn-primary">
+              <MdAddLocationAlt aria-hidden="true" />
+              {t('travel.addPlace')}
+            </button>
+          ) : (
+            <Link to="/login" className="btn btn-outline">{t('auth.loginButton')}</Link>
+          )}
         </div>
-      </div>
+      </header>
 
-      <div className="container mx-auto px-4 py-8 relative z-10 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin overflow-x-hidden">
         {isAuthenticated ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Columna principal - Mapa */}
@@ -270,6 +230,7 @@ const QuickAction = ({ label, href, bgColor = 'bg-surface-container-lowest' }) =
 )
 
 import PropTypes from 'prop-types'
+import { MdAddLocationAlt, MdMap } from 'react-icons/md'
 
 QuickAction.propTypes = {
   label: PropTypes.string.isRequired,
