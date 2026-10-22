@@ -22,8 +22,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
   const loadLikeStatus = async () => {
     try {
       const data = await likeService.getLikeStatus(postId)
-      setLiked(data.liked)
-      setLikeCount(data.likeCount)
+      setLiked(Boolean(data?.liked))
+      setLikeCount((current) => data?.likeCount ?? current)
       setInitialized(true)
     } catch (err) {
       console.error('Error loading like status:', err)
@@ -43,8 +43,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
     try {
       setLoading(true)
       const data = await likeService.toggleLike(postId)
-      setLiked(data.liked)
-      setLikeCount(data.likeCount)
+      setLiked(Boolean(data?.liked))
+      setLikeCount((current) => data?.likeCount ?? current)
       onLikeChange?.(data.liked, data.likeCount)
     } catch (err) {
       console.error('Error toggling like:', err)
