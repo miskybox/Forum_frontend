@@ -133,7 +133,11 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAuthenticated: !!currentUser,
-    hasRole: (role) => currentUser?.roles?.includes(role) || false,
+    // Backend roles are ROLE_*; accept both 'ADMIN' and 'ROLE_ADMIN'
+    hasRole: (role) => {
+      const normalized = role.startsWith('ROLE_') ? role : `ROLE_${role}`
+      return currentUser?.roles?.includes(normalized) || false
+    },
   }), [currentUser, loading, error, login, register, logout])
 
   return (

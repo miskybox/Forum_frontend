@@ -23,7 +23,7 @@ const PostEditPage = () => {
         setPost(data)
         
         // Verificar si el usuario tiene permiso para editar esta publicación
-        if (currentUser && (data.author?.id === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
+        if (currentUser && ((data.createdBy ?? data.author?.id) === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
           setError(null)
         } else {
           setError('No tienes permiso para editar esta publicación')
