@@ -99,7 +99,7 @@ Tick a task in the same commit that completes it.
 ### Other pages
 - [x] Auth: `LoginPage`, `RegisterPage`, `ForgotPasswordPage`, `ResetPasswordPage`, `LoginForm`, `RegisterForm` (shared `AuthLayout` and `AuthStatus`; demo note on password reset)
 - [ ] Blog: `BlogHomePage`, `BlogPostPage`, `BlogCategoryPage`, `BlogSearchPage`, `BlogCard`, `BlogHero` ("Diarios de Viaje")
-- [ ] Feed: `FeedPage`, `FeedCard`
+- [x] Feed: `FeedPage`, `FeedCard`
 - [ ] Travel map: `TravelMapPage`, `WorldMap` colors, `AddPlaceModal`, `PlacesList`, `CountrySelector`
 - [ ] Trivia: home, play, infinite, leaderboard + components
 - [ ] Messages & notifications: `MessagesPage`, `ChatWindow`, `ConversationList`, modals, `NotificationsPage`
