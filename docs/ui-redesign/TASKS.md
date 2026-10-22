@@ -104,7 +104,7 @@ Tick a task in the same commit that completes it.
 - [ ] Trivia: home, play, infinite, leaderboard + components
 - [ ] Messages & notifications: `MessagesPage`, `ChatWindow`, `ConversationList`, modals, `NotificationsPage`
 - [ ] Admin & moderator dashboards
-- [ ] Static pages: About, Contact, Help, NotFound
+- [x] Static pages: About, Contact, Help, NotFound (shared `ContentPageLayout`)
 
 ## Bugs found and fixed during the redesign
 - [x] Comments showed "unknown user" and authors could not edit: API sends flat `userId/username/userAvatar`
