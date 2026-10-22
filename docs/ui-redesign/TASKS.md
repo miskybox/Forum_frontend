@@ -97,7 +97,7 @@ Tick a task in the same commit that completes it.
 - [ ] Restyle `FollowModal`, `FollowList`, `UsersPage`
 
 ### Other pages
-- [ ] Auth: `LoginPage`, `RegisterPage`, `ForgotPasswordPage`, `ResetPasswordPage`, `LoginForm`, `RegisterForm`
+- [x] Auth: `LoginPage`, `RegisterPage`, `ForgotPasswordPage`, `ResetPasswordPage`, `LoginForm`, `RegisterForm` (shared `AuthLayout` and `AuthStatus`; demo note on password reset)
 - [ ] Blog: `BlogHomePage`, `BlogPostPage`, `BlogCategoryPage`, `BlogSearchPage`, `BlogCard`, `BlogHero` ("Diarios de Viaje")
 - [ ] Feed: `FeedPage`, `FeedCard`
 - [ ] Travel map: `TravelMapPage`, `WorldMap` colors, `AddPlaceModal`, `PlacesList`, `CountrySelector`

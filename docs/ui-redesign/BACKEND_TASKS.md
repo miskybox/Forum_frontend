@@ -50,6 +50,8 @@ Priorities:
 - [ ] **B7. Posts and forums by user** with pagination for profile tabs: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}` (current `/user` only returns the logged-in user's content).
 - [ ] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
 
+- [ ] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs the email, token and reset URL at INFO level in every environment. Anyone with log access can reset any account. Log it only with the `dev`/`local` profile (or behind a `app.demo.log-reset-links` flag) and never in production. No email provider is added (demo, free services only); the reset page now says no real emails are sent.
+
 ## P2 — Improves the redesign
 
 - [ ] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).
