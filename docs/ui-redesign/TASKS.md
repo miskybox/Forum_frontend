@@ -98,7 +98,8 @@ Tick a task in the same commit that completes it.
 
 ### Other pages
 - [x] Auth: `LoginPage`, `RegisterPage`, `ForgotPasswordPage`, `ResetPasswordPage`, `LoginForm`, `RegisterForm` (shared `AuthLayout` and `AuthStatus`; demo note on password reset)
-- [ ] Blog: `BlogHomePage`, `BlogPostPage`, `BlogCategoryPage`, `BlogSearchPage`, `BlogCard`, `BlogHero` ("Diarios de Viaje")
+- [x] Blog pages migrated to tokens (hero readable again)
+- [ ] Blog: decide B1 (blog API missing) before a deeper redesign of "Diarios de Viaje"
 - [x] Feed: `FeedPage`, `FeedCard`
 - [x] Travel map: `TravelMapPage`, `WorldMap` colors, `PlacesList`
 - [ ] Travel: polish `AddPlaceModal`, `CountrySelector`, `TravelStats` (migrated automatically, not reviewed in detail)
@@ -106,7 +107,7 @@ Tick a task in the same commit that completes it.
 - [ ] Trivia: play, infinite, leaderboard + components (migrated automatically, not reviewed in detail)
 - [x] Messages & notifications migrated to tokens (checked visually; empty states)
 - [ ] Messages: review chat bubbles and modals with real conversations
-- [ ] Admin & moderator dashboards
+- [x] Admin & moderator dashboards (tables and modals migrated automatically, not reviewed with real data)
 - [x] Static pages: About, Contact, Help, NotFound (shared `ContentPageLayout`)
 
 ## Bugs found and fixed during the redesign
