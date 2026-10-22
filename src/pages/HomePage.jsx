@@ -1,216 +1,222 @@
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import CategoryList from '../components/categories/CategoryList'
+import { Link } from 'react-router-dom'
+import {
+  MdAddCircleOutline,
+  MdArrowForward,
+  MdEco,
+  MdForum,
+  MdMap,
+  MdQuiz,
+  MdSchedule,
+} from 'react-icons/md'
+import FeedCard from '../components/social/FeedCard'
 import ForumCard from '../components/forums/ForumCard'
+import HomeHero from '../components/home/HomeHero'
+import CategoryChannels from '../components/home/CategoryChannels'
+import TopTravelers from '../components/home/TopTravelers'
+import SegmentedTabs from '../components/ui/SegmentedTabs'
+import SectionCard from '../components/ui/SectionCard'
 import forumService from '../services/forumService'
+import categoryService from '../services/categoryService'
+import feedService from '../services/feedService'
+import travelService from '../services/travelService'
+import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
-import logo from '../assets/logoFV.webp'
 import Seo from '../components/common/SEO'
 
-// Partículas decorativas generadas una sola vez (estables entre renders)
-const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
-  id: `particle-${i}`,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  delay: Math.random() * 5,
-  duration: 5 + Math.random() * 3,
-}))
+// Run each request inside a promise so sync errors are captured by allSettled too
+const settle = (request) => Promise.resolve().then(request)
 
-/**
- * HomePage - Paleta del logo
- * --primary-terracota: #A67C52
- * --accent-teal: #5A8A7A
- * --dark-green: #3D5F54
- * --neutral-beige: #F5F0E8
- */
+const toList = (response) => (Array.isArray(response) ? response : response?.content || [])
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ForumViajeros',
+  url: 'https://forumviajeros.com',
+  description: 'Comunidad de viajeros para compartir experiencias, consejos y rutas por todo el mundo.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://forumviajeros.com/forums?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const LoadingBlock = ({ label }) => (
+  <output className="block text-center py-space-xl" aria-live="polite">
+    <span className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary-fixed border-t-primary" aria-hidden="true" />
+    <span className="block mt-space-sm text-body-sm text-on-surface-variant">{label}</span>
+  </output>
+)
+
+const EmptyBlock = ({ children }) => (
+  <div className="bg-surface-container-lowest rounded-lg p-space-xl text-center shadow-level-1">
+    <p className="text-body-md text-on-surface-variant">{children}</p>
+  </div>
+)
+
 const HomePage = () => {
   const { t } = useLanguage()
-  const [recentForums, setRecentForums] = useState([])
+  const { isAuthenticated } = useAuth()
+  const [activeTab, setActiveTab] = useState('recent')
   const [loading, setLoading] = useState(true)
-  const [currentQuote, setCurrentQuote] = useState(0)
-
-  const retroQuotes = [
-    t('home.adventureAwaits') || "ADVENTURE AWAITS...",
-    t('home.exploreUnknown') || "EXPLORE THE UNKNOWN...",
-    t('home.timeToTravel') || "TIME TO TRAVEL...",
-    t('home.discoverWorlds') || "DISCOVER NEW WORLDS...",
-    t('home.journeyStarts') || "YOUR JOURNEY STARTS HERE..."
-  ]
+  const [recentForums, setRecentForums] = useState([])
+  const [feedItems, setFeedItems] = useState([])
+  const [categories, setCategories] = useState([])
+  const [travelers, setTravelers] = useState([])
 
   useEffect(() => {
-    const fetchRecentForums = async () => {
-      try {
-        const response = await forumService.getAllForums(0, 3)
-        // Manejar tanto respuesta paginada como array directo
-        const forums = Array.isArray(response) ? response : (response.content || [])
-        setRecentForums(forums)
-      } catch (error) {
-        console.error("Error al cargar los foros recientes:", error)
-        setRecentForums([]) // Asegurar que siempre sea un array
-      } finally {
-        setLoading(false)
-      }
+    let cancelled = false
+
+    const load = async () => {
+      const [forums, feed, cats, ranking] = await Promise.allSettled([
+        settle(() => forumService.getAllForums(0, 4)),
+        settle(() => feedService.getExploreFeed(0, 6)),
+        settle(() => categoryService.getAllCategories()),
+        settle(() => travelService.getRanking(5)),
+      ])
+      if (cancelled) return
+
+      setRecentForums(forums.status === 'fulfilled' ? toList(forums.value) : [])
+      setFeedItems(feed.status === 'fulfilled' ? toList(feed.value) : [])
+      setCategories(cats.status === 'fulfilled' ? toList(cats.value) : [])
+      setTravelers(ranking.status === 'fulfilled' ? toList(ranking.value) : [])
+      setLoading(false)
     }
 
-    fetchRecentForums()
-
-    // Cambiar quote cada 3 segundos
-    const quoteInterval = setInterval(() => {
-      setCurrentQuote((prev) => (prev + 1) % retroQuotes.length)
-    }, 3000)
-
-    return () => clearInterval(quoteInterval)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    load()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'ForumViajeros',
-    url: 'https://forumviajeros.com',
-    description: 'Comunidad de viajeros para compartir experiencias, consejos y rutas por todo el mundo.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://forumviajeros.com/forums?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
-  }
+  const tabs = [
+    { id: 'recent', label: t('home.tabRecent'), icon: MdSchedule },
+    { id: 'forums', label: t('home.tabForums'), icon: MdForum },
+  ]
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <Seo
-        url="/"
-        jsonLd={jsonLd}
-      />
-      {/* Efecto sutil de pergamino - partículas doradas apenas visibles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        {PARTICLES.map((p) => (
-          <div
-            key={p.id}
-            className="absolute w-1 h-1 bg-accent rounded-full animate-float"
-            style={{
-              left: `${p.left}%`,
-              top: `${p.top}%`,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.duration}s`,
-            }}
-          />
-        ))}
-      </div>
+    <div className="flex flex-col w-full">
+      <Seo url="/" jsonLd={jsonLd} />
 
-      {/* Hero Section - Adventure Explorer */}
-      <section className="relative py-10 md:py-16 px-4" aria-labelledby="hero-title">
-        <div className="container mx-auto text-center relative z-10">
-          <h1 id="hero-title" className="sr-only">Forum Viajeros - Comunidad de Viajeros</h1>
-          {/* Logo y Subtítulo */}
-          <div className="mb-8 animate-fade-in">
-            <img
-              src={logo}
-              alt="Forum Viajeros"
-              className="h-40 md:h-56 lg:h-72 w-auto mx-auto mb-2"
+      <HomeHero />
+
+      <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg">
+
+          {/* Center: community content */}
+          <section className="lg:col-span-6 lg:order-2 flex flex-col gap-space-lg" aria-label={t('home.feedTabsLabel')}>
+            <SegmentedTabs
+              tabs={tabs}
+              activeId={activeTab}
+              onChange={setActiveTab}
+              idPrefix="home-feed"
+              label={t('home.feedTabsLabel')}
             />
-            <p className="text-base md:text-lg font-medium text-text-light tracking-wide mb-4">
-              {t('home.demo')}
-            </p>
-            <div className="h-1 w-32 sm:w-48 md:w-64 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent mb-6"></div>
-          </div>
 
-          {/* Quote animado - Accesible */}
-          <div className="mb-12 h-12 flex items-center justify-center">
-            <p className="text-lg md:text-xl font-bold text-text animate-pulse tracking-normal">
-              {retroQuotes[currentQuote]}
-            </p>
-          </div>
+            <div
+              role="tabpanel"
+              id="home-feed-panel-recent"
+              aria-labelledby="home-feed-tab-recent"
+              hidden={activeTab !== 'recent'}
+              className="space-y-space-lg"
+            >
+              {loading ? (
+                <LoadingBlock label={t('home.loading')} />
+              ) : feedItems.length > 0 ? (
+                feedItems.map((item) => <FeedCard key={item.id ?? item.postId} item={item} />)
+              ) : (
+                <EmptyBlock>{t('home.noPosts')}</EmptyBlock>
+              )}
+            </div>
 
-          {/* Botones de acción - Nueva paleta */}
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 mb-16 w-full sm:w-auto px-4 sm:px-0">
+            <div
+              role="tabpanel"
+              id="home-feed-panel-forums"
+              aria-labelledby="home-feed-tab-forums"
+              hidden={activeTab !== 'forums'}
+              className="space-y-space-lg"
+            >
+              {loading ? (
+                <LoadingBlock label={t('home.loading')} />
+              ) : recentForums.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-lg">
+                  {recentForums.map((forum) => (
+                    <ForumCard key={forum.id} forum={forum} />
+                  ))}
+                </div>
+              ) : (
+                <EmptyBlock>{t('home.noForums')}</EmptyBlock>
+              )}
+            </div>
+
             <Link
               to="/forums"
-              className="group bg-midnight text-golden px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-midnight/80 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
+              className="self-center inline-flex items-center gap-space-xs text-label-lg text-primary hover:text-primary-container"
             >
-              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.exploreForum') || 'EXPLORAR FOROS'}</span>
+              {t('home.viewAllForums')}
+              <MdArrowForward aria-hidden="true" />
             </Link>
+          </section>
 
-            <Link
-              to="/trivia"
-              className="group bg-golden text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-aqua hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
-            >
-              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.playTrivia')}</span>
-            </Link>
+          {/* Left rail: taxonomies */}
+          <aside className="lg:col-span-3 lg:order-1 flex flex-col gap-space-lg">
+            <CategoryChannels categories={categories} />
 
-            <Link
-              to="/travel"
-              className="group bg-aqua text-midnight px-8 py-4 rounded-lg font-bold tracking-wide text-base hover:bg-golden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl min-h-[48px] w-full sm:w-64 flex items-center justify-center focus:outline-none"
-            >
-              <span className="group-hover:text-white transition-colors duration-300 group-hover:[text-shadow:_1px_1px_0_#213638,_-1px_-1px_0_#213638,_1px_-1px_0_#213638,_-1px_1px_0_#213638]">{t('home.myMap') || 'MI MAPA'}</span>
-            </Link>
-          </div>
+            <div className="bg-gradient-to-br from-tertiary-container/30 to-surface-container rounded-lg p-space-md shadow-level-1">
+              <p className="flex items-center gap-space-xs text-secondary text-label-md uppercase tracking-wider font-bold">
+                <MdEco className="text-title-md" aria-hidden="true" />
+                {t('home.responsibleTitle')}
+              </p>
+              <p className="font-headline text-title-md text-on-surface italic mt-space-sm">
+                {t('home.responsibleQuote')}
+              </p>
+              <p className="text-body-sm text-on-surface-variant mt-space-sm">
+                {t('home.responsibleText')}
+              </p>
+            </div>
+          </aside>
+
+          {/* Right rail: actions and community */}
+          <aside className="lg:col-span-3 lg:order-3 flex flex-col gap-space-lg">
+            <SectionCard className="text-center">
+              <p className="text-body-sm text-on-surface-variant mb-space-sm">{t('home.ctaQuestion')}</p>
+              <Link
+                to={isAuthenticated ? '/forums/create' : '/register'}
+                className="w-full py-space-sm px-space-md rounded-full bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary text-label-lg flex items-center justify-center gap-space-xs shadow-md transition-colors"
+              >
+                <MdAddCircleOutline className="text-title-md" aria-hidden="true" />
+                <span>{isAuthenticated ? t('home.ctaCreate') : t('home.ctaJoin')}</span>
+              </Link>
+            </SectionCard>
+
+            <TopTravelers travelers={travelers} />
+
+            <SectionCard title={t('home.discoverTitle')}>
+              <ul className="space-y-space-sm">
+                <li>
+                  <Link
+                    to="/trivia"
+                    className="flex items-center gap-space-sm p-space-sm rounded-base bg-surface-container-low hover:bg-surface-container text-body-sm text-on-surface hover:text-on-surface transition-colors"
+                  >
+                    <MdQuiz className="text-title-md text-primary flex-shrink-0" aria-hidden="true" />
+                    <span>{t('home.triviaPromo')}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/travel"
+                    className="flex items-center gap-space-sm p-space-sm rounded-base bg-surface-container-low hover:bg-surface-container text-body-sm text-on-surface hover:text-on-surface transition-colors"
+                  >
+                    <MdMap className="text-title-md text-secondary flex-shrink-0" aria-hidden="true" />
+                    <span>{t('home.mapPromo')}</span>
+                  </Link>
+                </li>
+              </ul>
+            </SectionCard>
+          </aside>
         </div>
-      </section>
-
-      {/* Sección de Foros Recientes */}
-      <section className="container mx-auto px-4 py-6 relative z-10">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-midnight mb-2 tracking-normal uppercase">
-            {t('home.latestAdventures')}
-          </h2>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-golden to-transparent"></div>
-        </div>
-
-        {loading ? (
-          <output className="block text-center py-20" aria-live="polite">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-golden border-t-transparent" aria-hidden="true"></div>
-            <p className="mt-4 text-text font-bold text-lg tracking-normal">
-              {t('home.loading')}
-            </p>
-          </output>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {recentForums.length > 0 ? (
-              recentForums.map((forum) => (
-                <ForumCard key={forum.id} forum={forum} />
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12">
-                <p className="text-text font-bold text-lg tracking-normal">
-                  {t('home.noForums')}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="text-center mt-6 mb-12">
-          <Link
-            to="/forums"
-            className="inline-block bg-secondary border-2 border-secondary-dark text-white px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-secondary-dark transition-all duration-300 shadow-lg min-h-[44px] text-sm"
-          >
-            {t('home.viewAllForums')} →
-          </Link>
-        </div>
-      </section>
-
-      {/* Foro General */}
-      <section className="container mx-auto px-4 py-6 relative z-10">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
-            {t('home.generalForum')}
-          </h2>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
-        </div>
-        <CategoryList typeFilter="GENERAL" />
-      </section>
-
-      {/* Continentes */}
-      <section className="container mx-auto px-4 py-6 pb-24 relative z-10">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-accent mb-2 tracking-normal uppercase">
-            {t('home.continents')}
-          </h2>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-accent to-transparent"></div>
-        </div>
-        <CategoryList typeFilter="CONTINENT" />
-      </section>
+      </div>
     </div>
   )
 }

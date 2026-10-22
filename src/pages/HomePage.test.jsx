@@ -6,6 +6,9 @@ import { vi } from 'vitest'
 
 vi.mock('../services/forumService', () => ({ default: { getAllForums: async () => ({ content: [] }) } }))
 vi.mock('../services/categoryService', () => ({ default: { getAllCategories: async () => [] } }))
+vi.mock('../services/feedService', () => ({ default: { getExploreFeed: async () => ({ content: [] }) } }))
+vi.mock('../services/travelService', () => ({ default: { getRanking: async () => [] } }))
+vi.mock('../hooks/useAuth', () => ({ default: () => ({ isAuthenticated: false, currentUser: null }) }))
 
 describe('HomePage', () => {
   it('renderiza correctamente con títulos principales', async () => {
