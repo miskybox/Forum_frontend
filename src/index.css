@@ -230,7 +230,9 @@
     color: var(--color-primary-container);
   }
 
+  input:not([type]),
   input[type="text"],
+  input[type="tel"],
   input[type="email"],
   input[type="password"],
   input[type="date"],
