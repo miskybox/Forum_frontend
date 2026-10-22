@@ -169,6 +169,21 @@
   --color-text-light: var(--color-on-surface-variant);
   --color-text-lighter: var(--color-on-surface-variant);
   --font-display: var(--font-headline);
+  /* Class families that never had a definition (ocean-*, earth-*, light-*, dark-*, adventure-*) */
+  --color-ocean-300: var(--color-secondary-fixed-dim);
+  --color-ocean-400: var(--color-secondary);
+  --color-ocean-500: var(--color-secondary);
+  --color-ocean-600: var(--color-on-secondary-fixed-variant);
+  --color-ocean-700: var(--color-on-secondary-fixed-variant);
+  --color-ocean: var(--color-secondary);
+  --color-earth-50: var(--color-surface-container-lowest);
+  --color-earth-600: var(--color-on-surface-variant);
+  --color-earth-800: var(--color-on-surface);
+  --color-light: var(--color-on-surface-variant);
+  --color-light-soft: var(--color-on-surface-variant);
+  --color-dark: var(--color-on-surface);
+  --color-dark-lighter: var(--color-surface-container-low);
+  --color-adventure-gold: var(--color-primary);
   --font-retro: var(--font-headline);
 }
 
