@@ -18,6 +18,7 @@ import postService from '../services/postService'
 import categoryService from '../services/categoryService'
 import PostList from '../components/post/PostList'
 import SectionCard from '../components/ui/SectionCard'
+import Breadcrumb from '../components/ui/Breadcrumb'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import { useLanguage } from '../contexts/LanguageContext'
 import { formatLongDate } from '../utils/formatDate'
@@ -126,28 +127,16 @@ const ForumDetailsPage = () => {
         )}
 
         <div className="relative max-w-7xl mx-auto px-gutter-sm lg:px-gutter-lg pt-space-lg pb-space-xl">
-          <nav aria-label={t('postDetail.breadcrumb')} className="mb-space-md">
-            <ol className="flex flex-wrap items-center gap-space-xs text-label-md text-on-surface-variant">
-              <li>
-                <Link to="/" className="flex items-center gap-1 text-on-surface-variant hover:text-primary">
-                  <MdHome className="text-body-md" aria-hidden="true" />
-                  {t('postDetail.home')}
-                </Link>
-              </li>
-              <li aria-hidden="true" className="text-outline">/</li>
-              <li><Link to="/forums" className="text-on-surface-variant hover:text-primary">{t('postDetail.forums')}</Link></li>
-              {category && (
-                <>
-                  <li aria-hidden="true" className="text-outline">/</li>
-                  <li>
-                    <Link to={`/forums/category/${category.id}`} className="text-on-surface-variant hover:text-primary">{category.name}</Link>
-                  </li>
-                </>
-              )}
-              <li aria-hidden="true" className="text-outline">/</li>
-              <li aria-current="page" className="text-on-surface font-semibold truncate max-w-xs sm:max-w-md">{forum.title}</li>
-            </ol>
-          </nav>
+          <Breadcrumb
+            label={t('postDetail.breadcrumb')}
+            className="mb-space-md"
+            items={[
+              { to: '/', label: t('postDetail.home'), icon: MdHome },
+              { to: '/forums', label: t('postDetail.forums') },
+              category && { to: `/forums/category/${category.id}`, label: category.name },
+              { label: forum.title },
+            ].filter(Boolean)}
+          />
 
           {category && (
             <p className="inline-flex items-center gap-1 px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-label-md mb-space-sm">

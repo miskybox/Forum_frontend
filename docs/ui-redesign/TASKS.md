@@ -31,16 +31,16 @@ Tick a task in the same commit that completes it.
 - [ ] Optional: dark mode tokens (not in the mockups — decide later)
 
 ## Phase 2 — Base components (`src/components/ui/`)
-- [ ] `Button` (primary, secondary, ghost, icon) with sizes and loading state
-- [ ] `Chip` / `FilterPill` (inactive, active, removable) and `Tag`
-- [ ] `RouteBadge` (dual pill: icon+label | metric)
+- [x] `Button` (primary, secondary, ghost, icon) with sizes and loading state — `src/components/ui/Button.jsx`
+- [x] `Chip` / `FilterPill` (inactive, active, removable) and `Tag` — `src/components/ui/Chip.jsx`
+- [x] `RouteBadge` (dual pill: icon+label | metric) — `src/components/ui/RouteBadge.jsx`
 - [x] `Avatar` (image or initials, stable tonal color per name, image fallback) — `src/components/ui/Avatar.jsx`
-- [ ] `Avatar` extras: verified badge overlay, avatar stack
+- [x] `Avatar` extras: verified badge overlay, avatar stack — `verified` + `AvatarStack` in `src/components/ui/Avatar.jsx`
 - [x] `SectionCard` for rail widgets — `src/components/ui/SectionCard.jsx`
-- [ ] Generic `Card` component (level 1 → 2 on hover)
+- [x] Generic `Card` component (level 1 → 2 on hover) — `src/components/ui/Card.jsx`
 - [x] `SegmentedTabs` (WAI-ARIA tablist with arrow/Home/End keys) — `src/components/ui/SegmentedTabs.jsx`
-- [ ] `Input`, `Select`, `Textarea`, `Checkbox`, `Radio` with focus styles
-- [ ] `Breadcrumb`
+- [x] `Input`, `Select`, `Textarea`, `Checkbox`, `Radio` with focus styles — `src/components/ui/Input.jsx`, `Checkbox.jsx`, `Radio.jsx`
+- [x] `Breadcrumb` — `src/components/ui/Breadcrumb.jsx` (used on post and forum details)
 - [ ] `TelemetryStats` (3-column metrics widget)
 - [ ] `ElevationProfile` (SVG sparkline)
 - [x] `Modal` (role=dialog, labelled title, Esc/overlay close, focus trap and restore) — used by trivia dialogs
