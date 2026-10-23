@@ -237,6 +237,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
       {/* Mapa SVG */}
       <div className="relative aspect-[2/1] w-full">
         <svg
+          role="img"
+          aria-label={t('travel.title')}
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-full"
           overflow="hidden"

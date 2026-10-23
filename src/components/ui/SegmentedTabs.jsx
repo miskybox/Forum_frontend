@@ -48,7 +48,7 @@ const SegmentedTabs = ({ tabs, activeId, onChange, idPrefix, label, className = 
               tabIndex={isActive ? 0 : -1}
               onClick={() => onChange(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
-              className={`px-space-md py-space-xs rounded-full text-label-lg flex items-center gap-space-xs transition-colors whitespace-nowrap ${
+              className={`min-h-10 px-space-md py-space-xs rounded-full text-label-lg flex items-center gap-space-xs transition-colors whitespace-nowrap ${
                 isActive
                   ? 'bg-secondary text-on-secondary shadow-sm'
                   : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'

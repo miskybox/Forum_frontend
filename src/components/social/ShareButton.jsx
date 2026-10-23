@@ -70,8 +70,8 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
   }
 
   const sizeClasses = {
-    sm: 'p-1.5',
-    md: 'p-2'
+    sm: 'p-2.5',
+    md: 'p-2.5'
   }
 
   const iconSizes = {

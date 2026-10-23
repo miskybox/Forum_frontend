@@ -55,9 +55,9 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
   }
 
   const sizeClasses = {
-    sm: 'gap-1 text-sm',
-    md: 'gap-1.5 text-base',
-    lg: 'gap-2 text-lg'
+    sm: 'gap-1 text-sm min-h-9 min-w-9 px-1.5',
+    md: 'gap-1.5 text-base min-h-10 min-w-10 px-2',
+    lg: 'gap-2 text-lg min-h-11 min-w-11 px-2'
   }
 
   const iconSizes = {
@@ -81,7 +81,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
       onClick={handleClick}
       disabled={loading}
       className={`
-        flex items-center ${sizeClasses[size]}
+        flex items-center justify-center rounded-full ${sizeClasses[size]}
         transition-all duration-200
         ${liked
           ? 'text-primary'
