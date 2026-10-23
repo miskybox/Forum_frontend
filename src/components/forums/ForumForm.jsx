@@ -233,7 +233,6 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
 
       toast.error(errorMessage, { 
         duration: 5000,
-        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
       })
       
       setErrors(prev => ({ ...prev, submit: errorMessage }))

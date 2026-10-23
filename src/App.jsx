@@ -212,17 +212,20 @@ function App() {
             role: 'status',
             'aria-live': 'polite',
           },
+          // Snackbar style from the palette: inverse surface, light text, level-3 shadow
           style: {
-            background: '#0d1b2e',
-            color: '#f2f6fb',
-            border: '1px solid #2356a3',
-            padding: '16px',
+            background: '#2c322f',
+            color: '#ecf2ed',
+            padding: '12px 16px',
             fontSize: '14px',
+            borderRadius: '0.75rem',
+            boxShadow: '0 20px 32px -8px rgba(30, 36, 33, 0.16)',
+            fontFamily: '"Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif',
           },
           success: {
             iconTheme: {
-              primary: '#2f8a68',
-              secondary: '#0d1b2e',
+              primary: '#adcebe',
+              secondary: '#2c322f',
             },
             ariaProps: {
               role: 'status',
@@ -231,11 +234,8 @@ function App() {
           },
           error: {
             iconTheme: {
-              primary: '#d6453d',
-              secondary: '#0d1b2e',
-            },
-            style: {
-              border: '1px solid #d6453d',
+              primary: '#ffb4ab',
+              secondary: '#2c322f',
             },
             ariaProps: {
               role: 'alert',

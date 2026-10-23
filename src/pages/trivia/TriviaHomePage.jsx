@@ -57,13 +57,7 @@ const TriviaHomePage = () => {
 
   const startGame = async (mode, options = {}) => {
     if (!isAuthenticated) {
-      toast.error('Inicia sesion para jugar', {
-        style: {
-          background: '#ece4d8',
-          color: '#37553b',
-          border: '2px solid #a56732'
-        }
-      })
+      toast.error('Inicia sesion para jugar')
       navigate('/login?redirect=/trivia')
       return
     }
@@ -114,9 +108,7 @@ const TriviaHomePage = () => {
       // Si el error es porque ya hay partida activa, recargar datos y mostrar modal
       if (error.response?.status === 400 &&
           error.response?.data?.message?.includes('partida en progreso')) {
-        toast.error('Ya tienes una partida en curso', {
-          style: { background: '#ece4d8', color: '#37553b', border: '2px solid #4c7e75' }
-        })
+        toast.error('Ya tienes una partida en curso')
         // Recargar para obtener la partida activa
         await loadData()
         return
@@ -148,7 +140,6 @@ const TriviaHomePage = () => {
 
       toast.error(errorMessage, {
         duration: 5000,
-        style: { background: '#ece4d8', color: '#37553b', border: '2px solid #b91c1c' }
       })
     } finally {
       setStarting(false)
@@ -171,13 +162,7 @@ const TriviaHomePage = () => {
       }
     } catch (error) {
       console.error('Error abandonando partida:', error)
-      toast.error('Error al abandonar la partida', {
-        style: {
-          background: '#ece4d8',
-          color: '#b91c1c',
-          border: '2px solid #b91c1c'
-        }
-      })
+      toast.error('Error al abandonar la partida')
     } finally {
       setStarting(false)
       setPendingGameConfig(null)
