@@ -9,19 +9,19 @@ const TriviaLeaderboardPage = () => {
   const { user } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-inverse-surface via-inverse-surface to-inverse-surface">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-black/20 py-6">
+      <div className="bg-gradient-to-b from-surface-container-high/80 via-surface-container-low to-background py-6">
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <Link
                 to="/trivia"
-                className="text-secondary hover:text-white transition-colors text-sm mb-2 inline-block"
+                className="text-on-surface-variant hover:text-primary transition-colors text-sm mb-2 inline-block"
               >
                 ← Volver al menú
               </Link>
-              <h1 className="text-xl sm:text-2xl font-bold text-white">Ranking de Trivia</h1>
+              <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">Ranking de Trivia</h1>
             </div>
             <Link
               to="/trivia"

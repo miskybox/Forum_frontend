@@ -13,10 +13,10 @@ const CONFETTI_ITEMS = Array.from({ length: 20 }, (_, i) => ({
 }))
 
 const getAccuracyBarColor = (accuracy) => {
-  if (accuracy >= 80) return 'bg-[#047857]'
-  if (accuracy >= 60) return 'bg-[#1d4ed8]'
-  if (accuracy >= 40) return 'bg-[#92400e]'
-  return 'bg-[#b91c1c]'
+  if (accuracy >= 80) return 'bg-success'
+  if (accuracy >= 60) return 'bg-info'
+  if (accuracy >= 40) return 'bg-warning'
+  return 'bg-error'
 }
 
 /**
@@ -30,10 +30,10 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
 
   const getGrade = () => {
     if (accuracy >= 90) return { grade: 'S', color: 'text-primary', message: t('trivia.summary.perfect') }
-    if (accuracy >= 80) return { grade: 'A', color: 'text-success', message: t('trivia.summary.excellent') }
-    if (accuracy >= 70) return { grade: 'B', color: 'text-secondary', message: t('trivia.summary.veryGood') }
+    if (accuracy >= 80) return { grade: 'A', color: 'text-success-dark', message: t('trivia.summary.excellent') }
+    if (accuracy >= 70) return { grade: 'B', color: 'text-on-secondary-fixed-variant', message: t('trivia.summary.veryGood') }
     if (accuracy >= 60) return { grade: 'C', color: 'text-primary', message: t('trivia.summary.wellDone') }
-    if (accuracy >= 50) return { grade: 'D', color: 'text-on-primary-fixed-variant', message: t('trivia.summary.canImprove') }
+    if (accuracy >= 50) return { grade: 'D', color: 'text-warning-dark', message: t('trivia.summary.canImprove') }
     return { grade: 'F', color: 'text-error', message: t('trivia.summary.keepPracticing') }
   }
 
@@ -42,17 +42,18 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
   return (
     <div className="card overflow-hidden max-w-lg mx-auto">
       {/* Header con confeti si es partida perfecta */}
+      {/* Light header in both states so the grade and message keep AA contrast */}
       <div className={`relative px-6 py-8 text-center ${
         game.perfectGame
-          ? 'bg-gradient-to-br from-primary-fixed-dim via-primary-fixed to-primary-fixed'
-          : 'bg-gradient-to-br from-inverse-surface to-secondary'
+          ? 'bg-gradient-to-br from-primary-fixed-dim to-primary-fixed'
+          : 'bg-gradient-to-br from-secondary-container to-surface-container-low'
       }`}>
         {game.perfectGame && (
           <div className="absolute inset-0 overflow-hidden">
             {CONFETTI_ITEMS.map((item) => (
               <span
                 key={item.id}
-                className="absolute animate-bounce text-2xl"
+                className="absolute animate-bounce text-2xl" aria-hidden="true"
                 style={item.style}
               >
                 ✨
@@ -62,11 +63,11 @@ const TriviaGameSummary = ({ game, onPlayAgain }) => {
         )}
 
         <div className="relative z-10">
-          <span className={`text-8xl font-black ${color}`}>{grade}</span>
-          <p className="text-secondary text-xl mt-2 font-bold">{message}</p>
+          <span className={`font-headline text-[6rem] leading-none font-bold ${color}`}>{grade}</span>
+          <p className="mt-space-sm text-headline-sm text-on-surface">{message}</p>
 
           {game.perfectGame && (
-            <div className="mt-4 bg-primary-fixed rounded-full px-4 py-2 inline-block">
+            <div className="mt-4 bg-surface-container-lowest rounded-full px-4 py-2 inline-block shadow-level-1">
               <span className="text-on-surface font-bold">🏆 {t('trivia.summary.perfectGame')}</span>
             </div>
           )}

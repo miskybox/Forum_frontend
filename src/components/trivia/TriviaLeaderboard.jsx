@@ -34,7 +34,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
       case 1: return 'bg-gradient-to-r from-primary-fixed-dim to-primary-fixed text-on-surface font-bold'
       case 2: return 'bg-gradient-to-r from-[#f6c49b] to-[#e7a676] text-[#5b2c0c] font-bold'
       case 3: return 'bg-gradient-to-r from-[#c7e5de] to-[#9ccdc3] text-[#17322e] font-bold'
-      default: return 'bg-inverse-surface text-secondary font-semibold'
+      default: return 'bg-surface-container text-on-surface-variant font-semibold'
     }
   }
 
@@ -50,8 +50,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   return (
     <div className="card overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-inverse-surface to-inverse-surface px-6 py-6">
-        <h2 className="text-2xl font-bold text-white mb-4">{t('trivia.globalRanking')}</h2>
+      <div className="bg-surface-container-low px-6 py-6 border-b border-surface-container-high">
+        <h2 className="font-headline text-headline-sm text-on-surface mb-4">{t('trivia.globalRanking')}</h2>
 
         {/* Tabs */}
         <div className="flex gap-2">

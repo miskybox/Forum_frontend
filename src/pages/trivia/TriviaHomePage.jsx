@@ -344,10 +344,10 @@ const TriviaHomePage = () => {
             )}
             {!loading && (!isAuthenticated || !stats) && (
               <div className="card text-center p-6 bg-inverse-surface">
-                <h3 className="text-xl font-bold text-primary mb-2 ">
+                <h3 className="font-headline text-headline-sm text-inverse-primary mb-2">
                   {t('trivia.join')}
                 </h3>
-                <p className="text-secondary text-sm mb-4">
+                <p className="text-inverse-on-surface text-sm mb-4">
                   {t('trivia.loginToSaveProgress')}
                 </p>
                 <Link

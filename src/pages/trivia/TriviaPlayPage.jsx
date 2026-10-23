@@ -232,7 +232,7 @@ const TriviaPlayPage = () => {
   return (
     <div className="min-h-screen">
       {/* Header con progreso */}
-      <div className="bg-inverse-surface py-4 border-b border-white/10">
+      <div className="bg-surface-container-lowest py-4 border-b border-surface-container-high">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
@@ -242,15 +242,15 @@ const TriviaPlayPage = () => {
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
-            <div className="text-white">
-              <span className="text-secondary text-sm">{t('trivia.score')}</span>
+            <div className="text-on-surface">
+              <span className="text-on-surface-variant text-sm">{t('trivia.score')}</span>
               <p className="text-2xl font-bold">{game?.score || 0}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="text-center text-white">
-              <span className="text-secondary text-sm">{t('trivia.correctAnswers')}</span>
+            <div className="text-center text-on-surface">
+              <span className="text-on-surface-variant text-sm">{t('trivia.correctAnswers')}</span>
               <p className="text-xl font-bold">{game?.correctAnswers || 0}/{game?.totalQuestions || 0}</p>
             </div>
             
