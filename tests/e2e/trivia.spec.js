@@ -181,17 +181,10 @@ test.describe('Trivia Geográfica', () => {
     await page.getByRole('button', { name: /rápida/i }).first().click();
     await expect(page).toHaveURL(/\/trivia\/play\/\d+/, { timeout: 15000 });
 
-    // Buscar botón de salir/abandonar
-    const exitBtn = page.locator('button:has-text("Salir"), button:has-text("Abandonar"), button:has-text("Volver")').first();
-    const hasExit = await exitBtn.isVisible().catch(() => false);
-
-    if (hasExit) {
-      await exitBtn.click();
-      await page.waitForTimeout(1000);
-
-      // Debe volver a la página principal de trivia
-      await expect(page).toHaveURL(/\/trivia\/?$/);
-    }
+    // Abandoning asks for confirmation before leaving the game
+    await page.getByRole('button', { name: 'Abandonar' }).click();
+    await page.getByRole('button', { name: 'Sí' }).click();
+    await expect(page).toHaveURL(/\/trivia\/?$/, { timeout: 10000 });
   });
 
   test('debe mostrar respuesta correcta después de fallar', async ({ page }) => {
