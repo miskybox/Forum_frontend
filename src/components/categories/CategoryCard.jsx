@@ -81,6 +81,7 @@ const CategoryCard = ({ category }) => {
       <div className="p-space-md">
         <p className="text-label-md text-secondary">
           {category.forumCount || 0} {category.forumCount === 1 ? t('categories.forum') : t('categories.forums')} {t('categories.available')}
+          {typeof category.postCount === 'number' ? ` · ${category.postCount} ${t('home.postsCount')}` : null}
         </p>
         {category.description && (
           <p className="mt-space-xs text-body-sm text-on-surface-variant line-clamp-2 break-words">
@@ -97,6 +98,8 @@ CategoryCard.propTypes = {
     name: PropTypes.string.isRequired,
     imageUrl: PropTypes.string,
     forumCount: PropTypes.number,
+    postCount: PropTypes.number,
+    icon: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
 };

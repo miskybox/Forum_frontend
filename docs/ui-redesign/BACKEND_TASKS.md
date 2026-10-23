@@ -44,8 +44,8 @@ Priorities:
   `sort=trending|recent|top`, `unanswered=true` (commentCount = 0), `hasImages=true`, `categoryId`, `continent`, `tag`, `q`.
   Trending = weighted likes + comments in the last 7 days.
 - [ ] **B4. Comment replies.** Add `parentId` to `Comment` (one nesting level), return replies grouped in `GET /api/comments/post/{postId}`, add `sort=top|chronological`. Optional: likes on comments (mockup shows "18 Me gusta" on replies).
-- [ ] **B5. Category metadata** for the "Canales Temáticos" list: `icon` (emoji or icon key) and `postCount` in `GET /api/categories` (`forumCount` already exists).
-- [ ] **B5b. Public popular tags**: allow anonymous `GET /api/tags/popular` (trending hashtags on the home hero).
+- [x] **B5. Category metadata** for the "Canales Temáticos" list: `icon` (emoji) and `postCount` in `GET /api/categories` (`forumCount` already exists).
+- [x] **B5b. Public popular tags**: anonymous `GET /api/tags` and `/api/tags/popular` (trending hashtags on the home hero).
 - [ ] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl` (+ upload endpoint), `likesReceived`, `countriesVisited` (from travel stats), `memberSince` (already `createdAt`). Add `PUT /api/users/{id}/cover`.
 - [ ] **B6b. Avatar upload**: `POST /api/users/{id}/avatar` (multipart, stored like post images). The old profile form had a picker that never uploaded anything.
 - [ ] **B7. Posts and forums by user** with pagination for profile tabs: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}` (current `/user` only returns the logged-in user's content).

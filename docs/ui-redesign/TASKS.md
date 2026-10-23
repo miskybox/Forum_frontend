@@ -62,7 +62,7 @@ Tick a task in the same commit that completes it.
 ## Phase 4 — Pages
 ### Home / Explore (`/`, mockup 01)
 - [x] Hero with eyebrow chip, editorial headline, search (→ `/forums?q=`), quick-access chips
-- [ ] Hero interest/category filter and trending hashtags (needs public `/api/tags/popular`, currently auth-only)
+- [x] Hero trending hashtags from public `/api/tags/popular` (interest/category filter still optional)
 - [x] Left rail: topic channels with forum counts, continents grid, responsible-travel card
 - [x] Center feed: tabs Recientes, Tendencia, Con fotos, Sin respuesta and Foros activos (`/feed/explore` + B3 filters)
 - [x] Extra tabs (trending, with photos, unanswered) — API ready (B3); UI wired on home and `/feed`

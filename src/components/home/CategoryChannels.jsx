@@ -23,7 +23,9 @@ const CategoryChannels = ({ categories }) => {
                   className="flex items-center justify-between gap-space-sm px-space-sm py-space-xs rounded-base text-body-sm text-on-surface hover:text-primary hover:bg-surface-container-low transition-colors"
                 >
                   <span className="flex items-center gap-space-sm min-w-0">
-                    {category.imageUrl ? (
+                    {category.icon ? (
+                      <span className="text-title-md leading-none flex-shrink-0" aria-hidden="true">{category.icon}</span>
+                    ) : category.imageUrl ? (
                       <img src={category.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
                     ) : (
                       <MdForum className="text-title-md text-secondary flex-shrink-0" aria-hidden="true" />
@@ -31,8 +33,8 @@ const CategoryChannels = ({ categories }) => {
                     <span className="font-medium truncate">{category.name}</span>
                   </span>
                   <span className="text-caption text-on-surface-variant bg-surface-container-high px-space-xs py-0.5 rounded-full">
-                    {category.forumCount ?? 0}
-                    <span className="sr-only"> {t('home.forumsCount')}</span>
+                    {category.postCount ?? category.forumCount ?? 0}
+                    <span className="sr-only"> {t('home.postsCount')}</span>
                   </span>
                 </Link>
               </li>
@@ -53,7 +55,11 @@ const CategoryChannels = ({ categories }) => {
                   to={`/forums/category/${continent.id}`}
                   className="flex items-center gap-space-xs px-space-sm py-space-xs rounded-base bg-surface-container-low hover:bg-secondary-fixed text-body-sm text-on-surface hover:text-on-surface transition-colors"
                 >
-                  <MdPublic className="text-body-md text-secondary flex-shrink-0" aria-hidden="true" />
+                  {continent.icon ? (
+                    <span className="text-body-md leading-none flex-shrink-0" aria-hidden="true">{continent.icon}</span>
+                  ) : (
+                    <MdPublic className="text-body-md text-secondary flex-shrink-0" aria-hidden="true" />
+                  )}
                   <span className="truncate">{continent.name}</span>
                 </Link>
               </li>
@@ -72,7 +78,9 @@ CategoryChannels.propTypes = {
       name: PropTypes.string.isRequired,
       type: PropTypes.string,
       imageUrl: PropTypes.string,
+      icon: PropTypes.string,
       forumCount: PropTypes.number,
+      postCount: PropTypes.number,
     })
   ).isRequired,
 }

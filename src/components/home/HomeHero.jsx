@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdExplore, MdPinDrop, MdSearch } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
+import tagService from '../../services/tagService'
 
 const quickLinkClass =
   'px-space-md py-space-xs rounded-full bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface hover:text-on-surface text-label-md transition-colors'
@@ -10,6 +11,22 @@ const HomeHero = () => {
   const { t } = useLanguage()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
+  const [tags, setTags] = useState([])
+
+  useEffect(() => {
+    let cancelled = false
+    tagService
+      .getPopular(8)
+      .then((data) => {
+        if (!cancelled) setTags(Array.isArray(data) ? data : [])
+      })
+      .catch(() => {
+        if (!cancelled) setTags([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -82,6 +99,20 @@ const HomeHero = () => {
           <Link to="/trivia" className={quickLinkClass}>{t('home.playTrivia')}</Link>
           <Link to="/travel" className={quickLinkClass}>{t('home.myMap')}</Link>
         </nav>
+
+        {tags.length > 0 && (
+          <nav aria-label={t('home.trendingTags')} className="mt-space-md flex flex-wrap items-center justify-center gap-space-xs">
+            {tags.map((tag) => (
+              <Link
+                key={tag.id ?? tag.name}
+                to={`/forums?q=${encodeURIComponent(tag.name)}`}
+                className={quickLinkClass}
+              >
+                #{tag.name}
+              </Link>
+            ))}
+          </nav>
+        )}
       </div>
     </section>
   )
