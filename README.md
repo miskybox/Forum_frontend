@@ -87,7 +87,7 @@ Una plataforma full-stack para compartir experiencias de viaje, conectar con otr
 ```xml
 <stack>
   <framework>Spring Boot 3.5.8</framework>
-  <java>21</java>
+  <java>25</java>
   <database>PostgreSQL + H2 (testing)</database>
   <orm>Spring Data JPA + Hibernate</orm>
   <security>Spring Security + JWT (JJWT 0.11.5)</security>
@@ -178,7 +178,7 @@ forum-viajeros_fs/
 ### Requisitos Previos
 
 **Backend:**
-- Java 21+
+- Java 25 (LTS)+
 - PostgreSQL 12+
 - Maven 3.8+
 
