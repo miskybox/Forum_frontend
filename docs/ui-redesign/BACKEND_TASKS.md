@@ -52,6 +52,9 @@ Priorities:
 
 - [ ] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs the email, token and reset URL at INFO level in every environment. Anyone with log access can reset any account. Log it only with the `dev`/`local` profile (or behind a `app.demo.log-reset-links` flag) and never in production. No email provider is added (demo, free services only); the reset page now says no real emails are sent.
 
+- [ ] **B8c. Demo data never loads on a fresh database**: `DemoDataInitializer` (profile `local`) runs before the roles exist and skips ("Roles no disponibles"); on the next start `viajero_demo` already exists (created by `BackendApplication` from env vars) and it skips again ("Datos demo ya existen"). Fix the runner order (`@Order`) or guard on demo content (e.g. no posts) instead of on the user. `SampleForumsInitializer` has the same dependency on the demo user.
+- [ ] **B8d. Docker compose runs the `prod` profile only**: the `Dockerfile` hardcodes `-Dspring.profiles.active=prod`, so the local compose stack never loads demo content. Read the profile from `SPRING_PROFILES_ACTIVE` (default `prod`) so compose can use `local`.
+
 ## P2 — Improves the redesign
 
 - [ ] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).
