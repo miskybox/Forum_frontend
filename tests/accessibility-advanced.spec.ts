@@ -406,19 +406,13 @@ test.describe('Accesibilidad Avanzada (WCAG 2.1)', () => {
       await page.goto('/login')
 
       // Verificar que hay elementos con role="alert" o aria-live
-      const submitButton = page.getByRole('button', { name: /iniciar sesión/i })
+      const submitButton = page.getByRole('button', { name: /acceder/i })
       await submitButton.click()
 
-      // Esperar posibles mensajes de error
-      await page.waitForTimeout(1000)
-
-      // Buscar elementos con role alert o aria-live
+      // The form validates in JS (noValidate), so empty fields must produce announced errors
       const alerts = page.locator('[role="alert"], [aria-live="polite"], [aria-live="assertive"]')
-      const alertCount = await alerts.count()
-
-      // No necesariamente debe haber alerts si usa validación HTML5
-      // Pero si hay, verificamos que existen
-      expect(alertCount).toBeGreaterThanOrEqual(0)
+      await expect(alerts.first()).toBeAttached({ timeout: 3000 })
+      expect(await alerts.count()).toBeGreaterThan(0)
     })
 
     test('cambios de contenido son anunciados apropiadamente', async ({ page }) => {
@@ -529,16 +523,14 @@ test.describe('Accesibilidad Avanzada (WCAG 2.1)', () => {
       await page.fill('input[name="confirmPassword"]', '456')
 
       // Submit
-      await page.getByRole('button', { name: /registrarse/i }).click()
+      await page.getByRole('button', { name: /crear cuenta/i }).click()
 
-      await page.waitForTimeout(1000)
-
-      // Verificar que hay mensajes de error
-      const errorMessages = page.locator('[role="alert"], .error, .text-red-500, .text-error')
-      const errorCount = await errorMessages.count()
-
-      // Puede no haber errores si usa validación HTML5
-      expect(errorCount).toBeGreaterThanOrEqual(0)
+      // Each invalid field points to its error message through aria-describedby
+      const invalidPassword = page.locator('input[name="password"][aria-invalid="true"]')
+      await expect(invalidPassword).toBeVisible({ timeout: 3000 })
+      const describedBy = await invalidPassword.getAttribute('aria-describedby')
+      expect(describedBy).toBeTruthy()
+      await expect(page.locator(`[id="${describedBy}"]`)).toBeVisible()
     })
 
     test('campos requeridos están marcados claramente', async ({ page }) => {
