@@ -76,4 +76,5 @@ Run `npm run test:e2e` for changes that affect navigation, auth or page layout.
 - Mockups: [`docs/ui-redesign/mockups/`](docs/ui-redesign/mockups)
 
 Tick tasks in `TASKS.md` in the same commit that completes them.
+Open work is listed under **Remaining work** in that file (F1–F25, security S5–S9, quality Q1–Q8).
 Backend API items live in [`BACKEND_TASKS.md`](docs/ui-redesign/BACKEND_TASKS.md); keep that file in sync with `Forum_backend/docs/BACKEND_TASKS.md`.

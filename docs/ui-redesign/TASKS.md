@@ -5,6 +5,69 @@ Branch: `feature/fix_new-ux-ui` · Reference: [`DESIGN_SYSTEM.md`](./DESIGN_SYST
 Work stays on this branch until approved, then merges to `dev` → `main` (see `AGENTS.md`).
 Tick a task in the same commit that completes it.
 
+## Remaining work
+
+Local only (`feature/fix_new-ux-ui` + backend `feature/new-ux-ui-api`) until this list is done or the owner drops a block. Then `dev` → `main`. Do not push unless asked.
+
+Accepted demo opening (not a bug to “fix” by removing login): public USER `viajero_demo` on the login page. Admin/moderator stay private.
+
+### A — UI with APIs that already exist
+
+- [ ] **F1. Admin dashboard** (`AdminDashboardPage`): `PageContainer`, `SegmentedTabs`, `Modal` (no `window.confirm`), `Button`, `EmptyState`, `react-icons/md`, i18n. Keep users / forums / posts / comments / roles. Review with private `admin_demo`.
+- [ ] **F2. Moderator dashboard** (`ModeratorDashboardPage`): same restyle as F1; hide/block only, no permanent delete. Review with private `moderador_demo`.
+- [ ] **F3. Social lists**: restyle `FollowModal`, `FollowList`, `UsersPage` to the design system.
+- [ ] **F4. Profile territory**: mini `WorldMap` in the passport/territory card (visited countries already in travel stats).
+- [ ] **F5. Diarios de Viaje (B1b)**: do not add a blog CMS. Point nav/footer “Diarios” to posts with photos (`hasImages=true`, existing B3 filter) — e.g. `/feed` photos tab or `/forums?hasImages=true`. Retire or wrap dead `blogService` `/api/blog/*` calls so that route does not 404.
+- [ ] **F6. Reading time** on post detail/cards: `readingMinutes` from content length (B14; can be frontend-only).
+- [ ] **F7. Comment composer**: optional markdown toolbar; content stays plain text if skipped.
+- [ ] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
+- [ ] **F9. Messages**: review chat bubbles and modals with a real local conversation.
+- [ ] **F10. Home hero** (optional): interest/category chips filtering the feed (categories API exists).
+- [ ] **F11. Dark mode tokens** (optional; not in the mockups).
+
+### B — Security (see also backend S5–S9)
+
+- [ ] **F12 / S5.** Login UI + public README only show `viajero_demo`. Never print admin/moderator passwords in the SPA.
+- [ ] **S5b.** Workspace/root `DEPLOY.md` still has `admin_demo / Demo1234!` — env-only wording.
+- [ ] **S6.** Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password (ops check, not code).
+- [ ] **S7.** Upload MIME allow-list (images only; no SVG/HTML) for avatar, cover, post images.
+- [ ] **S8.** Security headers if missing (`X-Content-Type-Options`, frame deny, `Referrer-Policy`).
+- [ ] **S9.** No passwords, JWTs or reset tokens in logs outside `app.demo.log-reset-links`.
+- [ ] **F13.** Dashboard destructive actions: `Modal` confirm; API still enforces roles (with F1/F2).
+
+### C — P2 API + UI (hide the block until the endpoint exists)
+
+- [ ] **B9 + F14.** Top contributors: `GET /api/users/top-contributors?period=month&limit=5`; home/profile widget.
+- [ ] **B10 + F15.** Bookmarks: entity + `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser`; save button on post detail; profile “saved” tab.
+- [ ] **B11 + F16.** Global search: `GET /api/search?q=` (posts, forums, users, countries); header search xl+ and ⌘K.
+- [ ] **B12 + F17.** Related threads: `GET /api/posts/{id}/related` (today the rail only lists other posts in the same forum).
+- [ ] **B13.** Online count / last activity on the replies header (optional; drop if noisy).
+- [ ] **B14.** `readingMinutes` on the post DTO if not done entirely in F6.
+
+### D — Quality and close
+
+- [ ] **Q1.** Baseline screenshots (or checkout `release/ui-2025-2026`) for before/after.
+- [ ] **Q2.** Playwright navbar/footer (and dashboards) against a running local backend.
+- [ ] **Q3.** Responsive pass 375 / 768 / 1024 / 1280, no horizontal scroll, every route including F1/F2.
+- [ ] **Q4.** A11y pass (DESIGN_SYSTEM §9): contrast, focus, labels, alt, keyboard; axe in Playwright.
+- [ ] **Q5.** `npm run lint`, `npm test`, `npm run build` green; backend `./mvnw test` with JDK 25.
+- [ ] **Q6.** Performance: bundle size, lazy-load heavy pages, images `loading="lazy"` / webp where cheap.
+- [ ] **Q7.** Owner review of before/after.
+- [ ] **Q8.** Merge feature → `dev` → `main` (no PRs). Do not push until the owner asks.
+
+### E — P3 mockups (separate scope; hide UI until API exists)
+
+- [ ] **B15 + F18.** Travel companions: `Trip` / `TripRequest`, list + filters, CRUD, join/accept; nav item; home preview; safety copy.
+- [ ] **B16 + F19.** Route telemetry on posts (`RouteInfo`, itinerary); `TelemetryStats` already exists.
+- [ ] **B17 + F20.** GPX upload/download + elevation points; `ElevationProfile` already exists.
+- [ ] **B18 + F21.** Badges / adventure passport (`Badge`, `UserBadge`).
+- [ ] **B19 + F22.** Destination of the month (seeded or admin-curated); home card.
+- [ ] **B20 + F23.** Newsletter: `POST /api/newsletter` store email only, no sending — or hide the widget.
+- [ ] **B21 + F24.** Weather via Open-Meteo on post/destination (no backend). No mountain alerts.
+- [ ] **B22 + F25.** Profile “upcoming trips” — reuse B15.
+
+Not in this version unless the owner asks: comment likes, nested replies beyond one level, paid email/SMS/search, a separate blog CMS (B1a).
+
 ## Phase 0 — Preparation
 - [x] Create branch `feature/fix_new-ux-ui` from `dev`
 - [x] Freeze current UI in `release/ui-2025-2026`
