@@ -16,7 +16,10 @@ const truncate = (text, maxLength = 180) => {
 const PostCard = ({ post }) => {
   const { t, language } = useLanguage()
   const username = post.author?.username || post.username || t('common.user')
-  const images = post.images || []
+  const avatarUrl = post.authorAvatarUrl || post.author?.profileImage
+  const images = post.images?.length
+    ? post.images
+    : (post.imageUrls || []).map((url, index) => ({ id: index, url }))
   const commentCount = post.commentCount || 0
   const viewCount = post.viewCount || 0
 
@@ -31,7 +34,7 @@ const PostCard = ({ post }) => {
       <Link to={`/posts/${post.id}`} className="block p-space-md sm:p-space-lg text-on-surface hover:text-on-surface group">
         {/* Author row */}
         <div className="flex items-center gap-space-sm mb-space-sm">
-          <Avatar name={username} src={post.author?.profileImage} size="sm" />
+          <Avatar name={username} src={avatarUrl} size="sm" />
           <span className="text-label-lg text-on-surface">@{username}</span>
           {relativeDate && (
             <>

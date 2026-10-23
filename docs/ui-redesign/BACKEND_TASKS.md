@@ -35,10 +35,10 @@ Priorities:
   - (a) implement `BlogPost`/`BlogCategory` entities and `/api/blog/*` endpoints matching `src/services/blogService.js`, or
   - (b) drop the separate blog and model "travel diaries" as posts with images (filter `hasImages=true`, see B3).
   - **Working decision: (b)** — less code, one content model, fits the demo. Revisit if a real blog is needed.
-- [ ] **B2. Enrich `PostResponseDTO`** so cards render without N+1 calls:
+- [x] **B2. Enrich `PostResponseDTO`** so cards render without N+1 calls:
   `likeCount`, `likedByCurrentUser`, `authorAvatarUrl`, `forumTitle`, `categoryId`, `categoryName`,
-  `imageUrls` (or `coverImageUrl` + `imageCount`), `lastCommentAt`.
-- [ ] **B2b. Enrich `ForumResponseDTO`**: `createdBy` (user id), `creatorUsername`, `creatorAvatarUrl`, `categoryName`. Without `createdBy` the frontend cannot tell whether the current user owns a forum, so forum authors cannot edit or delete their own forums (only admins/moderators can).
+  `imageUrls`, `coverImageUrl`, `imageCount`, `lastCommentAt`.
+- [x] **B2b. Enrich `ForumResponseDTO`**: `createdBy` (user id), `creatorUsername`, `creatorAvatarUrl`, `categoryName`. Without `createdBy` the frontend cannot tell whether the current user owns a forum, so forum authors cannot edit or delete their own forums (only admins/moderators can).
 - [ ] **B3. Post listing filters and sorting** on `GET /api/posts` (and `/api/feed/explore`):
   `sort=trending|recent|top`, `unanswered=true` (commentCount = 0), `hasImages=true`, `categoryId`, `continent`, `tag`, `q`.
   Trending = weighted likes + comments in the last 7 days.

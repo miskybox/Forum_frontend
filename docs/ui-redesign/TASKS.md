@@ -130,7 +130,7 @@ Tick a task in the same commit that completes it.
 - [x] Touch targets of 20-28px (segmented tabs, like, follow, share)
 - [x] Trivia dialogs had no dialog semantics; `toast.info` (nonexistent) threw at runtime
 - [x] Hard-coded hex colors left after the automated migration
-- [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
+- [x] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
 
 ## Local environment for E2E
 - Backend: `docker compose --env-file .env.docker up -d` in `Forum_backend` (`.env.docker` is git-ignored; see `.env.docker.example`).

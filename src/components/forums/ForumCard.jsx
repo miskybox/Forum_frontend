@@ -79,12 +79,16 @@ const ForumCard = ({ forum }) => {
           </Link>
         </div>
 
-        {(forum.creator?.username || relativeDate) && (
+        {(forum.creatorUsername || forum.creator?.username || relativeDate) && (
           <div className="mt-space-sm pt-space-sm border-t border-surface-container-high flex items-center gap-space-xs text-caption text-on-surface-variant">
-            {forum.creator?.username && (
+            {(forum.creatorUsername || forum.creator?.username) && (
               <>
-                <Avatar name={forum.creator.username} src={forum.creator.profileImage} size="xs" />
-                <span className="font-semibold">@{forum.creator.username}</span>
+                <Avatar
+                  name={forum.creatorUsername || forum.creator.username}
+                  src={forum.creatorAvatarUrl || forum.creator?.profileImage}
+                  size="xs"
+                />
+                <span className="font-semibold">@{forum.creatorUsername || forum.creator.username}</span>
                 <span aria-hidden="true">·</span>
               </>
             )}
@@ -117,6 +121,9 @@ ForumCard.propTypes = {
       username: PropTypes.string,
       profileImage: PropTypes.string,
     }),
+    creatorUsername: PropTypes.string,
+    creatorAvatarUrl: PropTypes.string,
+    createdBy: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     createdAt: PropTypes.string,
   }).isRequired,
 }
