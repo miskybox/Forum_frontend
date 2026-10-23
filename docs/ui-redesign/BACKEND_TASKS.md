@@ -43,7 +43,7 @@ Priorities:
 - [x] **B3. Post listing filters and sorting** on `GET /api/posts` (and `/api/feed/explore`):
   `sort=trending|recent|top`, `unanswered=true` (commentCount = 0), `hasImages=true`, `categoryId`, `continent`, `tag`, `q`.
   Trending = weighted likes + comments in the last 7 days.
-- [ ] **B4. Comment replies.** Add `parentId` to `Comment` (one nesting level), return replies grouped in `GET /api/comments/post/{postId}`, add `sort=top|chronological`. Optional: likes on comments (mockup shows "18 Me gusta" on replies).
+- [x] **B4. Comment replies.** `parentId` on `Comment` (one nesting level), grouped replies in `GET /api/comments/post/{postId}`, `sort=top|chronological`. Comment likes left optional.
 - [x] **B5. Category metadata** for the "Canales Temáticos" list: `icon` (emoji) and `postCount` in `GET /api/categories` (`forumCount` already exists).
 - [x] **B5b. Public popular tags**: anonymous `GET /api/tags` and `/api/tags/popular` (trending hashtags on the home hero).
 - [ ] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl` (+ upload endpoint), `likesReceived`, `countriesVisited` (from travel stats), `memberSince` (already `createdAt`). Add `PUT /api/users/{id}/cover`.

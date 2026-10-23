@@ -92,7 +92,7 @@ describe('commentService', () => {
 
       const result = await commentService.getCommentsByPost(5)
 
-      expect(api.get).toHaveBeenCalledWith('/comments/post/5')
+      expect(api.get).toHaveBeenCalledWith('/comments/post/5', { params: { sort: 'chronological' } })
       expect(result).toEqual(mockComments)
       expect(result).toHaveLength(3)
     })

@@ -82,7 +82,7 @@ Tick a task in the same commit that completes it.
 - [x] Body: restyle `PostContent`
 - [ ] Rich blocks (itinerary, budget table, gallery + lightbox, map/GPX) — need post images in the DTO (B2) and route info (B16/B17)
 - [x] Replies: sort pills, comment cards with thread-author badge, reply composer
-- [ ] Nested replies — B4; markdown toolbar (content is plain text today)
+- [x] Nested replies — B4 (one level); markdown toolbar still pending (content is plain text today)
 - [x] Rail: thread facts and more posts from the same forum
 - [ ] Weather widget (Open-Meteo) and companions CTA — B15, B21
 - [x] Restyle `PostCreatePage` / `PostEditPage` / `PostForm`, `ForumCreatePage` / `ForumEditPage` / `ForumForm` (shared `FormPageLayout`)
@@ -152,7 +152,7 @@ Tick a task in the same commit that completes it.
 Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an endpoint exists the UI hides that block (no fake data in production).
 - [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — working decision: diaries are posts with photos
 - [x] Feed tabs (trending / recent / with photos / unanswered) — B3
-- [ ] Nested replies and reply sorting — B4
+- [x] Nested replies and reply sorting — B4
 - [ ] Profile cover, likes received, user content tabs — B6, B7
 - [ ] Top contributors, bookmarks, global search (⌘K), related discussions — B9–B12
 - [ ] Travel companions section (trips, filters, join requests, safety tips) — B15

@@ -8,6 +8,7 @@ import commentService from '../../services/commentService'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
 import Avatar from '../ui/Avatar'
+import CommentForm from './CommentForm'
 
 // The API returns flat fields (userId, username, userAvatar); older code used a nested `author`
 const getAuthor = (comment) => ({
@@ -24,8 +25,9 @@ const formatRelativeDate = (dateString) => {
 
 const actionClass = 'text-label-md text-on-surface-variant hover:text-primary transition-colors disabled:opacity-50'
 
-const CommentItem = ({ comment, postAuthorId, onUpdate, onDelete }) => {
+const CommentItem = ({ comment, postId, postAuthorId, onUpdate, onDelete, onReplyAdded, isReply = false }) => {
   const [isEditing, setIsEditing] = useState(false)
+  const [showReply, setShowReply] = useState(false)
   const [editContent, setEditContent] = useState(comment.content)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { currentUser, hasRole } = useAuth()
@@ -122,8 +124,18 @@ const CommentItem = ({ comment, postAuthorId, onUpdate, onDelete }) => {
         <p className="text-body-md text-on-surface whitespace-pre-line break-words">{comment.content}</p>
       )}
 
-      {!isEditing && (isAuthor || canDelete) && (
+      {!isEditing && (isAuthor || canDelete || (!isReply && currentUser)) && (
         <footer className="flex items-center gap-space-md pt-space-sm">
+          {!isReply && currentUser && (
+            <button
+              type="button"
+              className={actionClass}
+              onClick={() => setShowReply((open) => !open)}
+              disabled={isSubmitting}
+            >
+              {t('comments.reply')}
+            </button>
+          )}
           {isAuthor && (
             <button
               type="button"
@@ -144,6 +156,36 @@ const CommentItem = ({ comment, postAuthorId, onUpdate, onDelete }) => {
           )}
         </footer>
       )}
+
+      {showReply && postId != null && (
+        <div className="mt-space-sm">
+          <CommentForm
+            postId={postId}
+            parentId={comment.id}
+            compact
+            onCommentAdded={(reply) => {
+              setShowReply(false)
+              onReplyAdded?.(reply)
+            }}
+          />
+        </div>
+      )}
+
+      {(comment.replies?.length || 0) > 0 && (
+        <div className="mt-space-md space-y-space-sm border-l-2 border-outline-variant/40 pl-space-md">
+          {comment.replies.map((reply) => (
+            <CommentItem
+              key={reply.id}
+              comment={reply}
+              postId={postId}
+              postAuthorId={postAuthorId}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+              isReply
+            />
+          ))}
+        </div>
+      )}
     </article>
   )
 }
@@ -157,15 +199,20 @@ CommentItem.propTypes = {
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     username: PropTypes.string,
     userAvatar: PropTypes.string,
+    parentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    replies: PropTypes.array,
     author: PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       username: PropTypes.string,
       profileImage: PropTypes.string,
     }),
   }).isRequired,
+  postId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   postAuthorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onReplyAdded: PropTypes.func,
+  isReply: PropTypes.bool,
 }
 
 export default CommentItem

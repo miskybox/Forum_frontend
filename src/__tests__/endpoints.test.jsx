@@ -278,7 +278,7 @@ describe('Endpoints - Verificación Completa de Llamadas', () => {
 
       await commentService.getCommentsByPost(1)
 
-      expect(api.get).toHaveBeenCalledWith('/comments/post/1')
+      expect(api.get).toHaveBeenCalledWith('/comments/post/1', { params: { sort: 'chronological' } })
     })
 
     it('POST /comments/post/:postId - crea comentario', async () => {

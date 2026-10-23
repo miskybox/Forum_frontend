@@ -138,11 +138,35 @@ const PostDetailsPage = () => {
     }
   }
 
-  const handleCommentAdded = (newComment) => setComments((prev) => [...prev, newComment])
+  const handleCommentAdded = (newComment) => {
+    setComments((prev) => {
+      if (!newComment?.parentId) return [...prev, newComment]
+      return prev.map((comment) =>
+        String(comment.id) === String(newComment.parentId)
+          ? { ...comment, replies: [...(comment.replies || []), newComment] }
+          : comment
+      )
+    })
+  }
   const handleCommentUpdated = (updated) =>
-    setComments((prev) => prev.map((comment) => (comment.id === updated.id ? updated : comment)))
+    setComments((prev) =>
+      prev.map((comment) => {
+        if (comment.id === updated.id) return { ...comment, ...updated, replies: comment.replies }
+        return {
+          ...comment,
+          replies: (comment.replies || []).map((reply) => (reply.id === updated.id ? { ...reply, ...updated } : reply)),
+        }
+      })
+    )
   const handleCommentDeleted = (commentId) =>
-    setComments((prev) => prev.filter((comment) => comment.id !== commentId))
+    setComments((prev) =>
+      prev
+        .filter((comment) => comment.id !== commentId)
+        .map((comment) => ({
+          ...comment,
+          replies: (comment.replies || []).filter((reply) => reply.id !== commentId),
+        }))
+    )
 
   if (loading || !post) {
     return <LoadingSpinner />
@@ -196,7 +220,13 @@ const PostDetailsPage = () => {
         }}
       />
 
-      <PostHeader post={post} forum={forum} category={category} commentCount={comments.length} actions={actions} />
+      <PostHeader
+        post={post}
+        forum={forum}
+        category={category}
+        commentCount={comments.reduce((total, comment) => total + 1 + (comment.replies?.length || 0), 0)}
+        actions={actions}
+      />
 
       <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
@@ -219,9 +249,11 @@ const PostDetailsPage = () => {
               ) : (
                 <CommentList
                   comments={comments}
+                  postId={id}
                   postAuthorId={post.createdBy}
                   onCommentUpdated={handleCommentUpdated}
                   onCommentDeleted={handleCommentDeleted}
+                  onReplyAdded={handleCommentAdded}
                 />
               )}
               <div id="reply" className="scroll-mt-24">
