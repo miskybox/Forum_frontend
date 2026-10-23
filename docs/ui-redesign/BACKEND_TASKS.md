@@ -51,7 +51,7 @@ Priorities:
 - [ ] **B7. Posts and forums by user** with pagination for profile tabs: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}` (current `/user` only returns the logged-in user's content).
 - [ ] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
 
-- [ ] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs the email, token and reset URL at INFO level in every environment. Anyone with log access can reset any account. Log it only with the `dev`/`local` profile (or behind a `app.demo.log-reset-links` flag) and never in production. No email provider is added (demo, free services only); the reset page now says no real emails are sent.
+- [x] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs email, token and reset URL only when `app.demo.log-reset-links` is true (`local`/`dev`). Production sets the flag to false. No email provider is added (demo, free services only); the reset page still says no real emails are sent.
 
 - [x] **B8c. Demo data never loads on a fresh database**: runners now go roles/categories (1) → countries (2) → env users (3) → demo content (25) → sample forums (30). Demo seed skips only when posts already exist and reuses `viajero_demo` if env created it first.
 - [x] **B8d. Docker compose runs the `prod` profile only**: `Dockerfile` defaults `SPRING_PROFILES_ACTIVE=prod` without hardcoding `-D`; compose sets `local` so demo seed can run.

@@ -5,9 +5,16 @@ import FeedCard from '../../components/social/FeedCard'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
-import { MdErrorOutline, MdPeople, MdPublic } from 'react-icons/md'
+import { MdErrorOutline, MdHelpOutline, MdPeople, MdPhotoLibrary, MdPublic, MdTrendingUp } from 'react-icons/md'
 import SegmentedTabs from '../../components/ui/SegmentedTabs'
 import EmptyState from '../../components/ui/EmptyState'
+
+const EXPLORE_TAB_FILTERS = {
+  explore: {},
+  trending: { sort: 'trending' },
+  photos: { hasImages: true },
+  unanswered: { unanswered: true },
+}
 
 const FeedPage = () => {
   const { isAuthenticated } = useAuth()
@@ -38,7 +45,7 @@ const FeedPage = () => {
       const currentPage = reset ? 0 : page
       const data = activeTab === 'following'
         ? await feedService.getFollowingFeed(currentPage, 10)
-        : await feedService.getExploreFeed(currentPage, 10)
+        : await feedService.getExploreFeed(currentPage, 10, EXPLORE_TAB_FILTERS[activeTab] || {})
 
       if (reset) {
         setItems(data?.content || [])
@@ -66,6 +73,9 @@ const FeedPage = () => {
   const tabs = [
     ...(isAuthenticated ? [{ id: 'following', label: t('feed.following'), icon: MdPeople }] : []),
     { id: 'explore', label: t('feed.explore'), icon: MdPublic },
+    { id: 'trending', label: t('feed.trending'), icon: MdTrendingUp },
+    { id: 'photos', label: t('feed.photos'), icon: MdPhotoLibrary },
+    { id: 'unanswered', label: t('feed.unanswered'), icon: MdHelpOutline },
   ]
 
   let content

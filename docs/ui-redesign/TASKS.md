@@ -64,8 +64,8 @@ Tick a task in the same commit that completes it.
 - [x] Hero with eyebrow chip, editorial headline, search (→ `/forums?q=`), quick-access chips
 - [ ] Hero interest/category filter and trending hashtags (needs public `/api/tags/popular`, currently auth-only)
 - [x] Left rail: topic channels with forum counts, continents grid, responsible-travel card
-- [x] Center feed: tabs "Recientes" (`/feed/explore`) and "Foros activos"
-- [ ] Extra tabs (trending, with photos, unanswered) — API ready (B3); UI still pending
+- [x] Center feed: tabs Recientes, Tendencia, Con fotos, Sin respuesta and Foros activos (`/feed/explore` + B3 filters)
+- [x] Extra tabs (trending, with photos, unanswered) — API ready (B3); UI wired on home and `/feed`
 - [x] `FeedCard` redesigned as thread card (shared with `/feed`)
 - [ ] Feed card variants: featured guide, question with top reply, visual diary with cover + telemetry (need B2/B4/B16)
 - [x] Right rail: create/join CTA, top travelers (`/travel/ranking`), discover card (trivia, map)
@@ -151,7 +151,7 @@ Tick a task in the same commit that completes it.
 ## Phase 6 — New features shown in mockups (need backend)
 Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an endpoint exists the UI hides that block (no fake data in production).
 - [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — working decision: diaries are posts with photos
-- [ ] Feed tabs (trending / recent / with photos / unanswered) — B3
+- [x] Feed tabs (trending / recent / with photos / unanswered) — B3
 - [ ] Nested replies and reply sorting — B4
 - [ ] Profile cover, likes received, user content tabs — B6, B7
 - [ ] Top contributors, bookmarks, global search (⌘K), related discussions — B9–B12

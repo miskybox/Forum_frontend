@@ -5,9 +5,12 @@ import {
   MdArrowForward,
   MdEco,
   MdForum,
+  MdHelpOutline,
   MdMap,
+  MdPhotoLibrary,
   MdQuiz,
   MdSchedule,
+  MdTrendingUp,
 } from 'react-icons/md'
 import FeedCard from '../components/social/FeedCard'
 import ForumCard from '../components/forums/ForumCard'
@@ -55,6 +58,30 @@ const EmptyBlock = ({ children }) => (
   </div>
 )
 
+const EXPLORE_TAB_FILTERS = {
+  trending: { sort: 'trending' },
+  photos: { hasImages: true },
+  unanswered: { unanswered: true },
+}
+
+const FeedTabPanel = ({ tabId, activeTab, loading, items, emptyLabel, loadingLabel }) => (
+  <div
+    role="tabpanel"
+    id={`home-feed-panel-${tabId}`}
+    aria-labelledby={`home-feed-tab-${tabId}`}
+    hidden={activeTab !== tabId}
+    className="space-y-space-lg"
+  >
+    {loading ? (
+      <LoadingBlock label={loadingLabel} />
+    ) : items.length > 0 ? (
+      items.map((item) => <FeedCard key={item.id ?? item.postId} item={item} />)
+    ) : (
+      <EmptyBlock>{emptyLabel}</EmptyBlock>
+    )}
+  </div>
+)
+
 const HomePage = () => {
   const { t } = useLanguage()
   const { isAuthenticated } = useAuth()
@@ -62,6 +89,8 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
   const [recentForums, setRecentForums] = useState([])
   const [feedItems, setFeedItems] = useState([])
+  const [filteredFeeds, setFilteredFeeds] = useState({})
+  const [filterLoading, setFilterLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const [travelers, setTravelers] = useState([])
 
@@ -90,8 +119,38 @@ const HomePage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const filters = EXPLORE_TAB_FILTERS[activeTab]
+    if (!filters) return
+
+    let cancelled = false
+    setFilterLoading(true)
+    feedService
+      .getExploreFeed(0, 6, filters)
+      .then((data) => {
+        if (!cancelled) {
+          setFilteredFeeds((prev) => ({ ...prev, [activeTab]: toList(data) }))
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setFilteredFeeds((prev) => ({ ...prev, [activeTab]: [] }))
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setFilterLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [activeTab])
+
   const tabs = [
     { id: 'recent', label: t('home.tabRecent'), icon: MdSchedule },
+    { id: 'trending', label: t('home.tabTrending'), icon: MdTrendingUp },
+    { id: 'photos', label: t('home.tabPhotos'), icon: MdPhotoLibrary },
+    { id: 'unanswered', label: t('home.tabUnanswered'), icon: MdHelpOutline },
     { id: 'forums', label: t('home.tabForums'), icon: MdForum },
   ]
 
@@ -114,21 +173,38 @@ const HomePage = () => {
               label={t('home.feedTabsLabel')}
             />
 
-            <div
-              role="tabpanel"
-              id="home-feed-panel-recent"
-              aria-labelledby="home-feed-tab-recent"
-              hidden={activeTab !== 'recent'}
-              className="space-y-space-lg"
-            >
-              {loading ? (
-                <LoadingBlock label={t('home.loading')} />
-              ) : feedItems.length > 0 ? (
-                feedItems.map((item) => <FeedCard key={item.id ?? item.postId} item={item} />)
-              ) : (
-                <EmptyBlock>{t('home.noPosts')}</EmptyBlock>
-              )}
-            </div>
+            <FeedTabPanel
+              tabId="recent"
+              activeTab={activeTab}
+              loading={loading}
+              items={feedItems}
+              emptyLabel={t('home.noPosts')}
+              loadingLabel={t('home.loading')}
+            />
+            <FeedTabPanel
+              tabId="trending"
+              activeTab={activeTab}
+              loading={filterLoading && !filteredFeeds.trending}
+              items={filteredFeeds.trending || []}
+              emptyLabel={t('home.noPosts')}
+              loadingLabel={t('home.loading')}
+            />
+            <FeedTabPanel
+              tabId="photos"
+              activeTab={activeTab}
+              loading={filterLoading && !filteredFeeds.photos}
+              items={filteredFeeds.photos || []}
+              emptyLabel={t('home.noPosts')}
+              loadingLabel={t('home.loading')}
+            />
+            <FeedTabPanel
+              tabId="unanswered"
+              activeTab={activeTab}
+              loading={filterLoading && !filteredFeeds.unanswered}
+              items={filteredFeeds.unanswered || []}
+              emptyLabel={t('home.noPosts')}
+              loadingLabel={t('home.loading')}
+            />
 
             <div
               role="tabpanel"
