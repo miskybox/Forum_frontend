@@ -43,9 +43,10 @@ Tick a task in the same commit that completes it.
 - [ ] `Breadcrumb`
 - [ ] `TelemetryStats` (3-column metrics widget)
 - [ ] `ElevationProfile` (SVG sparkline)
-- [ ] `Modal` / `Lightbox` (focus trap, `Esc`, overlay click)
+- [x] `Modal` (role=dialog, labelled title, Esc/overlay close, focus trap and restore) — used by trivia dialogs
+- [ ] Lightbox for post galleries (needs post images in the API, B2)
 - [ ] `EmptyState`, `Skeleton` and restyled `LoadingSpinner`
-- [ ] Restyle toasts (`react-hot-toast`) to the new palette
+- [x] Restyle toasts (`react-hot-toast`) to the new palette (inverse-surface snackbar, no per-screen overrides)
 - [ ] Unit tests for the new components (Vitest + Testing Library)
 
 ## Phase 3 — Layout shell
@@ -102,9 +103,10 @@ Tick a task in the same commit that completes it.
 - [ ] Blog: decide B1 (blog API missing) before a deeper redesign of "Diarios de Viaje"
 - [x] Feed: `FeedPage`, `FeedCard`
 - [x] Travel map: `TravelMapPage`, `WorldMap` colors, `PlacesList`
-- [ ] Travel: polish `AddPlaceModal`, `CountrySelector`, `TravelStats` (migrated automatically, not reviewed in detail)
+- [x] Travel: `AddPlaceModal` layout fixed (native dialog did not cover the viewport), `CountrySelector` width
+- [ ] Travel: review `TravelStats` with real data
 - [x] Trivia home
-- [ ] Trivia: play, infinite, leaderboard + components (migrated automatically, not reviewed in detail)
+- [x] Trivia: play, infinite, leaderboard, summary and question tiles (light surfaces, AA contrast, palette option tones)
 - [x] Messages & notifications migrated to tokens (checked visually; empty states)
 - [ ] Messages: review chat bubbles and modals with real conversations
 - [x] Admin & moderator dashboards (tables and modals migrated automatically, not reviewed with real data)
@@ -124,12 +126,23 @@ Tick a task in the same commit that completes it.
 - [x] Undefined `ocean/earth/light/dark` classes aliased to the new palette
 - [x] Travel map never colored visited countries (wrong GeoJSON property names)
 - [x] Semantic `success/warning/info` classes were undefined
+- [x] Trivia summary and dark trivia screens had ~2:1 text contrast after the palette migration
+- [x] Touch targets of 20-28px (segmented tabs, like, follow, share)
+- [x] Trivia dialogs had no dialog semantics; `toast.info` (nonexistent) threw at runtime
+- [x] Hard-coded hex colors left after the automated migration
 - [ ] Forum authors cannot edit their forums until the API sends `createdBy` — B2b
+
+## Local environment for E2E
+- Backend: `docker compose --env-file .env.docker up -d` in `Forum_backend` (`.env.docker` is git-ignored; see `.env.docker.example`).
+  If a local PostgreSQL already uses port 5432, drop the `db` port mapping with a local override (`ports: !reset []`).
+- Demo content does not load on a fresh database (B8c/B8d); seed it through the API for local testing.
+- Run E2E with `E2E_DEMO_USERNAME/PASSWORD` and `E2E_ADMIN_USERNAME/PASSWORD` set. The backend allows 5 logins per minute,
+  so wait about a minute between full runs.
 
 ## Phase 5 — Quality
 - [ ] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
 - [ ] Accessibility pass (DESIGN_SYSTEM §9): contrast, focus, labels, alt text, keyboard navigation; run axe in Playwright
-- [ ] Update Playwright E2E selectors broken by the redesign
+- [x] Update Playwright E2E selectors broken by the redesign; outdated specs for nonexistent pages (/dashboard, /trivia/history, /travel/ranking) rewritten or removed
 - [ ] `npm run lint`, `npm test`, `npm run build` green
 - [ ] Performance: check bundle size, lazy-load heavy pages, optimise images (webp, `loading="lazy"`)
 - [ ] Before/after screenshots review with the owner
