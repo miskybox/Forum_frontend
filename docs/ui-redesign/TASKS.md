@@ -41,13 +41,13 @@ Tick a task in the same commit that completes it.
 - [x] `SegmentedTabs` (WAI-ARIA tablist with arrow/Home/End keys) — `src/components/ui/SegmentedTabs.jsx`
 - [x] `Input`, `Select`, `Textarea`, `Checkbox`, `Radio` with focus styles — `src/components/ui/Input.jsx`, `Checkbox.jsx`, `Radio.jsx`
 - [x] `Breadcrumb` — `src/components/ui/Breadcrumb.jsx` (used on post and forum details)
-- [ ] `TelemetryStats` (3-column metrics widget)
-- [ ] `ElevationProfile` (SVG sparkline)
+- [x] `TelemetryStats` (3-column metrics widget) — `src/components/ui/TelemetryStats.jsx`
+- [x] `ElevationProfile` (SVG sparkline) — `src/components/ui/ElevationProfile.jsx`
 - [x] `Modal` (role=dialog, labelled title, Esc/overlay close, focus trap and restore) — used by trivia dialogs
 - [ ] Lightbox for post galleries (needs post images in the API, B2)
-- [ ] `EmptyState`, `Skeleton` and restyled `LoadingSpinner`
+- [x] `EmptyState`, `Skeleton` and restyled `LoadingSpinner` — `EmptyState.jsx`, `Skeleton.jsx`, `common/LoadingSpinner.jsx`
 - [x] Restyle toasts (`react-hot-toast`) to the new palette (inverse-surface snackbar, no per-screen overrides)
-- [ ] Unit tests for the new components (Vitest + Testing Library)
+- [x] Unit tests for the new components (Vitest + Testing Library) — lightbox still pending with B2
 
 ## Phase 3 — Layout shell
 - [x] `Navbar`: sticky 80px header, blur background, logo + "Comunidad Global", segmented nav pill with active state, "Crear debate" CTA, notifications/messages with counters, language toggle, avatar menu (closes on Esc/outside click/route change)

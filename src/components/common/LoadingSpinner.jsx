@@ -1,56 +1,33 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 
-/**
- * LoadingSpinner con estilo moderno sin emojis
- */
-const LoadingSpinner = ({ size = 'medium', theme = 'adventure' }) => {
-  let dimensions
-  
-  switch (size) {
-    case 'small':
-      dimensions = 'h-6 w-6 border-2'
-      break
-    case 'large':
-      dimensions = 'h-16 w-16 border-4'
-      break
-    case 'medium':
-    default:
-      dimensions = 'h-10 w-10 border-3'
-      break
-  }
-
-  // Colores por tema
-  const themeColors = {
-    adventure: 'border-primary-fixed-dim',
-    future: 'border-secondary-fixed-dim',
-    jungle: 'border-green-500',
-    tech: 'border-outline-variant',
-    space: 'border-purple-500',
-    default: 'border-primary-fixed-dim'
-  }
-
-  const colorClass = themeColors[theme] || themeColors.default
-
-  return (
-    <output 
-      className="flex flex-col justify-center items-center"
-      aria-live="polite"
-      aria-busy="true"
-    >
-      <div 
-        className={`${dimensions} ${colorClass} border-t-transparent rounded-full animate-spin`}
-        aria-hidden="true"
-      />
-      <p className="mt-4 text-primary font-headline text-xs uppercase tracking-normal opacity-70">
-        <span className="sr-only">Estado: </span>CARGANDO...
-      </p>
-    </output>
-  )
+const SIZES = {
+  small: 'h-6 w-6 border-2',
+  medium: 'h-10 w-10 border-[3px]',
+  large: 'h-16 w-16 border-4',
 }
+
+/**
+ * Accessible loading indicator in the Tierra & Rumbo palette.
+ */
+const LoadingSpinner = ({ size = 'medium', label = 'Cargando' }) => (
+  <output
+    className="flex flex-col justify-center items-center p-space-lg"
+    aria-live="polite"
+    aria-busy="true"
+  >
+    <span
+      className={`${SIZES[size] || SIZES.medium} border-primary border-t-transparent rounded-full animate-spin`}
+      aria-hidden="true"
+    />
+    <span className="mt-space-md text-label-md uppercase tracking-wider text-primary">
+      {label}
+    </span>
+  </output>
+)
+
 LoadingSpinner.propTypes = {
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  theme: PropTypes.oneOf(['adventure', 'future', 'jungle', 'tech', 'space', 'default'])
+  size: PropTypes.oneOf(Object.keys(SIZES)),
+  label: PropTypes.string,
 }
 
 export default LoadingSpinner
