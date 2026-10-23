@@ -283,6 +283,20 @@
     .container { padding-inline: 2rem; }
   }
 
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--spacing-gutter-sm);
+  }
+
+  @media (min-width: 768px) {
+    .layout-grid { gap: var(--spacing-gutter); }
+  }
+
+  @media (min-width: 1024px) {
+    .layout-grid { gap: var(--spacing-gutter-lg); }
+  }
+
   /* Buttons */
   .btn {
     display: inline-flex;

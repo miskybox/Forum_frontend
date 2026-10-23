@@ -55,7 +55,7 @@ Tick a task in the same commit that completes it.
 - [x] Mobile navigation: dropdown panel with links, create/messages, language and auth buttons
 - [ ] Map new nav items to routes: Explorar `/`, Comunidades & Foros `/forums`, Diarios de Viaje `/blog`, Compañeros de Viaje (new). For now the nav keeps the existing sections (Inicio, Contenido, Foros, Trivia, Mi Mapa) until B1 (blog) and B15 (companions) exist
 - [x] `Footer`: brand + manifesto card, 3 link columns (real routes only), bottom bar with social links
-- [ ] Page container helper (max-w-7xl, gutters per breakpoint) and 12-col grid utilities
+- [x] Page container helper (max-w-7xl, gutters per breakpoint) and 12-col grid utilities — `PageContainer.jsx`, `.layout-grid`
 - [x] Update `Navbar.test.jsx` translation mock
 - [ ] Re-run Playwright navbar/footer specs against a running backend
 
