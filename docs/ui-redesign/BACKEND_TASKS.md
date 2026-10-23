@@ -56,6 +56,18 @@ Priorities:
 - [x] **B8c. Demo data never loads on a fresh database**: runners now go roles/categories (1) → countries (2) → env users (3) → demo content (25) → sample forums (30). Demo seed skips only when posts already exist and reuses `viajero_demo` if env created it first.
 - [x] **B8d. Docker compose runs the `prod` profile only**: `Dockerfile` defaults `SPRING_PROFILES_ACTIVE=prod` without hardcoding `-D`; compose sets `local` so demo seed can run.
 
+## Security and vulnerabilities
+
+The **only accepted public opening** is the USER demo account (`viajero_demo`). Admin/moderator passwords stay in env and out of the SPA.
+
+- [x] JWT HttpOnly cookies; CSRF disabled on purpose (CORS allow-list).
+- [x] HTML sanitizer; login rate limit; reset tokens not logged in production (B8b).
+- [ ] Public login/docs only show `viajero_demo`. Remove leftover `admin_demo / Demo1234!` from workspace `DEPLOY.md`.
+- [ ] Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password.
+- [ ] Image upload MIME allow-list; security headers; no secrets in logs.
+
+Details: `Forum_backend/docs/BACKEND_TASKS.md` (S1–S9).
+
 ## P2 — Improves the redesign
 
 - [ ] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).

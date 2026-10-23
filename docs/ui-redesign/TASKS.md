@@ -109,7 +109,7 @@ Tick a task in the same commit that completes it.
 - [x] Trivia: play, infinite, leaderboard, summary and question tiles (light surfaces, AA contrast, palette option tones)
 - [x] Messages & notifications migrated to tokens (checked visually; empty states)
 - [ ] Messages: review chat bubbles and modals with real conversations
-- [x] Admin & moderator dashboards (tables and modals migrated automatically, not reviewed with real data)
+- [ ] Admin & moderator dashboards: tokens were auto-mapped but the layout is still the old panel (custom SVG tabs, `window.confirm`, hardcoded Spanish, `container` gutters, gradient/white hero). Restyle with `PageContainer`, `SegmentedTabs`, `Modal`, `Button`, `EmptyState` and `react-icons/md`. Same capabilities (users, forums, posts, comments, roles). Review locally with private admin/moderator accounts — not with the public demo user.
 - [x] Static pages: About, Contact, Help, NotFound (shared `ContentPageLayout`)
 
 ## Bugs found and fixed during the redesign
@@ -138,6 +138,27 @@ Tick a task in the same commit that completes it.
 - Demo forums/posts load on profile `local` after B8c/B8d. Compose sets `SPRING_PROFILES_ACTIVE=local` (see `.env.docker.example`).
 - Run E2E with `E2E_DEMO_USERNAME/PASSWORD` and `E2E_ADMIN_USERNAME/PASSWORD` set. The backend allows 5 logins per minute,
   so wait about a minute between full runs.
+
+## Security and vulnerabilities
+
+This is a **demo**. The **only accepted public opening** is the USER demo account on the login page (`viajero_demo`, password from `VITE_DEMO_PASSWORD` / `USER_PASSWORD`). Admin and moderator accounts exist for local/ops use only: passwords come from env, never from the SPA or public docs.
+
+### Already in place
+- [x] JWT in HttpOnly cookies (not `localStorage`)
+- [x] HTML sanitizer on posts, comments and forums
+- [x] Login rate limit (about 5 attempts / minute)
+- [x] CORS allow-list
+- [x] Password-reset tokens not written to production logs (B8b)
+- [x] CSRF left disabled on purpose for this JWT + CORS demo (do not re-enable in passing)
+
+### Still to check or fix
+- [ ] Login UI and public README only advertise `viajero_demo`. Never print `admin_demo` / `moderador_demo` passwords in the frontend, README or deploy docs of the published demo
+- [ ] Workspace/root `DEPLOY.md` still lists `admin_demo / Demo1234!` — replace with env-only wording (`ADMIN_PASSWORD`, distinct from the public demo password)
+- [ ] Production Render env uses distinct `ADMIN_PASSWORD` / `MODERATOR_PASSWORD`, not `Demo1234!`
+- [ ] Uploads (avatar, cover, post images): reject non-image types (no SVG/HTML); size already capped at 10MB
+- [ ] Security headers if missing (`X-Content-Type-Options`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`)
+- [ ] No credentials, reset tokens or JWTs in logs on any profile
+- [ ] Dashboard deletes/bans: confirm with `Modal`; authorization stays on the API (`ROLE_ADMIN` / `ROLE_MODERATOR`)
 
 ## Phase 5 — Quality
 - [ ] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
