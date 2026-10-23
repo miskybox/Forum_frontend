@@ -47,6 +47,24 @@ const userService = {
     }
   },
   
+  uploadAvatar: async (id, file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.post(`/users/${id}/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return response.data
+  },
+
+  uploadCover: async (id, file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.put(`/users/${id}/cover`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return response.data
+  },
+
   updateUser: async (id, userData) => {
     try {
       const response = await api.put(`/users/${id}`, userData)

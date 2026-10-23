@@ -89,12 +89,12 @@ Tick a task in the same commit that completes it.
 
 ### Profile (`/profile`, `/profile/:userId`, mockup 04)
 - [x] Cover + overlapping identity card, follow/edit actions, metrics bar
-- [ ] Custom cover upload — B6
+- [x] Custom cover upload — B6
 - [x] Left column: traveler passport (badges/level from travel stats) and territory card
 - [ ] Mini world map in the territory card (reuse `WorldMap`)
 - [x] Right column: accessible tabs (posts, forums, edit profile, password, messages)
 - [ ] Upcoming trips and saved routes tabs — B15, B10
-- [ ] Other users' posts use a client-side filter of the latest 100 posts until B7 exists
+- [x] Posts and forums of any user via `GET /api/posts/user/{id}` and `/api/forums/user/{id}` (B7)
 - [ ] Restyle `FollowModal`, `FollowList`, `UsersPage`
 
 ### Other pages
@@ -153,7 +153,7 @@ Backend work is listed in [`BACKEND_TASKS.md`](./BACKEND_TASKS.md). Until an end
 - [ ] "Diarios de Viaje": the blog API does not exist in the backend (B1) — working decision: diaries are posts with photos
 - [x] Feed tabs (trending / recent / with photos / unanswered) — B3
 - [x] Nested replies and reply sorting — B4
-- [ ] Profile cover, likes received, user content tabs — B6, B7
+- [x] Profile cover, likes received, user content tabs — B6, B7
 - [ ] Top contributors, bookmarks, global search (⌘K), related discussions — B9–B12
 - [ ] Travel companions section (trips, filters, join requests, safety tips) — B15
 - [ ] Route telemetry, itinerary, GPX and elevation profile — B16, B17

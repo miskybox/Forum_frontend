@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { MdChatBubbleOutline, MdEdit, MdForum, MdLocationOn, MdPublic, MdTravelExplore } from 'react-icons/md'
+import { MdChatBubbleOutline, MdEdit, MdFavorite, MdForum, MdLocationOn, MdTravelExplore } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import Avatar from '../ui/Avatar'
 import FollowButton from '../common/FollowButton'
@@ -88,8 +88,8 @@ const ProfileHeader = ({ user, travelStats, isOwnProfile, isFollowing, onFollowC
           <div className="grid grid-cols-2 md:grid-cols-4 gap-space-md mt-space-lg bg-surface-container-low rounded-lg p-space-md">
             <Metric icon={MdChatBubbleOutline} value={user.postCount ?? 0} label={t('profile.statPosts')} tone="text-primary" />
             <Metric icon={MdForum} value={user.forumCount ?? 0} label={t('profile.statForums')} tone="text-secondary" />
-            <Metric icon={MdPublic} value={user.commentCount ?? 0} label={t('profile.statComments')} tone="text-primary" />
-            <Metric icon={MdTravelExplore} value={travelStats?.countriesVisited ?? 0} label={t('profile.statCountries')} tone="text-tertiary" />
+            <Metric icon={MdFavorite} value={user.likesReceived ?? 0} label={t('profile.statLikes')} tone="text-primary" />
+            <Metric icon={MdTravelExplore} value={user.countriesVisited ?? travelStats?.countriesVisited ?? 0} label={t('profile.statCountries')} tone="text-tertiary" />
           </div>
         </section>
       </div>
@@ -109,7 +109,8 @@ ProfileHeader.propTypes = {
     createdAt: PropTypes.string,
     postCount: PropTypes.number,
     forumCount: PropTypes.number,
-    commentCount: PropTypes.number,
+    likesReceived: PropTypes.number,
+    countriesVisited: PropTypes.number,
   }).isRequired,
   travelStats: PropTypes.shape({ countriesVisited: PropTypes.number }),
   isOwnProfile: PropTypes.bool,

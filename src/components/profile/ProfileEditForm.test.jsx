@@ -3,7 +3,9 @@ import { vi } from 'vitest'
 import ProfileEditForm from './ProfileEditForm'
 import userService from '../../services/userService'
 
-vi.mock('../../services/userService', () => ({ default: { updateUser: vi.fn() } }))
+vi.mock('../../services/userService', () => ({
+  default: { updateUser: vi.fn(), uploadAvatar: vi.fn(), uploadCover: vi.fn() },
+}))
 vi.mock('react-hot-toast', () => ({ toast: { success: vi.fn(), error: vi.fn() } }))
 
 const user = {

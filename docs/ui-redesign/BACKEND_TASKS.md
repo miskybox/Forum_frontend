@@ -46,9 +46,9 @@ Priorities:
 - [x] **B4. Comment replies.** `parentId` on `Comment` (one nesting level), grouped replies in `GET /api/comments/post/{postId}`, `sort=top|chronological`. Comment likes left optional.
 - [x] **B5. Category metadata** for the "Canales Temáticos" list: `icon` (emoji) and `postCount` in `GET /api/categories` (`forumCount` already exists).
 - [x] **B5b. Public popular tags**: anonymous `GET /api/tags` and `/api/tags/popular` (trending hashtags on the home hero).
-- [ ] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl` (+ upload endpoint), `likesReceived`, `countriesVisited` (from travel stats), `memberSince` (already `createdAt`). Add `PUT /api/users/{id}/cover`.
-- [ ] **B6b. Avatar upload**: `POST /api/users/{id}/avatar` (multipart, stored like post images). The old profile form had a picker that never uploaded anything.
-- [ ] **B7. Posts and forums by user** with pagination for profile tabs: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}` (current `/user` only returns the logged-in user's content).
+- [x] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl`, `likesReceived`, `countriesVisited`, `memberSince`. `PUT /api/users/{id}/cover`.
+- [x] **B6b. Avatar upload**: `POST /api/users/{id}/avatar` (multipart, stored like post images).
+- [x] **B7. Posts and forums by user** with pagination: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}`.
 - [ ] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
 
 - [x] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs email, token and reset URL only when `app.demo.log-reset-links` is true (`local`/`dev`). Production sets the flag to false. No email provider is added (demo, free services only); the reset page still says no real emails are sent.

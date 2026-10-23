@@ -112,7 +112,12 @@ const postService = {
       console.error('Error al obtener posts del usuario actual:', error)
       throw error
     }
-  }
+  },
+
+  getPostsByUser: async (userId, page = 0, size = 20) => {
+    const response = await api.get(`/posts/user/${userId}`, { params: { page, size } })
+    return response.data
+  },
 }
 
 export default postService

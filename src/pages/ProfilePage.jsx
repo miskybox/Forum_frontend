@@ -70,16 +70,14 @@ const ProfilePage = () => {
     const loadExtras = async () => {
       const [statsResult, postsResult, forumsResult, followResult] = await Promise.allSettled([
         isOwnProfile ? travelService.getMyStats() : travelService.getUserStats(profileId),
-        // Other users' posts: no per-user endpoint yet (B7), so filter the latest posts
-        isOwnProfile ? postService.getCurrentUserPosts() : postService.getAllPosts(0, 100),
-        isOwnProfile ? forumService.getCurrentUserForums() : Promise.resolve([]),
+        postService.getPostsByUser(profileId, 0, 20),
+        forumService.getForumsByUser(profileId, 0, 20),
         isOwnProfile ? Promise.resolve(false) : followService.isFollowing(profileId),
       ])
       if (cancelled) return
 
       setTravelStats(statsResult.status === 'fulfilled' ? statsResult.value : null)
-      const allPosts = postsResult.status === 'fulfilled' ? toList(postsResult.value) : []
-      setPosts(isOwnProfile ? allPosts : allPosts.filter((post) => String(post.createdBy) === String(profileId)))
+      setPosts(postsResult.status === 'fulfilled' ? toList(postsResult.value) : [])
       setForums(forumsResult.status === 'fulfilled' ? toList(forumsResult.value) : [])
       const follow = followResult.status === 'fulfilled' ? followResult.value : false
       setIsFollowing(follow === true || follow?.following === true)
@@ -126,6 +124,7 @@ const ProfilePage = () => {
       ]
     : [
         { id: 'posts', label: t('profile.tabs.posts'), icon: MdChatBubbleOutline },
+        { id: 'forums', label: t('profile.tabs.forums'), icon: MdForum },
         { id: 'messages', label: t('profile.sendMessage'), icon: MdMail },
       ]
 
@@ -175,7 +174,7 @@ const ProfilePage = () => {
             </div>
           )}
 
-          {activeTab === 'forums' && isOwnProfile && (
+          {activeTab === 'forums' && (
             <div {...panelProps('forums')}>
               {forums.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-lg">
@@ -184,8 +183,8 @@ const ProfilePage = () => {
               ) : (
                 <EmptyState
                   icon={MdForum}
-                  title={t('profile.noForums')}
-                  action={<Link to="/forums/create" className="btn btn-primary">{t('profile.createForum')}</Link>}
+                  title={isOwnProfile ? t('profile.noForums') : t('profile.noForumsOther')}
+                  action={isOwnProfile && <Link to="/forums/create" className="btn btn-primary">{t('profile.createForum')}</Link>}
                 />
               )}
             </div>

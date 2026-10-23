@@ -18,6 +18,8 @@ const ProfileEditForm = ({ user, onSaved }) => {
   })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [avatarFile, setAvatarFile] = useState(null)
+  const [coverFile, setCoverFile] = useState(null)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -51,6 +53,12 @@ const ProfileEditForm = ({ user, onSaved }) => {
         location: form.location.trim(),
         biography: form.biography.trim(),
       })
+      if (avatarFile) {
+        await userService.uploadAvatar(user.id, avatarFile)
+      }
+      if (coverFile) {
+        await userService.uploadCover(user.id, coverFile)
+      }
       toast.success(t('profile.profileUpdated'))
       await onSaved?.()
     } catch (error) {
@@ -74,6 +82,26 @@ const ProfileEditForm = ({ user, onSaved }) => {
         <TextField id="profile-fullName" name="fullName" label={t('profile.fullName')} value={form.fullName} onChange={handleChange} error={errors.fullName} autoComplete="name" required />
         <TextField id="profile-email" name="email" type="email" label={t('profile.email')} value={form.email} onChange={handleChange} error={errors.email} autoComplete="email" required />
         <TextField id="profile-location" name="location" label={t('profile.location')} placeholder={t('profile.locationPlaceholder')} value={form.location} onChange={handleChange} error={errors.location} maxLength={100} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+        <label className="flex flex-col gap-space-xs text-label-md text-on-surface">
+          {t('profile.uploadAvatar')}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => setAvatarFile(event.target.files?.[0] || null)}
+            className="text-body-sm"
+          />
+        </label>
+        <label className="flex flex-col gap-space-xs text-label-md text-on-surface">
+          {t('profile.uploadCover')}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => setCoverFile(event.target.files?.[0] || null)}
+            className="text-body-sm"
+          />
+        </label>
       </div>
       <TextField
         id="profile-biography"
