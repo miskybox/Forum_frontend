@@ -1,7 +1,8 @@
 # UI/UX Redesign — Backend Tasks
 
 Backend repo: `miskybox/Forum_backend` (Spring Boot). This list covers what the new interface needs from the API.
-Work on a backend branch `feature/new-ux-ui-api` and follow the same rules as the frontend (`AGENTS.md`).
+Work on a backend branch `feature/new-ux-ui-api` and follow that repo’s [`AGENTS.md`](../../../Forum_backend/AGENTS.md).
+Keep this file in sync with `Forum_backend/docs/BACKEND_TASKS.md`.
 
 ## Project constraints
 

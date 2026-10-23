@@ -5,7 +5,7 @@ Guidelines for humans and AI agents working on this repository (Forum Viajeros â
 ## Project
 
 - React 19 + Vite + Tailwind CSS v4, React Router 7, Vitest + Testing Library, Playwright (E2E).
-- Backend lives in a separate repo: `miskybox/Forum_backend` (Spring Boot).
+- Backend lives in a separate repo: `miskybox/Forum_backend` (Spring Boot). See that repoâ€™s `AGENTS.md`.
 - Single-owner project: **no pull requests**. Changes are merged locally and pushed.
 
 ## Language
@@ -76,3 +76,4 @@ Run `npm run test:e2e` for changes that affect navigation, auth or page layout.
 - Mockups: [`docs/ui-redesign/mockups/`](docs/ui-redesign/mockups)
 
 Tick tasks in `TASKS.md` in the same commit that completes them.
+Backend API items live in [`BACKEND_TASKS.md`](docs/ui-redesign/BACKEND_TASKS.md); keep that file in sync with `Forum_backend/docs/BACKEND_TASKS.md`.
