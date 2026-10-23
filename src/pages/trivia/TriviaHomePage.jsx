@@ -7,6 +7,7 @@ import triviaService from '../../services/triviaService'
 import toast from 'react-hot-toast'
 import Seo from '../../components/common/SEO'
 import { MdArrowForward, MdQuiz } from 'react-icons/md'
+import Modal from '../../components/ui/Modal'
 
 
 /**
@@ -379,94 +380,66 @@ const TriviaHomePage = () => {
 
       {/* Modal de partida activa */}
       {showActiveGameModal && activeGame && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="card max-w-md w-full p-6 animate-fadeIn">
-            <div className="text-center">
-              <h3 className="text-xl font-bold text-on-surface mb-2 ">
-                {t('trivia.activeGame.title')}
-              </h3>
-              <p className="text-on-surface-variant mb-4">
-                {t('trivia.activeGame.message')}
-              </p>
+        <Modal title={t('trivia.activeGame.title')} onClose={() => setShowActiveGameModal(false)}>
+          <p className="mt-space-xs text-center text-body-md text-on-surface-variant">
+            {t('trivia.activeGame.message')}
+          </p>
 
-              {/* Info de la partida activa */}
-              <div className="bg-secondary-container rounded-lg p-4 mb-6">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-on-surface">{t('trivia.activeGame.progress')}</span>
-                  <span className="text-on-surface font-bold">
-                    {activeGame.currentQuestionIndex}/{activeGame.totalQuestions}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm mt-2">
-                  <span className="text-on-surface">{t('trivia.score')}</span>
-                  <span className="text-on-surface font-bold">{activeGame.score} pts</span>
-                </div>
-              </div>
-
-              {/* Botones */}
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={handleContinueActiveGame}
-                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim w-full"
-                >
-                  {t('trivia.activeGame.continueGame')}
-                </button>
-                <button
-                  onClick={handleAbandonAndStartNew}
-                  disabled={starting}
-                  className="btn btn-outline w-full text-sm"
-                >
-                  {starting ? '...' : t('trivia.activeGame.abandonAndNew')}
-                </button>
-                <button
-                  onClick={() => setShowActiveGameModal(false)}
-                  className="text-on-surface-variant text-sm hover:text-on-surface hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
-                >
-                  {t('common.cancel')}
-                </button>
-              </div>
+          <dl className="bg-secondary-container rounded-base p-space-md my-space-lg space-y-space-xs text-body-sm text-on-surface">
+            <div className="flex justify-between items-center">
+              <dt>{t('trivia.activeGame.progress')}</dt>
+              <dd className="font-bold">{activeGame.currentQuestionIndex}/{activeGame.totalQuestions}</dd>
             </div>
+            <div className="flex justify-between items-center">
+              <dt>{t('trivia.score')}</dt>
+              <dd className="font-bold">{activeGame.score} pts</dd>
+            </div>
+          </dl>
+
+          <div className="flex flex-col gap-space-sm">
+            <button type="button" onClick={handleContinueActiveGame} className="btn btn-primary w-full">
+              {t('trivia.activeGame.continueGame')}
+            </button>
+            <button type="button" onClick={handleAbandonAndStartNew} disabled={starting} className="btn btn-outline w-full">
+              {starting ? '...' : t('trivia.activeGame.abandonAndNew')}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowActiveGameModal(false)}
+              className="min-h-10 rounded-full text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors"
+            >
+              {t('common.cancel')}
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
-      {/* Modal selección de cronómetro (solo CHALLENGE) */}
+      {/* Timer choice (CHALLENGE only) */}
       {showTimerModal && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="card max-w-sm w-full p-6 animate-fadeIn">
-            <div className="text-center">
-              <div className="text-4xl mb-3">⏱️</div>
-              <h3 className="text-xl font-bold text-on-surface mb-2 ">
-                {t('trivia.timerChoice.title')}
-              </h3>
-              <p className="text-on-surface-variant text-sm mb-6">
-                {t('trivia.timerChoice.description')}
-              </p>
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={() => handleTimerChoice(true)}
-                  disabled={starting}
-                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim w-full disabled:opacity-50"
-                >
-                  ⏱️ {t('trivia.timerChoice.withTimer')}
-                </button>
-                <button
-                  onClick={() => handleTimerChoice(false)}
-                  disabled={starting}
-                  className="btn bg-inverse-surface text-white font-bold hover:bg-inverse-surface/80 w-full disabled:opacity-50"
-                >
-                  🌙 {t('trivia.timerChoice.withoutTimer')}
-                </button>
-                <button
-                  onClick={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
-                  className="text-on-surface-variant text-sm hover:text-on-surface hover:bg-secondary/10 transition-colors rounded-md px-3 py-1.5 cursor-pointer"
-                >
-                  {t('common.cancel')}
-                </button>
-              </div>
-            </div>
+        <Modal
+          title={t('trivia.timerChoice.title')}
+          size="sm"
+          onClose={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
+        >
+          <p className="mt-space-xs mb-space-lg text-center text-body-sm text-on-surface-variant">
+            {t('trivia.timerChoice.description')}
+          </p>
+          <div className="flex flex-col gap-space-sm">
+            <button type="button" onClick={() => handleTimerChoice(true)} disabled={starting} className="btn btn-primary w-full">
+              ⏱️ {t('trivia.timerChoice.withTimer')}
+            </button>
+            <button type="button" onClick={() => handleTimerChoice(false)} disabled={starting} className="btn btn-secondary w-full">
+              🌙 {t('trivia.timerChoice.withoutTimer')}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setShowTimerModal(false); setPendingChallengeConfig(null) }}
+              className="min-h-10 rounded-full text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors"
+            >
+              {t('common.cancel')}
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )
