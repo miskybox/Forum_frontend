@@ -833,6 +833,8 @@ const translations = {
       viewForum: 'Ver todo el foro',
       reply: 'Responder al debate',
       backToForum: 'Volver al foro',
+      openImage: 'Abrir imagen',
+      galleryImage: 'Imagen',
     },
     // Users
     users: {
@@ -1680,6 +1682,8 @@ const translations = {
       viewForum: 'View the whole forum',
       reply: 'Reply to the discussion',
       backToForum: 'Back to forum',
+      openImage: 'Open image',
+      galleryImage: 'Image',
     },
     // Users
     users: {

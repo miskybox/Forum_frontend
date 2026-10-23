@@ -44,10 +44,10 @@ Tick a task in the same commit that completes it.
 - [x] `TelemetryStats` (3-column metrics widget) — `src/components/ui/TelemetryStats.jsx`
 - [x] `ElevationProfile` (SVG sparkline) — `src/components/ui/ElevationProfile.jsx`
 - [x] `Modal` (role=dialog, labelled title, Esc/overlay close, focus trap and restore) — used by trivia dialogs
-- [ ] Lightbox for post galleries (needs post images in the API, B2)
+- [x] Lightbox for post galleries — `src/components/ui/Lightbox.jsx`, wired in `PostContent` (B2 `imageUrls`)
 - [x] `EmptyState`, `Skeleton` and restyled `LoadingSpinner` — `EmptyState.jsx`, `Skeleton.jsx`, `common/LoadingSpinner.jsx`
 - [x] Restyle toasts (`react-hot-toast`) to the new palette (inverse-surface snackbar, no per-screen overrides)
-- [x] Unit tests for the new components (Vitest + Testing Library) — lightbox still pending with B2
+- [x] Unit tests for the new components (Vitest + Testing Library)
 
 ## Phase 3 — Layout shell
 - [x] `Navbar`: sticky 80px header, blur background, logo + "Comunidad Global", segmented nav pill with active state, "Crear debate" CTA, notifications/messages with counters, language toggle, avatar menu (closes on Esc/outside click/route change)
@@ -80,7 +80,7 @@ Tick a task in the same commit that completes it.
 - [x] Header band: breadcrumb (forum + category), tags, title, actions (like, share, edit, delete), author bar
 - [ ] Save/bookmark action — B10
 - [x] Body: restyle `PostContent`
-- [ ] Rich blocks (itinerary, budget table, gallery + lightbox, map/GPX) — need post images in the DTO (B2) and route info (B16/B17)
+- [x] Gallery + lightbox from post images (B2); itinerary, budget table, map/GPX still need B16/B17
 - [x] Replies: sort pills, comment cards with thread-author badge, reply composer
 - [x] Nested replies — B4 (one level); markdown toolbar still pending (content is plain text today)
 - [x] Rail: thread facts and more posts from the same forum

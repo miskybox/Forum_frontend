@@ -49,7 +49,7 @@ Priorities:
 - [x] **B6. Profile header data** in `GET /api/users/{id}`: `coverImageUrl`, `likesReceived`, `countriesVisited`, `memberSince`. `PUT /api/users/{id}/cover`.
 - [x] **B6b. Avatar upload**: `POST /api/users/{id}/avatar` (multipart, stored like post images).
 - [x] **B7. Posts and forums by user** with pagination: `GET /api/posts/user/{userId}` and `GET /api/forums/user/{userId}`.
-- [ ] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
+- [x] **B8. Breadcrumb data** in `GET /api/posts/{id}`: forum id/title and category id/name (covered by B2).
 
 - [x] **B8b. Password reset token in logs (security)**: `PasswordResetService` logs email, token and reset URL only when `app.demo.log-reset-links` is true (`local`/`dev`). Production sets the flag to false. No email provider is added (demo, free services only); the reset page still says no real emails are sent.
 
