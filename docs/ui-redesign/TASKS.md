@@ -135,7 +135,7 @@ Tick a task in the same commit that completes it.
 ## Local environment for E2E
 - Backend: `docker compose --env-file .env.docker up -d` in `Forum_backend` (`.env.docker` is git-ignored; see `.env.docker.example`).
   If a local PostgreSQL already uses port 5432, drop the `db` port mapping with a local override (`ports: !reset []`).
-- Demo content does not load on a fresh database (B8c/B8d); seed it through the API for local testing.
+- Demo forums/posts load on profile `local` after B8c/B8d. Compose sets `SPRING_PROFILES_ACTIVE=local` (see `.env.docker.example`).
 - Run E2E with `E2E_DEMO_USERNAME/PASSWORD` and `E2E_ADMIN_USERNAME/PASSWORD` set. The backend allows 5 logins per minute,
   so wait about a minute between full runs.
 
