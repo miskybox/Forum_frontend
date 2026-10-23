@@ -65,7 +65,7 @@ Tick a task in the same commit that completes it.
 - [ ] Hero interest/category filter and trending hashtags (needs public `/api/tags/popular`, currently auth-only)
 - [x] Left rail: topic channels with forum counts, continents grid, responsible-travel card
 - [x] Center feed: tabs "Recientes" (`/feed/explore`) and "Foros activos"
-- [ ] Extra tabs (trending, with photos, unanswered) — B3
+- [ ] Extra tabs (trending, with photos, unanswered) — API ready (B3); UI still pending
 - [x] `FeedCard` redesigned as thread card (shared with `/feed`)
 - [ ] Feed card variants: featured guide, question with top reply, visual diary with cover + telemetry (need B2/B4/B16)
 - [x] Right rail: create/join CTA, top travelers (`/travel/ranking`), discover card (trivia, map)

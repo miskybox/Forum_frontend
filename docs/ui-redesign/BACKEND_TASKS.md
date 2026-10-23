@@ -40,7 +40,7 @@ Priorities:
   `likeCount`, `likedByCurrentUser`, `authorAvatarUrl`, `forumTitle`, `categoryId`, `categoryName`,
   `imageUrls`, `coverImageUrl`, `imageCount`, `lastCommentAt`.
 - [x] **B2b. Enrich `ForumResponseDTO`**: `createdBy` (user id), `creatorUsername`, `creatorAvatarUrl`, `categoryName`. Without `createdBy` the frontend cannot tell whether the current user owns a forum, so forum authors cannot edit or delete their own forums (only admins/moderators can).
-- [ ] **B3. Post listing filters and sorting** on `GET /api/posts` (and `/api/feed/explore`):
+- [x] **B3. Post listing filters and sorting** on `GET /api/posts` (and `/api/feed/explore`):
   `sort=trending|recent|top`, `unanswered=true` (commentCount = 0), `hasImages=true`, `categoryId`, `continent`, `tag`, `q`.
   Trending = weighted likes + comments in the last 7 days.
 - [ ] **B4. Comment replies.** Add `parentId` to `Comment` (one nesting level), return replies grouped in `GET /api/comments/post/{postId}`, add `sort=top|chronological`. Optional: likes on comments (mockup shows "18 Me gusta" on replies).

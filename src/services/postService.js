@@ -1,10 +1,10 @@
 import api from '../utils/api'
 
 const postService = {
-  getAllPosts: async (page = 0, size = 10) => {
+  getAllPosts: async (page = 0, size = 10, filters = {}) => {
     try {
       const response = await api.get('/posts', {
-        params: { page, size }
+        params: { page, size, ...filters }
       })
       return response.data
     } catch (error) {

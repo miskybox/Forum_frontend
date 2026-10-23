@@ -47,6 +47,16 @@ describe('postService', () => {
       expect(api.get).toHaveBeenCalledWith('/posts', { params: { page: 3, size: 25 } })
     })
 
+    it('forwards listing filters to the posts endpoint', async () => {
+      api.get.mockResolvedValueOnce({ data: { content: [] } })
+
+      await postService.getAllPosts(0, 9, { hasImages: true, sort: 'trending' })
+
+      expect(api.get).toHaveBeenCalledWith('/posts', {
+        params: { page: 0, size: 9, hasImages: true, sort: 'trending' }
+      })
+    })
+
     it('maneja error de red al obtener posts', async () => {
       const error = new Error('Network Error')
 
