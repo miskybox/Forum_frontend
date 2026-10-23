@@ -115,11 +115,11 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
       open
       aria-modal="true"
       aria-labelledby="add-place-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
+      className="fixed inset-0 z-50 m-0 w-screen h-screen max-w-none max-h-none border-0 bg-transparent flex items-center justify-center p-2 sm:p-4"
     >
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-black/60"
+        className="absolute inset-0 bg-inverse-surface/45 backdrop-blur-sm"
         aria-label="Cerrar"
       >
         <button
@@ -130,18 +130,18 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
       </div>
 
       {/* Modal Container */}
-      <div className="relative w-full max-w-md bg-white rounded-lg shadow-2xl flex flex-col max-h-[95vh]">
+      <div className="relative w-full max-w-md bg-surface-container-lowest rounded-lg shadow-level-3 flex flex-col max-h-[95vh]">
         {/* Header - Compacto */}
-        <div className="bg-[#213638] px-4 py-3 rounded-t-lg flex-shrink-0">
+        <div className="px-4 py-3 rounded-t-lg flex-shrink-0 border-b border-surface-container-high">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-[#E5A13E] truncate" id="add-place-modal-title">
-              <span className="text-[#fffbe6]">
+            <h2 className="font-headline text-headline-sm text-on-surface truncate" id="add-place-modal-title">
+              <span>
                 {editPlace ? 'Editar lugar' : 'Agregar lugar'}
               </span>
             </h2>
             <button
               onClick={onClose}
-              className="text-[#CFE7E5] hover:text-white p-1"
+              className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
               aria-label="Cerrar"
             >
               <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,13 +157,13 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
 
             {/* Pais */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
-                Pais <span className="text-red-500">*</span>
+              <label className="block text-label-md text-on-surface mb-1">
+                Pais <span className="text-error">*</span>
               </label>
               {loadingCountry ? (
-                <div className="flex items-center gap-2 p-2 bg-gray-100 rounded border text-sm">
-                  <div className="animate-spin h-4 w-4 border-2 border-[#E5A13E] border-t-transparent rounded-full" />
-                  <span className="text-gray-600">Cargando...</span>
+                <div className="flex items-center gap-2 p-2 bg-surface-container rounded border text-sm">
+                  <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                  <span className="text-on-surface-variant">Cargando...</span>
                 </div>
               ) : (
                 <CountrySelector onSelect={setSelectedCountry} selectedCountry={selectedCountry} />
@@ -172,7 +172,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
 
             {/* Ciudad */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-label-md text-on-surface mb-1">
                 Ciudad (opcional)
               </label>
               <input
@@ -180,13 +180,13 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                 value={formData.cityName}
                 onChange={(e) => setFormData({ ...formData, cityName: e.target.value })}
                 placeholder="Ej: Barcelona"
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-[#E5A13E] focus:border-transparent"
+                className="w-full px-3 py-2 text-sm border border-outline-variant rounded focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
 
             {/* Estado */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-label-md text-on-surface mb-1">
                 Estado
               </label>
               <div className="grid grid-cols-2 gap-1.5">
@@ -195,12 +195,12 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                       key={opt.value}
                       type="button"
                       onClick={() => setFormData({ ...formData, status: opt.value })}
-                      className={`px-2 py-1.5 text-xs font-medium rounded border transition-all duration-200 ${
+                      className={`min-h-9 px-2 py-1.5 text-label-md rounded-full border transition-colors ${
                         formData.status === opt.value
-                          ? 'bg-[#213638] text-white border-[#213638] shadow-lg scale-105'
-                          : 'bg-white text-gray-700 border-gray-300 hover:bg-[#E5A13E] hover:text-[#213638] hover:border-[#E5A13E] hover:scale-105'
+                          ? 'bg-secondary text-on-secondary border-secondary'
+                          : 'bg-surface-container-lowest text-on-surface border-outline-variant hover:bg-surface-container-low hover:border-secondary'
                       }`}
-                      style={{ boxShadow: formData.status === opt.value ? '0 0 0 2px #fff' : undefined }}
+                      aria-pressed={formData.status === opt.value}
                     >
                       {opt.label}
                     </button>
@@ -210,7 +210,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
 
             {/* Fecha */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-label-md text-on-surface mb-1">
                 <span>Fecha (opcional)</span>
               </label>
               <input
@@ -219,13 +219,13 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                 value={formData.visitDate}
                 onChange={(e) => setFormData({ ...formData, visitDate: e.target.value })}
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-[#E5A13E] focus:border-transparent"
+                className="w-full px-3 py-2 text-sm border border-outline-variant rounded focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
 
             {/* Rating */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-label-md text-on-surface mb-1">
                 <span>Valoración</span>
               </label>
               <div className="flex items-center gap-1">
@@ -240,7 +240,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                   >
                     <svg
                       aria-hidden="true"
-                      className={`w-5 h-5 ${star <= formData.rating ? 'text-[#E5A13E]' : 'text-gray-300'}`}
+                      className={`w-5 h-5 ${star <= formData.rating ? 'text-primary' : 'text-outline-variant'}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -253,7 +253,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
 
             {/* Notas */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-label-md text-on-surface mb-1">
                 <span>Notas (opcional)</span>
               </label>
               <textarea
@@ -262,7 +262,7 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 placeholder="Tus recuerdos de este lugar..."
                 rows={2}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded resize-none focus:ring-2 focus:ring-[#E5A13E] focus:border-transparent"
+                className="w-full px-3 py-2 text-sm border border-outline-variant rounded resize-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
 
@@ -273,29 +273,29 @@ const AddPlaceModal = ({ isOpen, onClose, onSuccess, editPlace = null, preselect
                 id="favorite"
                 checked={formData.favorite}
                 onChange={(e) => setFormData({ ...formData, favorite: e.target.checked })}
-                className="w-4 h-4 rounded border-gray-300 text-[#E5A13E] focus:ring-[#E5A13E]"
+                className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
               />
-              <span className="text-sm text-gray-700">Marcar como favorito</span>
+              <span className="text-sm text-on-surface">Marcar como favorito</span>
             </label>
           </div>
 
           {/* Botones - Fuera del scroll, siempre visibles y debajo del contenedor */}
-          <div className="flex-shrink-0 px-4 py-3 bg-gray-50 border-t border-gray-200 rounded-b-lg">
+          <div className="flex-shrink-0 px-4 py-3 bg-surface-container-low border-t border-surface-container-high rounded-b-lg">
             <div className="flex flex-col gap-2 md:flex-row md:gap-2 w-full">
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full md:w-1/2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                className="w-full md:w-1/2 px-4 py-2 text-sm font-medium text-on-surface bg-surface-container-lowest border border-outline-variant rounded-full hover:bg-surface-container transition-colors"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={loading || !selectedCountry}
-                className={`w-full md:w-1/2 px-4 py-2 text-sm font-medium rounded transition-colors ${
+                className={`w-full md:w-1/2 px-4 py-2 text-label-lg rounded-full transition-colors ${
                   loading || !selectedCountry
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-[#213638] text-white hover:bg-[#2d4a4d]'
+                    ? 'bg-surface-container text-on-surface-variant cursor-not-allowed'
+                    : 'bg-primary text-on-primary hover:bg-primary-container'
                 }`}
               >
                 {loading ? (

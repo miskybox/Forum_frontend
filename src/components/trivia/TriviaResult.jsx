@@ -23,13 +23,13 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
   return (
     <div className={`p-6 rounded-2xl ${
       result.correct
-        ? 'bg-[#ecfdf5] border-2 border-[#047857] text-[#065f46]'
-        : 'bg-[#fef2f2] border-2 border-[#b91c1c] text-[#7f1d1d]'
+        ? 'bg-success-light border-2 border-success text-success-dark'
+        : 'bg-error-light border-2 border-error text-error-dark'
     } shadow-level-2`}>
       {/* Icono y mensaje */}
       <div className="text-center mb-6">
         <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
-          result.correct ? 'bg-[#d1fae5]' : 'bg-[#fee2e2]'
+          result.correct ? 'bg-success-light' : 'bg-error-light'
         }`}>
           <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
             {result.correct ? (
@@ -44,7 +44,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
         </h3>
 
         {!result.correct && (
-          <p className="mt-2 text-[#7f1d1d] font-semibold">
+          <p className="mt-2 text-error-dark font-semibold">
             {t('trivia.result.correctAnswerWas')} <strong>{result.correctAnswer}</strong>
           </p>
         )}
@@ -55,7 +55,7 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <p className="text-on-surface text-sm font-semibold">{t('trivia.result.pointsLabel')}</p>
-            <p className="text-2xl font-bold text-[#92400e]">+{result.pointsEarned}</p>
+            <p className="text-2xl font-bold text-warning-dark">+{result.pointsEarned}</p>
           </div>
           <div>
             <p className="text-on-surface text-sm font-semibold">{t('trivia.score')}</p>
@@ -70,9 +70,9 @@ const TriviaResult = ({ result, onNext, isLastQuestion }) => {
 
       {/* Explicación */}
       {(showExplanation || fallbackInsight) && (
-        <div className="bg-[#f8fafc] border border-secondary/30 rounded-lg p-4 mb-6">
+        <div className="bg-surface-container-lowest border border-secondary/30 rounded-lg p-4 mb-6">
           <p className="text-sm font-medium text-on-surface">
-            <span className="font-bold text-[#92400e]">{t('trivia.result.funFact')}</span> {showExplanation ? result.explanation : fallbackInsight}
+            <span className="font-bold text-warning-dark">{t('trivia.result.funFact')}</span> {showExplanation ? result.explanation : fallbackInsight}
           </p>
           <p className="text-xs mt-2 text-on-surface-variant">
             <span className="font-semibold text-secondary">{t('trivia.result.strategyLabel')}</span> {t('trivia.result.strategyTip')}

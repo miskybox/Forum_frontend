@@ -78,7 +78,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-lg overflow-hidden shadow-level-2">
+    <div className="bg-surface-container-low border-2 border-secondary/40 rounded-lg overflow-hidden shadow-level-2">
       {/* Header con progreso y timer */}
       <div className="bg-surface-container-low border-b border-surface-container-high px-6 py-4">
         <div className="flex items-center justify-between mb-3">
@@ -131,18 +131,19 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
         {/* Opciones */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {question.options.map((option, idx) => {
+            // Four clearly different palette tones; green is kept for the "correct" feedback
             const COLORS = [
-              { tile: 'bg-[#dbeafe] border-[#1d4ed8] text-[#1e3a8a] hover:bg-[#bfdbfe] hover:shadow-[0_0_16px_rgba(59,130,246,0.35)] hover:scale-[1.02]', badge: 'bg-[#bfdbfe] text-[#1e3a8a]' },
-              { tile: 'bg-[#ffedd5] border-[#c2410c] text-[#7c2d12] hover:bg-[#fed7aa] hover:shadow-[0_0_16px_rgba(194,65,12,0.35)] hover:scale-[1.02]', badge: 'bg-[#fed7aa] text-[#7c2d12]' },
-              { tile: 'bg-[#dcfce7] border-[#166534] text-[#14532d] hover:bg-[#bbf7d0] hover:shadow-[0_0_16px_rgba(22,101,52,0.35)] hover:scale-[1.02]', badge: 'bg-[#bbf7d0] text-[#14532d]' },
-              { tile: 'bg-[#fef3c7] border-[#a16207] text-[#713f12] hover:bg-[#fde68a] hover:shadow-[0_0_16px_rgba(161,98,7,0.35)] hover:scale-[1.02]', badge: 'bg-[#fde68a] text-[#713f12]' },
+              { tile: 'bg-secondary-fixed border-secondary text-on-secondary-fixed hover:bg-secondary-fixed-dim hover:shadow-level-2', badge: 'bg-secondary text-on-secondary' },
+              { tile: 'bg-primary-fixed border-primary text-on-primary-fixed hover:bg-primary-fixed-dim hover:shadow-level-2', badge: 'bg-primary text-on-primary' },
+              { tile: 'bg-surface-container-highest border-outline text-on-surface hover:bg-surface-dim hover:shadow-level-2', badge: 'bg-inverse-surface text-inverse-on-surface' },
+              { tile: 'bg-surface-container-lowest border-tertiary text-on-surface hover:bg-tertiary-fixed hover:shadow-level-2', badge: 'bg-tertiary text-on-tertiary' },
             ]
             let tileClass
             let badgeClass
             if (answered) {
               tileClass = selectedAnswer === option
-                ? 'bg-[#bfdbfe] border-[#1d4ed8] text-[#1e3a8a] shadow-level-2 scale-[1.02]'
-                : `${COLORS[idx % 4].tile} opacity-30`
+                ? 'bg-secondary-container border-on-secondary-fixed-variant text-on-secondary-fixed shadow-level-2 ring-2 ring-secondary'
+                : `${COLORS[idx % 4].tile} opacity-50`
               badgeClass = 'bg-black/10 text-inherit'
             } else {
               tileClass = COLORS[idx % 4].tile

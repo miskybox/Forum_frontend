@@ -113,7 +113,6 @@ const TriviaInfinitePage = () => {
       // Efecto visual de éxito
       toast.success(`+${points} ${t('trivia.infinite.pointsEarned')} ${streak + 1}`, {
         duration: 1500,
-        style: { background: '#4c7e75', color: '#ffffff', border: '2px solid #2c4a33' },
         icon: '✅'
       })
     } else {
@@ -124,13 +123,11 @@ const TriviaInfinitePage = () => {
         setGameOver(true)
         toast.error(t('trivia.infinite.gameOverNoLives'), {
           duration: 3000,
-          style: { background: '#a56732', color: '#ffffff', border: '2px solid #8B5A2B' },
           icon: '💀'
         })
       } else {
         toast.error(`${t('trivia.infinite.incorrectLives')} (${lives - 1})`, {
           duration: 1500,
-          style: { background: '#a56732', color: '#ffffff', border: '2px solid #8B5A2B' },
           icon: '❌'
         })
       }
@@ -161,16 +158,16 @@ const TriviaInfinitePage = () => {
   }
 
   const OPTION_COLORS = [
-    { tile: 'bg-[#dbeafe] border-[#1d4ed8] text-[#1e3a8a] hover:bg-[#bfdbfe] hover:shadow-[0_0_16px_rgba(59,130,246,0.35)] hover:scale-[1.02]', badge: 'bg-[#bfdbfe] text-[#1e3a8a]' },
-    { tile: 'bg-[#ffedd5] border-[#c2410c] text-[#7c2d12] hover:bg-[#fed7aa] hover:shadow-[0_0_16px_rgba(194,65,12,0.35)] hover:scale-[1.02]', badge: 'bg-[#fed7aa] text-[#7c2d12]' },
-    { tile: 'bg-[#dcfce7] border-[#166534] text-[#14532d] hover:bg-[#bbf7d0] hover:shadow-[0_0_16px_rgba(22,101,52,0.35)] hover:scale-[1.02]', badge: 'bg-[#bbf7d0] text-[#14532d]' },
-    { tile: 'bg-[#fef3c7] border-[#a16207] text-[#713f12] hover:bg-[#fde68a] hover:shadow-[0_0_16px_rgba(161,98,7,0.35)] hover:scale-[1.02]', badge: 'bg-[#fde68a] text-[#713f12]' },
+    { tile: 'bg-secondary-fixed border-secondary text-on-secondary-fixed hover:bg-secondary-fixed-dim hover:shadow-level-2 hover:scale-[1.02]', badge: 'bg-secondary-fixed-dim text-on-secondary-fixed' },
+    { tile: 'bg-primary-fixed border-primary text-on-primary-fixed hover:bg-primary-fixed-dim hover:shadow-level-2 hover:scale-[1.02]', badge: 'bg-primary-fixed-dim text-on-primary-fixed' },
+    { tile: 'bg-success-light border-success text-success-dark hover:bg-secondary-fixed-dim hover:shadow-level-2 hover:scale-[1.02]', badge: 'bg-secondary-fixed-dim text-success-dark' },
+    { tile: 'bg-tertiary-fixed border-tertiary text-on-tertiary-fixed hover:bg-tertiary-fixed-dim hover:shadow-level-2 hover:scale-[1.02]', badge: 'bg-tertiary-fixed-dim text-on-tertiary-fixed' },
   ]
 
   const getOptionStyle = (option, idx) => {
     if (!answered) return OPTION_COLORS[idx % 4].tile
-    if (option === currentQuestion?.correctAnswer) return 'bg-[#d1fae5] border-[#047857] text-[#065F46] font-bold'
-    if (option === selectedAnswer) return 'bg-[#fee2e2] border-[#b91c1c] text-[#991b1b] font-bold'
+    if (option === currentQuestion?.correctAnswer) return 'bg-success-light border-success text-success-dark font-bold'
+    if (option === selectedAnswer) return 'bg-error-light border-error text-error-dark font-bold'
     return `${OPTION_COLORS[idx % 4].tile} opacity-30`
   }
 
@@ -276,7 +273,7 @@ const TriviaInfinitePage = () => {
       {/* Pregunta */}
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         {currentQuestion ? (
-          <div className="bg-[#e8f4f1] rounded-3xl p-6 md:p-8 shadow-level-2 border border-secondary/40">
+          <div className="bg-surface-container-low rounded-3xl p-6 md:p-8 shadow-level-2 border border-secondary/40">
             {/* Tipo de pregunta */}
             <div className="flex items-center mb-6">
               <span className="px-3 py-1 bg-secondary/20 text-secondary rounded-full text-sm font-semibold border border-secondary/30">
@@ -319,9 +316,9 @@ const TriviaInfinitePage = () => {
 
             {/* Dato curioso tras responder */}
             {answered && currentQuestion?.funFact && (
-              <div className="mt-5 bg-[#f0fdf4] border border-[#86efac] rounded-lg p-4">
-                <p className="text-sm font-bold text-[#166534] mb-1">💡 {t('trivia.result.funFact')}</p>
-                <p className="text-sm text-[#166534] leading-snug">{currentQuestion.funFact}</p>
+              <div className="mt-5 bg-success-light border border-secondary-fixed-dim rounded-lg p-4">
+                <p className="text-sm font-bold text-success-dark mb-1">💡 {t('trivia.result.funFact')}</p>
+                <p className="text-sm text-success-dark leading-snug">{currentQuestion.funFact}</p>
               </div>
             )}
 

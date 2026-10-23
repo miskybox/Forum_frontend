@@ -14,7 +14,7 @@ const TriviaStats = ({ stats }) => {
     : 0
 
   return (
-    <div className="p-6 rounded-2xl bg-[#e8f4f1] border border-secondary/35 shadow-level-2">
+    <div className="p-6 rounded-2xl bg-surface-container-low border border-secondary/35 shadow-level-2">
       {/* Header con nivel */}
       <div className="flex items-center justify-between mb-6">
         <div>

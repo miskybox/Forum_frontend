@@ -32,8 +32,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   const getRankStyle = (rank) => {
     switch (rank) {
       case 1: return 'bg-gradient-to-r from-primary-fixed-dim to-primary-fixed text-on-surface font-bold'
-      case 2: return 'bg-gradient-to-r from-[#f6c49b] to-[#e7a676] text-[#5b2c0c] font-bold'
-      case 3: return 'bg-gradient-to-r from-[#c7e5de] to-[#9ccdc3] text-[#17322e] font-bold'
+      case 2: return 'bg-gradient-to-r from-primary-fixed to-primary-fixed-dim text-on-primary-fixed-variant font-bold'
+      case 3: return 'bg-gradient-to-r from-secondary-container to-secondary-fixed-dim text-on-surface font-bold'
       default: return 'bg-surface-container text-on-surface-variant font-semibold'
     }
   }

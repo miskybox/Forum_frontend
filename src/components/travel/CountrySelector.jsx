@@ -282,8 +282,8 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   const selectedEmoji = getCountryEmoji(selectedCountry)
 
   return (
-    <div className="relative w-full min-w-[360px] sm:min-w-[480px] max-w-lg" ref={dropdownRef}>
-      <div className="w-full flex items-center gap-3 px-5 py-4 bg-surface-container-lowest border-2 border-outline-variant rounded-lg cursor-pointer hover:border-secondary hover:shadow-level-2 transition-all text-left min-h-[60px] relative">
+    <div className="relative w-full" ref={dropdownRef}>
+      <div className="w-full flex items-center gap-3 px-4 py-2 bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-base cursor-pointer hover:border-secondary transition-colors text-left min-h-11 relative">
         <select
           onChange={(e) => {
             const country = countries.find(c => getCountryIdentifier(c.original)?.toString() === e.target.value)

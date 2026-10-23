@@ -28,8 +28,8 @@ describe('TriviaResult - Accesibilidad visual', () => {
   it('usa paleta de error legible con texto oscuro en respuesta incorrecta', () => {
     const { container } = renderResult()
     const panel = container.firstChild
-    expect(panel.className).toContain('bg-[#fef2f2]')
-    expect(panel.className).toContain('text-[#7f1d1d]')
+    expect(panel.className).toContain('bg-error-light')
+    expect(panel.className).toContain('text-error-dark')
     expect(panel.className).not.toContain('text-white')
   })
 

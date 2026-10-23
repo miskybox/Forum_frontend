@@ -113,16 +113,11 @@ const TriviaPlayPage = () => {
 
       toast.error(errorMessage, { 
         duration: 5000,
-        style: {
-          background: '#1a1a2e',
-          color: '#ff6b6b',
-          border: '2px solid #ff6b6b'
-        }
       })
 
       // Permitir continuar a pesar del error si hay siguiente pregunta
       if (result?.hasNextQuestion) {
-        toast.info('Continuando con la siguiente pregunta...', { duration: 3000 })
+        toast('Continuando con la siguiente pregunta...', { duration: 3000 })
         handleNext()
       }
     }
@@ -256,9 +251,9 @@ const TriviaPlayPage = () => {
             
             {showAbandonConfirm ? (
               <div className="flex items-center gap-2">
-                <div className="bg-[#fee2e2] border border-[#b91c1c] px-3 py-1.5 rounded-lg">
+                <div className="bg-error-light border border-error px-3 py-1.5 rounded-lg">
                   <span
-                    className="text-[#7f1d1d] text-sm font-semibold"
+                    className="text-error-dark text-sm font-semibold"
                     style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(127,29,29,0.25)' }}
                   >
                     {t('trivia.abandonConfirm')}
@@ -266,14 +261,14 @@ const TriviaPlayPage = () => {
                 </div>
                 <button
                   onClick={handleAbandonConfirmed}
-                  className="px-3 py-1.5 bg-[#fecaca] text-[#7f1d1d] border border-[#b91c1c] rounded-lg hover:bg-[#fca5a5] transition-colors text-sm font-bold cursor-pointer"
+                  className="px-3 py-1.5 bg-error-container text-error-dark border border-error rounded-lg hover:bg-error-container transition-colors text-sm font-bold cursor-pointer"
                   style={{ textShadow: '0 1px 0 rgba(255,255,255,0.75), 0 0 1px rgba(127,29,29,0.25)' }}
                 >
                   {t('common.yes')}
                 </button>
                 <button
                   onClick={() => setShowAbandonConfirm(false)}
-                  className="px-3 py-1.5 bg-[#d1fae5] text-[#065f46] border border-[#047857] rounded-lg hover:bg-[#a7f3d0] transition-colors text-sm font-bold cursor-pointer"
+                  className="px-3 py-1.5 bg-success-light text-success-dark border border-success rounded-lg hover:bg-secondary-fixed-dim transition-colors text-sm font-bold cursor-pointer"
                 >
                   {t('common.no')}
                 </button>
@@ -281,7 +276,7 @@ const TriviaPlayPage = () => {
             ) : (
               <button
                 onClick={handleAbandon}
-                className="px-4 py-2 bg-[#fee2e2] text-[#7f1d1d] border border-[#b91c1c] rounded-lg hover:bg-[#fecaca] transition-colors text-sm font-semibold cursor-pointer"
+                className="px-4 py-2 bg-error-light text-error-dark border border-error rounded-lg hover:bg-error-container transition-colors text-sm font-semibold cursor-pointer"
               >
                 {t('trivia.abandon')}
               </button>
