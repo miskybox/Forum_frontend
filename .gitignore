@@ -39,3 +39,15 @@ nul
 tmpclaude-*
 cookies.txt
 .claude/
+
+# Informes y volcados locales (no subir a main)
+INFORME_AUDITORIA*
+*auditoria*
+informe*.md
+eslint_output.json
+*.pem
+*.key
+*.p12
+*.jks
+*.sql.bak
+dump.sql
