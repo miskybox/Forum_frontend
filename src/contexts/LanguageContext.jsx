@@ -447,6 +447,8 @@ const translations = {
       confirmDelete: '¿Eliminar este lugar de tu mapa?',
       legend: 'Leyenda',
       countriesMarked: 'países marcados',
+      enlargeMap: 'Agrandar mapa',
+      closeMap: 'Cerrar mapa',
     },
     // Posts
     posts: {
@@ -1436,6 +1438,8 @@ const translations = {
       confirmDelete: 'Delete this place from your map?',
       legend: 'Legend',
       countriesMarked: 'countries marked',
+      enlargeMap: 'Enlarge map',
+      closeMap: 'Close map',
     },
     // Posts
     posts: {
