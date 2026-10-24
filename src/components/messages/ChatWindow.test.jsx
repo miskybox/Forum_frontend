@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import ChatWindow from './ChatWindow'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 
 // Mock del servicio de mensajes
 vi.mock('../../services/messageService', () => ({
@@ -28,9 +29,11 @@ Element.prototype.scrollIntoView = vi.fn()
 describe('ChatWindow', () => {
   it('renderiza el componente correctamente', async () => {
     render(
-      <MemoryRouter>
-        <ChatWindow userId={2} onBack={vi.fn()} />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <ChatWindow userId={2} onBack={vi.fn()} />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     // El componente debería mostrar el input de mensaje
@@ -39,9 +42,11 @@ describe('ChatWindow', () => {
 
   it('muestra el boton de enviar', async () => {
     render(
-      <MemoryRouter>
-        <ChatWindow userId={2} onBack={vi.fn()} />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <ChatWindow userId={2} onBack={vi.fn()} />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     expect(await screen.findByLabelText('Enviar mensaje')).toBeInTheDocument()

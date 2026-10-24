@@ -1,19 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import { MdClose, MdSearch } from 'react-icons/md'
 import userService from '../../services/userService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import LoadingSpinner from '../common/LoadingSpinner'
+import Modal from '../ui/Modal'
+import Button from '../ui/Button'
+import Avatar from '../ui/Avatar'
+import EmptyState from '../ui/EmptyState'
+import { Input } from '../ui/Input'
 
 const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const inputRef = useRef(null)
   const debounceRef = useRef(null)
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus()
-    }
     if (!isOpen) {
       setSearchQuery('')
       setUsers([])
@@ -22,9 +27,7 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
   }, [isOpen])
 
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current)
 
     if (searchQuery.trim().length >= 2) {
       debounceRef.current = setTimeout(() => {
@@ -37,9 +40,7 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
     }
 
     return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-      }
+      if (debounceRef.current) clearTimeout(debounceRef.current)
     }
   }, [searchQuery])
 
@@ -51,7 +52,7 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
       setUsers(data.content || [])
     } catch (err) {
       console.error('Error loading users:', err)
-      setError('Error al cargar usuarios')
+      setError(t('messages.loadUsersError'))
     } finally {
       setLoading(false)
     }
@@ -65,7 +66,7 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
       setUsers(data.content || [])
     } catch (err) {
       console.error('Error searching users:', err)
-      setError('Error al buscar usuarios')
+      setError(t('messages.searchError'))
     } finally {
       setLoading(false)
     }
@@ -76,120 +77,67 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
     onClose()
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      onClose()
-    }
-  }
-
   if (!isOpen) return null
 
+  const hint = searchQuery.trim().length === 0
+    ? t('messages.suggested')
+    : searchQuery.trim().length < 2
+      ? t('messages.minChars')
+      : `${t('messages.resultsFor')} "${searchQuery}"`
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-    >
-      <div
-        className="bg-surface-container-lowest rounded-lg shadow-level-2 w-full max-w-md max-h-[80vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-surface-container-high">
-          <h2 className="text-lg font-semibold text-on-surface">Nueva conversacion</h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-surface-container-low rounded-full transition-colors"
-            aria-label="Cerrar"
-          >
-            <svg className="w-5 h-5 text-on-surface" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Search input */}
-        <div className="p-4 border-b border-surface-container-high">
-          <div className="relative">
-            <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              ref={inputRef}
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar usuario por nombre..."
-              className="w-full pl-10 pr-4 py-2 border border-surface-container-high rounded-lg focus:outline-none focus:border-secondary bg-surface-container-low/30"
-            />
-          </div>
-          <p className="text-xs text-on-surface-variant mt-2">
-            {searchQuery.trim().length === 0
-              ? 'Usuarios sugeridos'
-              : searchQuery.trim().length < 2
-                ? 'Escribe al menos 2 caracteres para buscar'
-                : `Resultados para "${searchQuery}"`}
-          </p>
-        </div>
-
-        {/* Users list */}
-        <div className="flex-1 overflow-y-auto">
+    <Modal title={t('messages.newConversation')} onClose={onClose} size="md">
+      <div className="absolute top-3 right-3">
+        <Button variant="icon" aria-label={t('messages.close')} onClick={onClose} icon={MdClose} />
+      </div>
+      <div className="mt-space-md space-y-space-sm max-h-[60vh] flex flex-col">
+        <Input
+          id="new-conversation-search"
+          label={t('messages.searchUsers')}
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder={t('messages.searchByName')}
+        />
+        <p className="text-caption text-on-surface-variant">{hint}</p>
+        <div className="flex-1 overflow-y-auto min-h-[12rem]">
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <LoadingSpinner />
-            </div>
+            <LoadingSpinner label={t('common.loading')} />
           ) : error ? (
-            <div className="text-center py-8 text-primary">
-              {error}
-              <button
-                onClick={loadRecentUsers}
-                className="block mx-auto mt-2 text-secondary hover:underline text-sm"
-              >
-                Reintentar
-              </button>
-            </div>
+            <EmptyState
+              title={error}
+              action={<Button variant="ghost" onClick={loadRecentUsers}>{t('messages.retry')}</Button>}
+            />
           ) : users.length === 0 ? (
-            <div className="text-center py-12 text-on-surface-variant">
-              <div className="text-4xl mb-2">🔍</div>
-              <p>No se encontraron usuarios</p>
-            </div>
+            <EmptyState icon={MdSearch} title={t('messages.noUsers')} />
           ) : (
-            <div className="divide-y divide-surface-container-high">
+            <ul className="divide-y divide-outline-variant/20">
               {users.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => handleSelectUser(user)}
-                  className="w-full p-4 flex items-center gap-3 hover:bg-surface-container/50 transition-colors text-left"
-                >
-                  <img
-                    src={user.avatarUrl || '/default-avatar.png'}
-                    alt={user.username}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <span className="font-semibold text-on-surface block truncate">
-                      {user.username}
+                <li key={user.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectUser(user)}
+                    className="w-full p-space-sm flex items-center gap-space-sm text-left hover:bg-surface-container-low"
+                  >
+                    <Avatar name={user.username} src={user.avatarUrl} size="lg" />
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-on-surface truncate">{user.username}</span>
+                      {user.bio && <span className="block text-body-sm text-on-surface-variant truncate">{user.bio}</span>}
                     </span>
-                    {user.bio && (
-                      <p className="text-sm text-on-surface-variant truncate">{user.bio}</p>
-                    )}
-                  </div>
-                  <svg className="w-5 h-5 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </button>
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
       </div>
-    </div>
+    </Modal>
   )
+}
+
+NewConversationModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  onSelectUser: PropTypes.func.isRequired,
 }
 
 export default NewConversationModal

@@ -1,18 +1,32 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { MdSend, MdVerified } from 'react-icons/md'
+import { MdFormatBold, MdFormatItalic, MdFormatListBulleted, MdLink, MdSend, MdVerified } from 'react-icons/md'
 import useAuth from '../../hooks/useAuth'
 import { useLanguage } from '../../contexts/LanguageContext'
 import commentService from '../../services/commentService'
 import { sanitizeInput, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
+import { wrapText } from '../../utils/wrapText'
 
 const CommentForm = ({ postId, parentId, onCommentAdded, compact = false }) => {
   const [content, setContent] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const textareaRef = useRef(null)
   const { isAuthenticated, currentUser } = useAuth()
   const { t } = useLanguage()
+
+  const applyWrap = (before, after = before, fallback = t('comments.writeComment')) => {
+    const field = textareaRef.current
+    const start = field?.selectionStart ?? content.length
+    const end = field?.selectionEnd ?? content.length
+    const next = wrapText(content, start, end, before, after, fallback)
+    setContent(next.value)
+    requestAnimationFrame(() => {
+      field?.focus()
+      field?.setSelectionRange(next.selectionStart, next.selectionEnd)
+    })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -84,7 +98,26 @@ const CommentForm = ({ postId, parentId, onCommentAdded, compact = false }) => {
         <label htmlFor={compact ? `comment-reply-${parentId}` : 'comment-content'} className="sr-only">
           {compact ? t('comments.replyPlaceholder') : t('comments.writeComment')}
         </label>
+        <div
+          className="flex flex-wrap gap-space-xs mb-space-xs"
+          role="toolbar"
+          aria-label={t('comments.toolbarLabel')}
+        >
+          <button type="button" className="btn-icon" aria-label={t('comments.bold')} onClick={() => applyWrap('**', '**', 'texto')} disabled={isSubmitting}>
+            <MdFormatBold aria-hidden="true" />
+          </button>
+          <button type="button" className="btn-icon" aria-label={t('comments.italic')} onClick={() => applyWrap('*', '*', 'texto')} disabled={isSubmitting}>
+            <MdFormatItalic aria-hidden="true" />
+          </button>
+          <button type="button" className="btn-icon" aria-label={t('comments.list')} onClick={() => applyWrap('- ', '', 'item')} disabled={isSubmitting}>
+            <MdFormatListBulleted aria-hidden="true" />
+          </button>
+          <button type="button" className="btn-icon" aria-label={t('comments.link')} onClick={() => applyWrap('[', '](https://)', 'enlace')} disabled={isSubmitting}>
+            <MdLink aria-hidden="true" />
+          </button>
+        </div>
         <textarea
+          ref={textareaRef}
           id={compact ? `comment-reply-${parentId}` : 'comment-content'}
           className={`bg-surface-container-low border-transparent resize-y ${compact ? 'min-h-[72px]' : 'min-h-[120px]'}`}
           placeholder={compact ? t('comments.replyPlaceholder') : t('comments.placeholder')}

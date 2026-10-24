@@ -19,9 +19,9 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 - [x] **F4. Profile territory**: mini `WorldMap` in the passport/territory card (visited countries already in travel stats).
 - [x] **F5. Diarios de Viaje (B1b)**: do not add a blog CMS. Point nav/footer “Diarios” to posts with photos (`hasImages=true`, existing B3 filter) — e.g. `/feed` photos tab or `/forums?hasImages=true`. Retire or wrap dead `blogService` `/api/blog/*` calls so that route does not 404.
 - [x] **F6. Reading time** on post detail/cards: `readingMinutes` from content length (B14; can be frontend-only).
-- [ ] **F7. Comment composer**: optional markdown toolbar; content stays plain text if skipped.
-- [ ] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
-- [ ] **F9. Messages**: review chat bubbles and modals with a real local conversation.
+- [x] **F7. Comment composer**: optional markdown toolbar; content stays plain text if skipped.
+- [x] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
+- [x] **F9. Messages**: review chat bubbles and modals with a real local conversation.
 - [ ] **F10. Home hero** (optional): interest/category chips filtering the feed (categories API exists).
 - [ ] **F11. Dark mode tokens** (optional; not in the mockups).
 

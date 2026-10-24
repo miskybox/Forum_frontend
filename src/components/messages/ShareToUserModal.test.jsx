@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import ShareToUserModal from './ShareToUserModal'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 import messageService from '../../services/messageService'
 import userService from '../../services/userService'
 import toast from 'react-hot-toast'
@@ -66,9 +67,11 @@ const renderModal = (props = {}) => {
     shareContent: mockShareContent
   }
   return render(
-    <MemoryRouter>
-      <ShareToUserModal {...defaultProps} {...props} />
-    </MemoryRouter>
+    <LanguageProvider>
+      <MemoryRouter>
+        <ShareToUserModal {...defaultProps} {...props} />
+      </MemoryRouter>
+    </LanguageProvider>
   )
 }
 
