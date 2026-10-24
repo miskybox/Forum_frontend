@@ -1,6 +1,9 @@
 /* eslint-disable no-undef */
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import { resolveFrontendOrigin } from './tests/e2e/frontend-origin.js';
+
+const baseURL = resolveFrontendOrigin();
 
 /**
  * Configuración de Playwright para Forum Viajeros
@@ -38,7 +41,7 @@ export default defineConfig({
   /* Configuración compartida para todos los tests */
   use: {
     /* URL base de la aplicación */
-    baseURL: 'http://localhost:5173',
+    baseURL,
     
     /* Capturar trace en caso de fallo */
     trace: 'on-first-retry',
@@ -70,7 +73,7 @@ export default defineConfig({
   /* Servidor de desarrollo */
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173',
+    url: `${baseURL}/`,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },

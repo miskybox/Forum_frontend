@@ -79,14 +79,14 @@ const BlogHomePage = () => {
                 <Link
                   key={category.id}
                   to={`/blog/category/${category.slug}`}
-                  className="bg-earth-50 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center group"
+                  className="bg-surface-container-lowest rounded-lg shadow-level-1 p-6 hover:shadow-level-2 transition-shadow text-center group"
                   style={{
-                    borderTop: `4px solid ${category.color || '#059669'}`
+                    borderTop: `4px solid ${category.color || '#476558'}`
                   }}
                 >
                   <div 
                     className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: category.color || '#059669' }}
+                    style={{ backgroundColor: category.color || '#476558' }}
                   >
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                   </div>
@@ -106,7 +106,7 @@ const BlogHomePage = () => {
 
         {/* All Posts */}
         <section>
-          <h2 className="text-3xl font-bold text-midnight mb-8">
+          <h2 className="text-3xl font-bold text-on-surface mb-8">
             Últimas Publicaciones
           </h2>
           <BlogGrid posts={posts} loading={loading} />
@@ -117,7 +117,7 @@ const BlogHomePage = () => {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Anterior
               </button>
@@ -127,7 +127,7 @@ const BlogHomePage = () => {
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Siguiente
               </button>

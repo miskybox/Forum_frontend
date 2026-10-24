@@ -46,7 +46,7 @@ const FollowButton = ({ userId, isFollowing: initialIsFollowing, onChange }) => 
 
   return (
     <button
-      className={`btn ${isFollowing ? 'bg-gray-300 text-gray-700' : 'bg-golden text-midnight'} px-4 py-2 rounded font-bold ml-4`}
+      className={`btn ${isFollowing ? 'bg-gray-300 text-gray-700' : 'bg-primary-fixed text-on-surface'} px-4 py-2 rounded font-bold ml-4`}
       onClick={handleClick}
       disabled={loading}
     >

@@ -8,6 +8,7 @@ describe('ForumCard - Links funcionales', () => {
     title: 'Viaje a París',
     description: 'Consejos para viajar a la ciudad de la luz',
     imageUrl: 'https://example.com/paris.jpg',
+    categoryName: 'Europa',
     postCount: 15,
     viewCount: 230,
     creator: {

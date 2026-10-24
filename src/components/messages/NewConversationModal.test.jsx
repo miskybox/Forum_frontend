@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import NewConversationModal from './NewConversationModal'
 import userService from '../../services/userService'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 
 vi.mock('../../services/userService', () => ({
   default: {
@@ -33,9 +34,11 @@ const renderModal = (props = {}) => {
     onSelectUser: vi.fn()
   }
   return render(
-    <MemoryRouter>
-      <NewConversationModal {...defaultProps} {...props} />
-    </MemoryRouter>
+    <LanguageProvider>
+      <MemoryRouter>
+        <NewConversationModal {...defaultProps} {...props} />
+      </MemoryRouter>
+    </LanguageProvider>
   )
 }
 

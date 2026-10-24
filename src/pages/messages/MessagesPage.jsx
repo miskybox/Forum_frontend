@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { MdAdd, MdChatBubbleOutline } from 'react-icons/md'
 import ConversationList from '../../components/messages/ConversationList'
 import ChatWindow from '../../components/messages/ChatWindow'
 import NewConversationModal from '../../components/messages/NewConversationModal'
 import messageService from '../../services/messageService'
+import { useLanguage } from '../../contexts/LanguageContext'
+import PageContainer from '../../components/ui/PageContainer'
+import Button from '../../components/ui/Button'
+import EmptyState from '../../components/ui/EmptyState'
 
 const MessagesPage = () => {
+  const { t } = useLanguage()
   const { userId } = useParams()
   const navigate = useNavigate()
-  const [selectedUserId, setSelectedUserId] = useState(userId ? parseInt(userId) : null)
+  const [selectedUserId, setSelectedUserId] = useState(userId ? parseInt(userId, 10) : null)
   const [unreadCount, setUnreadCount] = useState(0)
   const [showNewConversation, setShowNewConversation] = useState(false)
 
@@ -17,9 +23,7 @@ const MessagesPage = () => {
   }, [])
 
   useEffect(() => {
-    if (userId) {
-      setSelectedUserId(parseInt(userId))
-    }
+    if (userId) setSelectedUserId(parseInt(userId, 10))
   }, [userId])
 
   const loadUnreadCount = async () => {
@@ -31,9 +35,9 @@ const MessagesPage = () => {
     }
   }
 
-  const handleSelectConversation = (userId) => {
-    setSelectedUserId(userId)
-    navigate(`/messages/${userId}`)
+  const handleSelectConversation = (id) => {
+    setSelectedUserId(id)
+    navigate(`/messages/${id}`)
     loadUnreadCount()
   }
 
@@ -42,53 +46,42 @@ const MessagesPage = () => {
     navigate('/messages')
   }
 
-  const handleNewConversation = (userId) => {
-    setSelectedUserId(userId)
-    navigate(`/messages/${userId}`)
+  const handleNewConversation = (id) => {
+    setSelectedUserId(id)
+    navigate(`/messages/${id}`)
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <div className="mb-6 flex items-center justify-between">
+    <PageContainer className="py-margin space-y-space-lg">
+      <header className="flex items-center justify-between gap-space-sm">
         <div>
-          <h1 className="text-2xl font-bold text-forest flex items-center gap-2">
-            Mensajes
+          <h1 className="font-headline text-headline-lg text-on-surface flex items-center gap-space-sm">
+            {t('messages.title')}
             {unreadCount > 0 && (
-              <span className="bg-terracota text-white text-sm px-2 py-0.5 rounded-full">
+              <span className="bg-primary text-on-primary text-label-md px-2 py-0.5 rounded-full">
                 {unreadCount}
               </span>
             )}
           </h1>
-          <p className="text-forest/70 mt-1">Conversaciones privadas con otros viajeros</p>
+          <p className="mt-space-xs text-body-md text-on-surface-variant">{t('messages.subtitle')}</p>
         </div>
-        <button
-          onClick={() => setShowNewConversation(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          <span className="hidden sm:inline">Nueva conversacion</span>
-        </button>
-      </div>
+        <Button onClick={() => setShowNewConversation(true)} icon={MdAdd}>
+          {t('messages.newConversation')}
+        </Button>
+      </header>
 
-      <div className="bg-white rounded-xl shadow-md overflow-hidden border border-beige-dark">
+      <div className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden">
         <div className="flex h-[calc(100vh-14rem)] min-h-[500px]">
-          {/* Conversations sidebar */}
-          <div className={`w-full lg:w-80 border-r border-beige-dark overflow-y-auto ${
-            selectedUserId ? 'hidden lg:block' : 'block'
-          }`}>
-            <div className="p-4 border-b border-beige-dark bg-beige/30 flex items-center justify-between">
-              <h2 className="font-semibold text-forest">Conversaciones</h2>
-              <button
+          <div className={`w-full lg:w-80 border-r border-outline-variant/40 overflow-y-auto ${selectedUserId ? 'hidden lg:block' : 'block'}`}>
+            <div className="p-space-md border-b border-outline-variant/40 flex items-center justify-between">
+              <h2 className="font-semibold text-on-surface">{t('messages.conversations')}</h2>
+              <Button
+                variant="icon"
+                className="lg:hidden"
                 onClick={() => setShowNewConversation(true)}
-                className="lg:hidden p-2 text-teal hover:bg-beige rounded-full transition-colors"
-                aria-label="Nueva conversacion"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
+                aria-label={t('messages.newConversation')}
+                icon={MdAdd}
+              />
             </div>
             <ConversationList
               onSelectConversation={handleSelectConversation}
@@ -96,24 +89,19 @@ const MessagesPage = () => {
             />
           </div>
 
-          {/* Chat window */}
           <div className={`flex-1 ${selectedUserId ? 'block' : 'hidden lg:flex lg:items-center lg:justify-center'}`}>
             {selectedUserId ? (
               <ChatWindow userId={selectedUserId} onBack={handleBack} />
             ) : (
-              <div className="text-center text-forest/60 p-8">
-                <div className="text-6xl mb-4">💬</div>
-                <p className="text-lg mb-4">Selecciona una conversacion</p>
-                <button
-                  onClick={() => setShowNewConversation(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  Iniciar nueva conversacion
-                </button>
-              </div>
+              <EmptyState
+                icon={MdChatBubbleOutline}
+                title={t('messages.selectConversation')}
+                action={
+                  <Button onClick={() => setShowNewConversation(true)} icon={MdAdd}>
+                    {t('messages.startNew')}
+                  </Button>
+                }
+              />
             )}
           </div>
         </div>
@@ -124,7 +112,7 @@ const MessagesPage = () => {
         onClose={() => setShowNewConversation(false)}
         onSelectUser={handleNewConversation}
       />
-    </div>
+    </PageContainer>
   )
 }
 

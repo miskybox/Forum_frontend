@@ -1,6 +1,6 @@
 import api from '../utils/api'
 
-const CATEGORY_CACHE_KEY = 'forum_categories_cache_v1'
+const CATEGORY_CACHE_KEY = 'forum_categories_cache_v2'
 const CATEGORY_CACHE_TTL_MS = Number(import.meta.env.VITE_CATEGORY_CACHE_TTL_MS || 10 * 60 * 1000)
 const IS_TEST_ENV = import.meta.env.MODE === 'test'
 

@@ -165,23 +165,14 @@ test.describe('Mapa de Viajes', () => {
     }
   });
 
-  test('debe mostrar detalles de país al hacer click', async ({ page }) => {
+  test('al pulsar un país se abre el formulario para añadirlo', async ({ page }) => {
     await page.goto('/travel');
-    await page.waitForTimeout(5000);
+    const map = page.getByRole('img', { name: /mapa/i }).first();
+    await expect(map).toBeVisible({ timeout: 15000 });
 
-    const countryPath = page.locator('svg path').nth(10);
-    const hasCountry = await countryPath.isVisible().catch(() => false);
-
-    if (hasCountry) {
-      await countryPath.click();
-      await page.waitForTimeout(1000);
-
-      // Debe mostrar info del país (nombre, capital, etc)
-      const countryInfo = page.locator('[class*="info"], [class*="detail"], [role="dialog"]').first();
-      const hasInfo = await countryInfo.isVisible({ timeout: 3000 }).catch(() => false);
-
-      expect(hasInfo || true).toBeTruthy();
-    }
+    // Countries are drawn as paths inside the map
+    await map.locator('path').nth(10).click({ force: true });
+    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 5000 });
   });
 
   test('debe mostrar contador de países visitados', async ({ page }) => {
@@ -220,12 +211,9 @@ test.describe('Mapa de Viajes', () => {
   });
 
   test('debe poder ver ranking de viajeros', async ({ page }) => {
-    await page.goto('/travel/ranking');
-    await page.waitForTimeout(2000);
-
-    // Verificar que carga ranking
-    const ranking = page.locator('text=/ranking|top viajeros|leaderboard/i').first();
-    await expect(ranking).toBeVisible({ timeout: 10000 });
+    // There is no /travel/ranking page: the travelers ranking lives on the home page
+    await page.goto('/');
+    await expect(page.getByRole('heading', { name: /top viajeros/i })).toBeVisible({ timeout: 10000 });
   });
 
   test('debe mostrar mi posición en el ranking', async ({ page }) => {
@@ -319,9 +307,9 @@ test.describe('Mapa de Viajes', () => {
     await page.goto('/travel');
     await page.waitForTimeout(5000);
 
-    // El mapa debe adaptarse
-    const svg = page.locator('svg').first();
-    await expect(svg).toBeVisible();
+    // El mapa debe adaptarse (located by its accessible name, not by DOM order)
+    const map = page.getByRole('img', { name: /mapa/i }).first();
+    await expect(map).toBeVisible();
   });
 
   test('debe poder exportar datos de viaje', async ({ page }) => {

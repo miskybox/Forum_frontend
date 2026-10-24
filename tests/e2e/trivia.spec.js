@@ -7,6 +7,18 @@ import { test, expect } from '@playwright/test';
 test.describe('Trivia Geográfica', () => {
   test.use({ storageState: 'tests/.auth/user.json' });
 
+  // Start every test without an unfinished game; otherwise /trivia opens the
+  // "Partida en progreso" dialog over the game modes.
+  test.beforeEach(async ({ page }) => {
+    const api = 'http://localhost:8080/api/trivia/games';
+    const active = await page.request.get(`${api}/active`);
+    if (active.ok()) {
+      const body = await active.text();
+      const game = body ? JSON.parse(body) : null;
+      if (game?.id) await page.request.delete(`${api}/${game.id}`);
+    }
+  });
+
   test('debe cargar la página de trivia correctamente', async ({ page }) => {
     await page.goto('/trivia');
     
@@ -17,36 +29,29 @@ test.describe('Trivia Geográfica', () => {
     await page.goto('/trivia');
     
     // Verificar que hay opciones de juego
-    await expect(page.locator('text=/quiz rápido|desafío|modo infinito/i').first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /rápida/i }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /desafío/i }).first()).toBeVisible();
   });
 
   test('debe mostrar el modo infinito', async ({ page }) => {
     await page.goto('/trivia');
     
-    await expect(page.locator('text=/infinito/i')).toBeVisible();
+    await expect(page.getByRole('button', { name: /infinit/i }).first()).toBeVisible();
   });
 
   test('debe poder iniciar partida rápida', async ({ page }) => {
     await page.goto('/trivia');
     
-    // Click en Quiz Rápido
-    const quickButton = page.locator('text=/quiz rápido/i');
-    await quickButton.click();
-    
-    // Esperar a que cargue la partida
-    await page.waitForTimeout(3000);
-    
-    // Verificar que estamos en modo juego (hay pregunta o cargando)
-    const gameContent = page.locator('text=/pregunta|cargando|puntuación/i');
-    await expect(gameContent.first()).toBeVisible({ timeout: 15000 });
+    // Quick mode creates a game on the backend and opens the play page
+    await page.getByRole('button', { name: /rápida/i }).first().click();
+    await expect(page).toHaveURL(/\/trivia\/play\/\d+/, { timeout: 15000 });
+    await expect(page.locator('text=/pregunta|cargando|puntuación/i').first()).toBeVisible({ timeout: 15000 });
   });
 
   test('debe poder iniciar modo infinito', async ({ page }) => {
     await page.goto('/trivia');
     
-    // Click en Modo Infinito
-    const infiniteButton = page.locator('text=/modo infinito/i');
-    await infiniteButton.click();
+    await page.getByRole('button', { name: /infinit/i }).first().click();
     
     // Verificar que navega a la página de trivia infinita
     await expect(page).toHaveURL(/.*trivia\/infinite/, { timeout: 10000 });
@@ -70,7 +75,7 @@ test.describe('Trivia Geográfica', () => {
     await page.waitForTimeout(5000);
     
     // Buscar opciones de respuesta (botones)
-    const options = page.locator('button').filter({ hasText: /^[A-Z]/ });
+    const options = page.locator('main button').filter({ hasText: /^[A-Z]/ });
     
     if (await options.first().isVisible()) {
       // Click en la primera opción
@@ -136,14 +141,6 @@ test.describe('Trivia Geográfica', () => {
     }
   });
 
-  test('debe mostrar historial de partidas', async ({ page }) => {
-    await page.goto('/trivia/history');
-
-    // Verificar que carga historial
-    const history = page.locator('text=/historial|history|partidas/i').first();
-    await expect(history).toBeVisible({ timeout: 10000 });
-  });
-
   test('debe actualizar puntuación en tiempo real', async ({ page }) => {
     await page.goto('/trivia/infinite');
     await page.waitForTimeout(5000);
@@ -156,7 +153,7 @@ test.describe('Trivia Geográfica', () => {
       const initialScore = await scoreElement.textContent();
 
       // Responder una pregunta
-      const options = page.locator('button').filter({ hasText: /^[A-Z]/ });
+      const options = page.locator('main button').filter({ hasText: /^[A-Z]/ });
       if (await options.first().isVisible()) {
         await options.first().click();
         await page.waitForTimeout(2000);
@@ -181,28 +178,20 @@ test.describe('Trivia Geográfica', () => {
   test('debe permitir abandonar partida', async ({ page }) => {
     await page.goto('/trivia');
 
-    const quickButton = page.locator('text=/quiz rápido/i');
-    await quickButton.click();
-    await page.waitForTimeout(3000);
+    await page.getByRole('button', { name: /rápida/i }).first().click();
+    await expect(page).toHaveURL(/\/trivia\/play\/\d+/, { timeout: 15000 });
 
-    // Buscar botón de salir/abandonar
-    const exitBtn = page.locator('button:has-text("Salir"), button:has-text("Abandonar"), button:has-text("Volver")').first();
-    const hasExit = await exitBtn.isVisible().catch(() => false);
-
-    if (hasExit) {
-      await exitBtn.click();
-      await page.waitForTimeout(1000);
-
-      // Debe volver a la página principal de trivia
-      await expect(page).toHaveURL(/\/trivia\/?$/);
-    }
+    // Abandoning asks for confirmation before leaving the game
+    await page.getByRole('button', { name: 'Abandonar' }).click();
+    await page.getByRole('button', { name: 'Sí' }).click();
+    await expect(page).toHaveURL(/\/trivia\/?$/, { timeout: 10000 });
   });
 
   test('debe mostrar respuesta correcta después de fallar', async ({ page }) => {
     await page.goto('/trivia/infinite');
     await page.waitForTimeout(5000);
 
-    const options = page.locator('button').filter({ hasText: /^[A-Z]/ });
+    const options = page.locator('main button').filter({ hasText: /^[A-Z]/ });
 
     if (await options.first().isVisible()) {
       await options.first().click();

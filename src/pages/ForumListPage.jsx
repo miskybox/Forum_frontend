@@ -1,54 +1,111 @@
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { MdAddCircleOutline, MdForum } from 'react-icons/md'
 import ForumList from '../components/forums/ForumList'
+import CategoryCard from '../components/categories/CategoryCard'
+import CategoryChannels from '../components/home/CategoryChannels'
+import SectionCard from '../components/ui/SectionCard'
+import categoryService from '../services/categoryService'
+import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import Seo from '../components/common/SEO'
 
-/**
- * ForumListPage con tema Adventure Explorer Retro
- * Paleta accesible WCAG AA
- */
 const ForumListPage = () => {
   const { categoryId } = useParams()
   const { t } = useLanguage()
+  const { isAuthenticated } = useAuth()
+  const [categories, setCategories] = useState([])
+  const generalCategories = categories
+    .filter((item) => item.type !== 'CONTINENT')
+    .sort((a, b) => a.name.localeCompare(b.name, 'es'))
+  const continentCategories = categories
+    .filter((item) => item.type === 'CONTINENT')
+    .sort((a, b) => a.name.localeCompare(b.name, 'es'))
+
+  useEffect(() => {
+    categoryService
+      .getAllCategories()
+      .then((data) => setCategories(Array.isArray(data) ? data : data?.content || []))
+      .catch(() => setCategories([]))
+  }, [])
 
   return (
-    <div className="min-h-screen py-8 sm:py-12 relative overflow-hidden">
+    <div className="flex flex-col w-full">
       <Seo
         title="Foros de viaje"
         description="Explora y participa en foros de viaje por destinos, consejos, rutas y experiencias de viajeros de todo el mundo."
         url="/forums"
       />
-      {/* Efectos sutiles de aventura - partículas doradas */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-3 h-3 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 3}s`,
-              backgroundColor: ['#E5A13E', '#CFE7E5', '#213638'][Math.floor(Math.random() * 3)]
-            }}
-          />
-        ))}
-      </div>
 
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="w-24 h-24 mx-auto mb-6 bg-golden rounded-full flex items-center justify-center shadow-xl border-4 border-midnight">
-            <svg className="w-12 h-12 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-midnight mb-4 tracking-normal uppercase">
+      <header className="relative overflow-hidden bg-gradient-to-b from-surface-container-high/80 via-surface-container-low to-background">
+        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-secondary-fixed/25 blur-3xl pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-gutter-sm lg:px-gutter-lg pt-space-xl pb-space-lg">
+          <p className="inline-flex items-center gap-space-xs px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md mb-space-sm">
+            <MdForum className="text-title-md" aria-hidden="true" />
+            {t('forums.eyebrow')}
+          </p>
+          <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface max-w-3xl">
             {t('forums.title')}
           </h1>
-          <div className="h-1 w-48 mx-auto bg-gradient-to-r from-transparent via-ocean-500 to-transparent mb-4"></div>
-          <p className="text-light-soft font-bold text-sm md:text-base tracking-normal">
-            {t('forums.subtitle')}
-          </p>
+          <p className="mt-space-xs text-body-lg text-on-surface-variant max-w-2xl">{t('forums.intro')}</p>
         </div>
-        <ForumList categoryId={categoryId} />
+      </header>
+
+      <div className="w-full bg-surface-container">
+      <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
+          <section className="lg:col-span-8 rounded-xl bg-surface-container-lowest p-space-md sm:p-space-lg shadow-level-1 ring-1 ring-outline-variant/40 space-y-space-lg">
+            {!categoryId && (generalCategories.length > 0 || continentCategories.length > 0) && (
+              <div>
+                <h2 className="font-headline text-headline-md text-on-surface mb-space-md">
+                  {t('forums.categories')}
+                </h2>
+                <div className="space-y-space-md">
+                  {generalCategories.length > 0 && (
+                    <div className="flex justify-center">
+                      <div className="w-full max-w-[16rem] sm:max-w-xs">
+                        {generalCategories.map((item) => (
+                          <CategoryCard key={item.id} category={item} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {continentCategories.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-space-sm">
+                      {continentCategories.map((item) => (
+                        <CategoryCard key={item.id} category={item} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            <ForumList categoryId={categoryId} />
+          </section>
+
+          <aside className="lg:col-span-4 flex flex-col gap-space-lg">
+            <div className="bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-lg p-space-lg shadow-level-2">
+              <h2 className="font-headline text-headline-sm text-on-primary">{t('forums.createCtaTitle')}</h2>
+              <p className="mt-space-xs text-body-sm text-on-primary/90">{t('forums.createCtaText')}</p>
+              <Link
+                to={isAuthenticated ? '/forums/create' : '/register'}
+                className="mt-space-md w-full inline-flex items-center justify-center gap-space-xs py-3 px-space-lg rounded-full bg-surface-container-lowest hover:bg-surface-bright text-primary hover:text-primary text-label-lg shadow-level-1 transition-colors"
+              >
+                <MdAddCircleOutline className="text-title-md" aria-hidden="true" />
+                {isAuthenticated ? t('forums.createNew') : t('forums.joinToCreate')}
+              </Link>
+            </div>
+
+            {categories.length > 0 ? (
+              <CategoryChannels categories={categories} />
+            ) : (
+              <SectionCard title={t('forums.categories')}>
+                <Link to="/categories" className="text-label-lg">{t('forums.categories')}</Link>
+              </SectionCard>
+            )}
+          </aside>
+        </div>
+      </div>
       </div>
     </div>
   )

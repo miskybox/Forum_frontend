@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { vi } from 'vitest'
 import userService from './userService'
 import api from '../utils/api'
 
@@ -41,6 +41,20 @@ describe('userService', () => {
       api.get.mockRejectedValueOnce(error)
 
       await expect(userService.getAllUsers()).rejects.toEqual(error)
+    })
+  })
+
+  describe('getTopContributors - GET /users/top-contributors', () => {
+    it('pide el ranking mensual con límite', async () => {
+      const ranking = [{ userId: 1, username: 'viajero_demo', points: 12 }]
+      api.get.mockResolvedValueOnce({ data: ranking })
+
+      const result = await userService.getTopContributors('month', 5)
+
+      expect(api.get).toHaveBeenCalledWith('/users/top-contributors', {
+        params: { period: 'month', limit: 5 },
+      })
+      expect(result).toEqual(ranking)
     })
   })
 

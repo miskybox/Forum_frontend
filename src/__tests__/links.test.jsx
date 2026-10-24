@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import Navbar from '../components/common/Navbar'
+import Footer from '../components/common/Footer'
 import HomePage from '../pages/HomePage'
 import ForumCard from '../components/forums/ForumCard'
 import PostCard from '../components/post/PostCard'
@@ -65,12 +66,48 @@ describe('Links y Navegación - Verificación Completa', () => {
       expect(loginLinks[0]).toHaveAttribute('href', '/login')
     })
 
+    it('tiene link a Diarios (/feed?tab=photos)', () => {
+      renderWithProviders(<Navbar />)
+
+      const diaryLinks = screen.getAllByRole('link', { name: /diarios/i })
+      expect(diaryLinks[0]).toHaveAttribute('href', '/feed?tab=photos')
+    })
+
     it('tiene link a Registro (/register)', () => {
       renderWithProviders(<Navbar />)
 
       const registerLinks = screen.getAllByRole('link', { name: /registrarse/i })
       expect(registerLinks.length).toBeGreaterThan(0)
       expect(registerLinks[0]).toHaveAttribute('href', '/register')
+    })
+  })
+
+  describe('Footer - rutas internas existentes', () => {
+    const knownPaths = [
+      '/',
+      '/forums',
+      '/categories',
+      '/travel',
+      '/feed',
+      '/usuarios',
+      '/trivia',
+      '/about',
+      '/contact',
+      '/help',
+    ]
+
+    it('solo enlaza a rutas definidas en App', () => {
+      renderWithProviders(<Footer />)
+      const links = screen.getAllByRole('link')
+      const internal = links
+        .map((link) => link.getAttribute('href'))
+        .filter((href) => href && href.startsWith('/'))
+        .map((href) => href.split('?')[0])
+
+      internal.forEach((path) => {
+        const known = knownPaths.some((knownPath) => path === knownPath || path.startsWith(`${knownPath}/`))
+        expect(known, path).toBe(true)
+      })
     })
   })
 

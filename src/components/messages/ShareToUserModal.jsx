@@ -1,11 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
+import { MdClose, MdSearch, MdSend } from 'react-icons/md'
 import userService from '../../services/userService'
 import messageService from '../../services/messageService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import LoadingSpinner from '../common/LoadingSpinner'
+import Modal from '../ui/Modal'
+import Button from '../ui/Button'
+import Avatar from '../ui/Avatar'
+import EmptyState from '../ui/EmptyState'
+import SegmentedTabs from '../ui/SegmentedTabs'
+import { Input } from '../ui/Input'
 import toast from 'react-hot-toast'
 
 const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [users, setUsers] = useState([])
@@ -14,45 +24,9 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
   const [sending, setSending] = useState(false)
   const [error, setError] = useState(null)
   const [activeTab, setActiveTab] = useState('recent')
-  const inputRef = useRef(null)
   const debounceRef = useRef(null)
 
-  useEffect(() => {
-    if (isOpen) {
-      loadRecentConversations()
-      if (inputRef.current) {
-        inputRef.current.focus()
-      }
-    }
-    if (!isOpen) {
-      setSearchQuery('')
-      setUsers([])
-      setError(null)
-      setActiveTab('recent')
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-    }
-
-    if (searchQuery.trim().length >= 2) {
-      debounceRef.current = setTimeout(() => {
-        searchUsers(searchQuery.trim())
-      }, 300)
-    } else {
-      setUsers([])
-    }
-
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-      }
-    }
-  }, [searchQuery])
-
-  const loadRecentConversations = async () => {
+  const loadRecentConversations = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -60,13 +34,13 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
       setConversations(data.slice(0, 10))
     } catch (err) {
       console.error('Error loading conversations:', err)
-      setError('Error al cargar conversaciones')
+      setError(t('messages.loadConversationsError'))
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
 
-  const searchUsers = async (query) => {
+  const searchUsers = useCallback(async (query) => {
     try {
       setLoading(true)
       setError(null)
@@ -74,196 +48,152 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
       setUsers(data.content || [])
     } catch (err) {
       console.error('Error searching users:', err)
-      setError('Error al buscar usuarios')
+      setError(t('messages.searchError'))
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
+
+  useEffect(() => {
+    if (isOpen) loadRecentConversations()
+    if (!isOpen) {
+      setSearchQuery('')
+      setUsers([])
+      setError(null)
+      setActiveTab('recent')
+    }
+  }, [isOpen, loadRecentConversations])
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (searchQuery.trim().length >= 2) {
+      debounceRef.current = setTimeout(() => searchUsers(searchQuery.trim()), 300)
+    } else {
+      setUsers([])
+    }
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [searchQuery, searchUsers])
 
   const handleSendToUser = async (userId, username) => {
     try {
       setSending(true)
       const message = `Mira esta publicacion: ${shareContent.title}\n${shareContent.url}`
       await messageService.sendMessage(userId, message)
-      toast.success(`Contenido compartido con ${username}`)
+      toast.success(`${t('messages.sharedWith')} ${username}`)
       onClose()
       navigate(`/messages/${userId}`)
     } catch (err) {
       console.error('Error sending share:', err)
-      toast.error('Error al compartir')
+      toast.error(t('messages.shareError'))
     } finally {
       setSending(false)
     }
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      onClose()
-    }
-  }
-
   if (!isOpen || !shareContent) return null
 
+  const tabs = [
+    { id: 'recent', label: t('messages.recent') },
+    { id: 'search', label: t('messages.search') },
+  ]
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-    >
-      <div
-        className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[80vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-beige-dark">
-          <h2 className="text-lg font-semibold text-forest">Compartir publicacion</h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-beige rounded-full transition-colors"
-            aria-label="Cerrar"
-          >
-            <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Preview of shared content */}
-        <div className="p-4 bg-beige/30 border-b border-beige-dark">
-          <p className="text-sm text-forest/70 mb-1">Compartiendo:</p>
-          <p className="font-medium text-forest truncate">{shareContent.title}</p>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex border-b border-beige-dark">
-          <button
-            onClick={() => setActiveTab('recent')}
-            className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${
-              activeTab === 'recent'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/70 hover:text-forest'
-            }`}
-          >
-            Recientes
-          </button>
-          <button
-            onClick={() => setActiveTab('search')}
-            className={`flex-1 py-2 px-4 text-sm font-medium transition-colors ${
-              activeTab === 'search'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/70 hover:text-forest'
-            }`}
-          >
-            Buscar
-          </button>
-        </div>
-
-        {/* Search input (only in search tab) */}
+    <Modal title={t('messages.shareTitle')} onClose={onClose} size="md">
+      <div className="absolute top-3 right-3">
+        <Button variant="icon" aria-label={t('messages.close')} onClick={onClose} icon={MdClose} />
+      </div>
+      <div className="mt-space-md space-y-space-sm max-h-[60vh] flex flex-col">
+        <p className="text-body-sm text-on-surface-variant">{t('messages.sharing')}</p>
+        <p className="font-medium text-on-surface truncate">{shareContent.title}</p>
+        <SegmentedTabs
+          tabs={tabs}
+          activeId={activeTab}
+          onChange={setActiveTab}
+          idPrefix="share"
+          label={t('messages.shareTitle')}
+        />
         {activeTab === 'search' && (
-          <div className="p-4 border-b border-beige-dark">
-            <div className="relative">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-forest/50"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                ref={inputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar usuario..."
-                className="w-full pl-10 pr-4 py-2 border border-beige-dark rounded-lg focus:outline-none focus:border-teal bg-beige/30"
-              />
-            </div>
-          </div>
+          <Input
+            id="share-user-search"
+            label={t('messages.searchUsers')}
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder={t('messages.searchUser')}
+          />
         )}
-
-        {/* Users/Conversations list */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto min-h-[12rem]">
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <LoadingSpinner />
-            </div>
+            <LoadingSpinner label={t('common.loading')} />
           ) : error ? (
-            <div className="text-center py-8 text-terracota">
-              {error}
-            </div>
+            <p className="text-center py-8 text-error">{error}</p>
           ) : activeTab === 'recent' ? (
             conversations.length === 0 ? (
-              <div className="text-center py-12 text-forest/60">
-                <p>No hay conversaciones recientes</p>
-                <button
-                  onClick={() => setActiveTab('search')}
-                  className="text-teal hover:underline mt-2"
-                >
-                  Buscar usuarios
-                </button>
-              </div>
+              <EmptyState
+                title={t('messages.noRecent')}
+                action={<Button variant="ghost" onClick={() => setActiveTab('search')}>{t('messages.searchUsersCta')}</Button>}
+              />
             ) : (
-              <div className="divide-y divide-beige-dark">
-                {conversations.map((conv) => (
-                  <button
-                    key={conv.participantId}
-                    onClick={() => handleSendToUser(conv.participantId, conv.participantUsername)}
-                    disabled={sending}
-                    className="w-full p-4 flex items-center gap-3 hover:bg-beige-dark/50 transition-colors text-left disabled:opacity-50"
-                  >
-                    <img
-                      src={conv.participantAvatarUrl || '/default-avatar.png'}
-                      alt={conv.participantUsername}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-teal"
-                    />
-                    <span className="font-semibold text-forest flex-1 truncate">
-                      {conv.participantUsername}
-                    </span>
-                    <svg className="w-5 h-5 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                  </button>
-                ))}
-              </div>
+              <UserRows
+                rows={conversations.map((conv) => ({
+                  id: conv.participantId,
+                  username: conv.participantUsername,
+                  avatarUrl: conv.participantAvatarUrl,
+                }))}
+                onPick={handleSendToUser}
+                sending={sending}
+              />
             )
           ) : searchQuery.trim().length < 2 ? (
-            <div className="text-center py-12 text-forest/60">
-              <p>Escribe al menos 2 caracteres para buscar</p>
-            </div>
+            <p className="text-center py-12 text-on-surface-variant">{t('messages.minChars')}</p>
           ) : users.length === 0 ? (
-            <div className="text-center py-12 text-forest/60">
-              <div className="text-4xl mb-2">🔍</div>
-              <p>No se encontraron usuarios</p>
-            </div>
+            <EmptyState icon={MdSearch} title={t('messages.noUsers')} />
           ) : (
-            <div className="divide-y divide-beige-dark">
-              {users.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => handleSendToUser(user.id, user.username)}
-                  disabled={sending}
-                  className="w-full p-4 flex items-center gap-3 hover:bg-beige-dark/50 transition-colors text-left disabled:opacity-50"
-                >
-                  <img
-                    src={user.avatarUrl || '/default-avatar.png'}
-                    alt={user.username}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-teal"
-                  />
-                  <span className="font-semibold text-forest flex-1 truncate">
-                    {user.username}
-                  </span>
-                  <svg className="w-5 h-5 text-teal flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
-                </button>
-              ))}
-            </div>
+            <UserRows rows={users} onPick={handleSendToUser} sending={sending} />
           )}
         </div>
       </div>
-    </div>
+    </Modal>
   )
+}
+
+const UserRows = ({ rows, onPick, sending }) => (
+  <ul className="divide-y divide-outline-variant/20">
+    {rows.map((user) => (
+      <li key={user.id}>
+        <button
+          type="button"
+          onClick={() => onPick(user.id, user.username)}
+          disabled={sending}
+          className="w-full p-space-sm flex items-center gap-space-sm text-left hover:bg-surface-container-low disabled:opacity-50"
+        >
+          <Avatar name={user.username} src={user.avatarUrl} size="lg" />
+          <span className="font-semibold text-on-surface flex-1 truncate">{user.username}</span>
+          <MdSend className="text-secondary" aria-hidden="true" />
+        </button>
+      </li>
+    ))}
+  </ul>
+)
+
+UserRows.propTypes = {
+  rows: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    username: PropTypes.string,
+    avatarUrl: PropTypes.string,
+  })).isRequired,
+  onPick: PropTypes.func.isRequired,
+  sending: PropTypes.bool,
+}
+
+ShareToUserModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  shareContent: PropTypes.shape({
+    title: PropTypes.string,
+    url: PropTypes.string,
+  }),
 }
 
 export default ShareToUserModal

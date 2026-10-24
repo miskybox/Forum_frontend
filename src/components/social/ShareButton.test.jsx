@@ -155,11 +155,11 @@ describe('ShareButton', () => {
 
   it('aplica clases de tamano correctas para sm', () => {
     renderShareButton({ size: 'sm' })
-    expect(screen.getByLabelText('Compartir')).toHaveClass('p-1.5')
+    expect(screen.getByLabelText('Compartir')).toHaveClass('p-2.5')
   })
 
   it('aplica clases de tamano correctas para md', () => {
     renderShareButton({ size: 'md' })
-    expect(screen.getByLabelText('Compartir')).toHaveClass('p-2')
+    expect(screen.getByLabelText('Compartir')).toHaveClass('p-2.5')
   })
 })

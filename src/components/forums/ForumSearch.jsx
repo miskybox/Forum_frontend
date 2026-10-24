@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { MdSearch } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 
-/**
- * ForumSearch con estilo retro Adventure
- */
 const ForumSearch = ({ onSearch, initialValue = '' }) => {
   const [searchTerm, setSearchTerm] = useState(initialValue)
   const { t } = useLanguage()
 
-  // Sincronizar input cuando el padre limpia la búsqueda
+  // Keep the input in sync when the parent clears the search
   useEffect(() => {
     setSearchTerm(initialValue)
   }, [initialValue])
@@ -20,31 +18,31 @@ const ForumSearch = ({ onSearch, initialValue = '' }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md">
+    <form
+      role="search"
+      onSubmit={handleSubmit}
+      className="w-full md:max-w-md flex items-center gap-space-xs p-1 pl-space-md bg-surface-container-lowest rounded-full shadow-level-1 focus-within:ring-2 focus-within:ring-primary/30"
+    >
+      <MdSearch className="text-body-lg text-on-surface-variant flex-shrink-0" aria-hidden="true" />
       <label htmlFor="forum-search" className="sr-only">{t('forumList.searchPlaceholder')}</label>
-      <div className="flex items-center gap-2">
-        <input
-          id="forum-search"
-          type="text"
-          className="input w-full border-adventure-gold"
-          placeholder={t('forumList.searchPlaceholder') || 'Buscar foros...'}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="btn btn-secondary whitespace-nowrap"
-        >
-          <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          {t('forumList.search')}
-        </button>
-      </div>
+      <input
+        id="forum-search"
+        type="search"
+        className="min-h-0 py-2 px-0 border-0 shadow-none bg-transparent outline-none text-body-sm"
+        placeholder={t('forumList.searchPlaceholder')}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <button type="submit" className="px-space-md py-2 rounded-full bg-secondary hover:bg-on-secondary-fixed-variant text-on-secondary text-label-lg transition-colors whitespace-nowrap">
+        {t('forumList.search')}
+      </button>
     </form>
   )
 }
+
 ForumSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  initialValue: PropTypes.string
+  initialValue: PropTypes.string,
 }
 
 export default ForumSearch

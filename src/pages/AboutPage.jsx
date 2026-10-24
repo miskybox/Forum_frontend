@@ -1,37 +1,33 @@
-import { Link } from 'react-router-dom'
+import { MdEco, MdPublic } from 'react-icons/md'
 import { useLanguage } from '../contexts/LanguageContext'
+import ContentPageLayout from '../components/common/ContentPageLayout'
 import Seo from '../components/common/SEO'
 
 const AboutPage = () => {
   const { t } = useLanguage()
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
       <Seo
         title="Sobre nosotros"
         description="Conoce ForumViajeros, la comunidad de viajeros donde compartir experiencias, rutas y consejos de viaje de todo el mundo."
         url="/about"
       />
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">{t('about.title')}</h1>
-        <div className="prose prose-lg">
-          <p className="text-lg mb-4">
-            {t('about.description1')}
-          </p>
-          <p className="mb-4">
-            {t('about.description2')}
-          </p>
-          <div className="mt-8">
-            <Link to="/" className="btn btn-primary">
-              {t('help.backHome')}
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+      <ContentPageLayout eyebrow={t('nav.tagline')} icon={MdPublic} title={t('about.title')} lead={t('about.description1')}>
+        <section className="bg-surface-container-lowest rounded-lg p-space-lg shadow-level-1">
+          <p className="text-body-lg text-on-surface">{t('about.description2')}</p>
+        </section>
+        <section className="bg-gradient-to-br from-tertiary-container/30 to-surface-container rounded-lg p-space-lg">
+          <h2 className="flex items-center gap-space-xs font-body text-label-lg uppercase tracking-wider text-secondary">
+            <MdEco className="text-title-md" aria-hidden="true" />
+            {t('footer.manifestoTitle')}
+          </h2>
+          <p className="mt-space-sm font-headline text-headline-sm text-on-surface italic">{t('home.responsibleQuote')}</p>
+          <p className="mt-space-sm text-body-md text-on-surface-variant">{t('footer.manifesto')}</p>
+        </section>
+      </ContentPageLayout>
+    </>
   )
 }
 
 export default AboutPage
-
-

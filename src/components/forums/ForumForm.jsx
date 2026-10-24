@@ -7,6 +7,7 @@ import categoryService from '../../services/categoryService'
 import forumService from '../../services/forumService'
 import { sanitizeInput, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
 import { getCroppedImg } from '../../utils/cropImage'
+import { ACCEPTED_IMAGE_ACCEPT, isAcceptedImageFile } from '../../utils/imageTypes'
 
 const ForumForm = ({ initialData = null, isEdit = false }) => {
   const { t } = useLanguage()
@@ -81,8 +82,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       return
     }
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-    if (!validTypes.includes(file.type)) {
+    if (!isAcceptedImageFile(file)) {
       setErrors({ ...errors, image: t('forums.invalidImageFormat') })
       return
     }
@@ -233,7 +233,6 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
 
       toast.error(errorMessage, { 
         duration: 5000,
-        style: { background: '#2D2A26', color: '#F6E6CB', border: '2px solid #d6453d' }
       })
       
       setErrors(prev => ({ ...prev, submit: errorMessage }))
@@ -245,7 +244,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-primary-fixed border-t-primary"></div>
       </div>
     )
   }
@@ -285,7 +284,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
     <div className="max-w-2xl mx-auto">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+          <label htmlFor="title" className="block text-label-lg text-on-surface mb-space-xs">
             {t('forums.formTitle')} <span className="text-error">{t('forums.required')}</span>
           </label>
           <input
@@ -293,25 +292,25 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             name="title"
             type="text"
             required
-            className={`input w-full ${errors.title ? 'border-error focus:ring-error' : ''}`}
+            className={`bg-surface-container-low ${errors.title ? 'border-error' : ''}`}
             value={formData.title}
             onChange={handleChange}
             placeholder={t('forums.formTitlePlaceholder')}
             disabled={isSubmitting}
             maxLength={LENGTH_LIMITS.FORUM_TITLE.max}
           />
-          <div className="flex justify-between mt-2">
+          <div className="flex justify-between mt-1">
             {errors.title && (
-              <p className="text-sm text-error font-medium">{errors.title}</p>
+              <p className="text-caption text-error">{errors.title}</p>
             )}
-            <p className="text-sm text-light-soft ml-auto">
+            <p className="text-caption text-on-surface-variant ml-auto">
               {formData.title.length}/{LENGTH_LIMITS.FORUM_TITLE.max}
             </p>
           </div>
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+          <label htmlFor="description" className="block text-label-lg text-on-surface mb-space-xs">
             {t('forums.formDescription')} <span className="text-error">{t('forums.required')}</span>
           </label>
           <textarea
@@ -319,32 +318,32 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             name="description"
             rows={4}
             required
-            className={`input w-full ${errors.description ? 'border-error focus:ring-error' : ''}`}
+            className={`bg-surface-container-low ${errors.description ? 'border-error' : ''}`}
             value={formData.description}
             onChange={handleChange}
             placeholder={t('forums.formDescriptionPlaceholder')}
             disabled={isSubmitting}
             maxLength={LENGTH_LIMITS.FORUM_DESCRIPTION.max}
           />
-          <div className="flex justify-between mt-2">
+          <div className="flex justify-between mt-1">
             {errors.description && (
-              <p className="text-sm text-error font-medium">{errors.description}</p>
+              <p className="text-caption text-error">{errors.description}</p>
             )}
-            <p className="text-sm text-light-soft ml-auto">
+            <p className="text-caption text-on-surface-variant ml-auto">
               {formData.description.length}/{LENGTH_LIMITS.FORUM_DESCRIPTION.max}
             </p>
           </div>
         </div>
 
         <div>
-          <label htmlFor="categoryId" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+          <label htmlFor="categoryId" className="block text-label-lg text-on-surface mb-space-xs">
             {t('forums.formContinent')} <span className="text-error">{t('forums.required')}</span>
           </label>
           <select
             id="categoryId"
             name="categoryId"
             required
-            className={`input w-full ${errors.categoryId ? 'border-error focus:ring-error' : ''}`}
+            className={`bg-surface-container-low ${errors.categoryId ? 'border-error' : ''}`}
             value={formData.categoryId}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -357,12 +356,12 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
             ))}
           </select>
           {errors.categoryId && (
-            <p className="mt-2 text-sm text-error font-medium">{errors.categoryId}</p>
+            <p className="mt-1 text-caption text-error">{errors.categoryId}</p>
           )}
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-sm font-bold text-light mb-2 uppercase tracking-wide">
+          <label htmlFor="image" className="block text-label-lg text-on-surface mb-space-xs">
             {t('forums.imageOptional')}
           </label>
 
@@ -371,30 +370,30 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
               id="image"
               name="image"
               type="file"
-              accept="image/*"
+              accept={ACCEPTED_IMAGE_ACCEPT}
               className="sr-only"
               onChange={handleImageChange}
               disabled={isSubmitting}
             />
             <label
               htmlFor="image"
-              className="cursor-pointer bg-dark-lighter py-2 px-4 border-2 border-ocean-500 rounded-lg shadow-sm text-sm font-bold text-forest-500 hover:bg-ocean-500 hover:text-dark transition-all duration-300"
+              className="cursor-pointer btn btn-outline"
             >
               {t('forums.selectImage')}
             </label>
 
-            <span className="ml-3 text-sm text-light-soft font-medium">
+            <span className="ml-3 text-body-sm text-on-surface-variant">
               {getImageLabel()}
             </span>
           </div>
 
           {errors.image && (
-            <p className="mt-2 text-sm text-error font-medium">{errors.image}</p>
+            <p className="mt-1 text-caption text-error">{errors.image}</p>
           )}
 
           {/* ── Crop editor (shown right after file selection) ── */}
           {showCropper && rawImageSrc && (
-            <div className="mt-4 rounded-lg overflow-hidden border-2 border-ocean-500">
+            <div className="mt-space-md rounded-lg overflow-hidden border border-outline-variant">
               {/* Cropper area */}
               <div className="relative w-full bg-black" style={{ height: '280px' }}>
                 <Cropper
@@ -408,8 +407,8 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
                 />
               </div>
               {/* Zoom slider */}
-              <div className="bg-dark-lighter px-4 py-3 flex items-center gap-3">
-                <svg className="w-4 h-4 text-light-soft shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-surface-container-low px-4 py-3 flex items-center gap-3">
+                <svg className="w-4 h-4 text-on-surface-variant shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                 </svg>
                 <input
@@ -419,26 +418,26 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
                   step={0.05}
                   value={zoom}
                   onChange={e => setZoom(Number(e.target.value))}
-                  className="flex-1 accent-ocean-500"
+                  className="flex-1 accent-primary"
                   aria-label="Zoom"
                 />
-                <svg className="w-5 h-5 text-light-soft shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-on-surface-variant shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
               {/* Action buttons */}
-              <div className="bg-dark-lighter px-4 pb-3 flex gap-3 justify-end border-t border-ocean-500/30">
+              <div className="bg-surface-container-low px-4 pb-3 flex gap-3 justify-end">
                 <button
                   type="button"
                   onClick={handleCancelCrop}
-                  className="px-4 py-2 text-sm font-bold text-light-soft border border-light-soft/30 rounded-lg hover:bg-light-soft/10 transition-colors"
+                  className="btn btn-outline"
                 >
                   Cancelar
                 </button>
                 <button
                   type="button"
                   onClick={handleApplyCrop}
-                  className="px-4 py-2 text-sm font-bold bg-ocean-500 text-dark rounded-lg hover:bg-ocean-400 transition-colors"
+                  className="btn btn-secondary"
                 >
                   Aplicar encuadre
                 </button>
@@ -449,15 +448,16 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
           {/* ── Preview of cropped result ── */}
           {!showCropper && imagePreview && (
             <div className="mt-4">
-              <div className="relative w-full h-48 bg-dark-lighter rounded-lg overflow-hidden border-2 border-ocean-500">
+              <div className="relative w-full h-48 bg-surface-container rounded-lg overflow-hidden">
                 <img
                   src={imagePreview}
                   alt="Vista previa"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
-                  className="absolute top-2 right-2 bg-error text-white rounded-full p-2 hover:bg-red-600 transition-colors shadow-lg"
+                  className="absolute top-2 right-2 bg-error text-on-error rounded-full p-2 hover:opacity-90 transition-opacity shadow-level-2"
                   onClick={() => {
                     setImage(null)
                     setImagePreview('')
@@ -476,7 +476,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
         <div className="flex gap-4 pt-4">
           <button
             type="button"
-            className="bg-dark border-2 border-ocean-500 text-forest-500 px-6 py-3 rounded-lg font-bold uppercase tracking-normal hover:bg-ocean-500 hover:text-dark transition-all duration-300"
+            className="btn btn-outline"
             onClick={() => navigate(-1)}
             disabled={isSubmitting}
           >
@@ -485,7 +485,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
 
           <button
             type="submit"
-            className="btn-primary flex-1 py-3"
+            className="btn btn-primary flex-1"
             disabled={isSubmitting}
           >
             {getButtonContent()}

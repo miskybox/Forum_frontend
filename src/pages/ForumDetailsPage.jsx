@@ -1,39 +1,67 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import {
+  MdAddCircleOutline,
+  MdCalendarMonth,
+  MdCategory,
+  MdChatBubbleOutline,
+  MdDelete,
+  MdEdit,
+  MdGavel,
+  MdHome,
+  MdVisibility,
+} from 'react-icons/md'
 import useAuth from '../hooks/useAuth'
 import forumService from '../services/forumService'
 import postService from '../services/postService'
+import categoryService from '../services/categoryService'
 import PostList from '../components/post/PostList'
+import SectionCard from '../components/ui/SectionCard'
+import Breadcrumb from '../components/ui/Breadcrumb'
+import LoadingSpinner from '../components/common/LoadingSpinner'
 import { useLanguage } from '../contexts/LanguageContext'
+import { formatLongDate } from '../utils/formatDate'
+import { decodeHtmlEntities } from '../utils/htmlEntities'
 import Seo from '../components/common/SEO'
 
-/**
- * ForumDetailsPage con tema Adventure Explorer Retro
- * Paleta accesible WCAG AA
- */
+const toList = (response) => (Array.isArray(response) ? response : response?.content || [])
+
+const pillClass =
+  'inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface shadow-level-1 hover:text-primary text-label-lg transition-colors'
+
 const ForumDetailsPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { currentUser, hasRole, isAuthenticated } = useAuth()
   const { t } = useLanguage()
   const [forum, setForum] = useState(null)
+  const [category, setCategory] = useState(null)
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [postLoading, setPostLoading] = useState(true)
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchForumData = async () => {
       try {
         setLoading(true)
         const forumData = await forumService.getForumById(id)
+        if (cancelled) return
         setForum(forumData)
+        if (forumData?.categoryId) {
+          categoryService
+            .getCategoryById(forumData.categoryId)
+            .then((data) => !cancelled && setCategory(data))
+            .catch(() => {})
+        }
       } catch (error) {
-        console.error('Error al cargar el foro:', error)
+        console.error('Error loading forum:', error)
         toast.error(t('forums.errorLoadingForum'))
         navigate('/forums')
       } finally {
-        setLoading(false)
+        if (!cancelled) setLoading(false)
       }
     }
 
@@ -41,210 +69,182 @@ const ForumDetailsPage = () => {
       try {
         setPostLoading(true)
         const postsData = await postService.getPostsByForum(id)
-        setPosts(postsData)
+        if (!cancelled) setPosts(toList(postsData))
       } catch (error) {
-        console.error('Error al cargar publicaciones:', error)
+        console.error('Error loading posts:', error)
         toast.error(t('forums.errorLoadingPosts'))
       } finally {
-        setPostLoading(false)
+        if (!cancelled) setPostLoading(false)
       }
     }
 
     fetchForumData()
     fetchPosts()
+    return () => {
+      cancelled = true
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, navigate])
 
   const handleDeleteForum = async () => {
-    if (window.confirm(t('forums.confirmDeleteForum'))) {
-      try {
-        await forumService.deleteForum(id)
-        toast.success(t('forums.forumDeletedSuccess'))
-        navigate('/forums')
-      } catch (error) {
-        console.error('Error al eliminar el foro:', error)
-        toast.error(t('forums.errorDeletingForum'))
-      }
+    if (!window.confirm(t('forums.confirmDeleteForum'))) return
+    try {
+      await forumService.deleteForum(id)
+      toast.success(t('forums.forumDeletedSuccess'))
+      navigate('/forums')
+    } catch (error) {
+      console.error('Error deleting forum:', error)
+      toast.error(t('forums.errorDeletingForum'))
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 border-4 border-golden border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-ocean-400 font-bold text-lg tracking-normal">
-            {t('forums.loadingAdventure')}
-          </p>
-        </div>
-      </div>
-    )
+  if (loading || !forum) {
+    return <LoadingSpinner />
   }
 
-  const isForumAuthor = currentUser && forum.createdBy === currentUser.id
-  const canEditForum = isForumAuthor || hasRole('ROLE_ADMIN') || hasRole('ROLE_MODERATOR')
-
-  const EmptyPostsMessage = () => (
-    <div className="text-center py-12 px-6 card border-golden hover:border-golden-dark transition-colors">
-      <div className="w-16 h-16 mx-auto mb-4 bg-aqua rounded-full flex items-center justify-center">
-        <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-      </div>
-      <p className="text-light-soft font-bold text-base uppercase tracking-normal mb-6">
-        {t('forums.noPosts')}
-      </p>
-      {isAuthenticated ? (
-        <Link
-          to={`/forums/${id}/posts/create`}
-          className="btn bg-golden hover:bg-golden-dark text-midnight inline-block px-8 py-4 rounded-lg shadow-md hover:shadow-lg transition-all font-bold"
-        >
-          <span className="whitespace-nowrap">{t('forums.beFirst')}</span>
-        </Link>
-      ) : (
-        <Link
-          to="/login"
-          className="inline-block bg-midnight border-2 border-golden text-golden px-8 py-4 rounded-lg font-bold uppercase tracking-normal hover:bg-golden hover:text-midnight transition-all duration-300 shadow-md"
-        >
-          <span className="whitespace-nowrap">{t('nav.login')}</span>
-        </Link>
-      )}
-    </div>
-  )
-
-  const renderPostContent = () => {
-    if (postLoading) {
-      return (
-        <div className="text-center py-12">
-          <div className="w-12 h-12 mx-auto mb-4 border-4 border-golden border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-golden font-bold text-base uppercase tracking-normal">
-            {t('common.loading')}
-          </p>
-        </div>
-      )
-    }
-
-    if (posts.length > 0) {
-      return <PostList posts={posts} />
-    }
-
-    return <EmptyPostsMessage />
-  }
+  const isForumAuthor = currentUser && forum.createdBy != null && forum.createdBy === currentUser.id
+  const canEditForum = isForumAuthor || hasRole('ADMIN') || hasRole('MODERATOR')
+  const tags = (forum.tags || []).map((tag) => (typeof tag === 'string' ? tag : tag?.name)).filter(Boolean)
+  const postCount = forum.postCount ?? posts.length
 
   return (
-    <div className="min-h-screen py-8 relative overflow-hidden">
+    <div className="flex flex-col w-full">
       <Seo
-        title={forum.title}
-        description={forum.description || `Foro de viaje: ${forum.title}. Participa en la conversación con otros viajeros.`}
+        title={decodeHtmlEntities(forum.title)}
+        description={decodeHtmlEntities(forum.description) || `Foro de viaje: ${decodeHtmlEntities(forum.title)}. Participa en la conversación con otros viajeros.`}
         url={`/forums/${forum.id}`}
         type="website"
       />
-      {/* Efectos sutiles de fondo */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-3 h-3 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 3}s`,
-              backgroundColor: ['#E5A13E', '#CFE7E5', '#213638'][Math.floor(Math.random() * 3)]
-            }}
+
+      {/* Header */}
+      <header className="relative overflow-hidden">
+        {forum.imageUrl ? (
+          <div className="absolute inset-0">
+            <img src={forum.imageUrl} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/85 to-background/30" />
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-container-high/90 via-surface-container/60 to-background" />
+        )}
+
+        <div className="relative max-w-7xl mx-auto px-gutter-sm lg:px-gutter-lg pt-space-lg pb-space-xl">
+          <Breadcrumb
+            label={t('postDetail.breadcrumb')}
+            className="mb-space-md"
+            items={[
+              { to: '/', label: t('postDetail.home'), icon: MdHome },
+              { to: '/forums', label: t('postDetail.forums') },
+              category && { to: `/forums/category/${category.id}`, label: category.name },
+              { label: decodeHtmlEntities(forum.title) },
+            ].filter(Boolean)}
           />
-        ))}
-      </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Header del foro */}
-        <div className="card border-golden mb-8 animate-fade-in overflow-hidden">
-          <div className="relative">
-            {forum.imageUrl && (
-              <div className="h-48 bg-gradient-to-r from-midnight to-teal-dark relative overflow-hidden">
-                <img
-                  src={forum.imageUrl}
-                  alt={forum.title}
-                  className="w-full h-full object-cover opacity-70"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-midnight via-transparent to-transparent"></div>
-              </div>
-            )}
+          {category && (
+            <p className="inline-flex items-center gap-1 px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md mb-space-sm">
+              <MdCategory aria-hidden="true" />
+              {category.name}
+            </p>
+          )}
 
-            {!forum.imageUrl && (
-              <div className="h-32 bg-gradient-to-r from-midnight via-teal-dark to-midnight flex items-center justify-center">
-                <div className="w-16 h-16 bg-golden rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
-                </div>
-              </div>
-            )}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+            <div className="max-w-3xl">
+              <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{decodeHtmlEntities(forum.title)}</h1>
+              {forum.description && (
+                <p className="mt-space-xs text-body-lg text-on-surface-variant">{decodeHtmlEntities(forum.description)}</p>
+              )}
+              <p className="mt-space-sm flex flex-wrap items-center gap-space-md text-label-md text-on-surface-variant">
+                <span className="flex items-center gap-1">
+                  <MdChatBubbleOutline aria-hidden="true" />
+                  {postCount} {postCount === 1 ? t('common.post') : t('common.posts')}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MdVisibility aria-hidden="true" />
+                  {forum.viewCount || 0} {t('common.views')}
+                </span>
+              </p>
+            </div>
 
-            <div className={`px-6 py-6 ${forum.imageUrl ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-midnight to-transparent' : ''}`}>
-              <h1 className="text-3xl md:text-4xl font-bold text-golden mb-3 tracking-wide">
-                {forum.title}
-              </h1>
-              {forum.category && (
-                <div className="inline-block px-4 py-2 bg-aqua/20 border-2 border-aqua text-aqua font-bold text-xs uppercase tracking-normal rounded">
-                  {forum.category.name}
-                </div>
+            <div className="flex flex-wrap items-center gap-space-xs">
+              {isAuthenticated && (
+                <Link to={`/forums/${id}/posts/create`} className="btn btn-primary">
+                  <MdAddCircleOutline aria-hidden="true" />
+                  {t('forums.newPost')}
+                </Link>
+              )}
+              {canEditForum && (
+                <>
+                  <Link to={`/forums/${id}/edit`} className={pillClass}>
+                    <MdEdit aria-hidden="true" />
+                    {t('common.edit')}
+                  </Link>
+                  <button type="button" onClick={handleDeleteForum} className={`${pillClass} hover:text-error`}>
+                    <MdDelete aria-hidden="true" />
+                    {t('common.delete')}
+                  </button>
+                </>
               )}
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Descripción */}
-          <div className="px-6 py-4 border-t-2 border-golden/30">
-            <p className="text-light-soft text-base leading-relaxed mb-4">
-              {forum.description}
-            </p>
+      <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
+          <section className="lg:col-span-8 space-y-space-md" aria-labelledby="forum-posts-title">
+            <h2 id="forum-posts-title" className="font-headline text-headline-md text-on-surface">{t('forums.posts')}</h2>
+            {postLoading ? <LoadingSpinner /> : <PostList posts={posts} forumId={id} />}
+          </section>
+
+          <aside className="lg:col-span-4 space-y-space-md lg:sticky lg:top-24">
+            <SectionCard title={t('forums.factsTitle')}>
+              <dl className="space-y-space-sm text-body-sm">
+                {forum.createdAt && (
+                  <div className="flex items-center justify-between gap-space-sm">
+                    <dt className="flex items-center gap-1 text-on-surface-variant first-letter:uppercase">
+                      <MdCalendarMonth aria-hidden="true" /> {t('postDetail.publishedOn')}
+                    </dt>
+                    <dd className="font-semibold text-on-surface">{formatLongDate(forum.createdAt)}</dd>
+                  </div>
+                )}
+                <div className="flex items-center justify-between gap-space-sm">
+                  <dt className="flex items-center gap-1 text-on-surface-variant first-letter:uppercase">
+                    <MdChatBubbleOutline aria-hidden="true" /> {t('forums.posts')}
+                  </dt>
+                  <dd className="font-semibold text-on-surface">{postCount}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-space-sm">
+                  <dt className="flex items-center gap-1 text-on-surface-variant first-letter:uppercase">
+                    <MdVisibility aria-hidden="true" /> {t('postDetail.views')}
+                  </dt>
+                  <dd className="font-semibold text-on-surface">{forum.viewCount || 0}</dd>
+                </div>
+              </dl>
+              {tags.length > 0 && (
+                <ul className="mt-space-md flex flex-wrap gap-space-xs" aria-label={t('postDetail.tags')}>
+                  {tags.map((tag) => (
+                    <li key={tag} className="px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-caption font-semibold">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </SectionCard>
 
             {forum.rules && (
-              <div className="mt-6 p-4 bg-aqua/10 border-2 border-aqua rounded-lg">
-                <h3 className="text-midnight font-bold text-base uppercase tracking-normal mb-3">
-                  {t('forums.rules')}
-                </h3>
-                <div className="text-light-soft text-sm whitespace-pre-line leading-relaxed">
-                  {forum.rules}
-                </div>
-              </div>
+              <SectionCard title={t('forums.rules')} icon={MdGavel}>
+                <p className="text-body-sm text-on-surface-variant whitespace-pre-line">{forum.rules}</p>
+              </SectionCard>
             )}
 
-            {/* Acciones */}
-            {canEditForum && (
-              <div className="flex flex-wrap gap-3 mt-6 pt-6 border-t-2 border-golden/30">
-                <Link
-                  to={`/forums/${id}/edit`}
-                  className="inline-block bg-golden border-2 border-golden text-midnight px-5 py-2 rounded-lg font-bold uppercase tracking-normal hover:bg-golden-dark transition-all duration-300"
-                >
-                  <span>{t('common.edit')}</span>
+            {!isAuthenticated && (
+              <div className="bg-secondary text-on-secondary rounded-lg p-space-lg shadow-level-1">
+                <p className="font-headline text-headline-sm text-on-secondary">{t('home.ctaJoin')}</p>
+                <Link to="/login" className="mt-space-sm inline-flex text-label-lg text-on-secondary hover:text-on-secondary underline underline-offset-4">
+                  {t('comments.loginLink')}
                 </Link>
-                <button
-                  onClick={handleDeleteForum}
-                  className="bg-transparent border-2 border-error text-error px-5 py-2 rounded-lg font-bold uppercase tracking-normal hover:bg-error hover:text-white transition-all duration-300"
-                >
-                  <span>{t('common.delete')}</span>
-                </button>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Lista de publicaciones */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-            <h2 className="text-xl md:text-2xl font-bold text-ocean-500 tracking-normal">
-              {t('forums.posts')}
-            </h2>
-            {isAuthenticated && (
-              <Link
-                to={`/forums/${id}/posts/create`}
-                className="btn-primary px-8 py-4 rounded-lg shadow-md hover:shadow-lg transition-all"
-              >
-                <span className="flex items-center justify-center gap-3">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                  <span className="whitespace-nowrap">{t('forums.newPost')}</span>
-                </span>
-              </Link>
-            )}
-          </div>
-          {renderPostContent()}
+          </aside>
         </div>
       </div>
     </div>

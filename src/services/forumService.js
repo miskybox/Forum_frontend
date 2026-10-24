@@ -103,6 +103,12 @@ const forumService = {
     }
   },
 
+  getForumsByUser: async (userId, page = 0, size = 20) => {
+    const response = await api.get(`/forums/user/${userId}`, { params: { page, size } })
+    return response.data
+  },
+
+
   updateForumStatus: async (id, status) => {
     try {
       const response = await api.put(`/forums/${id}/status`, null, {

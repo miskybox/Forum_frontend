@@ -21,9 +21,9 @@ const feedService = {
    * @param {number} page - Page number (0-indexed)
    * @param {number} size - Page size
    */
-  getExploreFeed: async (page = 0, size = 10) => {
+  getExploreFeed: async (page = 0, size = 10, filters = {}) => {
     const response = await api.get('/feed/explore', {
-      params: { page, size }
+      params: { page, size, ...filters }
     })
     return response.data
   }

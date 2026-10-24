@@ -1,81 +1,80 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useLanguage } from '../../contexts/LanguageContext'
+import Lightbox from '../ui/Lightbox'
+
+const toGallery = (post) => {
+  if (post.images?.length) {
+    return post.images
+      .map((image, index) => ({
+        url: image.url || image.imageUrl,
+        alt: image.alt || `${index + 1}`,
+      }))
+      .filter((image) => image.url)
+  }
+  return (post.imageUrls || []).map((url, index) => ({ url, alt: `${index + 1}` }))
+}
 
 const PostContent = ({ post }) => {
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Fecha desconocida'
-    const date = new Date(dateString)
-    return date.toLocaleDateString('es-ES', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  const { t } = useLanguage()
+  const paragraphs = (post.content || '').split(/\n{2,}/).filter((p) => p.trim())
+  const images = toGallery(post)
+  const [activeIndex, setActiveIndex] = useState(null)
 
   return (
-    <div>
-      <div className="px-6 py-4">
-        <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
-        
-        <div className="flex flex-wrap items-center text-sm text-gray-500 mb-4">
-          <span className="mr-4">
-            Publicado: {formatDate(post.createdAt)}
-          </span>
-          {post.updatedAt !== post.createdAt && (
-            <span className="mr-4">
-              Actualizado: {formatDate(post.updatedAt)}
-            </span>
-          )}
-          <span className="mr-4">
-            <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            {post.viewCount || 0} visitas
-          </span>
-          <Link to={`/forums/${post.forumId}`} className="text-ocean-600 hover:text-ocean-800">
-            Volver al foro
-          </Link>
-        </div>
-        
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map(tag => (
-              <span 
-                key={tag} 
-                className="bg-ocean-100 text-ocean-800 px-3 py-1 rounded-full text-sm"
+    <div className="space-y-space-md text-body-md text-on-surface leading-relaxed break-words">
+      {paragraphs.map((paragraph, index) => (
+        <p key={`${index}-${paragraph.length}`} className="whitespace-pre-line">
+          {paragraph}
+        </p>
+      ))}
+
+      {images.length > 0 && (
+        <ul className={`grid gap-space-xs ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+          {images.map((image, index) => (
+            <li key={`${image.url}-${index}`}>
+              <button
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                className="block w-full overflow-hidden rounded-base bg-surface-container focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                aria-label={`${t('postDetail.openImage')} ${index + 1}`}
               >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-      
-      <div className="px-6 py-4 border-t border-gray-100">
-        <div className="prose max-w-none">
-   
-          {post.content.split('\n\n').map((paragraph) => {
-            const key = paragraph.slice(0, 20) + paragraph.length;
-            return <p key={key}>{paragraph}</p>;
-          })}
-        </div>
-      </div>
+                <img
+                  src={image.url}
+                  alt=""
+                  loading="lazy"
+                  className="w-full aspect-video object-cover"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {activeIndex != null && (
+        <Lightbox
+          images={images}
+          index={activeIndex}
+          onClose={() => setActiveIndex(null)}
+          onIndexChange={setActiveIndex}
+          labels={{
+            close: t('common.close'),
+            previous: t('common.previous'),
+            next: t('common.next'),
+            image: t('postDetail.galleryImage'),
+          }}
+        />
+      )}
     </div>
   )
 }
+
 PostContent.propTypes = {
   post: PropTypes.shape({
-    title: PropTypes.string,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-    viewCount: PropTypes.number,
-    forumId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    tags: PropTypes.arrayOf(PropTypes.string),
-    content: PropTypes.string
-  }).isRequired
+    content: PropTypes.string,
+    imageUrls: PropTypes.arrayOf(PropTypes.string),
+    images: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
 }
 
 export default PostContent

@@ -1,65 +1,25 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { render, screen, fireEvent } from '@testing-library/react'
 import PostContent from './PostContent'
+import { LanguageProvider } from '../../contexts/LanguageContext'
+
+const wrap = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>)
 
 describe('PostContent', () => {
-  it('renderiza título y contenido', () => {
-    const post = { title: 'Mi viaje', content: 'Texto\n\nMás texto', forumId: 1 }
-    render(
-      <MemoryRouter>
-        <PostContent post={post} />
-      </MemoryRouter>
-    )
-    expect(screen.getByText('Mi viaje')).toBeInTheDocument()
+  it('renders one paragraph per block of text', () => {
+    wrap(<PostContent post={{ content: 'Texto\n\nMás texto' }} />)
     expect(screen.getByText('Texto')).toBeInTheDocument()
     expect(screen.getByText('Más texto')).toBeInTheDocument()
   })
 
-  it('muestra información de vistas', () => {
-    const post = { title: 'Test', content: 'Contenido', forumId: 1, viewCount: 100 }
-    render(
-      <MemoryRouter>
-        <PostContent post={post} />
-      </MemoryRouter>
-    )
-    expect(screen.getByText(/100 visitas/)).toBeInTheDocument()
+  it('renders nothing for empty content', () => {
+    const { container } = wrap(<PostContent post={{ content: '' }} />)
+    expect(container.querySelectorAll('p')).toHaveLength(0)
   })
 
-  it('tiene link para volver al foro', () => {
-    const post = { title: 'Test', content: 'Contenido', forumId: 5 }
-    render(
-      <MemoryRouter>
-        <PostContent post={post} />
-      </MemoryRouter>
-    )
-    const link = screen.getByRole('link', { name: /volver al foro/i })
-    expect(link).toHaveAttribute('href', '/forums/5')
-  })
-
-  it('muestra fecha desconocida cuando no hay fecha', () => {
-    const post = { title: 'Test', content: 'Contenido', forumId: 1 }
-    render(
-      <MemoryRouter>
-        <PostContent post={post} />
-      </MemoryRouter>
-    )
-    expect(screen.getByText(/Fecha desconocida/i)).toBeInTheDocument()
-  })
-
-  it('muestra tags cuando existen', () => {
-    const post = { 
-      title: 'Test', 
-      content: 'Contenido', 
-      forumId: 1,
-      tags: ['Europa', 'Aventura']
-    }
-    render(
-      <MemoryRouter>
-        <PostContent post={post} />
-      </MemoryRouter>
-    )
-    expect(screen.getByText('Europa')).toBeInTheDocument()
-    expect(screen.getByText('Aventura')).toBeInTheDocument()
+  it('opens the lightbox from a gallery image', () => {
+    wrap(<PostContent post={{ content: 'Ruta', imageUrls: ['https://example.com/a.jpg', 'https://example.com/b.jpg'] }} />)
+    fireEvent.click(screen.getByRole('button', { name: /abrir imagen 1/i }))
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    expect(screen.getByText('1 / 2')).toBeInTheDocument()
   })
 })

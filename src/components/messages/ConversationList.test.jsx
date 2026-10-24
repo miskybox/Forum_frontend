@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import ConversationList from './ConversationList'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 
 // Mock del servicio de mensajes
 vi.mock('../../services/messageService', () => ({
@@ -13,10 +14,12 @@ vi.mock('../../services/messageService', () => ({
 describe('ConversationList', () => {
   it('muestra mensaje cuando no hay conversaciones', async () => {
     render(
-      <ConversationList
-        onSelectConversation={vi.fn()}
-        selectedUserId={null}
-      />
+      <LanguageProvider>
+        <ConversationList
+          onSelectConversation={vi.fn()}
+          selectedUserId={null}
+        />
+      </LanguageProvider>
     )
     // Espera a que cargue y muestre el mensaje de sin conversaciones
     expect(await screen.findByText('Sin conversaciones')).toBeInTheDocument()

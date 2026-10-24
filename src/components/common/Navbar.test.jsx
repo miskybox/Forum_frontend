@@ -6,7 +6,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 
 // Mock de los contextos
 vi.mock('../../contexts/ThemeContext', () => ({
-  useTheme: () => ({ theme: 'retro' })
+  useTheme: () => ({ isDarkMode: false, toggleDarkMode: vi.fn() })
 }))
 
 vi.mock('../../contexts/LanguageContext', () => ({
@@ -15,8 +15,10 @@ vi.mock('../../contexts/LanguageContext', () => ({
     setLanguage: vi.fn(),
     t: (key) => {
       const translations = {
+        'nav.brand': 'Forum Viajeros',
         'nav.home': 'Inicio',
         'nav.forums': 'Foros',
+        'nav.diaries': 'Diarios',
         'nav.trivia': 'Trivia',
         'nav.map': 'Mi Mapa',
         'nav.profile': 'Perfil',
@@ -25,6 +27,22 @@ vi.mock('../../contexts/LanguageContext', () => ({
         'nav.logout': 'Salir',
         'nav.createForum': 'Crear Foro',
         'nav.myProfile': 'Mi Perfil',
+        'nav.tagline': 'Comunidad Global',
+        'nav.createPost': 'Crear debate',
+        'nav.notifications': 'Notificaciones',
+        'nav.messages': 'Mensajes',
+        'nav.openMenu': 'Abrir menú principal',
+        'nav.closeMenu': 'Cerrar menú principal',
+        'nav.darkMode': 'Activar modo oscuro',
+        'nav.lightMode': 'Activar modo claro',
+        'search.open': 'Buscar',
+        'search.placeholder': 'Buscar',
+        'search.title': 'Buscar',
+        'search.empty': 'Sin resultados',
+        'search.posts': 'Publicaciones',
+        'search.forums': 'Foros',
+        'search.users': 'Usuarios',
+        'search.countries': 'Países',
       }
       return translations[key] || key
     }
@@ -86,6 +104,19 @@ describe('Navbar - Links y Botones', () => {
       const forosLinks = screen.getAllByRole('link', { name: /foros/i })
       expect(forosLinks.length).toBeGreaterThan(0)
       expect(forosLinks[0]).toHaveAttribute('href', '/forums')
+    })
+
+    it('tiene link a Diarios con href "/feed?tab=photos"', () => {
+      render(
+        <MemoryRouter>
+          <AuthContext.Provider value={mockAuthContextGuest}>
+            <Navbar />
+          </AuthContext.Provider>
+        </MemoryRouter>
+      )
+
+      const diaryLinks = screen.getAllByRole('link', { name: /diarios/i })
+      expect(diaryLinks[0]).toHaveAttribute('href', '/feed?tab=photos')
     })
 
     it('tiene link a Trivia con href "/trivia"', () => {
