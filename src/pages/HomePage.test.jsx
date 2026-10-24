@@ -8,6 +8,7 @@ vi.mock('../services/forumService', () => ({ default: { getAllForums: async () =
 vi.mock('../services/categoryService', () => ({ default: { getAllCategories: async () => [] } }))
 vi.mock('../services/feedService', () => ({ default: { getExploreFeed: async () => ({ content: [] }) } }))
 vi.mock('../services/travelService', () => ({ default: { getRanking: async () => [] } }))
+vi.mock('../services/userService', () => ({ default: { getTopContributors: async () => [] } }))
 vi.mock('../services/tagService', () => ({ default: { getPopular: async () => [] } }))
 vi.mock('../hooks/useAuth', () => ({ default: () => ({ isAuthenticated: false, currentUser: null }) }))
 

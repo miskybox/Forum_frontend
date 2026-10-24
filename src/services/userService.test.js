@@ -44,6 +44,20 @@ describe('userService', () => {
     })
   })
 
+  describe('getTopContributors - GET /users/top-contributors', () => {
+    it('pide el ranking mensual con límite', async () => {
+      const ranking = [{ userId: 1, username: 'viajero_demo', points: 12 }]
+      api.get.mockResolvedValueOnce({ data: ranking })
+
+      const result = await userService.getTopContributors('month', 5)
+
+      expect(api.get).toHaveBeenCalledWith('/users/top-contributors', {
+        params: { period: 'month', limit: 5 },
+      })
+      expect(result).toEqual(ranking)
+    })
+  })
+
   describe('getUserById - GET /users/:id', () => {
     it('obtiene un usuario por ID', async () => {
       const mockUser = { id: 1, username: 'testuser', email: 'test@example.com' }

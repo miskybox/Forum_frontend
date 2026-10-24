@@ -37,7 +37,7 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 
 ### C — P2 API + UI (hide the block until the endpoint exists)
 
-- [ ] **B9 + F14.** Top contributors: `GET /api/users/top-contributors?period=month&limit=5`; home/profile widget.
+- [x] **B9 + F14.** Top contributors: `GET /api/users/top-contributors?period=month&limit=5`; home/profile widget.
 - [ ] **B10 + F15.** Bookmarks: entity + `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser`; save button on post detail; profile “saved” tab.
 - [ ] **B11 + F16.** Global search: `GET /api/search?q=` (posts, forums, users, countries); header search xl+ and ⌘K.
 - [ ] **B12 + F17.** Related threads: `GET /api/posts/{id}/related` (today the rail only lists other posts in the same forum).

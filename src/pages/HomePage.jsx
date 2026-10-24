@@ -17,12 +17,14 @@ import ForumCard from '../components/forums/ForumCard'
 import HomeHero from '../components/home/HomeHero'
 import CategoryChannels from '../components/home/CategoryChannels'
 import TopTravelers from '../components/home/TopTravelers'
+import TopContributors from '../components/home/TopContributors'
 import SegmentedTabs from '../components/ui/SegmentedTabs'
 import SectionCard from '../components/ui/SectionCard'
 import forumService from '../services/forumService'
 import categoryService from '../services/categoryService'
 import feedService from '../services/feedService'
 import travelService from '../services/travelService'
+import userService from '../services/userService'
 import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import Seo from '../components/common/SEO'
@@ -93,16 +95,18 @@ const HomePage = () => {
   const [filterLoading, setFilterLoading] = useState(false)
   const [categories, setCategories] = useState([])
   const [travelers, setTravelers] = useState([])
+  const [contributors, setContributors] = useState([])
 
   useEffect(() => {
     let cancelled = false
 
     const load = async () => {
-      const [forums, feed, cats, ranking] = await Promise.allSettled([
+      const [forums, feed, cats, ranking, top] = await Promise.allSettled([
         settle(() => forumService.getAllForums(0, 4)),
         settle(() => feedService.getExploreFeed(0, 6)),
         settle(() => categoryService.getAllCategories()),
         settle(() => travelService.getRanking(5)),
+        settle(() => userService.getTopContributors('month', 5)),
       ])
       if (cancelled) return
 
@@ -110,6 +114,7 @@ const HomePage = () => {
       setFeedItems(feed.status === 'fulfilled' ? toList(feed.value) : [])
       setCategories(cats.status === 'fulfilled' ? toList(cats.value) : [])
       setTravelers(ranking.status === 'fulfilled' ? toList(ranking.value) : [])
+      setContributors(top.status === 'fulfilled' ? toList(top.value) : [])
       setLoading(false)
     }
 
@@ -266,6 +271,7 @@ const HomePage = () => {
               </Link>
             </SectionCard>
 
+            <TopContributors contributors={contributors} />
             <TopTravelers travelers={travelers} />
 
             <SectionCard title={t('home.discoverTitle')}>

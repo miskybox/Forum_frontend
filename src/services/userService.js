@@ -25,6 +25,13 @@ const userService = {
     }
   },
   
+  getTopContributors: async (period = 'month', limit = 5) => {
+    const response = await api.get('/users/top-contributors', {
+      params: { period, limit },
+    })
+    return response.data
+  },
+
   getUserById: async (id) => {
     try {
       const response = await api.get(`/users/${id}`)

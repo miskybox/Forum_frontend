@@ -292,6 +292,16 @@ describe('Endpoints - Verificación Completa de Llamadas', () => {
   })
 
   describe('User Endpoints', () => {
+    it('GET /users/top-contributors - ranking de la comunidad', async () => {
+      api.get.mockResolvedValueOnce({ data: [] })
+
+      await userService.getTopContributors('month', 5)
+
+      expect(api.get).toHaveBeenCalledWith('/users/top-contributors', {
+        params: { period: 'month', limit: 5 },
+      })
+    })
+
     it('GET /users/:id - obtiene usuario por ID', async () => {
       api.get.mockResolvedValueOnce({ data: { id: 1 } })
 

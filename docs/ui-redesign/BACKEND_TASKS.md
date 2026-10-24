@@ -68,11 +68,11 @@ The **only accepted public opening** is the USER demo account (`viajero_demo`). 
 
 Details: `Forum_backend/docs/BACKEND_TASKS.md` (S1–S9) and frontend `TASKS.md` § Remaining work (F1–F25, Q1–Q8).
 
-Open API items: S6 (ops), B9–B14 (P2), B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
+Open API items: S6 (ops), B10–B14 (P2), B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
 
 ## P2 — Improves the redesign
 
-- [ ] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).
+- [x] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).
 - [ ] **B10. Bookmarks / saved posts**: `Bookmark` entity, `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser` in post DTO.
 - [ ] **B11. Global search**: `GET /api/search?q=` returning posts, forums, users and countries (header search + ⌘K).
 - [ ] **B12. Related discussions**: `GET /api/posts/{id}/related` (same tags/forum).
