@@ -1,10 +1,10 @@
 import api from '../utils/api'
 
 const postService = {
-  getAllPosts: async (page = 0, size = 10) => {
+  getAllPosts: async (page = 0, size = 10, filters = {}) => {
     try {
       const response = await api.get('/posts', {
-        params: { page, size }
+        params: { page, size, ...filters }
       })
       return response.data
     } catch (error) {
@@ -112,7 +112,17 @@ const postService = {
       console.error('Error al obtener posts del usuario actual:', error)
       throw error
     }
-  }
+  },
+
+  getPostsByUser: async (userId, page = 0, size = 20) => {
+    const response = await api.get(`/posts/user/${userId}`, { params: { page, size } })
+    return response.data
+  },
+
+  getRelatedPosts: async (id, limit = 5) => {
+    const response = await api.get(`/posts/${id}/related`, { params: { limit } })
+    return response.data
+  },
 }
 
 export default postService

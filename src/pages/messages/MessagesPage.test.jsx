@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { vi } from 'vitest'
 import MessagesPage from './MessagesPage'
+import { LanguageProvider } from '../../contexts/LanguageContext'
 import messageService from '../../services/messageService'
 
 vi.mock('../../services/messageService', () => ({
@@ -58,9 +59,11 @@ describe('MessagesPage', () => {
 
   it('muestra el titulo de Mensajes', async () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
     expect(await screen.findByText('Mensajes')).toBeInTheDocument()
   })
@@ -68,9 +71,11 @@ describe('MessagesPage', () => {
   it('muestra el contador de no leidos cuando hay mensajes', async () => {
     messageService.getUnreadCount.mockResolvedValue(5)
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     await waitFor(() => {
@@ -80,9 +85,11 @@ describe('MessagesPage', () => {
 
   it('muestra boton de nueva conversacion', async () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     // Buscar boton con texto Nueva conversacion (puede ser visible u oculto en mobile)
@@ -96,9 +103,11 @@ describe('MessagesPage', () => {
 
   it('abre el modal de nueva conversacion al hacer clic', async () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     // Buscar y hacer clic en el boton de nueva conversacion
@@ -110,9 +119,11 @@ describe('MessagesPage', () => {
 
   it('cierra el modal de nueva conversacion', async () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     // Abrir modal
@@ -129,9 +140,11 @@ describe('MessagesPage', () => {
 
   it('muestra boton de iniciar conversacion cuando no hay seleccion', async () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     // En la vista sin conversacion seleccionada debe mostrar el boton
@@ -140,9 +153,11 @@ describe('MessagesPage', () => {
 
   it('muestra la lista de conversaciones', () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     expect(screen.getByTestId('conversation-list')).toBeInTheDocument()
@@ -150,9 +165,11 @@ describe('MessagesPage', () => {
 
   it('muestra descripcion de la pagina', () => {
     render(
-      <MemoryRouter>
-        <MessagesPage />
-      </MemoryRouter>
+      <LanguageProvider>
+        <MemoryRouter>
+          <MessagesPage />
+        </MemoryRouter>
+      </LanguageProvider>
     )
 
     expect(screen.getByText('Conversaciones privadas con otros viajeros')).toBeInTheDocument()

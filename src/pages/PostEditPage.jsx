@@ -4,8 +4,14 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import PostForm from '../components/post/PostForm';
 import postService from '../services/postService'
 import useAuth from '../hooks/useAuth'
+import { useLanguage } from '../contexts/LanguageContext'
+import FormPageLayout from '../components/common/FormPageLayout'
+import EmptyState from '../components/ui/EmptyState'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import { MdErrorOutline } from 'react-icons/md'
 
 const PostEditPage = () => {
+  const { t } = useLanguage()
   const { id } = useParams()
   const navigate = useNavigate()
   
@@ -23,7 +29,7 @@ const PostEditPage = () => {
         setPost(data)
         
         // Verificar si el usuario tiene permiso para editar esta publicación
-        if (currentUser && (data.author?.id === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
+        if (currentUser && ((data.createdBy ?? data.author?.id) === currentUser.id || hasRole('ADMIN') || hasRole('MODERATOR'))) {
           setError(null)
         } else {
           setError('No tienes permiso para editar esta publicación')
@@ -43,55 +49,31 @@ const PostEditPage = () => {
   }, [id, currentUser, hasRole, navigate])
   
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
-      </div>
-    )
+    return <LoadingSpinner />
   }
-  
+
   if (error || !post) {
     return (
-      <div className="bg-earth-50 py-10">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="text-center py-10 bg-earth-50 rounded-lg shadow-sm p-6">
-            <div className="text-red-600 mb-4">{error || 'Publicación no encontrada'}</div>
-            <p className="mb-4 text-earth-600">Serás redirigido en unos segundos...</p>
-            <Link to={`/posts/${id}`} className="btn btn-primary">
-              Volver a la publicación
-            </Link>
-          </div>
-        </div>
+      <div className="max-w-md mx-auto px-gutter-sm py-margin-lg">
+        <EmptyState
+          icon={MdErrorOutline}
+          title={error || t('posts.postNotFound')}
+          description={t('forums.redirecting')}
+          action={<Link to={`/posts/${id}`} className="btn btn-primary">{t('posts.backToPost')}</Link>}
+        />
       </div>
     )
   }
-  
-  return (
-    <div className="bg-earth-50 py-8 sm:py-12">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl sm:text-3xl font-bold text-earth-800">
-              Editar publicación
-            </h1>
-            
-            <Link 
-              to={`/posts/${id}`}
-              className="text-ocean-600 hover:text-ocean-700 text-sm font-medium"
-            >
-              ← Volver a la publicación
-            </Link>
-          </div>
-          <p className="mt-2 text-earth-600">
-            Actualiza la información de tu publicación "{post.title}".
-          </p>
-        </div>
 
-        <div className="bg-earth-50 rounded-lg shadow-sm p-6">
-          <PostForm initialData={post} isEdit={true} />
-        </div>
-      </div>
-    </div>
+  return (
+    <FormPageLayout
+      title={t('posts.editPost')}
+      description={<>{t('posts.editDescription')} <strong className="text-on-surface">“{post.title}”</strong>.</>}
+      backTo={`/posts/${id}`}
+      backLabel={t('posts.backToPost')}
+    >
+      <PostForm postId={id} />
+    </FormPageLayout>
   )
 }
 

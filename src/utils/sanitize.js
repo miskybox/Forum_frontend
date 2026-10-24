@@ -165,6 +165,8 @@ export const LENGTH_LIMITS = {
 const ALLOWED_REDIRECT_PATHS = [
   '/',
   '/forums',
+  '/posts',
+  '/categories',
   '/trivia',
   '/travel',
   '/profile',
@@ -174,7 +176,13 @@ const ALLOWED_REDIRECT_PATHS = [
   '/notifications',
   '/messages',
   '/login',
-  '/register'
+  '/register',
+  '/usuarios',
+  '/about',
+  '/contact',
+  '/help',
+  '/admin',
+  '/moderator',
 ]
 
 /**

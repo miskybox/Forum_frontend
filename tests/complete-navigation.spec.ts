@@ -251,6 +251,8 @@ test.describe('Navegación Completa - Todos los Links y Botones', () => {
   // ============ FOCUS Y KEYBOARD NAVIGATION ============
   test.describe('Navegación por Teclado', () => {
     test('Tab navega entre links del navbar', async ({ page }) => {
+      // Wait for the app to render before tabbing, otherwise focus can stay on <body>
+      await page.getByRole('navigation', { name: 'Main navigation' }).waitFor()
       await page.keyboard.press('Tab')
       // El primer elemento enfocado debería ser un link
       const focused = page.locator(':focus')

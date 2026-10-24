@@ -78,11 +78,11 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
   const timerPercent = (timeLeft / (question.timeLimitSeconds || timeLimit)) * 100
 
   return (
-    <div className="bg-[#e8f4f1] border-2 border-secondary/40 rounded-xl overflow-hidden shadow-lg">
+    <div className="bg-surface-container-low border-2 border-secondary/40 rounded-lg overflow-hidden shadow-level-2">
       {/* Header con progreso y timer */}
-      <div className="bg-primary border-b-2 border-secondary px-6 py-4">
+      <div className="bg-surface-container-low border-b border-surface-container-high px-6 py-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-text text-sm font-semibold">
+          <span className="text-on-surface text-sm font-semibold">
             {t('trivia.question')} {question.questionIndex} {t('trivia.of')} {question.totalQuestions}
           </span>
           {withTimer && (
@@ -95,7 +95,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
 
         {/* Barra de tiempo */}
         {withTimer && (
-          <div className="h-2 bg-primary-dark rounded-full overflow-hidden">
+          <div className="h-2 bg-surface-container-low rounded-full overflow-hidden">
             <div
               className="h-full bg-secondary rounded-full transition-all duration-1000 ease-linear"
               style={{ width: `${timerPercent}%` }}
@@ -104,7 +104,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
         )}
 
         {/* Puntos — countryFlag/Name solo tras responder para no revelar la respuesta */}
-        <div className="flex items-center justify-between mt-3 text-text text-sm font-semibold">
+        <div className="flex items-center justify-between mt-3 text-on-surface text-sm font-semibold">
           <span>{answered ? `${question.countryFlag ?? ''} ${question.countryName ?? ''}`.trim() : ''}</span>
           <span>+{question.points} {t('trivia.points')}</span>
         </div>
@@ -118,31 +118,33 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
             <img
               src={question.imageUrl}
               alt="Pregunta"
-              className="max-h-40 rounded-xl shadow-lg"
+              loading="lazy"
+              className="max-h-40 rounded-lg shadow-level-2"
             />
           </div>
         )}
 
         {/* Texto de la pregunta */}
-        <h2 className="text-xl md:text-2xl font-bold text-text text-center mb-8">
+        <h2 className="text-xl md:text-2xl font-bold text-on-surface text-center mb-8">
           {question.questionText}
         </h2>
 
         {/* Opciones */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {question.options.map((option, idx) => {
+            // Four clearly different palette tones; green is kept for the "correct" feedback
             const COLORS = [
-              { tile: 'bg-[#dbeafe] border-[#1d4ed8] text-[#1e3a8a] hover:bg-[#bfdbfe] hover:shadow-[0_0_16px_rgba(59,130,246,0.35)] hover:scale-[1.02]', badge: 'bg-[#bfdbfe] text-[#1e3a8a]' },
-              { tile: 'bg-[#ffedd5] border-[#c2410c] text-[#7c2d12] hover:bg-[#fed7aa] hover:shadow-[0_0_16px_rgba(194,65,12,0.35)] hover:scale-[1.02]', badge: 'bg-[#fed7aa] text-[#7c2d12]' },
-              { tile: 'bg-[#dcfce7] border-[#166534] text-[#14532d] hover:bg-[#bbf7d0] hover:shadow-[0_0_16px_rgba(22,101,52,0.35)] hover:scale-[1.02]', badge: 'bg-[#bbf7d0] text-[#14532d]' },
-              { tile: 'bg-[#fef3c7] border-[#a16207] text-[#713f12] hover:bg-[#fde68a] hover:shadow-[0_0_16px_rgba(161,98,7,0.35)] hover:scale-[1.02]', badge: 'bg-[#fde68a] text-[#713f12]' },
+              { tile: 'bg-secondary-fixed border-secondary text-on-secondary-fixed hover:bg-secondary-fixed-dim hover:shadow-level-2', badge: 'bg-secondary text-on-secondary' },
+              { tile: 'bg-primary-fixed border-primary text-on-primary-fixed hover:bg-primary-fixed-dim hover:shadow-level-2', badge: 'bg-primary text-on-primary' },
+              { tile: 'bg-surface-container-highest border-outline text-on-surface hover:bg-surface-dim hover:shadow-level-2', badge: 'bg-inverse-surface text-inverse-on-surface' },
+              { tile: 'bg-surface-container-lowest border-tertiary text-on-surface hover:bg-tertiary-fixed hover:shadow-level-2', badge: 'bg-tertiary text-on-tertiary' },
             ]
             let tileClass
             let badgeClass
             if (answered) {
               tileClass = selectedAnswer === option
-                ? 'bg-[#bfdbfe] border-[#1d4ed8] text-[#1e3a8a] shadow-xl scale-[1.02]'
-                : `${COLORS[idx % 4].tile} opacity-30`
+                ? 'bg-secondary-container border-on-secondary-fixed-variant text-on-secondary-fixed shadow-level-2 ring-2 ring-secondary'
+                : `${COLORS[idx % 4].tile} opacity-50`
               badgeClass = 'bg-black/10 text-inherit'
             } else {
               tileClass = COLORS[idx % 4].tile
@@ -153,7 +155,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
                 key={`${question.id}-${option}`}
                 onClick={() => handleSelectAnswer(option)}
                 disabled={answered}
-                className={`px-5 py-4 rounded-xl border-2 text-left font-bold transition-all duration-200 min-h-[70px] flex items-center gap-3 cursor-pointer disabled:cursor-not-allowed ${tileClass}`}
+                className={`px-5 py-4 rounded-lg border-2 text-left font-bold transition-all duration-200 min-h-[70px] flex items-center gap-3 cursor-pointer disabled:cursor-not-allowed ${tileClass}`}
               >
                 <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-base font-black flex-shrink-0 ${badgeClass}`}>
                   {String.fromCodePoint(65 + idx)}
@@ -172,11 +174,11 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
               className={`w-2 h-2 rounded-full ${
                 level <= question.difficulty
                   ? 'bg-secondary'
-                  : 'bg-primary-dark'
+                  : 'bg-surface-container-low'
               }`}
             />
           ))}
-          <span className="text-text-light text-xs ml-2 font-semibold">
+          <span className="text-on-surface-variant text-xs ml-2 font-semibold">
             {t('trivia.level')} {question.difficulty}
           </span>
         </div>

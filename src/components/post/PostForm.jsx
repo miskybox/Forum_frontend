@@ -197,69 +197,69 @@ const PostForm = ({ postId = null, forumId = null }) => {
   }
 
   return (
-    <div className="bg-earth-50 rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-6">
+    <div className="">
+      <h2 className="sr-only">
         {postId ? 'Editar publicación' : 'Crear nueva publicación'}
       </h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Título</label>
+        <div className="mb-space-md">
+          <label htmlFor="title" className="block text-label-lg text-on-surface mb-space-xs">Título</label>
           <input
             type="text"
             id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded-md ${errors.title ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
+            className={`bg-surface-container-low ${errors.title ? 'border-error' : ''}`}
             placeholder="Título de tu publicación"
             maxLength={LENGTH_LIMITS.POST_TITLE.max}
           />
           <div className="flex justify-between mt-1">
-            {errors.title && <p className="text-sm text-red-600">{errors.title}</p>}
-            <p className="text-sm text-gray-500 ml-auto">{formData.title.length}/{LENGTH_LIMITS.POST_TITLE.max}</p>
+            {errors.title && <p className="text-caption text-error">{errors.title}</p>}
+            <p className="text-caption text-on-surface-variant ml-auto">{formData.title.length}/{LENGTH_LIMITS.POST_TITLE.max}</p>
           </div>
         </div>
 
         {!forumId && (
-          <div className="mb-4">
-            <label htmlFor="forumId" className="block text-sm font-medium text-gray-700 mb-1">Foro</label>
+          <div className="mb-space-md">
+            <label htmlFor="forumId" className="block text-label-lg text-on-surface mb-space-xs">Foro</label>
             <select
               id="forumId"
               name="forumId"
               value={formData.forumId}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md ${errors.forumId ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
+              className={`bg-surface-container-low ${errors.forumId ? 'border-error' : ''}`}
             >
               <option value="">Selecciona un foro</option>
               {forums.map(forum => (
                 <option key={forum.id} value={forum.id}>{forum.title}</option>
               ))}
             </select>
-            {errors.forumId && <p className="mt-1 text-sm text-red-600">{errors.forumId}</p>}
+            {errors.forumId && <p className="mt-1 text-caption text-error">{errors.forumId}</p>}
           </div>
         )}
 
-        <div className="mb-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">Contenido</label>
+        <div className="mb-space-md">
+          <label htmlFor="content" className="block text-label-lg text-on-surface mb-space-xs">Contenido</label>
           <textarea
             id="content"
             name="content"
             value={formData.content}
             onChange={handleChange}
             rows="8"
-            className={`w-full px-3 py-2 border rounded-md ${errors.content ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-500`}
+            className={`bg-surface-container-low ${errors.content ? 'border-error' : ''}`}
             placeholder="Escribe el contenido de tu publicación aquí..."
             maxLength={LENGTH_LIMITS.POST_CONTENT.max}
           />
           <div className="flex justify-between mt-1">
-            {errors.content && <p className="text-sm text-red-600">{errors.content}</p>}
-            <p className="text-sm text-gray-500 ml-auto">{formData.content.length}/{LENGTH_LIMITS.POST_CONTENT.max}</p>
+            {errors.content && <p className="text-caption text-error">{errors.content}</p>}
+            <p className="text-caption text-on-surface-variant ml-auto">{formData.content.length}/{LENGTH_LIMITS.POST_CONTENT.max}</p>
           </div>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="tagInput" className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="mb-space-md">
+          <label htmlFor="tagInput" className="block text-label-lg text-on-surface mb-space-xs">
             Etiquetas ({formData.tags.length}/{LENGTH_LIMITS.TAG_MAX_COUNT})
           </label>
           <div className="flex">
@@ -268,7 +268,7 @@ const PostForm = ({ postId = null, forumId = null }) => {
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-1 bg-surface-container-low rounded-r-none"
               placeholder="Añadir etiqueta"
               maxLength={LENGTH_LIMITS.TAG.max}
               disabled={formData.tags.length >= LENGTH_LIMITS.TAG_MAX_COUNT}
@@ -282,7 +282,7 @@ const PostForm = ({ postId = null, forumId = null }) => {
             <button
               type="button"
               onClick={handleAddTag}
-              className="bg-green-600 text-white px-4 py-2 rounded-r-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-space-md rounded-r-base bg-secondary text-on-secondary text-label-lg hover:bg-on-secondary-fixed-variant disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={formData.tags.length >= LENGTH_LIMITS.TAG_MAX_COUNT}
             >
               Añadir
@@ -290,12 +290,12 @@ const PostForm = ({ postId = null, forumId = null }) => {
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {formData.tags.map(tag => (
-              <span key={tag} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center">
+              <span key={tag} className="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-label-md flex items-center">
                 {tag}
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="ml-2 text-green-600 hover:text-green-800"
+                  className="ml-2 text-on-secondary-fixed-variant hover:text-error"
                 >
                   &times;
                 </button>
@@ -304,14 +304,14 @@ const PostForm = ({ postId = null, forumId = null }) => {
           </div>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+        <div className="mb-space-md">
+          <label htmlFor="status" className="block text-label-lg text-on-surface mb-space-xs">Estado</label>
           <select
             id="status"
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="bg-surface-container-low"
           >
             <option value="ACTIVE">Activo</option>
             <option value="DRAFT">Borrador</option>
@@ -322,13 +322,13 @@ const PostForm = ({ postId = null, forumId = null }) => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 mr-2 hover:bg-gray-50"
+            className="btn btn-outline mr-2"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+            className="btn btn-primary"
             disabled={loading}
           >
             {postId ? 'Actualizar' : 'Publicar'}

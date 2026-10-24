@@ -21,9 +21,9 @@ const commentService = {
     }
   },
   
-  getCommentsByPost: async (postId) => {
+  getCommentsByPost: async (postId, sort = 'chronological') => {
     try {
-      const response = await api.get(`/comments/post/${postId}`)
+      const response = await api.get(`/comments/post/${postId}`, { params: { sort } })
       return response.data
     } catch (error) {
       console.error(`Error al obtener comentarios del post con id ${postId}:`, error)

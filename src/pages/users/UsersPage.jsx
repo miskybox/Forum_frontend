@@ -1,20 +1,33 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { MdChatBubbleOutline, MdPeople, MdSearch } from 'react-icons/md'
 import useAuth from '../../hooks/useAuth'
+import { useLanguage } from '../../contexts/LanguageContext'
 import followService from '../../services/followService'
 import userService from '../../services/userService'
 import FollowButton from '../../components/social/FollowButton'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
-import toast from 'react-hot-toast'
+import PageContainer from '../../components/ui/PageContainer'
+import SegmentedTabs from '../../components/ui/SegmentedTabs'
+import { Input } from '../../components/ui/Input'
+import Button from '../../components/ui/Button'
+import EmptyState from '../../components/ui/EmptyState'
+import Avatar from '../../components/ui/Avatar'
+
+const toList = (data) => (Array.isArray(data) ? data : data?.content || [])
 
 const UsersPage = () => {
   const { isAuthenticated, currentUser } = useAuth()
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('explore')
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [searching, setSearching] = useState(false)
+  const [isSearchMode, setIsSearchMode] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     loadUsers()
@@ -24,6 +37,7 @@ const UsersPage = () => {
   const loadUsers = async () => {
     try {
       setLoading(true)
+      setError(null)
       let data = []
 
       if (activeTab === 'suggestions' && isAuthenticated) {
@@ -31,34 +45,34 @@ const UsersPage = () => {
       } else if (activeTab === 'mutuals' && isAuthenticated) {
         data = await followService.getMutualFollows()
       } else {
-        // Explorar todos los usuarios
-        const response = await userService.getAllUsers(0, 20)
-        data = response.content || response
+        data = await userService.getAllUsers(0, 20)
       }
 
-      setUsers(Array.isArray(data) ? data : [])
+      setUsers(toList(data))
     } catch (err) {
       console.error('Error loading users:', err)
-      toast.error('Error al cargar usuarios')
+      setError(t('users.loadError'))
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSearch = async (e) => {
-    e.preventDefault()
+  const handleSearch = async (event) => {
+    event.preventDefault()
     if (!searchQuery.trim()) {
       setSearchResults([])
+      setIsSearchMode(false)
       return
     }
 
     try {
       setSearching(true)
       const results = await userService.searchUsers(searchQuery)
-      setSearchResults(Array.isArray(results) ? results : results.content || [])
+      setSearchResults(toList(results))
+      setIsSearchMode(true)
     } catch (err) {
       console.error('Error searching users:', err)
-      toast.error('Error en la busqueda')
+      setError(t('users.searchError'))
     } finally {
       setSearching(false)
     }
@@ -67,233 +81,155 @@ const UsersPage = () => {
   const clearSearch = () => {
     setSearchQuery('')
     setSearchResults([])
+    setIsSearchMode(false)
   }
 
-  const displayUsers = searchResults.length > 0 ? searchResults : users
+  const displayUsers = isSearchMode ? searchResults : users
+
+  const emptyTitle = searchQuery
+    ? t('users.noUsers')
+    : activeTab === 'mutuals'
+      ? t('users.noMutuals')
+      : activeTab === 'suggestions'
+        ? t('users.noSuggestions')
+        : t('users.noneAvailable')
+
+  const tabs = [
+    { id: 'explore', label: t('users.explore'), icon: MdPeople },
+    { id: 'suggestions', label: t('users.suggestions'), icon: MdSearch },
+    { id: 'mutuals', label: t('users.mutuals'), icon: MdPeople },
+  ]
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-forest">Usuarios</h1>
-        <p className="text-forest/70 mt-1">Encuentra y conecta con otros viajeros</p>
-      </div>
+    <PageContainer width="wide" className="py-margin space-y-space-lg">
+      <header>
+        <h1 className="font-headline text-headline-lg text-on-surface">{t('users.title')}</h1>
+        <p className="mt-space-xs text-body-md text-on-surface-variant">{t('users.subtitle')}</p>
+      </header>
 
-      {/* Search Bar */}
-      <form onSubmit={handleSearch} className="mb-6">
-        <div className="flex gap-2">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar usuarios por nombre..."
-              className="w-full px-4 py-3 pl-10 border border-beige-dark rounded-lg focus:ring-2 focus:ring-teal focus:border-transparent"
-            />
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <button
-            type="submit"
-            disabled={searching}
-            className="px-6 py-3 bg-teal text-white rounded-lg hover:bg-teal/90 disabled:opacity-50 transition-colors"
-          >
-            {searching ? 'Buscando...' : 'Buscar'}
-          </button>
+      <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-space-sm items-end">
+        <Input
+          id="user-search"
+          label={t('users.searchUsers')}
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder={t('users.searchPlaceholder')}
+          className="flex-1 w-full"
+        />
+        <div className="flex gap-space-xs">
+          <Button type="submit" loading={searching}>{t('users.search')}</Button>
           {searchResults.length > 0 && (
-            <button
-              type="button"
-              onClick={clearSearch}
-              className="px-4 py-3 border border-beige-dark rounded-lg hover:bg-beige-dark/20 transition-colors"
-            >
-              Limpiar
-            </button>
+            <Button type="button" variant="ghost" onClick={clearSearch}>{t('users.clear')}</Button>
           )}
         </div>
       </form>
 
-      {/* Tabs - Solo si autenticado */}
-      {isAuthenticated && searchResults.length === 0 && (
-        <div className="flex gap-2 mb-6 p-1 bg-beige-dark/50 rounded-lg">
-          <button
-            onClick={() => setActiveTab('explore')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
-              activeTab === 'explore'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
-            }`}
-          >
-            Explorar
-          </button>
-          <button
-            onClick={() => setActiveTab('suggestions')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
-              activeTab === 'suggestions'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
-            }`}
-          >
-            Sugerencias
-          </button>
-          <button
-            onClick={() => setActiveTab('mutuals')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors ${
-              activeTab === 'mutuals'
-                ? 'bg-white text-teal shadow-sm'
-                : 'text-forest/70 hover:text-forest'
-            }`}
-          >
-            Mutuos
-          </button>
-        </div>
+      {isAuthenticated && !isSearchMode && (
+        <SegmentedTabs
+          tabs={tabs}
+          activeId={activeTab}
+          onChange={setActiveTab}
+          idPrefix="users"
+          label={t('users.title')}
+        />
       )}
 
-      {/* Users Grid */}
+      {error && <p role="alert" className="text-body-md text-error">{error}</p>}
+
       {loading ? (
-        <div className="flex justify-center py-12">
-          <LoadingSpinner />
-        </div>
+        <LoadingSpinner label={t('common.loading')} />
       ) : displayUsers.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-xl shadow-md border border-beige-dark">
-          <div className="text-6xl mb-4">
-            {searchQuery ? '🔍' : activeTab === 'mutuals' ? '🤝' : '👥'}
-          </div>
-          <h3 className="text-lg font-semibold text-forest mb-2">
-            {searchQuery
-              ? 'No se encontraron usuarios'
-              : activeTab === 'mutuals'
-                ? 'Sin seguidores mutuos'
-                : activeTab === 'suggestions'
-                  ? 'Sin sugerencias disponibles'
-                  : 'No hay usuarios disponibles'}
-          </h3>
-          <p className="text-forest/70">
-            {searchQuery
-              ? 'Intenta con otro termino de busqueda'
-              : activeTab === 'mutuals'
-                ? 'Sigue a mas usuarios para encontrar mutuos'
-                : 'Vuelve mas tarde para ver nuevos usuarios'}
-          </p>
-        </div>
+        <EmptyState
+          icon={searchQuery ? MdSearch : MdPeople}
+          title={emptyTitle}
+          description={searchQuery ? t('users.searchHint') : t('users.emptyHint')}
+        />
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-space-md sm:grid-cols-2 lg:grid-cols-3">
           {displayUsers.map((user) => (
-            <UserCard
-              key={user.id || user.userId}
-              user={user}
-              currentUserId={currentUser?.id}
-              isAuthenticated={isAuthenticated}
-            />
+            <li key={user.id || user.userId}>
+              <UserCard
+                user={user}
+                currentUserId={currentUser?.id}
+                isAuthenticated={isAuthenticated}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
-      {/* Login prompt for non-authenticated users */}
       {!isAuthenticated && (
-        <div className="mt-8 p-6 bg-gradient-to-r from-teal/10 to-ocean/10 rounded-xl border border-teal/20 text-center">
-          <h3 className="text-lg font-semibold text-forest mb-2">
-            Inicia sesion para seguir usuarios
-          </h3>
-          <p className="text-forest/70 mb-4">
-            Conecta con otros viajeros, enviales mensajes y ve su contenido en tu feed
-          </p>
-          <div className="flex justify-center gap-3">
-            <Link
-              to="/login"
-              className="px-6 py-2 bg-teal text-white rounded-lg hover:bg-teal/90 transition-colors"
-            >
-              Iniciar sesion
-            </Link>
-            <Link
-              to="/register"
-              className="px-6 py-2 border-2 border-teal text-teal rounded-lg hover:bg-teal/10 transition-colors"
-            >
-              Registrarse
-            </Link>
-          </div>
-        </div>
+        <EmptyState
+          icon={MdPeople}
+          title={t('users.loginTitle')}
+          description={t('users.loginHint')}
+          action={
+            <div className="flex gap-space-sm">
+              <Button to="/login">{t('auth.loginButton')}</Button>
+              <Button to="/register" variant="secondary">{t('auth.registerButton')}</Button>
+            </div>
+          }
+        />
       )}
-    </div>
+    </PageContainer>
   )
 }
 
-// Componente de tarjeta de usuario
 const UserCard = ({ user, currentUserId, isAuthenticated }) => {
+  const { t } = useLanguage()
   const userId = user.id || user.userId
   const isOwnProfile = currentUserId === userId
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-beige-dark overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="p-4">
-        {/* Avatar y nombre */}
-        <Link to={`/profile/${userId}`} className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal to-ocean flex items-center justify-center text-white text-lg font-bold">
-            {user.avatarUrl || user.profileImageUrl ? (
-              <img
-                src={user.avatarUrl || user.profileImageUrl}
-                alt={user.username}
-                className="w-full h-full rounded-full object-cover"
-              />
-            ) : (
-              user.username?.charAt(0).toUpperCase()
-            )}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-forest truncate hover:text-teal transition-colors">
-              {user.username}
-            </h3>
-            {user.fullName && (
-              <p className="text-sm text-forest/60 truncate">{user.fullName}</p>
-            )}
-          </div>
-        </Link>
-
-        {/* Bio */}
-        {(user.bio || user.biography) && (
-          <p className="text-sm text-forest/70 line-clamp-2 mb-3">
-            {user.bio || user.biography}
-          </p>
-        )}
-
-        {/* Location */}
-        {user.location && (
-          <p className="text-xs text-forest/50 flex items-center gap-1 mb-3">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            {user.location}
-          </p>
-        )}
-
-        {/* Actions */}
-        <div className="flex gap-2">
-          <Link
-            to={`/profile/${userId}`}
-            className="flex-1 text-center py-2 text-sm border border-teal text-teal rounded-lg hover:bg-teal/10 transition-colors"
-          >
-            Ver perfil
-          </Link>
-
-          {isAuthenticated && !isOwnProfile && (
-            <>
-              <FollowButton userId={userId} size="sm" />
-              <Link
-                to={`/messages/${userId}`}
-                className="p-2 border border-beige-dark rounded-lg hover:bg-beige-dark/20 transition-colors"
-                title="Enviar mensaje"
-              >
-                <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-              </Link>
-            </>
+    <article className="bg-surface-container-lowest rounded-lg p-space-md shadow-level-1 h-full flex flex-col">
+      <Link to={`/profile/${userId}`} className="flex items-center gap-space-sm mb-space-sm">
+        <Avatar
+          name={user.username}
+          src={user.avatarUrl || user.profileImageUrl}
+          size="lg"
+        />
+        <span className="min-w-0">
+          <span className="block font-semibold text-on-surface truncate">{user.username}</span>
+          {user.fullName && (
+            <span className="block text-body-sm text-on-surface-variant truncate">{user.fullName}</span>
           )}
-        </div>
+        </span>
+      </Link>
+
+      {(user.bio || user.biography) && (
+        <p className="text-body-sm text-on-surface-variant line-clamp-2 mb-space-sm">
+          {user.bio || user.biography}
+        </p>
+      )}
+
+      {user.location && (
+        <p className="text-caption text-on-surface-variant mb-space-sm">{user.location}</p>
+      )}
+
+      <div className="mt-auto flex flex-wrap gap-space-xs">
+        <Button to={`/profile/${userId}`} variant="secondary" size="sm" className="flex-1">
+          {t('users.viewProfile')}
+        </Button>
+        {isAuthenticated && !isOwnProfile && (
+          <>
+            <FollowButton userId={userId} size="sm" />
+            <Button
+              to={`/messages/${userId}`}
+              variant="icon"
+              aria-label={t('users.sendMessage')}
+              icon={MdChatBubbleOutline}
+            />
+          </>
+        )}
       </div>
-    </div>
+    </article>
   )
+}
+
+UserCard.propTypes = {
+  user: PropTypes.object.isRequired,
+  currentUserId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isAuthenticated: PropTypes.bool,
 }
 
 export default UsersPage

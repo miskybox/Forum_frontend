@@ -282,8 +282,8 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
   const selectedEmoji = getCountryEmoji(selectedCountry)
 
   return (
-    <div className="relative w-full min-w-[360px] sm:min-w-[480px] max-w-lg" ref={dropdownRef}>
-      <div className="w-full flex items-center gap-3 px-5 py-4 bg-white border-2 border-accent rounded-xl cursor-pointer hover:border-secondary hover:shadow-lg transition-all text-left min-h-[60px] relative">
+    <div className="relative w-full" ref={dropdownRef}>
+      <div className="w-full flex items-center gap-3 px-4 py-2 bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-base cursor-pointer hover:border-secondary transition-colors text-left min-h-11 relative">
         <select
           onChange={(e) => {
             const country = countries.find(c => getCountryIdentifier(c.original)?.toString() === e.target.value)
@@ -306,26 +306,26 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
           <>
             <span className="text-2xl shrink-0">{selectedEmoji}</span>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-text truncate text-sm">{selectedCountryName || 'País seleccionado'}</p>
+              <p className="font-semibold text-on-surface truncate text-sm">{selectedCountryName || 'País seleccionado'}</p>
               {selectedCountryCapital && (
-                <p className="text-xs text-text-light truncate">{selectedCountryCapital}</p>
+                <p className="text-xs text-on-surface-variant truncate">{selectedCountryCapital}</p>
               )}
             </div>
           </>
         ) : (
           <>
-            <span className="w-6 h-6 bg-golden rounded-full flex items-center justify-center">
-              <svg className="w-4 h-4 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span className="w-6 h-6 bg-primary-fixed rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-on-surface" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </span>
-            <span className="text-text-light text-sm">Selecciona un país...</span>
+            <span className="text-on-surface-variant text-sm">Selecciona un país...</span>
           </>
         )}
-        <span className="ml-auto text-text-light text-xs">{isOpen ? '▲' : '▼'}</span>
+        <span className="ml-auto text-on-surface-variant text-xs">{isOpen ? '▲' : '▼'}</span>
       </div>
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 z-50">
-          <div className="bg-white border-2 border-accent rounded-2xl shadow-xl overflow-hidden w-full" id="country-selector-listbox">
+          <div className="bg-surface-container-lowest border-2 border-outline-variant rounded-2xl shadow-level-2 overflow-hidden w-full" id="country-selector-listbox">
             <div className="p-5 sm:p-6 space-y-5">
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wide text-secondary block">Selecciona un continente</span>
@@ -338,10 +338,10 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                         type="button"
                         onClick={() => handleContinentSelect(option.value)}
                         aria-pressed={isActive}
-                        className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all min-h-[48px] ${
+                        className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 text-sm font-semibold transition-all min-h-[48px] ${
                           isActive
-                            ? 'bg-golden border-midnight text-midnight shadow-md'
-                            : 'border-accent text-text hover:border-teal hover:bg-teal/10 hover:text-teal'
+                            ? 'bg-primary-fixed border-outline-variant text-on-surface shadow-level-1'
+                            : 'border-outline-variant text-on-surface hover:border-secondary hover:bg-secondary/10 hover:text-secondary'
                         }`}
                       >
                         <span className="font-bold">{option.abbr}</span>
@@ -354,7 +354,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="country-search" className="block text-xs font-bold text-text uppercase tracking-wide">
+                <label htmlFor="country-search" className="block text-xs font-bold text-on-surface uppercase tracking-wide">
                   O busca por nombre
                 </label>
                 <div className="relative flex items-center">
@@ -364,15 +364,15 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Nombre del país o capital..."
-                    className="w-full pl-4 pr-10 py-3 border-2 border-accent rounded-xl text-sm text-text placeholder-text-light focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition min-h-[48px]"
+                    className="w-full pl-4 pr-10 py-3 border-2 border-outline-variant rounded-lg text-sm text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition min-h-[48px]"
                   />
-                  <svg className="absolute right-3 w-5 h-5 text-text-light pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  <svg className="absolute right-3 w-5 h-5 text-on-surface-variant pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-text-light">
+              <div className="flex items-center justify-between text-[11px] text-on-surface-variant">
                 <span className="flex items-center gap-1">
-                  <span className="font-bold text-golden">{activeContinent?.abbr}</span>
+                  <span className="font-bold text-primary">{activeContinent?.abbr}</span>
                   <span>{activeContinent?.label}</span>
                 </span>
                 <span>
@@ -381,23 +381,23 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
               </div>
 
               {loading && (
-                <div className="py-8 text-center text-text-light">
+                <div className="py-8 text-center text-on-surface-variant">
                   <div className="animate-spin rounded-full h-8 w-8 border-2 border-secondary border-t-transparent mx-auto mb-3" />
                   <p className="text-sm">Cargando destinos...</p>
                 </div>
               )}
 
               {!loading && filteredCountries.length === 0 && (
-                <div className="py-8 text-center text-text-light">
-                  <div className="w-10 h-10 mx-auto mb-3 bg-aqua rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <div className="py-8 text-center text-on-surface-variant">
+                  <div className="w-10 h-10 mx-auto mb-3 bg-secondary-container rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-on-surface" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                   </div>
                   <p className="text-sm">No encontramos resultados. Prueba con otro nombre.</p>
                   {selectedContinent !== ALL_CONTINENTS_KEY && (
                     <button
                       type="button"
                       onClick={() => handleContinentSelect(ALL_CONTINENTS_KEY)}
-                      className="mt-4 inline-flex items-center gap-2 text-secondary text-sm font-semibold hover:text-secondary-dark"
+                      className="mt-4 inline-flex items-center gap-2 text-secondary text-sm font-semibold hover:text-on-secondary-fixed-variant"
                     >
                       Mostrar todos los continentes
                     </button>
@@ -416,7 +416,7 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                   }}
                   value={normalizedSelectedId || ''}
                   aria-label="Países disponibles"
-                  className="w-full max-h-72 p-2 border-2 border-accent rounded-xl text-sm text-text focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20"
+                  className="w-full max-h-72 p-2 border-2 border-outline-variant rounded-lg text-sm text-on-surface focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20"
                 >
                   <option value="">Selecciona un país...</option>
                   {filteredCountries.map((country) => (
@@ -427,14 +427,14 @@ const CountrySelector = ({ onSelect, selectedCountry }) => {
                 </select>
               )}
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-primary-dark pt-4 mt-2">
-                <p className="text-xs text-text-light">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-surface-container-high pt-4 mt-2">
+                <p className="text-xs text-on-surface-variant">
                   Selecciona un país para continuar y guarda tu experiencia.
                 </p>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-secondary hover:text-secondary-dark hover:bg-secondary/10 transition"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-secondary hover:text-on-secondary-fixed-variant hover:bg-secondary/10 transition"
                 >
                   Cerrar
                 </button>

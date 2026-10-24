@@ -8,6 +8,7 @@ test.describe('Footer navegación', () => {
     const footer = page.getByRole('contentinfo')
     await footer.scrollIntoViewIfNeeded()
     const footerLink = footer.getByRole('link', { name: 'Foros' })
+    await expect(footer.getByText(/copyright by sigu/i)).toBeVisible()
     await expect(footerLink).toBeVisible({ timeout: 10000 })
     await footerLink.click()
     await expect(page).toHaveURL(/\/forums$/)

@@ -18,10 +18,7 @@ describe('CategoryCard - Links funcionales', () => {
       </MemoryRouter>
     )
 
-    // El nombre Europa aparece múltiples veces (título y descripción)
-    const europaElements = screen.getAllByText(/Europa/i)
-    expect(europaElements.length).toBeGreaterThan(0)
-    expect(screen.getByText(/Descubre los mejores destinos/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Europa/i })).toBeInTheDocument()
   })
 
   it('tiene link que navega a foros de la categoría', () => {
@@ -85,7 +82,7 @@ describe('CategoryCard - Links funcionales', () => {
     expect(europaElements.length).toBeGreaterThan(0)
   })
 
-  it('muestra imagen cuando está disponible', () => {
+  it('prioriza la foto original de continente aunque el API envíe imageUrl', () => {
     render(
       <MemoryRouter>
         <CategoryCard category={mockCategory} />
@@ -94,7 +91,8 @@ describe('CategoryCard - Links funcionales', () => {
 
     const image = screen.getByRole('img')
     expect(image).toBeInTheDocument()
-    expect(image).toHaveAttribute('src', 'https://example.com/europa.jpg')
+    expect(image.getAttribute('src')).not.toBe('https://example.com/europa.jpg')
+    expect(image.getAttribute('alt')).toMatch(/sigu|parís|paris/i)
   })
 
   it('link es clickeable y visible', () => {

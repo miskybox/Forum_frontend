@@ -14,8 +14,8 @@ const BlogCategoryBadge = ({ category, size = 'sm' }) => {
       to={`/blog/category/${category.slug || category.categorySlug}`}
       className={`inline-flex items-center gap-1 rounded-full font-medium transition-all hover:opacity-80 ${sizeClasses[size]}`}
       style={{
-        backgroundColor: category.color ? `${category.color}20` : '#f3f4f6',
-        color: category.color || '#374151'
+        backgroundColor: category.color ? `${category.color}20` : '#e9efea',
+        color: category.color || '#171d1a'
       }}
     >
       {(category.icon || category.categoryIcon) && (

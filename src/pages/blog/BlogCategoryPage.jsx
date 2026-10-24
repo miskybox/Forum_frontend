@@ -50,7 +50,7 @@ const BlogCategoryPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div
-        className="bg-gradient-to-r from-ocean-700 to-ocean-500 text-white py-16"
+        className="bg-gradient-to-r from-on-secondary-fixed-variant to-secondary text-white py-16"
         style={category?.color ? {
           background: `linear-gradient(135deg, ${category.color} 0%, ${category.color}dd 100%)`
         } : {}}
@@ -67,7 +67,7 @@ const BlogCategoryPage = () => {
             <div className="flex items-center gap-4">
               <div 
                 className="w-16 h-16 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: category.color || '#059669' }}
+                style={{ backgroundColor: category.color || '#476558' }}
               >
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
               </div>
@@ -96,7 +96,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -106,7 +106,7 @@ const BlogCategoryPage = () => {
             <button
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
-              className="px-4 py-2 rounded-lg bg-earth-50 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

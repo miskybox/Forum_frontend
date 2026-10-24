@@ -40,7 +40,7 @@ const SendPrivateMessageForm = ({ toId }) => {
       />
       <button
         type="submit"
-        className="btn bg-golden text-midnight px-4 py-2 rounded font-bold"
+        className="btn bg-primary-fixed text-on-surface px-4 py-2 rounded font-bold"
         disabled={loading}
       >
         {loading ? 'Enviando...' : 'Enviar mensaje'}

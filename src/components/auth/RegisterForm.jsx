@@ -191,11 +191,11 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="p-6">
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <div>
+      <form onSubmit={handleSubmit} className="space-y-space-md" noValidate>
         {errors.auth && (
           <div 
-            className="p-4 border-2 border-error bg-dark-lighter/80 text-error font-bold text-xs uppercase tracking-normal flex items-center gap-2"
+            className="p-space-md rounded-base bg-error-container text-on-error-container text-body-sm font-semibold flex items-center gap-2"
             role="alert"
             aria-live="assertive"
           >
@@ -208,7 +208,7 @@ const RegisterForm = () => {
         )}
 
         <div>
-          <label htmlFor="username" className="text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2 flex items-center gap-2">
+          <label htmlFor="username" className="text-label-lg text-on-surface mb-space-xs flex items-center gap-2">
             <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
             {t('auth.username')}
           </label>
@@ -221,21 +221,21 @@ const RegisterForm = () => {
             aria-required="true"
             aria-invalid={errors.username ? 'true' : 'false'}
             aria-describedby={errors.username ? 'username-error' : undefined}
-            className={`input w-full ${errors.username ? 'border-error' : 'border-ocean-600'}`}
+            className={`input w-full bg-surface-container-low ${errors.username ? 'border-error' : ''}`}
             value={formData.username}
             onChange={handleChange}
             disabled={isSubmitting}
             placeholder={t('auth.usernamePlaceholder')}
           />
           {errors.username && (
-            <p id="username-error" className="mt-2 text-sm font-bold text-error" role="alert">
+            <p id="username-error" className="mt-1 text-caption text-error" role="alert">
               <span className="sr-only">Error: </span>{errors.username}
             </p>
           )}
         </div>
 
         <div>
-          <label htmlFor="email" className="text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2 flex items-center gap-2">
+          <label htmlFor="email" className="text-label-lg text-on-surface mb-space-xs flex items-center gap-2">
             <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
             {t('auth.email')}
           </label>
@@ -247,26 +247,26 @@ const RegisterForm = () => {
             aria-required="true"
             aria-invalid={errors.email ? 'true' : 'false'}
             aria-describedby={errors.email ? 'email-error' : undefined}
-            className={`input w-full ${errors.email ? 'border-error' : 'border-ocean-600'}`}
+            className={`input w-full bg-surface-container-low ${errors.email ? 'border-error' : ''}`}
             value={formData.email}
             onChange={handleChange}
             disabled={isSubmitting}
             placeholder={t('auth.emailPlaceholder')}
           />
           {errors.email && (
-            <p id="email-error" className="mt-2 text-sm font-bold text-error" role="alert">
+            <p id="email-error" className="mt-1 text-caption text-error" role="alert">
               <span className="sr-only">Error: </span>{errors.email}
             </p>
           )}
         </div>
 
         <div className="relative">
-          <label htmlFor="password" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
+          <label htmlFor="password" className="block text-label-lg text-on-surface mb-space-xs">
             <span className="flex items-center gap-2">
               <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
               {t('auth.password')}
             </span>
-            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+            <span className="mt-1 block text-caption font-normal text-on-surface-variant">
               {t('auth.passwordHint')}
             </span>
           </label>
@@ -279,7 +279,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.password ? 'true' : 'false'}
               aria-describedby={errors.password ? 'password-error' : undefined}
-              className={`input w-full pr-12 ${errors.password ? 'border-error' : 'border-ocean-600'}`}
+              className={`input w-full bg-surface-container-low pr-12 ${errors.password ? 'border-error' : ''}`}
               value={formData.password}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -292,34 +292,33 @@ const RegisterForm = () => {
                 e.stopPropagation()
                 setShowPassword(!showPassword)
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
               aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showPassword}
-              tabIndex={-1}
             >
               <span aria-hidden="true">
                 {showPassword ? (
-                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
                 ) : (
-                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                 )}
               </span>
             </button>
           </div>
           {errors.password && (
-            <p id="password-error" className="mt-2 text-sm font-bold text-error" role="alert">
+            <p id="password-error" className="mt-1 text-caption text-error" role="alert">
               <span className="sr-only">Error: </span>{errors.password}
             </p>
           )}
         </div>
 
         <div className="relative">
-          <label htmlFor="confirmPassword" className="block text-sm font-bold text-ocean-400 uppercase tracking-normal mb-2">
+          <label htmlFor="confirmPassword" className="block text-label-lg text-on-surface mb-space-xs">
             <span className="flex items-center gap-2">
               <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
               {t('auth.confirmPassword')}
             </span>
-            <span className="mt-1 block text-xs font-normal uppercase tracking-[0.08em] text-ocean-200">
+            <span className="mt-1 block text-caption font-normal text-on-surface-variant">
               {t('auth.confirmPasswordHint')}
             </span>
           </label>
@@ -332,7 +331,7 @@ const RegisterForm = () => {
               aria-required="true"
               aria-invalid={errors.confirmPassword ? 'true' : 'false'}
               aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
-              className={`input w-full pr-12 ${errors.confirmPassword ? 'border-error' : 'border-ocean-600'}`}
+              className={`input w-full bg-surface-container-low pr-12 ${errors.confirmPassword ? 'border-error' : ''}`}
               value={formData.confirmPassword}
               onChange={handleChange}
               disabled={isSubmitting}
@@ -345,22 +344,21 @@ const RegisterForm = () => {
                 e.stopPropagation()
                 setShowConfirmPassword(!showConfirmPassword)
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:scale-125 transition-transform z-10 cursor-pointer"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
               aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               aria-pressed={showConfirmPassword}
-              tabIndex={-1}
             >
               <span aria-hidden="true">
                 {showConfirmPassword ? (
-                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
                 ) : (
-                  <svg className="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                 )}
               </span>
             </button>
           </div>
           {errors.confirmPassword && (
-            <p id="confirmPassword-error" className="mt-2 text-sm font-bold text-error" role="alert">
+            <p id="confirmPassword-error" className="mt-1 text-caption text-error" role="alert">
               <span className="sr-only">Error: </span>{errors.confirmPassword}
             </p>
           )}
@@ -368,7 +366,7 @@ const RegisterForm = () => {
 
         <button
           type="submit"
-          className="btn btn-primary w-full text-lg py-4 rounded-lg"
+          className="btn btn-primary w-full"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
           aria-describedby="register-status"

@@ -111,9 +111,9 @@ const BlogPostPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Back button */}
-      <div className="bg-earth-50 border-b">
+      <div className="bg-surface-container-lowest border-b">
         <div className="container mx-auto px-4 py-4">
-          <Link to="/blog" className="inline-flex items-center text-ocean-600 hover:text-ocean-700">
+          <Link to="/blog" className="inline-flex items-center text-on-secondary-fixed-variant hover:text-on-secondary-fixed-variant">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -188,7 +188,7 @@ const BlogPostPage = () => {
                     // TODO: Implementar página de edición de blog
                     alert('Funcionalidad de edición de blog próximamente')
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-ocean-600 text-white hover:bg-ocean-700 transition-colors ml-auto"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-on-secondary-fixed-variant text-white hover:bg-on-secondary-fixed-variant transition-colors ml-auto"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -241,16 +241,17 @@ const BlogPostPage = () => {
                     to={`/blog/${relatedPost.slug}`}
                     className="group"
                   >
-                    <div className="bg-earth-50 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden hover:shadow-level-2 transition-shadow">
                       {relatedPost.featuredImage && (
                         <img
                           src={relatedPost.featuredImage}
                           alt={relatedPost.title}
+                          loading="lazy"
                           className="w-full h-40 object-cover group-hover:scale-105 transition-transform"
                         />
                       )}
                       <div className="p-4">
-                        <h3 className="font-semibold text-gray-900 group-hover:text-ocean-600 transition-colors line-clamp-2">
+                        <h3 className="font-semibold text-gray-900 group-hover:text-on-secondary-fixed-variant transition-colors line-clamp-2">
                           {relatedPost.title}
                         </h3>
                         {relatedPost.excerpt && (

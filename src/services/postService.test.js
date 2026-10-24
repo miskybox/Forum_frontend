@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { vi } from 'vitest'
 import postService from './postService'
 import api from '../utils/api'
 
@@ -45,6 +45,16 @@ describe('postService', () => {
       await postService.getAllPosts(3, 25)
 
       expect(api.get).toHaveBeenCalledWith('/posts', { params: { page: 3, size: 25 } })
+    })
+
+    it('forwards listing filters to the posts endpoint', async () => {
+      api.get.mockResolvedValueOnce({ data: { content: [] } })
+
+      await postService.getAllPosts(0, 9, { hasImages: true, sort: 'trending' })
+
+      expect(api.get).toHaveBeenCalledWith('/posts', {
+        params: { page: 0, size: 9, hasImages: true, sort: 'trending' }
+      })
     })
 
     it('maneja error de red al obtener posts', async () => {

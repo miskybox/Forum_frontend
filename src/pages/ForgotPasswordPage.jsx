@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { MdInfoOutline, MdMarkEmailRead } from 'react-icons/md'
 import { useLanguage } from '../contexts/LanguageContext'
 import authService from '../services/authService'
-import toast from 'react-hot-toast'
+import AuthLayout from '../components/auth/AuthLayout'
+import AuthStatus from '../components/auth/AuthStatus'
+import TextField from '../components/ui/TextField'
 
 const ForgotPasswordPage = () => {
   const { t } = useLanguage()
@@ -12,7 +16,6 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     if (!email.trim()) {
       toast.error(t('auth.passwordReset.emailLabel'))
       return
@@ -21,135 +24,76 @@ const ForgotPasswordPage = () => {
     setIsLoading(true)
     try {
       await authService.forgotPassword(email)
-      setEmailSent(true)
-      toast.success(t('auth.passwordReset.checkEmailDescription'))
     } catch (error) {
-      console.error('Error en forgot password:', error)
-      // Por seguridad, mostramos el mismo mensaje aunque falle
-      // para no revelar si el email existe o no
+      // Same answer either way so we never reveal whether the email exists
+      console.error('Error requesting password reset:', error)
+    } finally {
       setEmailSent(true)
       toast.success(t('auth.passwordReset.checkEmailDescription'))
-    } finally {
       setIsLoading(false)
     }
   }
 
-  if (emailSent) {
-    return (
-      <div className="py-8 sm:py-12 relative overflow-hidden">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-          <div className="max-w-md mx-auto">
-            <div className="card border-ocean-600 animate-slide-in">
-              <div className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 bg-emerald-500 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h2 className="text-2xl font-bold text-text-darkest mb-4">
-                  {t('auth.passwordReset.checkEmail')}
-                </h2>
-                <p className="text-text-dark mb-6">
-                  {t('auth.passwordReset.checkEmailDescription')}
-                </p>
-                <p className="text-sm text-text-muted mb-6">
-                  {t('auth.passwordReset.linkExpiry')}
-                </p>
-                <div className="space-y-3">
-                  <button
-                    onClick={() => {
-                      setEmailSent(false)
-                      setEmail('')
-                    }}
-                    className="btn btn-outline w-full"
-                  >
-                    {t('auth.passwordReset.tryAnotherEmail')}
-                  </button>
-                  <Link
-                    to="/login"
-                    className="btn btn-primary w-full inline-block text-center"
-                  >
-                    {t('auth.passwordReset.backToLogin')}
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const demoNote = (
+    <p className="flex items-start gap-space-xs rounded-lg p-space-md bg-primary-fixed text-on-primary-fixed text-body-sm">
+      <MdInfoOutline className="text-title-md flex-shrink-0" aria-hidden="true" />
+      {t('auth.passwordReset.demoNote')}
+    </p>
+  )
+
+  const footer = (
+    <p className="text-center">
+      <Link to="/login" className="inline-flex items-center gap-1 text-label-md text-on-surface-variant hover:text-primary">
+        <span aria-hidden="true">←</span> {t('auth.passwordReset.backToLogin')}
+      </Link>
+    </p>
+  )
 
   return (
-    <div className="py-8 sm:py-12 relative overflow-hidden">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="max-w-md mx-auto">
-          {/* Header */}
-          <div className="text-center mb-6 animate-fade-in">
-            <h1 className="text-2xl md:text-3xl font-bold text-text-darkest tracking-normal mb-2">
-              {t('auth.passwordReset.title')}
-            </h1>
-            <div className="h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-accent-dark to-transparent mb-2"></div>
-            <p className="text-sm text-text-dark">
-              {t('auth.passwordReset.subtitle')}
-            </p>
-          </div>
-
-          {/* Formulario */}
-          <div className="card border-ocean-600 animate-slide-in relative z-50">
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-text-dark mb-2"
-                >
-                  {t('auth.passwordReset.emailLabel')}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('auth.passwordReset.emailPlaceholder')}
-                  className="w-full px-4 py-3 bg-midnight border border-ocean-700 rounded-lg text-text-light placeholder-text-muted focus:outline-none focus:border-ocean-400 focus:ring-1 focus:ring-ocean-400 transition-colors"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-
+    <AuthLayout title={t('auth.passwordReset.title')} subtitle={t('auth.passwordReset.subtitle')} before={demoNote} after={footer}>
+      {emailSent ? (
+        <AuthStatus
+          icon={MdMarkEmailRead}
+          tone="success"
+          title={t('auth.passwordReset.checkEmail')}
+          actions={
+            <>
+              <Link to="/login" className="btn btn-primary w-full">{t('auth.passwordReset.backToLogin')}</Link>
               <button
-                type="submit"
-                disabled={isLoading}
-                className="btn btn-primary w-full py-3 flex items-center justify-center space-x-2"
+                type="button"
+                className="btn btn-outline w-full"
+                onClick={() => {
+                  setEmailSent(false)
+                  setEmail('')
+                }}
               >
-                {isLoading ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    <span>{t('auth.passwordReset.sending')}</span>
-                  </>
-                ) : (
-                  <span>{t('auth.passwordReset.sendButton')}</span>
-                )}
+                {t('auth.passwordReset.tryAnotherEmail')}
               </button>
-            </form>
-          </div>
-
-          {/* Link para volver */}
-          <div className="mt-8 text-center">
-            <Link
-              to="/login"
-              className="text-sm font-bold text-text-dark hover:text-accent-dark transition-colors inline-flex items-center space-x-2"
-            >
-              <span>←</span>
-              <span>{t('auth.passwordReset.backToLogin')}</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
+            </>
+          }
+        >
+          <p>{t('auth.passwordReset.checkEmailDescription')}</p>
+          <p>{t('auth.passwordReset.linkExpiry')}</p>
+        </AuthStatus>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-space-md" noValidate>
+          <TextField
+            id="email"
+            type="email"
+            label={t('auth.passwordReset.emailLabel')}
+            placeholder={t('auth.passwordReset.emailPlaceholder')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            required
+            disabled={isLoading}
+          />
+          <button type="submit" disabled={isLoading} className="btn btn-primary w-full" aria-busy={isLoading}>
+            {isLoading ? t('auth.passwordReset.sending') : t('auth.passwordReset.sendButton')}
+          </button>
+        </form>
+      )}
+    </AuthLayout>
   )
 }
 

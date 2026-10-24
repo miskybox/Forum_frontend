@@ -149,14 +149,14 @@ const NotificationsPage = () => {
     return (
       <div className="max-w-3xl mx-auto px-4 py-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-beige rounded w-48 mb-6"></div>
+          <div className="h-8 bg-surface-container-low rounded w-48 mb-6"></div>
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="bg-white rounded-lg p-4 mb-3 border border-beige-dark">
+            <div key={i} className="bg-surface-container-lowest rounded-lg p-4 mb-3 border border-surface-container-high">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-beige rounded-full"></div>
+                <div className="w-10 h-10 bg-surface-container-low rounded-full"></div>
                 <div className="flex-1">
-                  <div className="h-4 bg-beige rounded w-3/4 mb-2"></div>
-                  <div className="h-3 bg-beige rounded w-1/4"></div>
+                  <div className="h-4 bg-surface-container-low rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-surface-container-low rounded w-1/4"></div>
                 </div>
               </div>
             </div>
@@ -180,20 +180,20 @@ const NotificationsPage = () => {
     <div className="max-w-3xl mx-auto px-4 py-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-forest flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-on-surface flex items-center gap-2">
             Notificaciones
             {unreadCount > 0 && (
-              <span className="bg-terracota text-white text-sm px-2 py-0.5 rounded-full">
+              <span className="bg-primary text-white text-sm px-2 py-0.5 rounded-full">
                 {unreadCount}
               </span>
             )}
           </h1>
-          <p className="text-forest/70 mt-1">Mantente al dia con tu actividad</p>
+          <p className="text-on-surface-variant mt-1">Mantente al dia con tu actividad</p>
         </div>
         {unreadCount > 0 && (
           <button
             onClick={handleMarkAllAsRead}
-            className="text-teal hover:text-teal/80 font-medium text-sm transition-colors"
+            className="text-secondary hover:text-secondary/80 font-medium text-sm transition-colors"
           >
             Marcar todas como leidas
           </button>
@@ -201,33 +201,33 @@ const NotificationsPage = () => {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-md p-8 text-center border border-beige-dark">
+        <div className="bg-surface-container-lowest rounded-lg shadow-level-1 p-8 text-center border border-surface-container-high">
           <div className="text-6xl mb-4">🔔</div>
-          <p className="text-lg text-forest/70 mb-2">No tienes notificaciones</p>
-          <p className="text-forest/50">Las notificaciones apareceran aqui cuando otros interactuen contigo</p>
+          <p className="text-lg text-on-surface-variant mb-2">No tienes notificaciones</p>
+          <p className="text-on-surface-variant">Las notificaciones apareceran aqui cuando otros interactuen contigo</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden border border-beige-dark">
+        <div className="bg-surface-container-lowest rounded-lg shadow-level-1 overflow-hidden border border-surface-container-high">
           {notifications.map((notification, index) => (
             <Link
               key={notification.id}
               to={getNotificationLink(notification)}
               onClick={() => !notification.leido && handleMarkAsRead(notification.id)}
-              className={`flex items-start gap-4 p-4 hover:bg-beige/30 transition-colors ${
-                index !== notifications.length - 1 ? 'border-b border-beige-dark' : ''
+              className={`flex items-start gap-4 p-4 hover:bg-surface-container-low/30 transition-colors ${
+                index !== notifications.length - 1 ? 'border-b border-surface-container-high' : ''
               } ${!notification.leido ? 'bg-blue-50/50' : ''}`}
             >
               {getNotificationIcon(notification.tipo)}
               <div className="flex-1 min-w-0">
-                <p className={`text-forest ${!notification.leido ? 'font-semibold' : ''}`}>
+                <p className={`text-on-surface ${!notification.leido ? 'font-semibold' : ''}`}>
                   {getNotificationMessage(notification)}
                 </p>
-                <p className="text-sm text-forest/60 mt-1">
+                <p className="text-sm text-on-surface-variant mt-1">
                   {formatDate(notification.fecha)}
                 </p>
               </div>
               {!notification.leido && (
-                <div className="w-2 h-2 bg-teal rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
               )}
             </Link>
           ))}

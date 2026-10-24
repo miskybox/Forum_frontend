@@ -3,10 +3,12 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { adminCredentials, demoCredentials } from './e2e/credentials.js'
+import { resolveFrontendOrigin } from './e2e/frontend-origin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const AUTH_DIR = path.join(__dirname, '.auth')
-const APP_ORIGIN = 'http://localhost:5173'
+
+const APP_ORIGIN = process.env.PLAYWRIGHT_BASE_URL?.replace(/\/$/, '') || resolveFrontendOrigin()
 const API_BASE_URL = 'http://localhost:8080'
 
 /**
@@ -48,6 +50,11 @@ async function loginAndSave(username: string, password: string, outFile: string)
 
 export default async function globalSetup() {
   fs.mkdirSync(AUTH_DIR, { recursive: true })
+
+  if (!demoCredentials.password || !adminCredentials.password) {
+    console.warn('[global-setup] Sin E2E/USER/ADMIN passwords: se omite el storageState de sesión.')
+    return
+  }
 
   await loginAndSave(demoCredentials.username, demoCredentials.password, path.join(AUTH_DIR, 'user.json'))
   await loginAndSave(adminCredentials.username, adminCredentials.password, path.join(AUTH_DIR, 'admin.json'))

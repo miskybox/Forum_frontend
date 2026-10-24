@@ -22,8 +22,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
   const loadLikeStatus = async () => {
     try {
       const data = await likeService.getLikeStatus(postId)
-      setLiked(data.liked)
-      setLikeCount(data.likeCount)
+      setLiked(Boolean(data?.liked))
+      setLikeCount((current) => data?.likeCount ?? current)
       setInitialized(true)
     } catch (err) {
       console.error('Error loading like status:', err)
@@ -43,8 +43,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
     try {
       setLoading(true)
       const data = await likeService.toggleLike(postId)
-      setLiked(data.liked)
-      setLikeCount(data.likeCount)
+      setLiked(Boolean(data?.liked))
+      setLikeCount((current) => data?.likeCount ?? current)
       onLikeChange?.(data.liked, data.likeCount)
     } catch (err) {
       console.error('Error toggling like:', err)
@@ -55,9 +55,9 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
   }
 
   const sizeClasses = {
-    sm: 'gap-1 text-sm',
-    md: 'gap-1.5 text-base',
-    lg: 'gap-2 text-lg'
+    sm: 'gap-1 text-sm min-h-9 min-w-9 px-1.5',
+    md: 'gap-1.5 text-base min-h-10 min-w-10 px-2',
+    lg: 'gap-2 text-lg min-h-11 min-w-11 px-2'
   }
 
   const iconSizes = {
@@ -81,11 +81,11 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
       onClick={handleClick}
       disabled={loading}
       className={`
-        flex items-center ${sizeClasses[size]}
+        flex items-center justify-center rounded-full ${sizeClasses[size]}
         transition-all duration-200
         ${liked
-          ? 'text-terracota'
-          : 'text-forest/60 hover:text-terracota'
+          ? 'text-primary'
+          : 'text-on-surface-variant hover:text-primary'
         }
         disabled:opacity-50
       `}

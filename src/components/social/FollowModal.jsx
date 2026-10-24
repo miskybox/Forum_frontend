@@ -1,72 +1,69 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import { MdPeople } from 'react-icons/md'
+import { useLanguage } from '../../contexts/LanguageContext'
+import Modal from '../ui/Modal'
+import SegmentedTabs from '../ui/SegmentedTabs'
 import FollowList from './FollowList'
 
 const FollowModal = ({ userId, isOpen, onClose, initialTab = 'followers', stats }) => {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState(initialTab)
+
+  useEffect(() => {
+    if (isOpen) setActiveTab(initialTab)
+  }, [initialTab, isOpen])
 
   if (!isOpen) return null
 
+  const tabs = [
+    {
+      id: 'followers',
+      label: stats?.followersCount
+        ? `${t('users.followers')} (${stats.followersCount})`
+        : t('users.followers'),
+      icon: MdPeople,
+    },
+    {
+      id: 'following',
+      label: stats?.followingCount
+        ? `${t('users.following')} (${stats.followingCount})`
+        : t('users.following'),
+      icon: MdPeople,
+    },
+  ]
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-beige-dark">
-          <h2 className="text-lg font-bold text-forest">
-            {activeTab === 'followers' ? 'Seguidores' : 'Siguiendo'}
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-beige rounded-full transition-colors"
-            aria-label="Cerrar"
-          >
-            <svg className="w-5 h-5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+    <Modal
+      title={activeTab === 'followers' ? t('users.followers') : t('users.following')}
+      onClose={onClose}
+      size="md"
+    >
+      <div className="mt-space-md space-y-space-md">
+        <SegmentedTabs
+          tabs={tabs}
+          activeId={activeTab}
+          onChange={setActiveTab}
+          idPrefix="follow"
+          label={t('users.socialLists')}
+        />
+        <div role="tabpanel" id={`follow-panel-${activeTab}`} aria-labelledby={`follow-tab-${activeTab}`}>
+          <FollowList userId={userId} type={activeTab} onClose={onClose} />
         </div>
-
-        {/* Tabs */}
-        <div className="flex border-b border-beige-dark">
-          <button
-            onClick={() => setActiveTab('followers')}
-            className={`flex-1 py-3 text-center font-medium transition-colors ${
-              activeTab === 'followers'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/60 hover:text-forest'
-            }`}
-          >
-            Seguidores
-            {stats?.followersCount > 0 && (
-              <span className="ml-1 text-sm">({stats.followersCount})</span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('following')}
-            className={`flex-1 py-3 text-center font-medium transition-colors ${
-              activeTab === 'following'
-                ? 'text-teal border-b-2 border-teal'
-                : 'text-forest/60 hover:text-forest'
-            }`}
-          >
-            Siguiendo
-            {stats?.followingCount > 0 && (
-              <span className="ml-1 text-sm">({stats.followingCount})</span>
-            )}
-          </button>
-        </div>
-
-        {/* Content */}
-        <FollowList userId={userId} type={activeTab} onClose={onClose} />
       </div>
-    </div>
+    </Modal>
   )
+}
+
+FollowModal.propTypes = {
+  userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  initialTab: PropTypes.oneOf(['followers', 'following']),
+  stats: PropTypes.shape({
+    followersCount: PropTypes.number,
+    followingCount: PropTypes.number,
+  }),
 }
 
 export default FollowModal

@@ -31,10 +31,10 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
   const getRankStyle = (rank) => {
     switch (rank) {
-      case 1: return 'bg-gradient-to-r from-golden-dark to-golden text-midnight font-bold'
-      case 2: return 'bg-gradient-to-r from-[#f6c49b] to-[#e7a676] text-[#5b2c0c] font-bold'
-      case 3: return 'bg-gradient-to-r from-[#c7e5de] to-[#9ccdc3] text-[#17322e] font-bold'
-      default: return 'bg-midnight text-aqua font-semibold'
+      case 1: return 'bg-gradient-to-r from-primary-fixed-dim to-primary-fixed text-on-surface font-bold'
+      case 2: return 'bg-gradient-to-r from-primary-fixed to-primary-fixed-dim text-on-primary-fixed-variant font-bold'
+      case 3: return 'bg-gradient-to-r from-secondary-container to-secondary-fixed-dim text-on-surface font-bold'
+      default: return 'bg-surface-container text-on-surface-variant font-semibold'
     }
   }
 
@@ -50,8 +50,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
   return (
     <div className="card overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-midnight to-teal-dark px-6 py-6">
-        <h2 className="text-2xl font-bold text-white mb-4">{t('trivia.globalRanking')}</h2>
+      <div className="bg-surface-container-low px-6 py-6 border-b border-surface-container-high">
+        <h2 className="font-headline text-headline-sm text-on-surface mb-4">{t('trivia.globalRanking')}</h2>
 
         {/* Tabs */}
         <div className="flex gap-2">
@@ -65,8 +65,8 @@ const TriviaLeaderboard = ({ currentUserId }) => {
               onClick={() => setType(tab.value)}
               className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer ${
                 type === tab.value
-                  ? 'bg-golden text-midnight'
-                  : 'bg-aqua/20 text-aqua hover:bg-aqua/30'
+                  ? 'bg-primary-fixed text-on-surface'
+                  : 'bg-secondary-container/20 text-secondary hover:bg-secondary-container/30'
               }`}
             >
               {tab.label}
@@ -76,19 +76,19 @@ const TriviaLeaderboard = ({ currentUserId }) => {
       </div>
 
       {/* Lista */}
-      <div className="divide-y divide-primary-dark">
+      <div className="divide-y divide-surface-container-high">
         {loading && (
           <div className="p-12 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-secondary border-t-transparent mx-auto" />
-            <p className="text-text-light mt-4 font-semibold">{t('trivia.loadingRanking')}</p>
+            <p className="text-on-surface-variant mt-4 font-semibold">{t('trivia.loadingRanking')}</p>
           </div>
         )}
         {!loading && leaderboard?.entries?.length === 0 && (
           <div className="p-12 text-center">
-            <div className="w-20 h-20 mx-auto bg-midnight/20 rounded-full flex items-center justify-center mb-4">
-              <svg className="w-10 h-10 text-midnight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            <div className="w-20 h-20 mx-auto bg-inverse-surface/20 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-10 h-10 text-on-surface" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             </div>
-            <p className="text-text-light mt-4 font-semibold">{t('trivia.noPlayersYet')}</p>
+            <p className="text-on-surface-variant mt-4 font-semibold">{t('trivia.noPlayersYet')}</p>
           </div>
         )}
         {!loading && leaderboard?.entries?.length > 0 && (
@@ -96,7 +96,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
             <div
               key={entry.userId}
               className={`flex items-center gap-4 p-4 ${
-                entry.userId === currentUserId ? 'bg-secondary-light' : ''
+                entry.userId === currentUserId ? 'bg-secondary-fixed' : ''
               }`}
             >
               {/* Rank */}
@@ -112,16 +112,17 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                       <img
                         src={entry.profileImageUrl}
                         alt={entry.username}
+                        loading="lazy"
                         className="w-8 h-8 rounded-full"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-aqua/30 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-midnight" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
+                      <div className="w-8 h-8 rounded-full bg-secondary-container/30 flex items-center justify-center">
+                        <svg className="w-5 h-5 text-on-surface" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
                       </div>
                     )}
                   </span>
                   <div>
-                    <p className="font-bold text-text truncate">
+                    <p className="font-bold text-on-surface truncate">
                       {entry.username}
                       {entry.userId === currentUserId && (
                         <span className="ml-2 text-xs bg-secondary text-white px-2 py-0.5 rounded-full font-semibold">
@@ -129,19 +130,19 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                         </span>
                       )}
                     </p>
-                    <p className="text-sm text-text-light font-semibold">{entry.playerTitle}</p>
+                    <p className="text-sm text-on-surface-variant font-semibold">{entry.playerTitle}</p>
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
               <div className="text-right">
-                <p className="text-xl font-bold text-text">
+                <p className="text-xl font-bold text-on-surface">
                   {type === 'score' && entry.score?.toLocaleString()}
                   {type === 'accuracy' && `${entry.accuracyPercentage?.toFixed(1)}%`}
                   {type === 'streak' && `${entry.bestStreak}`}
                 </p>
-                <p className="text-xs text-text-light font-semibold">
+                <p className="text-xs text-on-surface-variant font-semibold">
                   {t('trivia.level')} {entry.level} • {entry.totalGames} {t('trivia.games')}
                 </p>
               </div>
@@ -152,7 +153,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
 
       {/* Footer con total */}
       {leaderboard && (
-        <div className="bg-primary px-6 py-4 text-center text-text-light text-sm font-semibold">
+        <div className="bg-surface-container-low px-6 py-4 text-center text-on-surface-variant text-sm font-semibold">
           {leaderboard.totalPlayers?.toLocaleString()} {t('trivia.playersInRanking')}
         </div>
       )}

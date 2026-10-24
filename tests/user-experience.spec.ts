@@ -45,7 +45,7 @@ test.describe('Experiencia de Usuario (UX)', () => {
   test.describe('Feedback Visual al Usuario', () => {
 
     test('botones cambian de estilo al hacer hover', async ({ page }) => {
-      const loginButton = page.getByRole('link', { name: 'Iniciar Sesión' }).first()
+      const loginButton = page.getByRole('link', { name: 'Entrar' }).first()
 
       // Obtener estilos antes del hover
       const beforeHover = await loginButton.evaluate((el) => {
@@ -100,16 +100,15 @@ test.describe('Experiencia de Usuario (UX)', () => {
       await page.goto('/login')
 
       // Intentar enviar formulario vacío
-      const submitButton = page.getByRole('button', { name: /iniciar sesión/i })
+      const submitButton = page.getByRole('button', { name: /acceder/i })
       await submitButton.click()
 
-      // Verificar que los campos requeridos muestran validación HTML5
-      const emailInput = page.locator('input[type="email"]')
-      const passwordInput = page.locator('input[type="password"]')
-
-      // Verificar que los inputs tienen el atributo required
-      await expect(emailInput).toHaveAttribute('required', '')
+      // Login uses username + password; both are required and show an error when empty
+      const usernameInput = page.locator('input[name="username"]')
+      const passwordInput = page.locator('input[name="password"]')
+      await expect(usernameInput).toHaveAttribute('required', '')
       await expect(passwordInput).toHaveAttribute('required', '')
+      await expect(page.locator('#username-error')).toBeVisible()
     })
 
     test('formulario de registro muestra error cuando contraseñas no coinciden', async ({ page }) => {
@@ -122,7 +121,7 @@ test.describe('Experiencia de Usuario (UX)', () => {
       await page.fill('input[name="confirmPassword"]', 'DifferentPassword123!')
 
       // Enviar formulario
-      await page.getByRole('button', { name: /registrarse/i }).click()
+      await page.getByRole('button', { name: /crear cuenta/i }).click()
 
       // Esperar mensaje de error
       await page.waitForTimeout(500)
