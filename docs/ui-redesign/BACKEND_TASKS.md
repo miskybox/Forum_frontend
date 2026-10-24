@@ -62,7 +62,7 @@ The **only accepted public opening** is the USER demo account (`viajero_demo`). 
 
 - [x] JWT HttpOnly cookies; CSRF disabled on purpose (CORS allow-list).
 - [x] HTML sanitizer; login rate limit; reset tokens not logged in production (B8b).
-- [ ] Public login/docs only show `viajero_demo`. Remove leftover `admin_demo / Demo1234!` from workspace `DEPLOY.md`.
+- [x] Public login/docs only show `viajero_demo`. Remove leftover `admin_demo / Demo1234!` from workspace `DEPLOY.md`.
 - [ ] Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password.
 - [ ] Image upload MIME allow-list; security headers; no secrets in logs.
 

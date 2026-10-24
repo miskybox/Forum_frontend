@@ -13,8 +13,8 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 
 ### A — UI with APIs that already exist
 
-- [ ] **F1. Admin dashboard** (`AdminDashboardPage`): `PageContainer`, `SegmentedTabs`, `Modal` (no `window.confirm`), `Button`, `EmptyState`, `react-icons/md`, i18n. Keep users / forums / posts / comments / roles. Review with private `admin_demo`.
-- [ ] **F2. Moderator dashboard** (`ModeratorDashboardPage`): same restyle as F1; hide/block only, no permanent delete. Review with private `moderador_demo`.
+- [x] **F1. Admin dashboard** (`AdminDashboardPage`): `PageContainer`, `SegmentedTabs`, `Modal` (no `window.confirm`), `Button`, `EmptyState`, `react-icons/md`, i18n. Keep users / forums / posts / comments / roles. Review with private `admin_demo`.
+- [x] **F2. Moderator dashboard** (`ModeratorDashboardPage`): same restyle as F1; hide/block only, no permanent delete. Review with private `moderador_demo`.
 - [ ] **F3. Social lists**: restyle `FollowModal`, `FollowList`, `UsersPage` to the design system.
 - [ ] **F4. Profile territory**: mini `WorldMap` in the passport/territory card (visited countries already in travel stats).
 - [ ] **F5. Diarios de Viaje (B1b)**: do not add a blog CMS. Point nav/footer “Diarios” to posts with photos (`hasImages=true`, existing B3 filter) — e.g. `/feed` photos tab or `/forums?hasImages=true`. Retire or wrap dead `blogService` `/api/blog/*` calls so that route does not 404.
@@ -27,13 +27,13 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 
 ### B — Security (see also backend S5–S9)
 
-- [ ] **F12 / S5.** Login UI + public README only show `viajero_demo`. Never print admin/moderator passwords in the SPA.
-- [ ] **S5b.** Workspace/root `DEPLOY.md` still has `admin_demo / Demo1234!` — env-only wording.
+- [x] **F12 / S5.** Login UI + public README only show `viajero_demo`. Never print admin/moderator passwords in the SPA.
+- [x] **S5b.** Workspace/root `DEPLOY.md` still has `admin_demo / Demo1234!` — env-only wording.
 - [ ] **S6.** Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password (ops check, not code).
 - [ ] **S7.** Upload MIME allow-list (images only; no SVG/HTML) for avatar, cover, post images.
 - [ ] **S8.** Security headers if missing (`X-Content-Type-Options`, frame deny, `Referrer-Policy`).
 - [ ] **S9.** No passwords, JWTs or reset tokens in logs outside `app.demo.log-reset-links`.
-- [ ] **F13.** Dashboard destructive actions: `Modal` confirm; API still enforces roles (with F1/F2).
+- [x] **F13.** Dashboard destructive actions: `Modal` confirm; API still enforces roles (with F1/F2).
 
 ### C — P2 API + UI (hide the block until the endpoint exists)
 
@@ -215,13 +215,13 @@ This is a **demo**. The **only accepted public opening** is the USER demo accoun
 - [x] CSRF left disabled on purpose for this JWT + CORS demo (do not re-enable in passing)
 
 ### Still to check or fix
-- [ ] Login UI and public README only advertise `viajero_demo`. Never print `admin_demo` / `moderador_demo` passwords in the frontend, README or deploy docs of the published demo
-- [ ] Workspace/root `DEPLOY.md` still lists `admin_demo / Demo1234!` — replace with env-only wording (`ADMIN_PASSWORD`, distinct from the public demo password)
+- [x] Login UI and public README only advertise `viajero_demo`. Never print `admin_demo` / `moderador_demo` passwords in the frontend, README or deploy docs of the published demo
+- [x] Workspace/root `DEPLOY.md` still lists `admin_demo / Demo1234!` — replace with env-only wording (`ADMIN_PASSWORD`, distinct from the public demo password)
 - [ ] Production Render env uses distinct `ADMIN_PASSWORD` / `MODERATOR_PASSWORD`, not `Demo1234!`
 - [ ] Uploads (avatar, cover, post images): reject non-image types (no SVG/HTML); size already capped at 10MB
 - [ ] Security headers if missing (`X-Content-Type-Options`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`)
 - [ ] No credentials, reset tokens or JWTs in logs on any profile
-- [ ] Dashboard deletes/bans: confirm with `Modal`; authorization stays on the API (`ROLE_ADMIN` / `ROLE_MODERATOR`)
+- [x] Dashboard deletes/bans: confirm with `Modal`; authorization stays on the API (`ROLE_ADMIN` / `ROLE_MODERATOR`)
 
 ## Phase 5 — Quality
 - [ ] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
