@@ -11,7 +11,7 @@ const TopTravelers = ({ travelers }) => {
   const { t } = useLanguage()
 
   return (
-    <SectionCard title={t('home.topTravelers')} icon={MdMilitaryTech}>
+    <SectionCard title={t('home.topTravelers')} icon={MdMilitaryTech} tone="sage">
       {travelers.length === 0 ? (
         <p className="text-body-sm text-on-surface-variant">{t('home.noRanking')}</p>
       ) : (

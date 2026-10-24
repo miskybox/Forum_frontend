@@ -110,7 +110,15 @@ const HomePage = () => {
       ])
       if (cancelled) return
 
-      setRecentForums(forums.status === 'fulfilled' ? toList(forums.value) : [])
+      const loadedForums = forums.status === 'fulfilled' ? toList(forums.value) : []
+      const loadedCats = cats.status === 'fulfilled' ? toList(cats.value) : []
+      const namesById = Object.fromEntries(loadedCats.map((item) => [String(item.id), item.name]))
+      setRecentForums(
+        loadedForums.map((forum) => ({
+          ...forum,
+          categoryName: forum.categoryName || namesById[String(forum.categoryId)],
+        })),
+      )
       setFeedItems(feed.status === 'fulfilled' ? toList(feed.value) : [])
       setCategories(cats.status === 'fulfilled' ? toList(cats.value) : [])
       setTravelers(ranking.status === 'fulfilled' ? toList(ranking.value) : [])
@@ -165,11 +173,12 @@ const HomePage = () => {
 
       <HomeHero />
 
+      <div className="w-full bg-surface-container">
       <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg">
 
           {/* Center: community content */}
-          <section className="lg:col-span-6 lg:order-2 flex flex-col gap-space-lg" aria-label={t('home.feedTabsLabel')}>
+          <section className="lg:col-span-6 lg:order-2 flex flex-col gap-space-lg rounded-xl bg-surface-container-lowest p-space-md sm:p-space-lg shadow-level-1 ring-1 ring-outline-variant/40" aria-label={t('home.feedTabsLabel')}>
             <SegmentedTabs
               tabs={tabs}
               activeId={activeTab}
@@ -260,7 +269,7 @@ const HomePage = () => {
 
           {/* Right rail: actions and community */}
           <aside className="lg:col-span-3 lg:order-3 flex flex-col gap-space-lg">
-            <SectionCard className="text-center">
+            <SectionCard className="text-center" tone="clay">
               <p className="text-body-sm text-on-surface-variant mb-space-sm">{t('home.ctaQuestion')}</p>
               <Link
                 to={isAuthenticated ? '/forums/create' : '/register'}
@@ -274,7 +283,7 @@ const HomePage = () => {
             <TopContributors contributors={contributors} />
             <TopTravelers travelers={travelers} />
 
-            <SectionCard title={t('home.discoverTitle')}>
+            <SectionCard title={t('home.discoverTitle')} tone="mist">
               <ul className="space-y-space-sm">
                 <li>
                   <Link
@@ -298,6 +307,7 @@ const HomePage = () => {
             </SectionCard>
           </aside>
         </div>
+      </div>
       </div>
     </div>
   )

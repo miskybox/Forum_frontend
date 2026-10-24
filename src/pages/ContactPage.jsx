@@ -38,10 +38,10 @@ const ContactPage = () => {
             </h2>
             <p className="mt-space-sm text-body-sm text-on-surface-variant">{t('contact.socialDescription')}</p>
             <div className="mt-space-md flex items-center gap-space-xs">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitFacebook')}><FaFacebook aria-hidden="true" /></a>
+              <a href="https://www.facebook.com/forumviajeros" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitFacebook')}><FaFacebook aria-hidden="true" /></a>
               <a href="https://www.instagram.com/forumviajeros/" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitInstagram')}><FaInstagram aria-hidden="true" /></a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitX')}><FaXTwitter aria-hidden="true" /></a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitTikTok')}><FaTiktok aria-hidden="true" /></a>
+              <a href="https://x.com/forumviajeros" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitX')}><FaXTwitter aria-hidden="true" /></a>
+              <a href="https://www.tiktok.com/@forumviajeros" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitTikTok')}><FaTiktok aria-hidden="true" /></a>
             </div>
           </section>
         </div>

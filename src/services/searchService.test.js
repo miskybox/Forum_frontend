@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { vi } from 'vitest'
 import searchService from './searchService'
 import api from '../utils/api'
 

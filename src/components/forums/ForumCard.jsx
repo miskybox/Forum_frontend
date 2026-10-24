@@ -5,6 +5,8 @@ import { es, enUS } from 'date-fns/locale'
 import { MdArrowForward, MdChatBubbleOutline, MdForum, MdVisibility } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import Avatar from '../ui/Avatar'
+import { surfaceToneFor } from '../../utils/surfaceTones'
+import { decodeHtmlEntities } from '../../utils/htmlEntities'
 
 // The API returns tags as strings; older payloads used { id, name }
 const tagName = (tag) => (typeof tag === 'string' ? tag : tag?.name)
@@ -22,47 +24,65 @@ const ForumCard = ({ forum }) => {
 
   const postCount = forum.postCount || 0
   const viewCount = forum.viewCount || 0
+  const tone = surfaceToneFor({ categoryName: forum.categoryName, id: forum.id })
+  const coverSrc = forum.imageUrl
+  const title = decodeHtmlEntities(forum.title)
+  const description = decodeHtmlEntities(forum.description)
+  const categoryHref = forum.categoryId ? `/forums/category/${forum.categoryId}` : null
 
   return (
-    <article className="bg-surface-container-lowest rounded-lg overflow-hidden shadow-level-1 hover:shadow-level-2 transition-shadow flex flex-col group">
+    <article className={`${tone.article} rounded-lg overflow-hidden shadow-level-1 hover:shadow-level-2 transition-shadow flex flex-col group`}>
       {/* Cover */}
       <Link to={forumUrl} className="block relative h-40 overflow-hidden bg-surface-container" tabIndex={-1} aria-hidden="true">
-        {forum.imageUrl ? (
+        {coverSrc ? (
           <img
-            src={forum.imageUrl}
+            src={coverSrc}
             alt=""
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <span className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary-fixed to-surface-container">
-            <MdForum className="text-[3rem] text-secondary/60" />
+          <span className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${tone.placeholder}`}>
+            <MdForum className="text-[3rem] opacity-50" />
           </span>
         )}
       </Link>
 
       <div className="p-space-md sm:p-space-lg flex flex-col flex-1">
-        {tags.length > 0 && (
+        {(forum.categoryName || tags.length > 0) && (
           <ul className="flex flex-wrap gap-space-xs mb-space-sm">
-            {tags.map((tag) => (
-              <li key={tag} className="px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-caption font-semibold">
+            {forum.categoryName && (
+              <li>
+                {categoryHref ? (
+                  <Link to={categoryHref} className={`px-space-sm py-0.5 rounded-full text-caption font-semibold ${tone.tag}`}>
+                    {forum.categoryName}
+                  </Link>
+                ) : (
+                  <span className={`px-space-sm py-0.5 rounded-full text-caption font-semibold ${tone.tag}`}>
+                    {forum.categoryName}
+                  </span>
+                )}
+              </li>
+            )}
+            {tags.filter((tag) => tag !== forum.categoryName).map((tag) => (
+              <li key={tag} className={`px-space-sm py-0.5 rounded-full text-caption font-semibold ${tone.tag}`}>
                 {tag}
               </li>
             ))}
           </ul>
         )}
 
-        <h3 className="font-headline text-headline-sm font-medium text-on-surface break-words">
-          <Link to={forumUrl} className="text-on-surface hover:text-primary transition-colors">
-            {forum.title}
+        <h3 className="font-headline text-headline-sm font-medium break-words">
+          <Link to={forumUrl} className={`${tone.title} transition-colors`}>
+            {title}
           </Link>
         </h3>
 
-        {forum.description && (
-          <p className="mt-space-xs text-body-sm text-on-surface-variant line-clamp-2">{forum.description}</p>
+        {description && (
+          <p className={`mt-space-xs text-body-sm line-clamp-2 ${tone.muted}`}>{description}</p>
         )}
 
-        <div className="mt-auto pt-space-md flex flex-wrap items-center justify-between gap-space-sm text-label-md text-on-surface-variant">
+        <div className={`mt-auto pt-space-md flex flex-wrap items-center justify-between gap-space-sm text-label-md ${tone.muted}`}>
           <div className="flex items-center gap-space-md">
             <span className="flex items-center gap-1">
               <MdChatBubbleOutline className="text-body-md" aria-hidden="true" />
@@ -73,14 +93,14 @@ const ForumCard = ({ forum }) => {
               {viewCount} {viewCount === 1 ? t('common.view') : t('common.views')}
             </span>
           </div>
-          <Link to={forumUrl} className="inline-flex items-center gap-1 text-primary hover:text-primary-container font-semibold">
+          <Link to={forumUrl} className={`inline-flex items-center gap-1 font-semibold ${tone.action}`}>
             {t('forums.viewForum')}
             <MdArrowForward aria-hidden="true" />
           </Link>
         </div>
 
         {(forum.creatorUsername || forum.creator?.username || relativeDate) && (
-          <div className="mt-space-sm pt-space-sm border-t border-surface-container-high flex items-center gap-space-xs text-caption text-on-surface-variant">
+          <div className={`mt-space-sm pt-space-sm border-t ${tone.border} flex items-center gap-space-xs text-caption ${tone.muted}`}>
             {(forum.creatorUsername || forum.creator?.username) && (
               <>
                 <Avatar
@@ -125,6 +145,8 @@ ForumCard.propTypes = {
     creatorAvatarUrl: PropTypes.string,
     createdBy: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     createdAt: PropTypes.string,
+    categoryName: PropTypes.string,
+    categoryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
 }
 

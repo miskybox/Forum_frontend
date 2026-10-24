@@ -452,6 +452,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
                 <img
                   src={imagePreview}
                   alt="Vista previa"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
                 <button

@@ -246,6 +246,7 @@ const BlogPostPage = () => {
                         <img
                           src={relatedPost.featuredImage}
                           alt={relatedPost.title}
+                          loading="lazy"
                           className="w-full h-40 object-cover group-hover:scale-105 transition-transform"
                         />
                       )}

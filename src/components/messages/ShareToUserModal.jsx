@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { MdClose, MdSearch, MdSend } from 'react-icons/md'
@@ -26,29 +26,7 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
   const [activeTab, setActiveTab] = useState('recent')
   const debounceRef = useRef(null)
 
-  useEffect(() => {
-    if (isOpen) loadRecentConversations()
-    if (!isOpen) {
-      setSearchQuery('')
-      setUsers([])
-      setError(null)
-      setActiveTab('recent')
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    if (searchQuery.trim().length >= 2) {
-      debounceRef.current = setTimeout(() => searchUsers(searchQuery.trim()), 300)
-    } else {
-      setUsers([])
-    }
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [searchQuery])
-
-  const loadRecentConversations = async () => {
+  const loadRecentConversations = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -60,9 +38,9 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
 
-  const searchUsers = async (query) => {
+  const searchUsers = useCallback(async (query) => {
     try {
       setLoading(true)
       setError(null)
@@ -74,7 +52,29 @@ const ShareToUserModal = ({ isOpen, onClose, shareContent }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
+
+  useEffect(() => {
+    if (isOpen) loadRecentConversations()
+    if (!isOpen) {
+      setSearchQuery('')
+      setUsers([])
+      setError(null)
+      setActiveTab('recent')
+    }
+  }, [isOpen, loadRecentConversations])
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (searchQuery.trim().length >= 2) {
+      debounceRef.current = setTimeout(() => searchUsers(searchQuery.trim()), 300)
+    } else {
+      setUsers([])
+    }
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [searchQuery, searchUsers])
 
   const handleSendToUser = async (userId, username) => {
     try {

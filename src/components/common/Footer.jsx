@@ -1,8 +1,17 @@
+import { createElement } from 'react'
 import { Link } from 'react-router-dom'
-import { FaInstagram } from 'react-icons/fa'
+import { FaFacebook, FaInstagram } from 'react-icons/fa'
+import { FaXTwitter, FaTiktok } from 'react-icons/fa6'
 import { MdEco } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import logo from '../../assets/logo-bubble_FV.webp'
+
+const socialLinks = [
+  { href: 'https://www.facebook.com/forumviajeros', labelKey: 'footer.visitFacebook', Icon: FaFacebook },
+  { href: 'https://www.instagram.com/forumviajeros/', labelKey: 'footer.visitInstagram', Icon: FaInstagram },
+  { href: 'https://x.com/forumviajeros', labelKey: 'footer.visitX', Icon: FaXTwitter },
+  { href: 'https://www.tiktok.com/@forumviajeros', labelKey: 'footer.visitTikTok', Icon: FaTiktok },
+]
 
 const linkClass = 'text-body-sm text-on-surface-variant hover:text-primary transition-colors'
 const socialClass =
@@ -50,7 +59,7 @@ const Footer = () => {
             <div className="space-y-space-sm">
               <Link to="/" className="inline-flex items-center gap-space-sm">
                 <img src={logo} alt="" className="h-8 w-auto object-contain" />
-                <span className="font-headline text-headline-sm text-primary">Forum Viajeros</span>
+                <span className="font-brand text-[0.78rem] text-primary">Forum Viajeros</span>
               </Link>
               <p className="text-body-sm text-on-surface-variant max-w-sm">{t('footer.description')}</p>
             </div>
@@ -80,15 +89,26 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-margin px-space-md py-space-sm bg-surface-container-high/40 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm text-caption text-on-surface-variant">
+        <div className="footer-legal-bar mt-margin px-space-md py-space-sm rounded-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm text-caption">
           <p>
             <span aria-hidden="true">©</span> {currentYear} Forum Viajeros · {t('footer.rights')}
+            {' · '}
+            {t('footer.copyrightBy')}
           </p>
 
           <nav className="flex items-center gap-space-xs" aria-label={t('footer.socialNetworks')}>
-            <a href="https://www.instagram.com/forumviajeros/" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitInstagram')}>
-              <FaInstagram aria-hidden="true" />
-            </a>
+            {socialLinks.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={socialClass}
+                aria-label={t(item.labelKey)}
+              >
+                {createElement(item.Icon, { 'aria-hidden': true })}
+              </a>
+            ))}
           </nav>
         </div>
       </div>

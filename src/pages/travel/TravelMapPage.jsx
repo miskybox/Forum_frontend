@@ -189,7 +189,7 @@ const TravelMapPage = () => {
               <div className="flex justify-center gap-4">
                 <Link
                   to="/register"
-                  className="btn bg-primary-fixed hover:bg-primary-fixed-dim text-on-surface px-6 py-3 font-bold"
+                  className="btn btn-primary px-6 py-3 font-bold"
                 >
                   <span>{t('auth.registerButton')}</span>
                 </Link>

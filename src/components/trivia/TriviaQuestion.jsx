@@ -118,6 +118,7 @@ const TriviaQuestion = ({ question, onAnswer, timeLimit = 15, withTimer = true }
             <img
               src={question.imageUrl}
               alt="Pregunta"
+              loading="lazy"
               className="max-h-40 rounded-lg shadow-level-2"
             />
           </div>

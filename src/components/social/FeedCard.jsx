@@ -5,6 +5,7 @@ import FollowButton from './FollowButton'
 import ShareButton from './ShareButton'
 import LikeButton from './LikeButton'
 import Avatar from '../ui/Avatar'
+import { surfaceToneFor } from '../../utils/surfaceTones'
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -22,9 +23,14 @@ const formatDate = (dateString) => {
 
 const FeedCard = ({ item }) => {
   const postUrl = `/posts/${item.postId}`
+  const tone = surfaceToneFor({
+    forumName: item.forumName,
+    categoryName: item.categoryName,
+    id: item.postId || item.id,
+  })
 
   return (
-    <article className="bg-surface-container-lowest rounded-lg p-space-md sm:p-space-lg shadow-level-1 hover:shadow-level-2 transition-shadow">
+    <article className={`${tone.article} rounded-lg p-space-md sm:p-space-lg shadow-level-1 hover:shadow-level-2 transition-shadow`}>
       {/* Author row */}
       <div className="flex items-center justify-between gap-space-sm mb-space-sm">
         <Link
@@ -35,16 +41,17 @@ const FeedCard = ({ item }) => {
             <img
               src={item.authorAvatarUrl}
               alt={item.authorUsername}
+              loading="lazy"
               className="w-10 h-10 rounded-full object-cover flex-shrink-0"
             />
           ) : (
             <Avatar name={item.authorUsername} />
           )}
           <span className="min-w-0">
-            <span className="block text-body-md font-bold text-on-surface truncate group-hover:text-primary transition-colors">
+            <span className={`block text-body-md font-bold truncate transition-colors ${tone.title}`}>
               {item.authorUsername}
             </span>
-            <span className="block text-caption text-on-surface-variant">
+            <span className={`block text-caption ${tone.muted}`}>
               {formatDate(item.createdAt)}
               {' · '}
               <MdSchedule className="inline align-text-bottom" aria-hidden="true" />
@@ -57,7 +64,7 @@ const FeedCard = ({ item }) => {
           {item.forumName && (
             <Link
               to={`/forums/${item.forumId}`}
-              className="hidden sm:inline-flex px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant hover:text-on-secondary-fixed text-label-md"
+              className={`hidden sm:inline-flex px-space-sm py-0.5 rounded-full text-label-md ${tone.tag}`}
             >
               {item.forumName}
             </Link>
@@ -68,12 +75,12 @@ const FeedCard = ({ item }) => {
 
       {/* Title + excerpt */}
       <Link to={postUrl} className="group block">
-        <h3 className="font-headline text-headline-sm sm:text-[1.5rem] sm:leading-8 font-medium text-on-surface group-hover:text-primary transition-colors">
+        <h3 className={`font-headline text-headline-sm sm:text-[1.5rem] sm:leading-8 font-medium transition-colors ${tone.title}`}>
           {item.title}
         </h3>
       </Link>
       {item.content && (
-        <p className="mt-space-xs text-body-sm sm:text-body-md text-on-surface-variant line-clamp-3">
+        <p className={`mt-space-xs text-body-sm sm:text-body-md line-clamp-3 ${tone.muted}`}>
           {item.content}
         </p>
       )}
@@ -90,7 +97,7 @@ const FeedCard = ({ item }) => {
       )}
 
       {/* Footer */}
-      <div className="mt-space-md pt-space-sm flex items-center justify-between gap-space-sm text-body-sm text-on-surface-variant">
+      <div className={`mt-space-md pt-space-sm flex items-center justify-between gap-space-sm text-body-sm ${tone.muted}`}>
         <div className="flex items-center gap-space-md">
           <LikeButton
             postId={item.postId}
@@ -98,14 +105,14 @@ const FeedCard = ({ item }) => {
             initialCount={item.likeCount || 0}
             size="sm"
           />
-          <Link to={postUrl} className="flex items-center gap-1.5 text-on-surface-variant hover:text-primary transition-colors">
+          <Link to={postUrl} className={`flex items-center gap-1.5 transition-colors ${tone.action}`}>
             <MdChatBubbleOutline className="text-title-md" aria-hidden="true" />
             <span>{item.commentCount || 0}</span>
             <span className="sr-only">respuestas</span>
           </Link>
           <ShareButton postId={item.postId} title={item.title} size="sm" />
         </div>
-        <Link to={postUrl} className="hidden sm:inline-flex items-center gap-space-xs text-label-md font-semibold text-primary hover:text-primary-container">
+        <Link to={postUrl} className={`hidden sm:inline-flex items-center gap-space-xs text-label-md font-semibold ${tone.action}`}>
           <span>Participar</span>
           <MdArrowForward className="text-body-md" aria-hidden="true" />
         </Link>

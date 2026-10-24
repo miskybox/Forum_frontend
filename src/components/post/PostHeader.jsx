@@ -35,7 +35,7 @@ const PostHeader = ({ post, forum, category, commentCount, actions }) => {
         {post.tags?.length > 0 && (
           <ul className="flex flex-wrap items-center gap-space-xs mb-space-sm" aria-label={t('postDetail.tags')}>
             {post.tags.map((tag) => (
-              <li key={tag} className="px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-label-md">
+              <li key={tag} className="px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md">
                 {tag}
               </li>
             ))}

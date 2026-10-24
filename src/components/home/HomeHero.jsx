@@ -46,13 +46,13 @@ const HomeHero = () => {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-surface-container-low py-space-xl lg:py-margin-lg px-gutter-sm lg:px-gutter-lg"
+      className="relative w-full overflow-hidden bg-surface-dim dark:bg-surface-container-low py-space-xl lg:py-margin-lg px-gutter-sm lg:px-gutter-lg"
       aria-labelledby="hero-title"
     >
-      {/* Ambient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-surface-container/60 via-surface-container-low to-background pointer-events-none" />
-      <div className="absolute -top-32 -right-24 w-96 h-96 rounded-full bg-secondary-fixed/40 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none" />
+      {/* Light: muted sage top → pale bottom. Dark: original wash + peach blob. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/25 from-0% via-surface-dim via-45% to-background to-100% dark:from-surface-container/60 dark:via-surface-container-low dark:to-background pointer-events-none" />
+      <div className="absolute -top-32 -right-24 w-96 h-96 rounded-full bg-secondary-fixed-dim/55 dark:bg-secondary-fixed/40 blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 -left-20 w-80 h-80 rounded-full bg-tertiary-fixed-dim/40 dark:bg-primary-fixed/30 blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto flex flex-col items-center text-center">
         <p className="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-high/80 text-secondary text-label-md uppercase shadow-sm mb-space-md">

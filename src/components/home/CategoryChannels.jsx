@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { MdForum, MdPublic } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import SectionCard from '../ui/SectionCard'
+import { getCategoryAlt, getCategoryCover } from '../../utils/categoryCovers'
 
 const byName = (a, b) => a.name.localeCompare(b.name, 'es')
 
@@ -14,7 +15,7 @@ const CategoryChannels = ({ categories }) => {
   return (
     <>
       {general.length > 0 && (
-        <SectionCard title={t('home.channels')} icon={MdForum}>
+        <SectionCard title={t('home.channels')} icon={MdForum} tone="sage">
           <ul className="space-y-space-xs">
             {general.map((category) => (
               <li key={category.id}>
@@ -26,7 +27,7 @@ const CategoryChannels = ({ categories }) => {
                     {category.icon ? (
                       <span className="text-title-md leading-none flex-shrink-0" aria-hidden="true">{category.icon}</span>
                     ) : category.imageUrl ? (
-                      <img src={category.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
+                      <img src={category.imageUrl} alt="" loading="lazy" className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
                     ) : (
                       <MdForum className="text-title-md text-secondary flex-shrink-0" aria-hidden="true" />
                     )}
@@ -44,18 +45,27 @@ const CategoryChannels = ({ categories }) => {
       )}
 
       {continents.length > 0 && (
-        <SectionCard title={t('home.byContinent')}>
+        <SectionCard title={t('home.byContinent')} tone="forest">
           <ul className="grid grid-cols-2 gap-space-xs">
-            {continents.map((continent, index) => (
+            {continents.map((continent, index) => {
+              const cover = getCategoryCover(continent.name)
+              return (
               <li
                 key={continent.id}
                 className={continents.length % 2 === 1 && index === continents.length - 1 ? 'col-span-2' : ''}
               >
                 <Link
                   to={`/forums/category/${continent.id}`}
-                  className="flex items-center gap-space-xs px-space-sm py-space-xs rounded-base bg-surface-container-low hover:bg-secondary-fixed text-body-sm text-on-surface hover:text-on-surface transition-colors"
+                  className="flex items-center gap-space-xs px-space-sm py-space-xs rounded-base bg-surface-container-lowest hover:bg-secondary-fixed text-body-sm text-on-surface hover:text-on-surface transition-colors"
                 >
-                  {continent.icon ? (
+                  {cover ? (
+                    <img
+                      src={cover}
+                      alt={getCategoryAlt(continent.name)}
+                      loading="lazy"
+                      className="w-10 h-10 rounded-base object-cover flex-shrink-0"
+                    />
+                  ) : continent.icon ? (
                     <span className="text-body-md leading-none flex-shrink-0" aria-hidden="true">{continent.icon}</span>
                   ) : (
                     <MdPublic className="text-body-md text-secondary flex-shrink-0" aria-hidden="true" />
@@ -63,7 +73,8 @@ const CategoryChannels = ({ categories }) => {
                   <span className="truncate">{continent.name}</span>
                 </Link>
               </li>
-            ))}
+              )
+            })}
           </ul>
         </SectionCard>
       )}

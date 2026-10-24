@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { MdChatBubbleOutline } from 'react-icons/md'
 import messageService from '../../services/messageService'
@@ -14,11 +14,7 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    loadConversations()
-  }, [])
-
-  const loadConversations = async () => {
+  const loadConversations = useCallback(async () => {
     try {
       setLoading(true)
       const data = await messageService.getConversations()
@@ -29,7 +25,11 @@ const ConversationList = ({ onSelectConversation, selectedUserId }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [t])
+
+  useEffect(() => {
+    loadConversations()
+  }, [loadConversations])
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)

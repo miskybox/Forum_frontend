@@ -22,6 +22,7 @@ import Breadcrumb from '../components/ui/Breadcrumb'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import { useLanguage } from '../contexts/LanguageContext'
 import { formatLongDate } from '../utils/formatDate'
+import { decodeHtmlEntities } from '../utils/htmlEntities'
 import Seo from '../components/common/SEO'
 
 const toList = (response) => (Array.isArray(response) ? response : response?.content || [])
@@ -109,8 +110,8 @@ const ForumDetailsPage = () => {
   return (
     <div className="flex flex-col w-full">
       <Seo
-        title={forum.title}
-        description={forum.description || `Foro de viaje: ${forum.title}. Participa en la conversación con otros viajeros.`}
+        title={decodeHtmlEntities(forum.title)}
+        description={decodeHtmlEntities(forum.description) || `Foro de viaje: ${decodeHtmlEntities(forum.title)}. Participa en la conversación con otros viajeros.`}
         url={`/forums/${forum.id}`}
         type="website"
       />
@@ -134,12 +135,12 @@ const ForumDetailsPage = () => {
               { to: '/', label: t('postDetail.home'), icon: MdHome },
               { to: '/forums', label: t('postDetail.forums') },
               category && { to: `/forums/category/${category.id}`, label: category.name },
-              { label: forum.title },
+              { label: decodeHtmlEntities(forum.title) },
             ].filter(Boolean)}
           />
 
           {category && (
-            <p className="inline-flex items-center gap-1 px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-label-md mb-space-sm">
+            <p className="inline-flex items-center gap-1 px-space-md py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-md mb-space-sm">
               <MdCategory aria-hidden="true" />
               {category.name}
             </p>
@@ -147,9 +148,9 @@ const ForumDetailsPage = () => {
 
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
             <div className="max-w-3xl">
-              <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{forum.title}</h1>
+              <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{decodeHtmlEntities(forum.title)}</h1>
               {forum.description && (
-                <p className="mt-space-xs text-body-lg text-on-surface-variant">{forum.description}</p>
+                <p className="mt-space-xs text-body-lg text-on-surface-variant">{decodeHtmlEntities(forum.description)}</p>
               )}
               <p className="mt-space-sm flex flex-wrap items-center gap-space-md text-label-md text-on-surface-variant">
                 <span className="flex items-center gap-1">

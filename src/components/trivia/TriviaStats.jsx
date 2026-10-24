@@ -24,6 +24,7 @@ const TriviaStats = ({ stats }) => {
                 <img
                   src={stats.profileImageUrl}
                   alt={stats.username}
+                  loading="lazy"
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (

@@ -36,6 +36,9 @@ const mobileLinkClass = ({ isActive }) =>
 const iconButtonClass =
   'relative w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors'
 
+const guestAuthLinkClass =
+  'inline-flex items-center justify-center px-space-md py-2 rounded-full text-label-lg whitespace-nowrap text-secondary hover:text-on-secondary-fixed-variant hover:bg-surface-container-low border-[1.5px] border-secondary transition-colors'
+
 const menuItemClass =
   'w-full flex items-center min-h-[44px] px-4 rounded-base text-body-sm font-semibold text-on-surface hover:bg-surface-container-low hover:text-on-surface transition-colors text-left'
 
@@ -164,7 +167,7 @@ const Navbar = () => {
   const isSectionActive = (to) => to === '/forums' && location.pathname.startsWith('/posts')
 
   return (
-    <header className="sticky top-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(45,74,62,0.05)]">
+    <header className="sticky top-0 z-50 bg-surface-dim dark:bg-surface border-b border-outline-variant/50 dark:border-outline/30 shadow-[0_2px_12px_rgba(45,74,62,0.12)] dark:shadow-[0_1px_8px_rgba(0,0,0,0.35)]">
       <nav role="navigation" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto h-16 lg:h-20 px-gutter-sm lg:px-gutter-lg flex items-center justify-between gap-space-md">
 
@@ -172,8 +175,8 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-space-sm group flex-shrink-0">
             <img src={logo} alt="" className="h-9 w-auto object-contain" />
             <span className="flex flex-col leading-none">
-              <span className="font-headline text-title-md font-bold tracking-tight text-primary group-hover:text-primary-container transition-colors">
-                Forum Viajeros
+              <span className="font-brand text-[0.62rem] sm:text-[0.72rem] text-primary group-hover:text-primary-container transition-colors">
+                {t('nav.brand')}
               </span>
               <span className="hidden sm:block mt-0.5 text-caption uppercase tracking-widest text-on-surface-variant">
                 {t('nav.tagline')}
@@ -182,7 +185,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop navigation */}
-          <div className="hidden lg:flex items-center gap-space-xs p-1 bg-surface-container-low rounded-full">
+          <div className="hidden lg:flex items-center gap-space-xs p-1 bg-surface-container-lowest dark:bg-surface-container-low rounded-full">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -210,7 +213,7 @@ const Navbar = () => {
 
             {/* Language selector */}
             <div
-              className="hidden sm:flex items-center gap-0.5 p-0.5 rounded-full bg-surface-container-low"
+              className="hidden sm:flex items-center gap-0.5 p-0.5 rounded-full bg-surface-container-lowest dark:bg-surface-container-low"
               role="group"
               aria-label="Selector de idioma / Language selector"
             >
@@ -321,16 +324,10 @@ const Navbar = () => {
               </>
             ) : (
               <div className="hidden sm:flex items-center gap-space-xs">
-                <Link
-                  to="/login"
-                  className="inline-flex items-center px-space-md py-2 rounded-full text-label-lg text-secondary hover:text-on-secondary-fixed-variant hover:bg-surface-container-low border-[1.5px] border-secondary transition-colors"
-                >
+                <Link to="/login" className={guestAuthLinkClass}>
                   {t('nav.login')}
                 </Link>
-                <Link
-                  to="/register"
-                  className="inline-flex items-center px-space-md py-2 rounded-full text-label-lg bg-primary hover:bg-primary-container text-on-primary hover:text-on-primary border-[1.5px] border-primary hover:border-primary-container transition-colors active:scale-95"
-                >
+                <Link to="/register" className={guestAuthLinkClass}>
                   {t('nav.register')}
                 </Link>
               </div>

@@ -112,6 +112,7 @@ const TriviaLeaderboard = ({ currentUserId }) => {
                       <img
                         src={entry.profileImageUrl}
                         alt={entry.username}
+                        loading="lazy"
                         className="w-8 h-8 rounded-full"
                       />
                     ) : (

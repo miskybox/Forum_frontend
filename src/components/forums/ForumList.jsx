@@ -9,6 +9,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 import PropTypes from 'prop-types'
 import { MdAddCircleOutline, MdErrorOutline, MdForum, MdSearchOff } from 'react-icons/md'
 import EmptyState from '../ui/EmptyState'
+import { getCategoryAlt, getCategoryCover } from '../../utils/categoryCovers'
 
 const ForumList = ({ categoryId: propCategoryId }) => {
   const { categoryId: paramCategoryId } = useParams()
@@ -42,7 +43,17 @@ const ForumList = ({ categoryId: propCategoryId }) => {
           forumData = response.content || response
         }
 
-        setForums(Array.isArray(forumData) ? forumData : forumData?.content || [])
+        const rawForums = Array.isArray(forumData) ? forumData : forumData?.content || []
+        const categories = await categoryService.getAllCategories().catch(() => [])
+        const namesById = Object.fromEntries(
+          (Array.isArray(categories) ? categories : []).map((item) => [String(item.id), item.name]),
+        )
+        setForums(
+          rawForums.map((forum) => ({
+            ...forum,
+            categoryName: forum.categoryName || namesById[String(forum.categoryId)],
+          })),
+        )
         setError(null)
       } catch (err) {
         console.error('Error al cargar los foros:', err)
@@ -128,8 +139,27 @@ const ForumList = ({ categoryId: propCategoryId }) => {
     )
   }
 
+  const categoryCover = category ? getCategoryCover(category.name) || category.imageUrl : null
+
   return (
     <div className="space-y-space-lg">
+      {category && (
+        <div className="relative h-40 sm:h-48 rounded-lg overflow-hidden bg-surface-container">
+          {categoryCover ? (
+            <img
+              src={categoryCover}
+              alt={getCategoryAlt(category.name) || category.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-secondary-fixed to-surface-container" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent" />
+          <p className="absolute bottom-0 left-0 right-0 px-space-md py-space-sm font-headline text-headline-sm text-inverse-on-surface [text-shadow:0_1px_8px_rgba(0,0,0,0.55)]">
+            {category.name}
+          </p>
+        </div>
+      )}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md">
         <h2 className="font-headline text-headline-md text-on-surface">
           {heading}

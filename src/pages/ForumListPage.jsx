@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MdAddCircleOutline, MdForum } from 'react-icons/md'
 import ForumList from '../components/forums/ForumList'
+import CategoryCard from '../components/categories/CategoryCard'
 import CategoryChannels from '../components/home/CategoryChannels'
 import SectionCard from '../components/ui/SectionCard'
 import categoryService from '../services/categoryService'
@@ -14,6 +15,12 @@ const ForumListPage = () => {
   const { t } = useLanguage()
   const { isAuthenticated } = useAuth()
   const [categories, setCategories] = useState([])
+  const generalCategories = categories
+    .filter((item) => item.type !== 'CONTINENT')
+    .sort((a, b) => a.name.localeCompare(b.name, 'es'))
+  const continentCategories = categories
+    .filter((item) => item.type === 'CONTINENT')
+    .sort((a, b) => a.name.localeCompare(b.name, 'es'))
 
   useEffect(() => {
     categoryService
@@ -44,9 +51,35 @@ const ForumListPage = () => {
         </div>
       </header>
 
+      <div className="w-full bg-surface-container">
       <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg py-margin">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
-          <section className="lg:col-span-8">
+          <section className="lg:col-span-8 rounded-xl bg-surface-container-lowest p-space-md sm:p-space-lg shadow-level-1 ring-1 ring-outline-variant/40 space-y-space-lg">
+            {!categoryId && (generalCategories.length > 0 || continentCategories.length > 0) && (
+              <div>
+                <h2 className="font-headline text-headline-md text-on-surface mb-space-md">
+                  {t('forums.categories')}
+                </h2>
+                <div className="space-y-space-md">
+                  {generalCategories.length > 0 && (
+                    <div className="flex justify-center">
+                      <div className="w-full max-w-[16rem] sm:max-w-xs">
+                        {generalCategories.map((item) => (
+                          <CategoryCard key={item.id} category={item} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {continentCategories.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-space-sm">
+                      {continentCategories.map((item) => (
+                        <CategoryCard key={item.id} category={item} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <ForumList categoryId={categoryId} />
           </section>
 
@@ -72,6 +105,7 @@ const ForumListPage = () => {
             )}
           </aside>
         </div>
+      </div>
       </div>
     </div>
   )

@@ -338,7 +338,7 @@ const TriviaHomePage = () => {
                 </p>
                 <Link
                   to="/login"
-                  className="btn bg-primary-fixed text-on-surface font-bold hover:bg-primary-fixed-dim"
+                  className="btn btn-primary font-bold"
                 >
                   {t('auth.loginButton')}
                 </Link>

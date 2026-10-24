@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { MdClose, MdSearch } from 'react-icons/md'
 import userService from '../../services/userService'
@@ -26,6 +26,34 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
     }
   }, [isOpen])
 
+  const loadRecentUsers = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const data = await userService.getAllUsers(0, 10)
+      setUsers(data.content || [])
+    } catch (err) {
+      console.error('Error loading users:', err)
+      setError(t('messages.loadUsersError'))
+    } finally {
+      setLoading(false)
+    }
+  }, [t])
+
+  const searchUsers = useCallback(async (query) => {
+    try {
+      setLoading(true)
+      setError(null)
+      const data = await userService.searchUsers(query, 0, 10)
+      setUsers(data.content || [])
+    } catch (err) {
+      console.error('Error searching users:', err)
+      setError(t('messages.searchError'))
+    } finally {
+      setLoading(false)
+    }
+  }, [t])
+
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
@@ -42,35 +70,7 @@ const NewConversationModal = ({ isOpen, onClose, onSelectUser }) => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [searchQuery])
-
-  const loadRecentUsers = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const data = await userService.getAllUsers(0, 10)
-      setUsers(data.content || [])
-    } catch (err) {
-      console.error('Error loading users:', err)
-      setError(t('messages.loadUsersError'))
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const searchUsers = async (query) => {
-    try {
-      setLoading(true)
-      setError(null)
-      const data = await userService.searchUsers(query, 0, 10)
-      setUsers(data.content || [])
-    } catch (err) {
-      console.error('Error searching users:', err)
-      setError(t('messages.searchError'))
-    } finally {
-      setLoading(false)
-    }
-  }
+  }, [searchQuery, loadRecentUsers, searchUsers])
 
   const handleSelectUser = (user) => {
     onSelectUser(user.id)

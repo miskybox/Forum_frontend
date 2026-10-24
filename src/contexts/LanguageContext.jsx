@@ -5,6 +5,7 @@ const translations = {
   es: {
     // Navbar
     nav: {
+      brand: 'Forum Viajeros',
       home: 'Inicio',
       feed: 'Contenido',
       forums: 'Foros',
@@ -626,6 +627,7 @@ const translations = {
       privacy: 'Privacidad',
       terms: 'Términos',
       rights: 'Todos los derechos reservados',
+      copyrightBy: 'Copyright by sigu',
       description: 'Explora el mundo a través de las experiencias de otros viajeros. Comparte tus aventuras y conecta con la comunidad global.',
       navigation: 'Navegación',
       legal: 'Legal',
@@ -992,6 +994,7 @@ const translations = {
   en: {
     // Navbar
     nav: {
+      brand: 'Forum Viajeros',
       home: 'Home',
       feed: 'Feed',
       forums: 'Forums',
@@ -1182,7 +1185,7 @@ const translations = {
     },
     // Forums
     forums: {
-      title: 'Travelers Forums',
+      title: 'Forum Viajeros',
       subtitle: 'Explore travelers experiences',
       createNew: 'Create New Forum',
       categories: 'Categories',
@@ -1240,7 +1243,7 @@ const translations = {
       errorDeletingForum: 'Could not delete forum',
       confirmDeleteForum: 'Are you sure you want to delete this forum? This action cannot be undone.',
       forumDeletedSuccess: 'Forum deleted successfully',
-      eyebrow: 'Communities & Forums',
+      eyebrow: 'Forums',
       intro: 'Find the forum for your next destination, ask people who have been there and share what you learned on the road.',
       viewForum: 'View forum',
       createCtaTitle: "Can't find your destination?",
@@ -1613,6 +1616,7 @@ const translations = {
       privacy: 'Privacy',
       terms: 'Terms',
       rights: 'All rights reserved',
+      copyrightBy: 'Copyright by sigu',
       description: 'Explore the world through the experiences of other travelers. Share your adventures and connect with the global community.',
       navigation: 'Navigation',
       legal: 'Legal',

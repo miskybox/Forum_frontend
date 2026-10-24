@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import Navbar from '../components/common/Navbar'
 import Footer from '../components/common/Footer'

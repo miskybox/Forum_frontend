@@ -1,59 +1,44 @@
 // Archivo: src/App.jsx
+import { lazy, Suspense } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
+import LoadingSpinner from './components/common/LoadingSpinner';
 import { useIdleLogout } from './hooks/useIdleLogout';
 import NotFoundPage from './pages/NotFoundPage';
 import { Toaster } from 'react-hot-toast';
-// LocalStorageDebug removed - was only for development debugging
 import "./index.css";
 
-// Páginas principales
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
-import ProfilePage from './pages/ProfilePage';
-import CategoryListPage from './pages/CategoryListPage';
 import ForumListPage from './pages/ForumListPage';
 import ForumDetailPage from './pages/ForumDetailsPage';
-import ForumCreatePage from './pages/ForumCreatePage';
-import ForumEditPage from './pages/ForumEditPage';
-import PostCreatePage from './pages/PostCreatePage';
-import PostEditPage from './pages/PostEditPage';
 import PostDetailPage from './pages/PostDetailsPage';
-
-// Páginas de Mapa de Viajes
-import TravelMapPage from './pages/travel/TravelMapPage';
-
-// Páginas de Trivia
-import TriviaHomePage from './pages/trivia/TriviaHomePage';
-import TriviaPlayPage from './pages/trivia/TriviaPlayPage';
-import TriviaLeaderboardPage from './pages/trivia/TriviaLeaderboardPage';
-import TriviaInfinitePage from './pages/trivia/TriviaInfinitePage';
-
-// Dashboards
-import AdminDashboardPage from './pages/AdminDashboardPage';
-import ModeratorDashboardPage from './pages/ModeratorDashboardPage';
-
-// Páginas de Información
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import HelpPage from './pages/HelpPage';
 
-// Páginas de Mensajes
-import MessagesPage from './pages/messages/MessagesPage'
-
-// Páginas de Notificaciones
-import NotificationsPage from './pages/notifications/NotificationsPage';
-
-// Páginas de Contenido/Feed
-import FeedPage from './pages/feed/FeedPage';
-
-// Página de Usuarios
-import UsersPage from './pages/users/UsersPage'
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const CategoryListPage = lazy(() => import('./pages/CategoryListPage'));
+const ForumCreatePage = lazy(() => import('./pages/ForumCreatePage'));
+const ForumEditPage = lazy(() => import('./pages/ForumEditPage'));
+const PostCreatePage = lazy(() => import('./pages/PostCreatePage'));
+const PostEditPage = lazy(() => import('./pages/PostEditPage'));
+const TravelMapPage = lazy(() => import('./pages/travel/TravelMapPage'));
+const TriviaHomePage = lazy(() => import('./pages/trivia/TriviaHomePage'));
+const TriviaPlayPage = lazy(() => import('./pages/trivia/TriviaPlayPage'));
+const TriviaLeaderboardPage = lazy(() => import('./pages/trivia/TriviaLeaderboardPage'));
+const TriviaInfinitePage = lazy(() => import('./pages/trivia/TriviaInfinitePage'));
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
+const ModeratorDashboardPage = lazy(() => import('./pages/ModeratorDashboardPage'));
+const MessagesPage = lazy(() => import('./pages/messages/MessagesPage'));
+const NotificationsPage = lazy(() => import('./pages/notifications/NotificationsPage'));
+const FeedPage = lazy(() => import('./pages/feed/FeedPage'));
+const UsersPage = lazy(() => import('./pages/users/UsersPage'));
 
 function App() {
   useIdleLogout();
@@ -75,6 +60,7 @@ function App() {
         tabIndex={-1}
         aria-label="Contenido principal"
       >
+        <Suspense fallback={<LoadingSpinner label="Cargando" />}>
         <Routes>
           {/* Rutas públicas */}
           <Route path="/" element={<HomePage />} />
@@ -182,6 +168,7 @@ function App() {
           {/* Ruta 404 */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        </Suspense>
       </main>
       <Footer />
 

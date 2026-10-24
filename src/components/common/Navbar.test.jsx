@@ -15,6 +15,7 @@ vi.mock('../../contexts/LanguageContext', () => ({
     setLanguage: vi.fn(),
     t: (key) => {
       const translations = {
+        'nav.brand': 'Forum Viajeros',
         'nav.home': 'Inicio',
         'nav.forums': 'Foros',
         'nav.diaries': 'Diarios',

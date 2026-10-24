@@ -17,7 +17,7 @@ const TopContributors = ({ contributors }) => {
   const { t } = useLanguage()
 
   return (
-    <SectionCard title={t('home.topContributors')} icon={MdEmojiEvents}>
+    <SectionCard title={t('home.topContributors')} icon={MdEmojiEvents} tone="clay">
       {contributors.length === 0 ? (
         <p className="text-body-sm text-on-surface-variant">{t('home.noContributors')}</p>
       ) : (

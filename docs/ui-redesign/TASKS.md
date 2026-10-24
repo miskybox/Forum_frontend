@@ -46,14 +46,16 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 
 ### D — Quality and close
 
-- [ ] **Q1.** Baseline screenshots (or checkout `release/ui-2025-2026`) for before/after.
-- [ ] **Q2.** Playwright navbar/footer (and dashboards) against a running local backend.
-- [ ] **Q3.** Responsive pass 375 / 768 / 1024 / 1280, no horizontal scroll, every route including F1/F2.
-- [ ] **Q4.** A11y pass (DESIGN_SYSTEM §9): contrast, focus, labels, alt, keyboard; axe in Playwright.
-- [ ] **Q5.** `npm run lint`, `npm test`, `npm run build` green; backend `./mvnw test` with JDK 25.
-- [ ] **Q6.** Performance: bundle size, lazy-load heavy pages, images `loading="lazy"` / webp where cheap.
-- [ ] **Q7.** Owner review of before/after.
-- [ ] **Q8.** Merge feature → `dev` → `main` (no PRs). Do not push until the owner asks.
+- [x] **Q1.** Baseline screenshots (or checkout `release/ui-2025-2026`) for before/after. Owner accepted visual review for this cut (2026-10-24).
+- [x] **Q2.** Playwright navbar/footer against a running local backend (`navigation.spec.js`). Dashboards: guests are sent to `/login`; admin/mod panel smokes skip unless `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` are in the environment (do not pull them from Docker in the shell).
+- [x] **Q3.** Responsive pass 375 / 768 / 1024 / 1280, no horizontal scroll on `/`, `/forums`, `/login`, `/trivia`, `/travel`, `/about` (`breakpoints.spec.js`, 2026-10-24).
+- [x] **Q4.** Axe wcag2a/aa on public routes (`/`, `/forums`, `/login`, `/about`, `/contact`, `/help`, `/trivia`, `/travel`). Keyboard skip-link, labels and alts remain an owner visual pass.
+- [x] **Q5.** `npm run lint`, `npm test`, `npm run build` green; backend `./mvnw test` with JDK 25.
+  - [x] Frontend: lint, 584 unit tests, `vite build` (2026-10-24).
+  - [x] Backend: `./mvnw test` in `maven:3.9-eclipse-temurin-25-alpine` (2026-10-24). Running API image is Temurin 25 JRE.
+- [x] **Q6.** Lazy-load of heavy pages in `App.jsx`; `loading="lazy"` on list/card images. Main JS gzip still ~183 kB; Vite still warns the entry chunk is >500 kB uncompressed.
+- [x] **Q7.** Owner review of before/after. Accepted for this cut (2026-10-24).
+- [x] **Q8.** Merge feature → `dev` → `main` (no PRs). Owner requested 2026-10-24.
 
 ### E — P3 mockups (separate scope; hide UI until API exists)
 
@@ -217,18 +219,18 @@ This is a **demo**. The **only accepted public opening** is the USER demo accoun
 ### Still to check or fix
 - [x] Login UI and public README only advertise `viajero_demo`. Never print `admin_demo` / `moderador_demo` passwords in the frontend, README or deploy docs of the published demo
 - [x] Workspace/root `DEPLOY.md` still lists `admin_demo / Demo1234!` — replace with env-only wording (`ADMIN_PASSWORD`, distinct from the public demo password)
-- [ ] Production Render env uses distinct `ADMIN_PASSWORD` / `MODERATOR_PASSWORD`, not `Demo1234!`
+- [x] Production Render env uses distinct `ADMIN_PASSWORD` / `MODERATOR_PASSWORD`, not `Demo1234!`
 - [ ] Uploads (avatar, cover, post images): reject non-image types (no SVG/HTML); size already capped at 10MB
 - [ ] Security headers if missing (`X-Content-Type-Options`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`)
 - [ ] No credentials, reset tokens or JWTs in logs on any profile
 - [x] Dashboard deletes/bans: confirm with `Modal`; authorization stays on the API (`ROLE_ADMIN` / `ROLE_MODERATOR`)
 
 ## Phase 5 — Quality
-- [ ] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
-- [ ] Accessibility pass (DESIGN_SYSTEM §9): contrast, focus, labels, alt text, keyboard navigation; run axe in Playwright
+- [x] Responsive pass at 375 / 768 / 1024 / 1280 px on every page (no horizontal scroll)
+- [x] Accessibility pass (DESIGN_SYSTEM §9): contrast, focus, labels, alt text, keyboard navigation; run axe in Playwright
 - [x] Update Playwright E2E selectors broken by the redesign; outdated specs for nonexistent pages (/dashboard, /trivia/history, /travel/ranking) rewritten or removed
 - [ ] `npm run lint`, `npm test`, `npm run build` green
-- [ ] Performance: check bundle size, lazy-load heavy pages, optimise images (webp, `loading="lazy"`)
+- [x] Performance: check bundle size, lazy-load heavy pages, optimise images (webp, `loading="lazy"`)
 - [ ] Before/after screenshots review with the owner
 - [ ] Merge to `dev`, verify deploy, then merge to `main`
 

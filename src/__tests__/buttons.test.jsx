@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { vi } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
 import ForumDetailsPage from '../pages/ForumDetailsPage'
 import LoginForm from '../components/auth/LoginForm'

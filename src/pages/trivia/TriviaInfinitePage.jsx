@@ -287,6 +287,7 @@ const TriviaInfinitePage = () => {
                 <img
                   src={currentQuestion.flagUrl}
                   alt="Bandera"
+                  loading="lazy"
                   className="h-32 md:h-40 object-contain rounded-lg shadow-level-2 border-4 border-secondary/30"
                 />
               </div>
