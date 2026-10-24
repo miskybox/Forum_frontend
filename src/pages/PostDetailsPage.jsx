@@ -23,6 +23,7 @@ import PostContent from '../components/post/PostContent'
 import CommentList from '../components/comments/CommentList'
 import CommentForm from '../components/comments/CommentForm'
 import LikeButton from '../components/social/LikeButton'
+import BookmarkButton from '../components/social/BookmarkButton'
 import ShareButton from '../components/social/ShareButton'
 import SectionCard from '../components/ui/SectionCard'
 import Seo from '../components/common/SEO'
@@ -86,11 +87,11 @@ const PostDetailsPage = () => {
       if (!postData?.forumId) return
       const [forumResult, postsResult] = await Promise.allSettled([
         forumService.getForumById(postData.forumId),
-        postService.getPostsByForum(postData.forumId),
+        postService.getRelatedPosts(postData.id, 5),
       ])
       if (cancelled) return
       if (postsResult.status === 'fulfilled') {
-        setRelated(toList(postsResult.value).filter((p) => String(p.id) !== String(postData.id)).slice(0, 4))
+        setRelated(toList(postsResult.value))
       }
       if (forumResult.status === 'fulfilled' && forumResult.value) {
         setForum(forumResult.value)
@@ -184,6 +185,9 @@ const PostDetailsPage = () => {
     <>
       <span className={pillClass}>
         <LikeButton postId={post.id} size="md" />
+      </span>
+      <span className={pillClass}>
+        <BookmarkButton postId={post.id} initialSaved={Boolean(post.bookmarkedByCurrentUser)} />
       </span>
       <span className={pillClass}>
         <ShareButton postId={post.id} title={post.title} size="md" />

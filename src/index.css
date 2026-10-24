@@ -147,6 +147,30 @@
   --shadow-level-3: 0 20px 32px -8px rgb(30 36 33 / 0.16);
 }
 
+html.dark {
+  --color-primary: #ffb691;
+  --color-on-primary: #341100;
+  --color-primary-container: #763308;
+  --color-on-primary-container: #ffdbcb;
+  --color-background: #111513;
+  --color-on-background: #ecf2ed;
+  --color-surface: #171d1a;
+  --color-surface-bright: #2c322f;
+  --color-surface-dim: #0d110f;
+  --color-surface-container-lowest: #0d110f;
+  --color-surface-container-low: #171d1a;
+  --color-surface-container: #1c221f;
+  --color-surface-container-high: #262c29;
+  --color-surface-container-highest: #313734;
+  --color-on-surface: #ecf2ed;
+  --color-on-surface-variant: #dac2b7;
+  --color-outline: #a08d84;
+  --color-secondary: #adcebe;
+  --color-on-secondary: #022016;
+  --color-secondary-container: #304d40;
+  --color-on-secondary-container: #c9ead9;
+}
+
 /* ============================================
    Base
    ============================================ */

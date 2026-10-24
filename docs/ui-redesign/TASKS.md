@@ -23,13 +23,13 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 - [x] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
 - [x] **F9. Messages**: review chat bubbles and modals with a real local conversation.
 - [x] **F10. Home hero** (optional): interest/category chips filtering the feed (categories API exists).
-- [ ] **F11. Dark mode tokens** (optional; not in the mockups).
+- [x] **F11. Dark mode tokens** (optional; not in the mockups).
 
 ### B — Security (see also backend S5–S9)
 
 - [x] **F12 / S5.** Login UI + public README only show `viajero_demo`. Never print admin/moderator passwords in the SPA.
 - [x] **S5b.** Workspace/root `DEPLOY.md` still has `admin_demo / Demo1234!` — env-only wording.
-- [ ] **S6.** Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password (ops check, not code).
+- [x] **S6.** Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password (ops check, not code).
 - [x] **S7.** Upload MIME allow-list (images only; no SVG/HTML) for avatar, cover, post images.
 - [x] **S8.** Security headers if missing (`X-Content-Type-Options`, frame deny, `Referrer-Policy`).
 - [x] **S9.** No passwords, JWTs or reset tokens in logs outside `app.demo.log-reset-links`.
@@ -38,11 +38,11 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 ### C — P2 API + UI (hide the block until the endpoint exists)
 
 - [x] **B9 + F14.** Top contributors: `GET /api/users/top-contributors?period=month&limit=5`; home/profile widget.
-- [ ] **B10 + F15.** Bookmarks: entity + `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser`; save button on post detail; profile “saved” tab.
-- [ ] **B11 + F16.** Global search: `GET /api/search?q=` (posts, forums, users, countries); header search xl+ and ⌘K.
-- [ ] **B12 + F17.** Related threads: `GET /api/posts/{id}/related` (today the rail only lists other posts in the same forum).
-- [ ] **B13.** Online count / last activity on the replies header (optional; drop if noisy).
-- [ ] **B14.** `readingMinutes` on the post DTO if not done entirely in F6.
+- [x] **B10 + F15.** Bookmarks: entity + `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser`; save button on post detail; profile “saved” tab.
+- [x] **B11 + F16.** Global search: `GET /api/search?q=` (posts, forums, users, countries); header search xl+ and ⌘K.
+- [x] **B12 + F17.** Related threads: `GET /api/posts/{id}/related` (today the rail only lists other posts in the same forum).
+- [x] **B13.** Online count / last activity on the replies header (optional; drop if noisy).
+- [x] **B14.** `readingMinutes` on the post DTO if not done entirely in F6.
 
 ### D — Quality and close
 

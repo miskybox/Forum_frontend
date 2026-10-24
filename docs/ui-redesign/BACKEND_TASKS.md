@@ -63,21 +63,21 @@ The **only accepted public opening** is the USER demo account (`viajero_demo`). 
 - [x] JWT HttpOnly cookies; CSRF disabled on purpose (CORS allow-list).
 - [x] HTML sanitizer; login rate limit; reset tokens not logged in production (B8b).
 - [x] Public login/docs only show `viajero_demo`. Remove leftover `admin_demo / Demo1234!` from workspace `DEPLOY.md`.
-- [ ] Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password.
+- [x] Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password.
 - [x] Image upload MIME allow-list; security headers; no secrets in logs.
 
 Details: `Forum_backend/docs/BACKEND_TASKS.md` (S1–S9) and frontend `TASKS.md` § Remaining work (F1–F25, Q1–Q8).
 
-Open API items: S6 (ops), B10–B14 (P2), B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
+Open API items: B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
 
 ## P2 — Improves the redesign
 
 - [x] **B9. Top contributors**: `GET /api/users/top-contributors?period=month&limit=5` returning user, avatar, role badge and points (posts + comments + likes received).
-- [ ] **B10. Bookmarks / saved posts**: `Bookmark` entity, `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser` in post DTO.
-- [ ] **B11. Global search**: `GET /api/search?q=` returning posts, forums, users and countries (header search + ⌘K).
-- [ ] **B12. Related discussions**: `GET /api/posts/{id}/related` (same tags/forum).
-- [ ] **B13. Online count / last activity** for the replies header (optional, can be dropped).
-- [ ] **B14. Reading time**: compute `readingMinutes` from content length in the post DTO (or do it in the frontend).
+- [x] **B10. Bookmarks / saved posts**: `Bookmark` entity, `POST/DELETE /api/posts/{id}/bookmark`, `GET /api/users/me/bookmarks`, `bookmarkedByCurrentUser` in post DTO.
+- [x] **B11. Global search**: `GET /api/search?q=` returning posts, forums, users and countries (header search + ⌘K).
+- [x] **B12. Related discussions**: `GET /api/posts/{id}/related` (same tags/forum).
+- [x] **B13. Online count / last activity** for the replies header (optional, can be dropped).
+- [x] **B14. Reading time**: compute `readingMinutes` from content length in the post DTO (or do it in the frontend).
 
 ## P3 — New features from the mockups (separate scope)
 

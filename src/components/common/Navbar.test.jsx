@@ -6,7 +6,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 
 // Mock de los contextos
 vi.mock('../../contexts/ThemeContext', () => ({
-  useTheme: () => ({ theme: 'retro' })
+  useTheme: () => ({ isDarkMode: false, toggleDarkMode: vi.fn() })
 }))
 
 vi.mock('../../contexts/LanguageContext', () => ({
@@ -32,6 +32,16 @@ vi.mock('../../contexts/LanguageContext', () => ({
         'nav.messages': 'Mensajes',
         'nav.openMenu': 'Abrir menú principal',
         'nav.closeMenu': 'Cerrar menú principal',
+        'nav.darkMode': 'Activar modo oscuro',
+        'nav.lightMode': 'Activar modo claro',
+        'search.open': 'Buscar',
+        'search.placeholder': 'Buscar',
+        'search.title': 'Buscar',
+        'search.empty': 'Sin resultados',
+        'search.posts': 'Publicaciones',
+        'search.forums': 'Foros',
+        'search.users': 'Usuarios',
+        'search.countries': 'Países',
       }
       return translations[key] || key
     }

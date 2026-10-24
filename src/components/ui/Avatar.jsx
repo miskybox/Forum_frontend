@@ -59,6 +59,7 @@ const Avatar = ({ name, src, size = 'md', tone, verified = false, className = ''
           <img
             src={src}
             alt=""
+            loading="lazy"
             className="w-full h-full object-cover"
             onError={() => setImageFailed(true)}
           />

@@ -6,6 +6,8 @@ import {
   MdClose,
   MdExpandMore,
   MdMenu,
+  MdDarkMode,
+  MdLightMode,
   MdNotificationsNone,
 } from 'react-icons/md'
 import useAuth from '../../hooks/useAuth'
@@ -13,6 +15,8 @@ import { useLanguage } from '../../contexts/LanguageContext'
 import messageService from '../../services/messageService'
 import notificationService from '../../services/notificationService'
 import Avatar from '../ui/Avatar'
+import SearchPalette from '../search/SearchPalette'
+import { useTheme } from '../../contexts/ThemeContext'
 import logo from '../../assets/logo-bubble_FV.webp'
 
 const desktopLinkClass = ({ isActive }) =>
@@ -69,6 +73,7 @@ const UkFlag = () => (
 const Navbar = () => {
   const { currentUser, isAuthenticated, logout } = useAuth()
   const { language, setLanguage, t } = useLanguage()
+  const { isDarkMode, toggleDarkMode } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -192,6 +197,16 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-space-sm">
+            <SearchPalette />
+            <button
+              type="button"
+              onClick={toggleDarkMode}
+              className={iconButtonClass}
+              aria-pressed={isDarkMode}
+              aria-label={isDarkMode ? t('nav.lightMode') : t('nav.darkMode')}
+            >
+              {isDarkMode ? <MdLightMode aria-hidden="true" /> : <MdDarkMode aria-hidden="true" />}
+            </button>
 
             {/* Language selector */}
             <div

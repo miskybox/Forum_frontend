@@ -118,6 +118,11 @@ const postService = {
     const response = await api.get(`/posts/user/${userId}`, { params: { page, size } })
     return response.data
   },
+
+  getRelatedPosts: async (id, limit = 5) => {
+    const response = await api.get(`/posts/${id}/related`, { params: { limit } })
+    return response.data
+  },
 }
 
 export default postService

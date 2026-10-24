@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { MdChatBubbleOutline, MdEdit, MdForum, MdLock, MdLockOutline, MdMail } from 'react-icons/md'
+import { MdBookmark, MdChatBubbleOutline, MdEdit, MdForum, MdLock, MdLockOutline, MdMail } from 'react-icons/md'
 import useAuth from '../hooks/useAuth'
 import { useLanguage } from '../contexts/LanguageContext'
 import userService from '../services/userService'
@@ -9,6 +9,7 @@ import followService from '../services/followService'
 import travelService from '../services/travelService'
 import postService from '../services/postService'
 import forumService from '../services/forumService'
+import bookmarkService from '../services/bookmarkService'
 import ProfileHeader from '../components/profile/ProfileHeader'
 import TravelPassport from '../components/profile/TravelPassport'
 import TopContributors from '../components/home/TopContributors'
@@ -36,6 +37,7 @@ const ProfilePage = () => {
   const [travelStats, setTravelStats] = useState(null)
   const [visitedPlaces, setVisitedPlaces] = useState([])
   const [contributors, setContributors] = useState([])
+  const [savedPosts, setSavedPosts] = useState([])
   const [posts, setPosts] = useState([])
   const [forums, setForums] = useState([])
   const [isFollowing, setIsFollowing] = useState(false)
@@ -71,19 +73,21 @@ const ProfilePage = () => {
 
     let cancelled = false
     const loadExtras = async () => {
-      const [statsResult, postsResult, forumsResult, followResult, placesResult, contributorsResult] = await Promise.allSettled([
+      const [statsResult, postsResult, forumsResult, followResult, placesResult, contributorsResult, savedResult] = await Promise.allSettled([
         isOwnProfile ? travelService.getMyStats() : travelService.getUserStats(profileId),
         postService.getPostsByUser(profileId, 0, 20),
         forumService.getForumsByUser(profileId, 0, 20),
         isOwnProfile ? Promise.resolve(false) : followService.isFollowing(profileId),
         isOwnProfile ? travelService.getMyPlaces() : travelService.getUserPlaces(profileId),
         userService.getTopContributors('month', 5),
+        isOwnProfile ? bookmarkService.list(0, 20) : Promise.resolve([]),
       ])
       if (cancelled) return
 
       setTravelStats(statsResult.status === 'fulfilled' ? statsResult.value : null)
       setVisitedPlaces(placesResult.status === 'fulfilled' ? toList(placesResult.value) : [])
       setContributors(contributorsResult.status === 'fulfilled' ? toList(contributorsResult.value) : [])
+      setSavedPosts(savedResult.status === 'fulfilled' ? toList(savedResult.value) : [])
       setPosts(postsResult.status === 'fulfilled' ? toList(postsResult.value) : [])
       setForums(forumsResult.status === 'fulfilled' ? toList(forumsResult.value) : [])
       const follow = followResult.status === 'fulfilled' ? followResult.value : false
@@ -124,6 +128,7 @@ const ProfilePage = () => {
   const tabs = isOwnProfile
     ? [
         { id: 'posts', label: t('profile.tabs.posts'), icon: MdChatBubbleOutline },
+        { id: 'saved', label: t('profile.tabs.saved'), icon: MdBookmark },
         { id: 'forums', label: t('profile.tabs.forums'), icon: MdForum },
         { id: 'edit', label: t('profile.tabs.edit'), icon: MdEdit },
         { id: 'password', label: t('profile.tabs.password'), icon: MdLockOutline },
@@ -178,6 +183,16 @@ const ProfilePage = () => {
                   title={isOwnProfile ? t('profile.noPosts') : t('profile.noPostsOther')}
                   action={isOwnProfile && <Link to="/forums" className="btn btn-primary">{t('home.exploreForum')}</Link>}
                 />
+              )}
+            </div>
+          )}
+
+          {activeTab === 'saved' && isOwnProfile && (
+            <div {...panelProps('saved')}>
+              {savedPosts.length > 0 ? (
+                <PostList posts={savedPosts} />
+              ) : (
+                <EmptyState icon={MdBookmark} title={t('profile.noSaved')} />
               )}
             </div>
           )}
