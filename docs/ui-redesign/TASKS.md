@@ -22,7 +22,7 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 - [x] **F7. Comment composer**: optional markdown toolbar; content stays plain text if skipped.
 - [x] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
 - [x] **F9. Messages**: review chat bubbles and modals with a real local conversation.
-- [ ] **F10. Home hero** (optional): interest/category chips filtering the feed (categories API exists).
+- [x] **F10. Home hero** (optional): interest/category chips filtering the feed (categories API exists).
 - [ ] **F11. Dark mode tokens** (optional; not in the mockups).
 
 ### B — Security (see also backend S5–S9)

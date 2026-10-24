@@ -5,6 +5,7 @@ import {
   sanitizeObject,
   validateLength,
   validateTag,
+  getSafeRedirectPath,
   LENGTH_LIMITS
 } from './sanitize'
 
@@ -464,5 +465,20 @@ describe('Real World Scenarios', () => {
         expect(validation.cleaned).not.toContain('>')
       }
     })
+  })
+})
+
+describe('getSafeRedirectPath', () => {
+  it('allows post-login return to posts, admin and public pages', () => {
+    expect(getSafeRedirectPath('/posts/42')).toBe('/posts/42')
+    expect(getSafeRedirectPath('/admin/dashboard')).toBe('/admin/dashboard')
+    expect(getSafeRedirectPath('/usuarios')).toBe('/usuarios')
+    expect(getSafeRedirectPath('/help')).toBe('/help')
+  })
+
+  it('rejects open redirects', () => {
+    expect(getSafeRedirectPath('https://evil.test')).toBe('/')
+    expect(getSafeRedirectPath('//evil.test')).toBe('/')
+    expect(getSafeRedirectPath('/forums/../login')).toBe('/')
   })
 })

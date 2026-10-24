@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { MdExplore, MdPinDrop, MdSearch } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import tagService from '../../services/tagService'
+import categoryService from '../../services/categoryService'
 
 const quickLinkClass =
   'px-space-md py-space-xs rounded-full bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface hover:text-on-surface text-label-md transition-colors'
@@ -12,6 +13,7 @@ const HomeHero = () => {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [tags, setTags] = useState([])
+  const [categories, setCategories] = useState([])
 
   useEffect(() => {
     let cancelled = false
@@ -22,6 +24,14 @@ const HomeHero = () => {
       })
       .catch(() => {
         if (!cancelled) setTags([])
+      })
+    categoryService
+      .getAllCategories()
+      .then((data) => {
+        if (!cancelled) setCategories(Array.isArray(data) ? data : data?.content || [])
+      })
+      .catch(() => {
+        if (!cancelled) setCategories([])
       })
     return () => {
       cancelled = true
@@ -99,6 +109,20 @@ const HomeHero = () => {
           <Link to="/trivia" className={quickLinkClass}>{t('home.playTrivia')}</Link>
           <Link to="/travel" className={quickLinkClass}>{t('home.myMap')}</Link>
         </nav>
+
+        {categories.length > 0 && (
+          <nav aria-label={t('home.interestChips')} className="mt-space-md flex flex-wrap items-center justify-center gap-space-xs">
+            {categories.slice(0, 8).map((category) => (
+              <Link
+                key={category.id}
+                to={`/forums/category/${category.id}`}
+                className={quickLinkClass}
+              >
+                {category.icon ? `${category.icon} ` : ''}{category.name}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         {tags.length > 0 && (
           <nav aria-label={t('home.trendingTags')} className="mt-space-md flex flex-wrap items-center justify-center gap-space-xs">

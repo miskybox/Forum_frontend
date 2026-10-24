@@ -140,6 +140,7 @@ const Navbar = () => {
   const publicLinks = [
     { to: '/', label: t('nav.home') },
     { to: '/forums', label: t('nav.forums') },
+    { to: '/feed?tab=photos', label: t('nav.diaries') },
     { to: '/trivia', label: t('nav.trivia') },
     { to: '/travel', label: t('nav.map') },
   ]

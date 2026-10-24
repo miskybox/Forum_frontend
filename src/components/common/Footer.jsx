@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FaFacebook, FaInstagram } from 'react-icons/fa'
-import { FaXTwitter, FaTiktok } from 'react-icons/fa6'
+import { FaInstagram } from 'react-icons/fa'
 import { MdEco } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import logo from '../../assets/logo-bubble_FV.webp'
@@ -87,17 +86,8 @@ const Footer = () => {
           </p>
 
           <nav className="flex items-center gap-space-xs" aria-label={t('footer.socialNetworks')}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitFacebook')}>
-              <FaFacebook aria-hidden="true" />
-            </a>
             <a href="https://www.instagram.com/forumviajeros/" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitInstagram')}>
               <FaInstagram aria-hidden="true" />
-            </a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitX')}>
-              <FaXTwitter aria-hidden="true" />
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className={socialClass} aria-label={t('footer.visitTikTok')}>
-              <FaTiktok aria-hidden="true" />
             </a>
           </nav>
         </div>

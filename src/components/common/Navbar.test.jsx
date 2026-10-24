@@ -17,6 +17,7 @@ vi.mock('../../contexts/LanguageContext', () => ({
       const translations = {
         'nav.home': 'Inicio',
         'nav.forums': 'Foros',
+        'nav.diaries': 'Diarios',
         'nav.trivia': 'Trivia',
         'nav.map': 'Mi Mapa',
         'nav.profile': 'Perfil',
@@ -92,6 +93,19 @@ describe('Navbar - Links y Botones', () => {
       const forosLinks = screen.getAllByRole('link', { name: /foros/i })
       expect(forosLinks.length).toBeGreaterThan(0)
       expect(forosLinks[0]).toHaveAttribute('href', '/forums')
+    })
+
+    it('tiene link a Diarios con href "/feed?tab=photos"', () => {
+      render(
+        <MemoryRouter>
+          <AuthContext.Provider value={mockAuthContextGuest}>
+            <Navbar />
+          </AuthContext.Provider>
+        </MemoryRouter>
+      )
+
+      const diaryLinks = screen.getAllByRole('link', { name: /diarios/i })
+      expect(diaryLinks[0]).toHaveAttribute('href', '/feed?tab=photos')
     })
 
     it('tiene link a Trivia con href "/trivia"', () => {
