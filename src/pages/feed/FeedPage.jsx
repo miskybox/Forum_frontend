@@ -144,7 +144,7 @@ const FeedPage = () => {
         <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">
           {activeTab === 'photos' ? t('feed.diariesTitle') : t('nav.feed')}
         </h1>
-        <p className="mt-space-xs text-body-lg text-on-surface-variant">
+        <p className="mt-space-xs text-body-lg text-on-surface">
           {activeTab === 'photos' ? t('feed.diariesSubtitle') : t('feed.subtitle')}
         </p>
       </header>

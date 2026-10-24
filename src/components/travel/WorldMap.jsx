@@ -1,15 +1,10 @@
-import { useState, useEffect, useMemo, useId } from 'react'
+import { useState, useEffect, useMemo, useId, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import PropTypes from 'prop-types'
 import { geoMercator, geoPath } from 'd3-geo'
+import { MdClose, MdOpenInFull } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
-
-// Constantes pre-generadas para elementos decorativos (evita recalcular en cada render)
-const STARS = Array.from({ length: 50 }, (_, i) => ({
-  id: `star-${i}`,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  delay: Math.random() * 3
-}))
+import Button from '../ui/Button'
 
 const VERTICAL_LINES = Array.from({ length: 18 }, (_, i) => ({
   id: `v-${i}`,
@@ -22,34 +17,32 @@ const HORIZONTAL_LINES = Array.from({ length: 9 }, (_, i) => ({
 }))
 
 /**
- * Componente de mapa mundial interactivo con GeoJSON real
- * Muestra países coloreados según su estado de visita
+ * Interactive world map. Atlas palette (sand land, turquoise ocean) is the
+ * same in light and dark; chrome around the map follows the page theme.
  */
-// countries.geojson uses ISO3166-1-Alpha-2/name; older Natural Earth files use ISO_A2/ADMIN
 const getIsoCode = (feature) => feature.properties['ISO3166-1-Alpha-2'] ?? feature.properties.ISO_A2
 const getCountryName = (feature) => feature.properties.name ?? feature.properties.ADMIN
+
+const STATUS_COLORS = {
+  VISITED: 'var(--map-visited)',
+  WISHLIST: 'var(--map-wishlist)',
+  LIVED: 'var(--map-lived)',
+  LIVING: 'var(--map-living)',
+  default: 'var(--map-land)',
+}
 
 const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact = false }) => {
   const { t } = useLanguage()
   const uid = useId().replace(/:/g, '')
+  const mapPaneRef = useRef(null)
   const [geoData, setGeoData] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
   const [tooltip, setTooltip] = useState({ x: 0, y: 0 })
+  const [expanded, setExpanded] = useState(false)
 
-  // Dimensiones del mapa
   const width = 960
   const height = 500
 
-  // Status colors from the Tierra & Rumbo palette
-  const statusColors = {
-    VISITED: '#476558',    // secondary (sage)
-    WISHLIST: '#ffb691',   // primary-fixed-dim (peach)
-    LIVED: '#b05f32',      // primary-container (terracotta)
-    LIVING: '#763308',     // on-primary-fixed-variant (clay)
-    default: '#dee4df'     // surface-container-highest (land)
-  }
-
-  // Cargar GeoJSON
   useEffect(() => {
     const loadGeoData = async () => {
       try {
@@ -58,14 +51,12 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
           const data = await response.json()
           setGeoData(data)
         } else {
-          // Fallback: cargar desde CDN si el archivo local no está disponible
           const cdnResponse = await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
           const data = await cdnResponse.json()
           setGeoData(data)
         }
       } catch (error) {
         console.error('Error cargando GeoJSON:', error)
-        // Cargar desde CDN como fallback
         try {
           const cdnResponse = await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
           const data = await cdnResponse.json()
@@ -78,7 +69,6 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
     loadGeoData()
   }, [])
 
-  // Crear mapa de países visitados para búsqueda rápida
   const visitedMap = useMemo(() => {
     return visitedPlaces.reduce((acc, place) => {
       const code = place.country?.isoCode || place.countryCode
@@ -89,22 +79,22 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
     }, {})
   }, [visitedPlaces])
 
-  // Configurar proyección
+  const markedCount = Object.keys(visitedMap).length
+
   const projection = useMemo(() => {
     return geoMercator()
       .scale(140)
       .translate([width / 2, height / 1.5])
   }, [])
 
-  // Crear generador de paths
   const pathGenerator = useMemo(() => geoPath().projection(projection), [projection])
 
   const getCountryColor = (isoCode) => {
     const status = visitedMap[isoCode]
     if (status) {
-      return statusColors[status]
+      return STATUS_COLORS[status]
     }
-    return statusColors.default
+    return STATUS_COLORS.default
   }
 
   const getCountryOpacity = (isoCode) => {
@@ -115,7 +105,9 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
   }
 
   const handleMouseMove = (e, country) => {
-    const rect = e.currentTarget.getBoundingClientRect()
+    const pane = mapPaneRef.current
+    if (!pane) return
+    const rect = pane.getBoundingClientRect()
     setTooltip({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
@@ -129,13 +121,38 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
 
   const handleClick = (isoCode) => {
     if (onCountryClick && isoCode !== '-99') {
+      setExpanded(false)
       onCountryClick(isoCode)
     }
   }
 
+  useEffect(() => {
+    if (!expanded) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.stopPropagation()
+        setExpanded(false)
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [expanded])
+
+  const legendItems = [
+    { status: 'VISITED', label: t('travel.visited'), color: STATUS_COLORS.VISITED },
+    { status: 'WISHLIST', label: t('travel.wantToGo'), color: STATUS_COLORS.WISHLIST },
+    { status: 'LIVED', label: t('travel.lived'), color: STATUS_COLORS.LIVED },
+    { status: 'LIVING', label: t('travel.living'), color: STATUS_COLORS.LIVING },
+  ]
+
   if (!geoData) {
     return (
-      <div className={`relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg ${compact ? 'p-2' : 'p-6'}`}>
+      <div className={`w-full rounded-lg bg-surface-container-low ${compact ? 'p-2' : 'p-6'}`}>
         <div className="aspect-[2/1] w-full flex items-center justify-center">
           <div className={`animate-spin rounded-full border-b-2 border-primary ${compact ? 'h-6 w-6' : 'h-12 w-12'}`} />
           {!compact && <span className="ml-4 text-on-surface">{t('travel.loadingMap') || 'Cargando mapa...'}</span>}
@@ -144,187 +161,193 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact
     )
   }
 
-  return (
-    <div className={`relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg overflow-hidden ${compact ? 'p-1' : 'p-2 md:p-4'}`}>
-      {!compact && (
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {STARS.map((star) => (
-          <div
-            key={star.id}
-            className="absolute w-1 h-1 bg-primary rounded-full opacity-30"
-            style={{
-              left: `${star.left}%`,
-              top: `${star.top}%`,
-              animationDelay: `${star.delay}s`
-            }}
+  const mapSvg = (
+    <svg
+      role="img"
+      aria-label={t('travel.title')}
+      viewBox={`0 0 ${width} ${height}`}
+      className="w-full h-full"
+      overflow="hidden"
+    >
+      <defs>
+        <linearGradient id={`${uid}-ocean`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="var(--map-ocean-0)" />
+          <stop offset="50%" stopColor="var(--map-ocean-1)" />
+          <stop offset="100%" stopColor="var(--map-ocean-2)" />
+        </linearGradient>
+        <filter id={`${uid}-glow`}>
+          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <rect x="0" y="0" width={width} height={height} fill={`url(#${uid}-ocean)`} />
+
+      <g style={{ opacity: 'var(--map-grid-opacity)' }}>
+        {VERTICAL_LINES.map((line) => (
+          <line
+            key={line.id}
+            x1={line.index * (width / 18)}
+            y1={0}
+            x2={line.index * (width / 18)}
+            y2={height}
+            stroke="var(--map-grid)"
+            strokeWidth="0.5"
           />
         ))}
-      </div>
-      )}
+        {HORIZONTAL_LINES.map((line) => (
+          <line
+            key={line.id}
+            x1={0}
+            y1={line.index * (height / 9)}
+            x2={width}
+            y2={line.index * (height / 9)}
+            stroke="var(--map-grid)"
+            strokeWidth="0.5"
+          />
+        ))}
+      </g>
 
-      {!compact && (
-      <div className="hidden sm:block absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md rounded-base p-2 md:p-3 z-20 shadow-level-1">
-        <h4
-          className="font-semibold mb-2 text-xs md:text-sm flex items-center gap-2 text-on-surface"
-        >
-          {t('travel.legend')}
-        </h4>
-        <div className="space-y-1 md:space-y-2">
-          {[
-            { status: 'VISITED', label: t('travel.visited'), color: statusColors.VISITED },
-            { status: 'WISHLIST', label: t('travel.wantToGo'), color: statusColors.WISHLIST },
-            { status: 'LIVED', label: t('travel.lived'), color: statusColors.LIVED },
-            { status: 'LIVING', label: t('travel.living'), color: statusColors.LIVING },
-          ].map(item => (
-            <div key={item.status} className="flex items-center gap-1.5">
-              <div
-                className="w-3 h-3 md:w-4 md:h-4 rounded-sm shadow-sm flex-shrink-0"
-                style={{ backgroundColor: item.color }}
-              />
-              <span
-                className="text-xs font-medium text-on-surface"
-              >
-                {item.label}
-              </span>
-            </div>
-          ))}
+      <g>
+        {geoData.features.map((country, index) => {
+          const isoCode = getIsoCode(country)
+          const isSelected = Boolean(selectedCountry) && selectedCountry === isoCode
+          const path = pathGenerator(country)
+          if (!path) return null
+
+          return (
+            <path
+              key={`${isoCode}-${index}`}
+              d={path}
+              fill={getCountryColor(isoCode)}
+              fillOpacity={getCountryOpacity(isoCode)}
+              stroke={isSelected ? 'var(--map-selected)' : 'var(--map-stroke)'}
+              strokeWidth={isSelected ? 2 : 0.5}
+              className={`transition-all duration-200 ${onCountryClick ? 'cursor-pointer' : ''}`}
+              style={{
+                filter: hoveredCountry === isoCode ? `url(#${uid}-glow)` : 'none'
+              }}
+              onMouseMove={(e) => handleMouseMove(e, country)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => handleClick(isoCode)}
+            />
+          )
+        })}
+      </g>
+    </svg>
+  )
+
+  if (compact) {
+    return (
+      <div ref={mapPaneRef} className="relative w-full overflow-hidden rounded-base">
+        <div className="aspect-[2/1] w-full">{mapSvg}</div>
+      </div>
+    )
+  }
+
+  const layout = (
+    <div
+      className="flex w-full flex-col gap-4 md:flex-row md:items-stretch"
+    >
+      <div
+        ref={mapPaneRef}
+        className="relative min-w-0 flex-1 overflow-hidden rounded-lg shadow-level-1 ring-1 ring-outline-variant/50"
+      >
+        <div className="aspect-[2/1] w-full">
+          {mapSvg}
         </div>
-      </div>
-      )}
 
-      {/* Tooltip */}
-      {hoveredCountry && !compact && (
-        <div
-          className="absolute bg-surface-container-lowest rounded-base px-4 py-2 shadow-level-2 z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
-          style={{
-            left: tooltip.x,
-            top: tooltip.y - 10,
-            minWidth: '150px'
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-on-surface">
+        {hoveredCountry && (
+          <div
+            className="absolute z-10 pointer-events-none -translate-x-1/2 -translate-y-full rounded-base bg-surface-container-lowest px-3 py-2 shadow-level-2"
+            style={{
+              left: tooltip.x,
+              top: tooltip.y - 10,
+              minWidth: '140px'
+            }}
+          >
+            <span className="font-semibold text-on-surface text-body-sm">
               {(() => {
                 const feature = geoData.features.find(f => getIsoCode(f) === hoveredCountry)
                 return (feature && getCountryName(feature)) || hoveredCountry
               })()}
             </span>
+            {visitedMap[hoveredCountry] && (
+              <span className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-surface-container px-2 py-0.5 text-caption font-medium text-on-surface">
+                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: STATUS_COLORS[visitedMap[hoveredCountry]] }} aria-hidden="true" />
+                {visitedMap[hoveredCountry]}
+              </span>
+            )}
           </div>
-          {visitedMap[hoveredCountry] && (
-            <span className="inline-flex items-center gap-1.5 mt-1 text-xs px-2 py-1 rounded-full bg-surface-container text-on-surface font-medium">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: statusColors[visitedMap[hoveredCountry]] }} aria-hidden="true" />
-              {visitedMap[hoveredCountry]}
-            </span>
-          )}
-        </div>
-      )}
+        )}
+      </div>
 
-      {!compact && (
-      <div className="absolute top-4 left-4 bg-primary-fixed/90 backdrop-blur-md rounded-base p-3 z-20 shadow-level-1">
-        <div className="text-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="font-bold text-lg text-on-primary-fixed"
-            >
-              {Object.keys(visitedMap).length}
-            </span>
-          </div>
-          <span
-            className="text-xs font-semibold text-on-primary-fixed"
-          >
+      <aside className="flex shrink-0 flex-col gap-3 sm:flex-row md:w-44 md:flex-col lg:w-48">
+        <div className="flex flex-1 flex-col justify-center rounded-lg bg-primary-fixed px-4 py-3 md:flex-none">
+          <p className="font-headline text-headline-md text-on-primary-fixed leading-none">{markedCount}</p>
+          <p className="mt-1 text-label-md font-semibold text-on-primary-fixed">
             {t('travel.countriesMarked')}
-          </span>
+          </p>
         </div>
-      </div>
-      )}
 
-      {/* Mapa SVG */}
-      <div className="relative aspect-[2/1] w-full">
-        <svg
-          role="img"
-          aria-label={t('travel.title')}
-          viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-full"
-          overflow="hidden"
-          style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' }}
-        >
-          {/* Gradiente para océano */}
-          <defs>
-            <linearGradient id={`${uid}-ocean`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#eef6f3" />
-              <stop offset="50%" stopColor="#e2efeb" />
-              <stop offset="100%" stopColor="#d6e8e2" />
-            </linearGradient>
-            <filter id={`${uid}-glow`}>
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Océano */}
-          <rect x="0" y="0" width={width} height={height} fill={`url(#${uid}-ocean)`} />
-
-          {/* Líneas de grid */}
-          <g className="opacity-10">
-            {VERTICAL_LINES.map((line) => (
-              <line
-                key={line.id}
-                x1={line.index * (width / 18)}
-                y1={0}
-                x2={line.index * (width / 18)}
-                y2={height}
-                stroke="#476558"
-                strokeWidth="0.5"
-              />
-            ))}
-            {HORIZONTAL_LINES.map((line) => (
-              <line
-                key={line.id}
-                x1={0}
-                y1={line.index * (height / 9)}
-                x2={width}
-                y2={line.index * (height / 9)}
-                stroke="#476558"
-                strokeWidth="0.5"
-              />
-            ))}
-          </g>
-
-          {/* Países */}
-          <g>
-            {geoData.features.map((country, index) => {
-              const isoCode = getIsoCode(country)
-              const isSelected = Boolean(selectedCountry) && selectedCountry === isoCode
-              const path = pathGenerator(country)
-              if (!path) return null
-
-              return (
-                <path
-                  key={`${isoCode}-${index}`}
-                  d={path}
-                  fill={getCountryColor(isoCode)}
-                  fillOpacity={getCountryOpacity(isoCode)}
-                  stroke={isSelected ? '#91471c' : '#ffffff'}
-                  strokeWidth={isSelected ? 2 : 0.5}
-                  className={`transition-all duration-200 ${onCountryClick ? 'cursor-pointer' : ''}`}
-                  style={{
-                    filter: hoveredCountry === isoCode ? `url(#${uid}-glow)` : 'none'
-                  }}
-                  onMouseMove={(e) => handleMouseMove(e, country)}
-                  onMouseLeave={handleMouseLeave}
-                  onClick={() => handleClick(isoCode)}
+        <div className="flex flex-1 flex-col rounded-lg bg-surface-container-low px-4 py-3">
+          <h4 className="mb-2 text-label-md font-semibold uppercase tracking-wide text-on-surface">
+            {t('travel.legend')}
+          </h4>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-2 md:grid-cols-1">
+            {legendItems.map((item) => (
+              <li key={item.status} className="flex items-center gap-2">
+                <span
+                  className="h-3.5 w-3.5 shrink-0 rounded-sm shadow-sm"
+                  style={{ backgroundColor: item.color }}
+                  aria-hidden="true"
                 />
-              )
-            })}
-          </g>
-        </svg>
+                <span className="text-caption font-medium text-on-surface">
+                  {item.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      </div>
+        <Button
+          variant={expanded ? 'ghost' : 'secondary'}
+          className="w-full sm:w-auto md:w-full"
+          icon={expanded ? MdClose : MdOpenInFull}
+          autoFocus={expanded}
+          onClick={() => setExpanded((open) => !open)}
+        >
+          {expanded ? t('travel.closeMap') : t('travel.enlargeMap')}
+        </Button>
+      </aside>
     </div>
   )
+
+  if (expanded) {
+    return createPortal(
+      <div
+        className="fixed inset-0 z-50 flex items-center p-3 md:p-6"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('travel.title')}
+      >
+        <div
+          className="absolute inset-0 bg-inverse-surface/55 backdrop-blur-sm"
+          onClick={() => setExpanded(false)}
+          aria-hidden="true"
+        />
+        <div className="relative z-10 w-full rounded-lg bg-surface-container-lowest p-3 shadow-level-3 md:p-4">
+          {layout}
+        </div>
+      </div>,
+      document.body
+    )
+  }
+
+  return layout
 }
 
 WorldMap.propTypes = {

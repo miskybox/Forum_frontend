@@ -205,14 +205,14 @@ const TriviaHomePage = () => {
       description: t('trivia.unlimitedQuestions'),
       questions: '∞',
       special: true,
-      tone: { card: 'bg-secondary-container', title: 'text-on-secondary-fixed', text: 'text-on-secondary-fixed-variant' }
+      tone: { card: 'bg-secondary-container', title: 'text-on-secondary-container', text: 'text-on-secondary-container' }
     },
     {
       mode: 'DAILY',
       title: t('trivia.dailyMode'),
       description: t('trivia.dailySpecial'),
       questions: 15,
-      tone: { card: 'bg-secondary', title: 'text-on-secondary', text: 'text-secondary-fixed' }
+      tone: { card: 'bg-secondary', title: 'text-on-secondary', text: 'text-on-secondary-fixed-variant' }
     }
   ]
 
@@ -230,7 +230,7 @@ const TriviaHomePage = () => {
             {t('nav.trivia')}
           </p>
           <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{t('trivia.title')}</h1>
-          <p className="mt-space-xs text-body-lg text-on-surface-variant">{t('trivia.chooseMode')}</p>
+          <p className="mt-space-xs text-body-lg text-on-surface">{t('trivia.chooseMode')}</p>
         </div>
       </header>
 
@@ -261,7 +261,7 @@ const TriviaHomePage = () => {
             {/* Filtros por continente */}
             <div className="card bg-secondary-container">
               <div className="p-4">
-                <h3 className="text-lg font-bold text-on-surface mb-4 ">
+                <h3 className="text-lg font-bold text-on-secondary-container mb-4 ">
                   {t('trivia.playByContinent')}
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -276,7 +276,7 @@ const TriviaHomePage = () => {
                       key={continent.key}
                       onClick={() => startGame('QUICK', { questions: 15, continent: continent.apiValue })}
                       disabled={starting}
-                      className="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface text-label-lg shadow-level-1 hover:bg-secondary hover:text-on-secondary disabled:opacity-50 transition-colors"
+                      className="px-space-md py-2 rounded-full bg-surface-container-highest text-on-surface text-label-lg shadow-level-1 hover:bg-secondary hover:text-on-secondary disabled:opacity-50 transition-colors"
                     >
                       {t(`continentsNames.${continent.key}`)}
                     </button>
@@ -295,7 +295,7 @@ const TriviaHomePage = () => {
                   <h3 className="font-headline text-headline-sm">
                     {t('trivia.ranking')}
                   </h3>
-                  <p className="mt-space-xs text-body-sm">
+                  <p className="mt-space-xs text-body-sm text-on-primary-fixed-variant">
                     {t('trivia.competeWithOthers')}
                   </p>
                 </div>
@@ -303,7 +303,7 @@ const TriviaHomePage = () => {
 
               <Link
                 to="/travel"
-                className="block rounded-lg p-space-lg bg-secondary-container text-on-secondary-fixed hover:text-on-secondary-fixed shadow-level-1 hover:shadow-level-2 transition-shadow"
+                className="block rounded-lg p-space-lg bg-secondary-container text-on-secondary-container hover:text-on-secondary-container shadow-level-1 hover:shadow-level-2 transition-shadow"
               >
                 <div>
                   <h3 className="font-headline text-headline-sm">

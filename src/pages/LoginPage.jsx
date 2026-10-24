@@ -28,15 +28,15 @@ const LoginPage = () => {
   }, [isAuthenticated, navigate, location])
 
   const demoBanner = showDemoCredentials && (
-    <div className="rounded-lg p-space-md bg-secondary-container text-on-secondary-fixed" data-testid="demo-banner">
+    <div className="rounded-lg p-space-md bg-secondary-container text-on-secondary-container" data-testid="demo-banner">
       <div className="flex items-start gap-space-sm">
         <MdInfoOutline className="text-title-md flex-shrink-0 mt-0.5" aria-hidden="true" />
         <div className="min-w-0">
           <h2 className="font-body text-label-lg uppercase tracking-wider">{t('demo.title')}</h2>
           <p className="mt-1 text-body-sm">{t('demo.description')}</p>
-          <p className="mt-space-sm flex flex-wrap items-center justify-between gap-space-xs p-space-sm rounded-base bg-surface-container-lowest/70 text-body-sm">
+          <p className="mt-space-sm flex flex-wrap items-center justify-between gap-space-xs p-space-sm rounded-base bg-surface-container-lowest text-on-surface text-body-sm">
             <span className="font-semibold">{t('demo.roleUser')}</span>
-            <code className="font-mono text-on-surface">{demoUsername} / {demoPassword}</code>
+            <code className="font-mono">{demoUsername} / {demoPassword}</code>
           </p>
           <p className="mt-space-xs text-caption italic">{t('demo.disclaimer')}</p>
         </div>
