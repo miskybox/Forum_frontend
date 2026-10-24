@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { toast } from 'react-hot-toast'
 import userService from '../../services/userService'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { ACCEPTED_IMAGE_ACCEPT, isAcceptedImageFile } from '../../utils/imageTypes'
 import TextField from '../ui/TextField'
 
 const EMAIL_PATTERN = /\S+@\S+\.\S+/
@@ -25,6 +26,21 @@ const ProfileEditForm = ({ user, onSaved }) => {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }))
+  }
+
+  const handleImagePick = (setter) => (event) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+      setter(null)
+      return
+    }
+    if (!isAcceptedImageFile(file)) {
+      toast.error(t('profile.errors.invalidImageFormat'))
+      event.target.value = ''
+      setter(null)
+      return
+    }
+    setter(file)
   }
 
   const validate = () => {
@@ -88,8 +104,8 @@ const ProfileEditForm = ({ user, onSaved }) => {
           {t('profile.uploadAvatar')}
           <input
             type="file"
-            accept="image/*"
-            onChange={(event) => setAvatarFile(event.target.files?.[0] || null)}
+            accept={ACCEPTED_IMAGE_ACCEPT}
+            onChange={handleImagePick(setAvatarFile)}
             className="text-body-sm"
           />
         </label>
@@ -97,8 +113,8 @@ const ProfileEditForm = ({ user, onSaved }) => {
           {t('profile.uploadCover')}
           <input
             type="file"
-            accept="image/*"
-            onChange={(event) => setCoverFile(event.target.files?.[0] || null)}
+            accept={ACCEPTED_IMAGE_ACCEPT}
+            onChange={handleImagePick(setCoverFile)}
             className="text-body-sm"
           />
         </label>

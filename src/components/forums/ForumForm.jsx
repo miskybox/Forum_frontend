@@ -7,6 +7,7 @@ import categoryService from '../../services/categoryService'
 import forumService from '../../services/forumService'
 import { sanitizeInput, validateLength, LENGTH_LIMITS } from '../../utils/sanitize'
 import { getCroppedImg } from '../../utils/cropImage'
+import { ACCEPTED_IMAGE_ACCEPT, isAcceptedImageFile } from '../../utils/imageTypes'
 
 const ForumForm = ({ initialData = null, isEdit = false }) => {
   const { t } = useLanguage()
@@ -81,8 +82,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
       return
     }
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-    if (!validTypes.includes(file.type)) {
+    if (!isAcceptedImageFile(file)) {
       setErrors({ ...errors, image: t('forums.invalidImageFormat') })
       return
     }
@@ -370,7 +370,7 @@ const ForumForm = ({ initialData = null, isEdit = false }) => {
               id="image"
               name="image"
               type="file"
-              accept="image/*"
+              accept={ACCEPTED_IMAGE_ACCEPT}
               className="sr-only"
               onChange={handleImageChange}
               disabled={isSubmitting}

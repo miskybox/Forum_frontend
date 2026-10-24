@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
+import { toast } from 'react-hot-toast'
 import ProfileEditForm from './ProfileEditForm'
 import userService from '../../services/userService'
 
@@ -36,6 +37,16 @@ describe('ProfileEditForm', () => {
       biography: 'Senderista',
     }))
     expect(onSaved).toHaveBeenCalled()
+  })
+
+  it('limits avatar and cover uploads to jpeg, png and webp', () => {
+    render(<ProfileEditForm user={user} />)
+    const [avatar, cover] = document.querySelectorAll('input[type="file"]')
+    expect(avatar).toHaveAttribute('accept', 'image/jpeg,image/png,image/webp')
+    expect(cover).toHaveAttribute('accept', 'image/jpeg,image/png,image/webp')
+
+    fireEvent.change(avatar, { target: { files: [new File(['<svg/>'], 'icon.svg', { type: 'image/svg+xml' })] } })
+    expect(toast.error).toHaveBeenCalled()
   })
 
   it('requires a full name before saving', async () => {

@@ -64,11 +64,11 @@ The **only accepted public opening** is the USER demo account (`viajero_demo`). 
 - [x] HTML sanitizer; login rate limit; reset tokens not logged in production (B8b).
 - [x] Public login/docs only show `viajero_demo`. Remove leftover `admin_demo / Demo1234!` from workspace `DEPLOY.md`.
 - [ ] Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password.
-- [ ] Image upload MIME allow-list; security headers; no secrets in logs.
+- [x] Image upload MIME allow-list; security headers; no secrets in logs.
 
 Details: `Forum_backend/docs/BACKEND_TASKS.md` (S1–S9) and frontend `TASKS.md` § Remaining work (F1–F25, Q1–Q8).
 
-Open API items: S5–S9, B9–B14 (P2), B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
+Open API items: S6 (ops), B9–B14 (P2), B15–B22 (P3, separate). B1 working decision remains (b): diaries = posts with photos; UI is F5 (no blog CMS).
 
 ## P2 — Improves the redesign
 

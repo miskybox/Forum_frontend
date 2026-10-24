@@ -30,9 +30,9 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 - [x] **F12 / S5.** Login UI + public README only show `viajero_demo`. Never print admin/moderator passwords in the SPA.
 - [x] **S5b.** Workspace/root `DEPLOY.md` still has `admin_demo / Demo1234!` — env-only wording.
 - [ ] **S6.** Production `ADMIN_PASSWORD` / `MODERATOR_PASSWORD` ≠ public demo password (ops check, not code).
-- [ ] **S7.** Upload MIME allow-list (images only; no SVG/HTML) for avatar, cover, post images.
-- [ ] **S8.** Security headers if missing (`X-Content-Type-Options`, frame deny, `Referrer-Policy`).
-- [ ] **S9.** No passwords, JWTs or reset tokens in logs outside `app.demo.log-reset-links`.
+- [x] **S7.** Upload MIME allow-list (images only; no SVG/HTML) for avatar, cover, post images.
+- [x] **S8.** Security headers if missing (`X-Content-Type-Options`, frame deny, `Referrer-Policy`).
+- [x] **S9.** No passwords, JWTs or reset tokens in logs outside `app.demo.log-reset-links`.
 - [x] **F13.** Dashboard destructive actions: `Modal` confirm; API still enforces roles (with F1/F2).
 
 ### C — P2 API + UI (hide the block until the endpoint exists)
