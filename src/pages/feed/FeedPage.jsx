@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import feedService from '../../services/feedService'
 import FeedCard from '../../components/social/FeedCard'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
@@ -16,16 +16,32 @@ const EXPLORE_TAB_FILTERS = {
   unanswered: { unanswered: true },
 }
 
+const PUBLIC_TABS = ['explore', 'trending', 'photos', 'unanswered']
+
 const FeedPage = () => {
   const { isAuthenticated } = useAuth()
   const { t } = useLanguage()
-  const [activeTab, setActiveTab] = useState(isAuthenticated ? 'following' : 'explore')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const allowedTabs = isAuthenticated ? ['following', ...PUBLIC_TABS] : PUBLIC_TABS
+  const tabFromUrl = searchParams.get('tab')
+  const initialTab = allowedTabs.includes(tabFromUrl)
+    ? tabFromUrl
+    : (isAuthenticated ? 'following' : 'explore')
+
+  const [activeTab, setActiveTab] = useState(initialTab)
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [page, setPage] = useState(0)
   const [hasMore, setHasMore] = useState(true)
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (allowedTabs.includes(tabFromUrl) && tabFromUrl !== activeTab) {
+      setActiveTab(tabFromUrl)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabFromUrl, isAuthenticated])
 
   useEffect(() => {
     loadFeed(true)
@@ -50,7 +66,7 @@ const FeedPage = () => {
       if (reset) {
         setItems(data?.content || [])
       } else {
-        setItems(prev => [...prev, ...(data?.content || [])])
+        setItems((prev) => [...prev, ...(data?.content || [])])
       }
 
       setHasMore(Boolean(data) && !data.last)
@@ -62,6 +78,11 @@ const FeedPage = () => {
       setLoading(false)
       setLoadingMore(false)
     }
+  }
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId)
+    setSearchParams(tabId === (isAuthenticated ? 'following' : 'explore') ? {} : { tab: tabId })
   }
 
   const handleLoadMore = () => {
@@ -80,7 +101,7 @@ const FeedPage = () => {
 
   let content
   if (loading) {
-    content = <LoadingSpinner />
+    content = <LoadingSpinner label={t('common.loading')} />
   } else if (error) {
     content = (
       <EmptyState
@@ -91,11 +112,12 @@ const FeedPage = () => {
     )
   } else if (items.length === 0) {
     const following = activeTab === 'following'
+    const photos = activeTab === 'photos'
     content = (
       <EmptyState
-        icon={following ? MdPeople : MdPublic}
-        title={following ? t('feed.noPostsFollowing') : t('feed.noPostsExplore')}
-        description={following ? t('feed.followToSee') : t('feed.noExploreHint')}
+        icon={photos ? MdPhotoLibrary : following ? MdPeople : MdPublic}
+        title={photos ? t('feed.noPhotos') : following ? t('feed.noPostsFollowing') : t('feed.noPostsExplore')}
+        description={photos ? t('feed.noPhotosHint') : following ? t('feed.followToSee') : t('feed.noExploreHint')}
         action={<Link to="/forums" className="btn btn-primary">{t('feed.exploreForum')}</Link>}
       />
     )
@@ -119,11 +141,15 @@ const FeedPage = () => {
   return (
     <div className="max-w-3xl mx-auto w-full px-gutter-sm py-margin space-y-space-lg">
       <header>
-        <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">{t('nav.feed')}</h1>
-        <p className="mt-space-xs text-body-lg text-on-surface-variant">{t('feed.subtitle')}</p>
+        <h1 className="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface">
+          {activeTab === 'photos' ? t('feed.diariesTitle') : t('nav.feed')}
+        </h1>
+        <p className="mt-space-xs text-body-lg text-on-surface-variant">
+          {activeTab === 'photos' ? t('feed.diariesSubtitle') : t('feed.subtitle')}
+        </p>
       </header>
 
-      <SegmentedTabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} idPrefix="feed" label={t('feed.tabsLabel')} />
+      <SegmentedTabs tabs={tabs} activeId={activeTab} onChange={handleTabChange} idPrefix="feed" label={t('feed.tabsLabel')} />
 
       <div role="tabpanel" id={`feed-panel-${activeTab}`} aria-labelledby={`feed-tab-${activeTab}`}>
         {content}

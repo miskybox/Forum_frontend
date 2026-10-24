@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { MdPeople, MdSearch } from 'react-icons/md'
 import followService from '../../services/followService'
+import { useLanguage } from '../../contexts/LanguageContext'
 import FollowButton from './FollowButton'
 import LoadingSpinner from '../common/LoadingSpinner'
+import EmptyState from '../ui/EmptyState'
+import Avatar from '../ui/Avatar'
+import Button from '../ui/Button'
 
 const FollowList = ({ userId, type = 'followers', onClose }) => {
+  const { t } = useLanguage()
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -21,9 +28,9 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
       const data = type === 'followers'
         ? await followService.getFollowers(userId)
         : await followService.getFollowing(userId)
-      setUsers(data)
+      setUsers(Array.isArray(data) ? data : data?.content || [])
     } catch (err) {
-      setError('Error al cargar usuarios')
+      setError(t('users.loadError'))
       console.error(err)
     } finally {
       setLoading(false)
@@ -31,62 +38,61 @@ const FollowList = ({ userId, type = 'followers', onClose }) => {
   }
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <LoadingSpinner />
-      </div>
-    )
+    return <LoadingSpinner label={t('common.loading')} />
   }
 
   if (error) {
     return (
-      <div className="text-center py-8 text-primary">
-        {error}
-        <button onClick={loadUsers} className="block mx-auto mt-4 text-secondary hover:underline">
-          Reintentar
-        </button>
-      </div>
+      <EmptyState
+        title={error}
+        action={<Button variant="ghost" onClick={loadUsers}>{t('users.retry')}</Button>}
+      />
     )
   }
 
   if (users.length === 0) {
     return (
-      <div className="text-center py-12 text-on-surface-variant">
-        <div className="text-5xl mb-4">{type === 'followers' ? '👥' : '🔍'}</div>
-        <p>{type === 'followers' ? 'Sin seguidores aun' : 'No sigue a nadie aun'}</p>
-      </div>
+      <EmptyState
+        icon={type === 'followers' ? MdPeople : MdSearch}
+        title={type === 'followers' ? t('users.noFollowers') : t('users.noFollowing')}
+      />
     )
   }
 
   return (
-    <div className="divide-y divide-surface-container-high max-h-96 overflow-y-auto">
-      {users.map((user) => (
-        <div key={user.userId} className="flex items-center justify-between p-4 hover:bg-surface-container-low/30 transition-colors">
-          <Link
-            to={`/profile/${user.userId}`}
-            onClick={onClose}
-            className="flex items-center gap-3 flex-1 min-w-0"
-          >
-            <img
-              src={user.avatarUrl || '/default-avatar.png'}
-              alt={user.username}
-              className="w-12 h-12 rounded-full object-cover border-2 border-secondary"
-            />
-            <div className="min-w-0">
-              <p className="font-semibold text-on-surface truncate">{user.username}</p>
-              {user.bio && (
-                <p className="text-sm text-on-surface-variant truncate">{user.bio}</p>
-              )}
-              {user.isFollowingBack && (
-                <span className="text-xs text-secondary">Te sigue</span>
-              )}
-            </div>
-          </Link>
-          <FollowButton userId={user.userId} size="sm" />
-        </div>
-      ))}
-    </div>
+    <ul className="divide-y divide-outline-variant/20 max-h-96 overflow-y-auto">
+      {users.map((user) => {
+        const id = user.userId || user.id
+        return (
+          <li key={id} className="flex items-center justify-between gap-space-sm p-space-sm">
+            <Link
+              to={`/profile/${id}`}
+              onClick={onClose}
+              className="flex items-center gap-space-sm flex-1 min-w-0"
+            >
+              <Avatar name={user.username} src={user.avatarUrl} size="lg" />
+              <span className="min-w-0">
+                <span className="block font-semibold text-on-surface truncate">{user.username}</span>
+                {user.bio && (
+                  <span className="block text-body-sm text-on-surface-variant truncate">{user.bio}</span>
+                )}
+                {user.isFollowingBack && (
+                  <span className="block text-caption text-secondary">{t('users.followsYou')}</span>
+                )}
+              </span>
+            </Link>
+            <FollowButton userId={id} size="sm" />
+          </li>
+        )
+      })}
+    </ul>
   )
+}
+
+FollowList.propTypes = {
+  userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.oneOf(['followers', 'following']),
+  onClose: PropTypes.func,
 }
 
 export default FollowList

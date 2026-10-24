@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { MdForum, MdHome, MdVisibility } from 'react-icons/md'
+import { MdForum, MdHome, MdSchedule, MdVisibility } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import Avatar from '../ui/Avatar'
 import Breadcrumb from '../ui/Breadcrumb'
 import { formatLongDate } from '../../utils/formatDate'
+import { readingMinutes } from '../../utils/readingTime'
 
 const PostHeader = ({ post, forum, category, commentCount, actions }) => {
   const { t } = useLanguage()
   const forumTitle = forum?.title || t('postDetail.backToForum')
   const wasUpdated = post.updatedAt && post.updatedAt !== post.createdAt
+  const minutes = post.readingMinutes || readingMinutes(post.content)
 
   return (
     <header className="relative w-full pt-space-lg pb-space-xl bg-gradient-to-b from-surface-container-high/90 via-surface-container/60 to-background overflow-hidden">
@@ -71,6 +73,11 @@ const PostHeader = ({ post, forum, category, commentCount, actions }) => {
 
           <dl className="flex items-center gap-space-lg text-on-surface-variant">
             <div className="flex items-center gap-1">
+              <MdSchedule className="text-body-md" aria-hidden="true" />
+              <dt className="sr-only">{t('postDetail.readingTime')}</dt>
+              <dd className="text-label-md">{minutes} {t('postDetail.readingMin')}</dd>
+            </div>
+            <div className="flex items-center gap-1">
               <MdVisibility className="text-body-md" aria-hidden="true" />
               <dt className="sr-only">{t('postDetail.views')}</dt>
               <dd className="text-label-md">{post.viewCount || 0} {t('postDetail.views')}</dd>
@@ -96,6 +103,8 @@ PostHeader.propTypes = {
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
     viewCount: PropTypes.number,
+    content: PropTypes.string,
+    readingMinutes: PropTypes.number,
     forumId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     tags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,

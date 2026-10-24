@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useId } from 'react'
 import PropTypes from 'prop-types'
 import { geoMercator, geoPath } from 'd3-geo'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -29,8 +29,9 @@ const HORIZONTAL_LINES = Array.from({ length: 9 }, (_, i) => ({
 const getIsoCode = (feature) => feature.properties['ISO3166-1-Alpha-2'] ?? feature.properties.ISO_A2
 const getCountryName = (feature) => feature.properties.name ?? feature.properties.ADMIN
 
-const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
+const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry, compact = false }) => {
   const { t } = useLanguage()
+  const uid = useId().replace(/:/g, '')
   const [geoData, setGeoData] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
   const [tooltip, setTooltip] = useState({ x: 0, y: 0 })
@@ -134,18 +135,18 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 
   if (!geoData) {
     return (
-      <div className="relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg p-6">
+      <div className={`relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg ${compact ? 'p-2' : 'p-6'}`}>
         <div className="aspect-[2/1] w-full flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          <span className="ml-4 text-on-surface">Cargando mapa...</span>
+          <div className={`animate-spin rounded-full border-b-2 border-primary ${compact ? 'h-6 w-6' : 'h-12 w-12'}`} />
+          {!compact && <span className="ml-4 text-on-surface">{t('travel.loadingMap') || 'Cargando mapa...'}</span>}
         </div>
       </div>
     )
   }
 
   return (
-    <div className="relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg p-2 md:p-4 overflow-hidden">
-      {/* Estrellas decorativas */}
+    <div className={`relative w-full bg-gradient-to-br from-surface-container-lowest to-surface-container-low rounded-lg overflow-hidden ${compact ? 'p-1' : 'p-2 md:p-4'}`}>
+      {!compact && (
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {STARS.map((star) => (
           <div
@@ -159,8 +160,9 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
           />
         ))}
       </div>
+      )}
 
-      {/* Leyenda — oculta en móvil, visible en sm+ */}
+      {!compact && (
       <div className="hidden sm:block absolute top-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md rounded-base p-2 md:p-3 z-20 shadow-level-1">
         <h4
           className="font-semibold mb-2 text-xs md:text-sm flex items-center gap-2 text-on-surface"
@@ -188,9 +190,10 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
           ))}
         </div>
       </div>
+      )}
 
       {/* Tooltip */}
-      {hoveredCountry && (
+      {hoveredCountry && !compact && (
         <div
           className="absolute bg-surface-container-lowest rounded-base px-4 py-2 shadow-level-2 z-30 pointer-events-none transform -translate-x-1/2 -translate-y-full"
           style={{
@@ -216,7 +219,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         </div>
       )}
 
-      {/* Estadísticas rápidas con outline para accesibilidad */}
+      {!compact && (
       <div className="absolute top-4 left-4 bg-primary-fixed/90 backdrop-blur-md rounded-base p-3 z-20 shadow-level-1">
         <div className="text-sm">
           <div className="flex items-center gap-2 mb-1">
@@ -233,6 +236,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
           </span>
         </div>
       </div>
+      )}
 
       {/* Mapa SVG */}
       <div className="relative aspect-[2/1] w-full">
@@ -246,12 +250,12 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
         >
           {/* Gradiente para océano */}
           <defs>
-            <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={`${uid}-ocean`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#eef6f3" />
               <stop offset="50%" stopColor="#e2efeb" />
               <stop offset="100%" stopColor="#d6e8e2" />
             </linearGradient>
-            <filter id="glow">
+            <filter id={`${uid}-glow`}>
               <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
@@ -261,7 +265,7 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
           </defs>
 
           {/* Océano */}
-          <rect x="0" y="0" width={width} height={height} fill="url(#oceanGradient)" />
+          <rect x="0" y="0" width={width} height={height} fill={`url(#${uid}-ocean)`} />
 
           {/* Líneas de grid */}
           <g className="opacity-10">
@@ -305,9 +309,9 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
                   fillOpacity={getCountryOpacity(isoCode)}
                   stroke={isSelected ? '#91471c' : '#ffffff'}
                   strokeWidth={isSelected ? 2 : 0.5}
-                  className="cursor-pointer transition-all duration-200"
+                  className={`transition-all duration-200 ${onCountryClick ? 'cursor-pointer' : ''}`}
                   style={{
-                    filter: hoveredCountry === isoCode ? 'url(#glow)' : 'none'
+                    filter: hoveredCountry === isoCode ? `url(#${uid}-glow)` : 'none'
                   }}
                   onMouseMove={(e) => handleMouseMove(e, country)}
                   onMouseLeave={handleMouseLeave}
@@ -326,7 +330,8 @@ const WorldMap = ({ visitedPlaces = [], onCountryClick, selectedCountry }) => {
 WorldMap.propTypes = {
   visitedPlaces: PropTypes.array,
   onCountryClick: PropTypes.func,
-  selectedCountry: PropTypes.string
+  selectedCountry: PropTypes.string,
+  compact: PropTypes.bool,
 }
 
 export default WorldMap

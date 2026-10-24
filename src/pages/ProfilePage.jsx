@@ -33,6 +33,7 @@ const ProfilePage = () => {
 
   const [user, setUser] = useState(null)
   const [travelStats, setTravelStats] = useState(null)
+  const [visitedPlaces, setVisitedPlaces] = useState([])
   const [posts, setPosts] = useState([])
   const [forums, setForums] = useState([])
   const [isFollowing, setIsFollowing] = useState(false)
@@ -68,15 +69,17 @@ const ProfilePage = () => {
 
     let cancelled = false
     const loadExtras = async () => {
-      const [statsResult, postsResult, forumsResult, followResult] = await Promise.allSettled([
+      const [statsResult, postsResult, forumsResult, followResult, placesResult] = await Promise.allSettled([
         isOwnProfile ? travelService.getMyStats() : travelService.getUserStats(profileId),
         postService.getPostsByUser(profileId, 0, 20),
         forumService.getForumsByUser(profileId, 0, 20),
         isOwnProfile ? Promise.resolve(false) : followService.isFollowing(profileId),
+        isOwnProfile ? travelService.getMyPlaces() : travelService.getUserPlaces(profileId),
       ])
       if (cancelled) return
 
       setTravelStats(statsResult.status === 'fulfilled' ? statsResult.value : null)
+      setVisitedPlaces(placesResult.status === 'fulfilled' ? toList(placesResult.value) : [])
       setPosts(postsResult.status === 'fulfilled' ? toList(postsResult.value) : [])
       setForums(forumsResult.status === 'fulfilled' ? toList(forumsResult.value) : [])
       const follow = followResult.status === 'fulfilled' ? followResult.value : false
@@ -147,7 +150,7 @@ const ProfilePage = () => {
 
       <div className="max-w-7xl mx-auto w-full px-gutter-sm lg:px-gutter-lg mt-space-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
         <aside className="lg:col-span-5 space-y-space-md">
-          <TravelPassport stats={travelStats} isOwnProfile={isOwnProfile} />
+          <TravelPassport stats={travelStats} visitedPlaces={visitedPlaces} isOwnProfile={isOwnProfile} />
         </aside>
 
         <section className="lg:col-span-7 space-y-space-md">

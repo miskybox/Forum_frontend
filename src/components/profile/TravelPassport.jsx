@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { MdMap, MdMilitaryTech, MdVerified } from 'react-icons/md'
 import { useLanguage } from '../../contexts/LanguageContext'
 import SectionCard from '../ui/SectionCard'
+import WorldMap from '../travel/WorldMap'
 
 const BADGE_TONES = [
   'bg-secondary text-on-secondary',
@@ -11,7 +12,7 @@ const BADGE_TONES = [
   'bg-primary-container text-on-primary-container',
 ]
 
-const TravelPassport = ({ stats, isOwnProfile }) => {
+const TravelPassport = ({ stats, visitedPlaces = [], isOwnProfile }) => {
   const { t } = useLanguage()
   const hasStats = stats && (stats.countriesVisited > 0 || stats.badges?.length > 0)
   const worldPercent = Math.min(100, Math.round((stats?.worldPercentageByCountries ?? 0) * 10) / 10)
@@ -71,6 +72,11 @@ const TravelPassport = ({ stats, isOwnProfile }) => {
             <> · <strong className="text-on-surface">{stats.countriesWishlist}</strong> {t('profile.wishlist')}</>
           )}
         </p>
+        {visitedPlaces.length > 0 && (
+          <div className="mt-space-sm rounded-base overflow-hidden">
+            <WorldMap visitedPlaces={visitedPlaces} compact />
+          </div>
+        )}
         {stats?.continentsList?.length > 0 && (
           <ul className="flex flex-wrap gap-space-xs mt-space-sm">
             {stats.continentsList.map((continent, index) => (
@@ -105,6 +111,7 @@ TravelPassport.propTypes = {
     continentsList: PropTypes.arrayOf(PropTypes.string),
     worldPercentageByCountries: PropTypes.number,
   }),
+  visitedPlaces: PropTypes.array,
   isOwnProfile: PropTypes.bool,
 }
 

@@ -1,5 +1,5 @@
 // Archivo: src/App.jsx
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Footer from './components/common/Footer';
@@ -37,12 +37,6 @@ import TriviaInfinitePage from './pages/trivia/TriviaInfinitePage';
 // Dashboards
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ModeratorDashboardPage from './pages/ModeratorDashboardPage';
-
-// Páginas de Blog
-import BlogHomePage from './pages/blog/BlogHomePage';
-import BlogPostPage from './pages/blog/BlogPostPage';
-import BlogCategoryPage from './pages/blog/BlogCategoryPage';
-import BlogSearchPage from './pages/blog/BlogSearchPage';
 
 // Páginas de Información
 import AboutPage from './pages/AboutPage';
@@ -111,28 +105,17 @@ function App() {
             </ProtectedRoute>
           } />
           
-          {/* Rutas de Blog */}
-          <Route path="/blog" element={<BlogHomePage />} />
-          <Route path="/blog/search" element={<BlogSearchPage />} />
-          <Route path="/blog/category/:slug" element={<BlogCategoryPage />} />
-          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          {/* Diarios = posts with photos (no separate blog CMS) */}
+          <Route path="/blog" element={<Navigate to="/feed?tab=photos" replace />} />
+          <Route path="/blog/*" element={<Navigate to="/feed?tab=photos" replace />} />
           
           {/* Rutas de Información */}
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/help" element={<HelpPage />} />
 
-          {/* Rutas de Feed (solo usuarios logueados - estilo Instagram) */}
-          <Route path="/feed" element={
-            <ProtectedRoute>
-              <FeedPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/contenido" element={
-            <ProtectedRoute>
-              <FeedPage />
-            </ProtectedRoute>
-          } />
+          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/contenido" element={<FeedPage />} />
 
           {/* Rutas de Usuarios */}
           <Route path="/usuarios" element={<UsersPage />} />

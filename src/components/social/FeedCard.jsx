@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { MdArrowForward, MdChatBubbleOutline } from 'react-icons/md'
+import { MdArrowForward, MdChatBubbleOutline, MdSchedule } from 'react-icons/md'
+import { readingMinutes } from '../../utils/readingTime'
 import FollowButton from './FollowButton'
 import ShareButton from './ShareButton'
 import LikeButton from './LikeButton'
@@ -43,7 +44,13 @@ const FeedCard = ({ item }) => {
             <span className="block text-body-md font-bold text-on-surface truncate group-hover:text-primary transition-colors">
               {item.authorUsername}
             </span>
-            <span className="block text-caption text-on-surface-variant">{formatDate(item.createdAt)}</span>
+            <span className="block text-caption text-on-surface-variant">
+              {formatDate(item.createdAt)}
+              {' · '}
+              <MdSchedule className="inline align-text-bottom" aria-hidden="true" />
+              {' '}
+              {item.readingMinutes || readingMinutes(item.content)} min
+            </span>
           </span>
         </Link>
         <div className="flex items-center gap-space-sm flex-shrink-0">

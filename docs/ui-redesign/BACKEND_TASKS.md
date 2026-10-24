@@ -32,7 +32,7 @@ Priorities:
 
 ## P1 — Required for the redesign
 
-- [ ] **B1. Blog API is missing.** The frontend `blogService` calls `/api/blog/*` (categories, posts, slugs, search) but the backend has no blog controller, so the "Diarios de Viaje" section cannot work. Decide:
+- [x] **B1. Blog API is missing.** The frontend `blogService` calls `/api/blog/*` (categories, posts, slugs, search) but the backend has no blog controller, so the "Diarios de Viaje" section cannot work. Decide:
   - (a) implement `BlogPost`/`BlogCategory` entities and `/api/blog/*` endpoints matching `src/services/blogService.js`, or
   - (b) drop the separate blog and model "travel diaries" as posts with images (filter `hasImages=true`, see B3).
   - **Working decision: (b)** — less code, one content model, fits the demo. Revisit if a real blog is needed.

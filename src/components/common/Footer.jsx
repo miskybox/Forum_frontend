@@ -20,7 +20,7 @@ const Footer = () => {
         { to: '/forums', label: t('footer.forums') },
         { to: '/categories', label: t('footer.continents') },
         { to: '/travel', label: t('footer.myMap') },
-        { to: '/blog', label: t('footer.blog') },
+        { to: '/feed?tab=photos', label: t('footer.blog') },
       ],
     },
     {

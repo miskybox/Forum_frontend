@@ -15,10 +15,10 @@ Accepted demo opening (not a bug to “fix” by removing login): public USER `v
 
 - [x] **F1. Admin dashboard** (`AdminDashboardPage`): `PageContainer`, `SegmentedTabs`, `Modal` (no `window.confirm`), `Button`, `EmptyState`, `react-icons/md`, i18n. Keep users / forums / posts / comments / roles. Review with private `admin_demo`.
 - [x] **F2. Moderator dashboard** (`ModeratorDashboardPage`): same restyle as F1; hide/block only, no permanent delete. Review with private `moderador_demo`.
-- [ ] **F3. Social lists**: restyle `FollowModal`, `FollowList`, `UsersPage` to the design system.
-- [ ] **F4. Profile territory**: mini `WorldMap` in the passport/territory card (visited countries already in travel stats).
-- [ ] **F5. Diarios de Viaje (B1b)**: do not add a blog CMS. Point nav/footer “Diarios” to posts with photos (`hasImages=true`, existing B3 filter) — e.g. `/feed` photos tab or `/forums?hasImages=true`. Retire or wrap dead `blogService` `/api/blog/*` calls so that route does not 404.
-- [ ] **F6. Reading time** on post detail/cards: `readingMinutes` from content length (B14; can be frontend-only).
+- [x] **F3. Social lists**: restyle `FollowModal`, `FollowList`, `UsersPage` to the design system.
+- [x] **F4. Profile territory**: mini `WorldMap` in the passport/territory card (visited countries already in travel stats).
+- [x] **F5. Diarios de Viaje (B1b)**: do not add a blog CMS. Point nav/footer “Diarios” to posts with photos (`hasImages=true`, existing B3 filter) — e.g. `/feed` photos tab or `/forums?hasImages=true`. Retire or wrap dead `blogService` `/api/blog/*` calls so that route does not 404.
+- [x] **F6. Reading time** on post detail/cards: `readingMinutes` from content length (B14; can be frontend-only).
 - [ ] **F7. Comment composer**: optional markdown toolbar; content stays plain text if skipped.
 - [ ] **F8. Travel stats**: review `TravelStats` against a real local demo user (visited places).
 - [ ] **F9. Messages**: review chat bubbles and modals with a real local conversation.
