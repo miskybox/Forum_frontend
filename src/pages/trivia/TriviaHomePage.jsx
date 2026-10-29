@@ -212,7 +212,8 @@ const TriviaHomePage = () => {
       title: t('trivia.dailyMode'),
       description: t('trivia.dailySpecial'),
       questions: 15,
-      tone: { card: 'bg-secondary', title: 'text-on-secondary', text: 'text-on-secondary-fixed-variant' }
+      // on-secondary flips with the theme like bg-secondary does (6.4:1 light, 10.1:1 dark)
+      tone: { card: 'bg-secondary', title: 'text-on-secondary', text: 'text-on-secondary' }
     }
   ]
 
