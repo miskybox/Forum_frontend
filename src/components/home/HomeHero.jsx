@@ -6,7 +6,7 @@ import tagService from '../../services/tagService'
 import categoryService from '../../services/categoryService'
 
 const quickLinkClass =
-  'px-space-md py-space-xs rounded-full bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface hover:text-on-surface text-label-md transition-colors'
+  'px-space-md py-space-xs rounded-full bg-surface-container-highest text-on-surface hover:bg-secondary hover:text-on-secondary text-label-md transition-colors'
 
 const HomeHero = () => {
   const { t } = useLanguage()
@@ -67,7 +67,7 @@ const HomeHero = () => {
           {t('home.heroTitle')}{' '}
           <span className="italic font-normal text-primary">{t('home.heroTitleAccent')}</span>
         </h1>
-        <p className="mt-space-md text-body-lg text-on-surface-variant max-w-2xl">
+        <p className="mt-space-md text-body-lg text-on-surface max-w-2xl">
           {t('home.heroSubtitle')}
         </p>
 
@@ -75,12 +75,12 @@ const HomeHero = () => {
         <form
           role="search"
           onSubmit={handleSubmit}
-          className="mt-space-xl w-full max-w-3xl bg-surface-container-lowest rounded-xl md:rounded-full p-space-sm shadow-xl focus-within:ring-2 focus-within:ring-primary/30 flex flex-col md:flex-row items-stretch md:items-center gap-space-xs"
+          className="hero-search mt-space-xl w-full max-w-3xl rounded-xl md:rounded-full p-space-sm shadow-xl focus-within:ring-2 focus-within:ring-primary/30 flex flex-col md:flex-row items-stretch md:items-center gap-space-xs"
         >
           <div className="flex-1 flex items-center gap-space-sm px-space-md py-space-xs text-left">
             <MdPinDrop className="text-title-md text-primary flex-shrink-0" aria-hidden="true" />
             <div className="flex flex-col w-full min-w-0">
-              <label htmlFor="home-search" className="text-caption uppercase tracking-wider text-on-surface-variant">
+              <label htmlFor="home-search" className="text-caption uppercase tracking-wider">
                 {t('home.searchLabel')}
               </label>
               <input
@@ -89,7 +89,7 @@ const HomeHero = () => {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={t('home.searchPlaceholder')}
-                className="min-h-0 p-0 border-0 shadow-none bg-transparent outline-none text-body-sm text-on-surface"
+                className="min-h-0 p-0 border-0 shadow-none bg-transparent outline-none text-body-sm"
               />
             </div>
           </div>
@@ -104,7 +104,7 @@ const HomeHero = () => {
 
         {/* Quick links */}
         <nav aria-label={t('home.quickLinks')} className="mt-space-lg flex flex-wrap items-center justify-center gap-space-xs sm:gap-space-sm">
-          <span className="text-caption uppercase tracking-widest text-on-surface-variant">{t('home.quickLinks')}:</span>
+          <span className="text-caption uppercase tracking-widest text-on-surface">{t('home.quickLinks')}:</span>
           <Link to="/forums" className={quickLinkClass}>{t('home.exploreForum')}</Link>
           <Link to="/trivia" className={quickLinkClass}>{t('home.playTrivia')}</Link>
           <Link to="/travel" className={quickLinkClass}>{t('home.myMap')}</Link>

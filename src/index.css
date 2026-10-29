@@ -148,6 +148,21 @@
   --shadow-level-3: 0 20px 32px -8px rgb(30 36 33 / 0.16);
 }
 
+:root {
+  --map-ocean-0: #8ed4e8;
+  --map-ocean-1: #5eb8c9;
+  --map-ocean-2: #3a8faf;
+  --map-land: #e8d5b5;
+  --map-stroke: #faf6ee;
+  --map-grid: #2f6f68;
+  --map-grid-opacity: 0.22;
+  --map-visited: #2f7a5c;
+  --map-wishlist: #ff8a45;
+  --map-lived: #c4531e;
+  --map-living: #7a3208;
+  --map-selected: #91471c;
+}
+
 html.dark {
   --color-primary: #ffb691;
   --color-on-primary: #341100;
@@ -188,6 +203,30 @@ html.dark .tone-clay-article {
 html.dark .footer-legal-bar {
   background-color: var(--color-secondary-container);
   color: var(--color-on-secondary-container);
+}
+
+/* Hero search stays a light pill in dark so the label is not the same tone as the wash. */
+.hero-search {
+  background-color: #ffffff;
+  color: #171d1a;
+}
+html.dark .hero-search {
+  background-color: #ecf2ed;
+  color: #171d1a;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.4);
+}
+.hero-search label {
+  color: #54433b;
+}
+.hero-search input,
+.hero-search input:focus {
+  color: #171d1a;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.hero-search input::placeholder {
+  color: #763308;
 }
 
 /* ============================================

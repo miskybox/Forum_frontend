@@ -76,7 +76,7 @@ const FollowButton = ({ userId, initialIsFollowing = false, onFollowChange, size
           ? hovering
             ? 'bg-primary text-white border-2 border-primary'
             : 'bg-surface-container-lowest text-secondary border-2 border-secondary hover:border-primary'
-          : 'bg-secondary text-white border-2 border-secondary hover:bg-secondary/90'
+          : 'bg-secondary text-on-secondary border-2 border-secondary hover:bg-secondary/90'
         }
       `}
     >

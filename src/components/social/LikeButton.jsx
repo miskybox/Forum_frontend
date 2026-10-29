@@ -85,7 +85,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, size = 'md
         transition-all duration-200
         ${liked
           ? 'text-primary'
-          : 'text-on-surface-variant hover:text-primary'
+          : 'text-inherit hover:text-primary'
         }
         disabled:opacity-50
       `}

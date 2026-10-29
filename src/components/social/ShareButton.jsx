@@ -83,7 +83,7 @@ const ShareButton = ({ postId, title, size = 'md' }) => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className={`${sizeClasses[size]} text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-full transition-colors`}
+        className={`${sizeClasses[size]} text-inherit hover:text-primary hover:bg-surface-container-low/40 rounded-full transition-colors`}
         aria-label="Compartir"
         title="Compartir"
       >
